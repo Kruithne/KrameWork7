@@ -1,5 +1,7 @@
 <?php
-	class SanityTest extends PHPUnit_Framework_TestCase
+	namespace KrameWork;
+
+	class SanityTest extends \PHPUnit_Framework_TestCase
 	{
 		/**
 		 * Check if the boolean value of true, is equal to itself.
@@ -10,4 +12,3 @@
 			$this->assertEquals(true, true, "The world as we once knew it, has ended.");
 		}
 	}
-?>
