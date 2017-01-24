@@ -66,7 +66,7 @@
 		 * @param bool $overwrite If true and file exists, will overwrite.
 		 * @throws KrameWorkFileException
 		 */
-		public function save(string $file = null, bool $overwrite = false) {
+		public function save(string $file = null, bool $overwrite = true) {
 			$file = $file ?? $this->lastPath;
 
 			if ($file === null)

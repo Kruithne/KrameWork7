@@ -103,7 +103,7 @@
 				// This data should not get saved to the disk.
 				$file->setData($overwrite);
 
-				$file->save($src);
+				$file->save($src, false);
 				$this->fail("Attempt to overwrite a file without overwrite flag was not stopped by exception.");
 			} catch (KrameWorkFileException $e) {
 				// Expected, since we tried to overwrite without specifying.
@@ -141,7 +141,7 @@
 			// Attempt to save without the file name.
 			$file = new GenericFile($src);
 			$file->setData($newData);
-			$file->save(null, true);
+			$file->save();
 
 			// Load the data gain to check it saved.
 			$file = new GenericFile($src);
