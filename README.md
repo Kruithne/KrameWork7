@@ -1,3 +1,5 @@
+![Build Status](https://travis-ci.org/Kruithne/KrameWork7.svg?branch=master)
+
 ## KrameWork7 - PHP7 Web Framework (WIP)
 
 ### What is this?
