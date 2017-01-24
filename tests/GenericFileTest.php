@@ -123,4 +123,30 @@
 
 			unlink($src);
 		}
+
+		/**
+		 * Test the filename cached from read() calls works as expected.
+		 */
+		public function testSaveNameCache() {
+			$src = "GenericFileTest.CacheTest.tmp";
+			$data = "Maybe Christmas, the Grinch thought, doesn't come from a store.";
+
+			// Save our initial data we can use to test with.
+			$file = new GenericFile();
+			$file->setData($data);
+			$file->save($src, true);
+
+			$newData = "Don't cry because it's over. Smile because it happened.";
+
+			// Attempt to save without the file name.
+			$file = new GenericFile($src);
+			$file->setData($newData);
+			$file->save(null, true);
+
+			// Load the data gain to check it saved.
+			$file = new GenericFile($src);
+			$this->assertEquals($newData, $file->getData(), "File data does not match after saving without a file name.");
+
+			unlink($src);
+		}
 	}

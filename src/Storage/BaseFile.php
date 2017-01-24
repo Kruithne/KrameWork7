@@ -55,17 +55,23 @@
 			if ($raw === null)
 				throw new KrameWorkFileException("Cannot read file: Read error");
 
+			$this->lastPath = $file;
 			$this->rawData = $raw;
 			$this->parse();
 		}
 
 		/**
 		 * Save the file to disk.
-		 * @param string $file Path to save the file.
+		 * @param string|null $file Path to save the file. Defaults to last read() path.
 		 * @param bool $overwrite If true and file exists, will overwrite.
 		 * @throws KrameWorkFileException
 		 */
-		public function save(string $file, bool $overwrite = false) {
+		public function save(string $file = null, bool $overwrite = false) {
+			$file = $file ?? $this->lastPath;
+
+			if ($file === null)
+				throw new KrameWorkFileException("Save path not provided, and none cached from read() calls.");
+
 			if (!$overwrite && file_exists($file))
 				throw new KrameWorkFileException("Cannot write file: Already exists (specify overwrite?)");
 
@@ -76,4 +82,9 @@
 		 * @var string
 		 */
 		protected $rawData;
+
+		/**
+		 * @var string
+		 */
+		protected $lastPath;
 	}
