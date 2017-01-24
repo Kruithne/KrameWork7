@@ -1,0 +1,5 @@
+language: php
+php:
+  - '7.0'
+  - nightly
+script: phpunit --verbose --debug --stderr --config phpunit.xml tests
