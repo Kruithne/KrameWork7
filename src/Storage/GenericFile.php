@@ -21,10 +21,11 @@
 		/**
 		 * Populate the file object using loaded raw data.
 		 * Called directly after a successful read() call.
+		 * @param string $data Raw data
 		 */
-		public function parse()
+		public function parse(string $data)
 		{
-			$this->data = $this->rawData ?? "";
+			$this->data = $data ?? "";
 		}
 
 		/**

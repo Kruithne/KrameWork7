@@ -4,12 +4,21 @@
 	class JSONFile extends BaseFile {
 		/**
 		 * JSONFile constructor.
-		 * @param bool $bare If true, the default container will not be initialized.
+		 * @param bool $container Create a KeyValueContainer for the internal data.
+		 * @param string $file Initial file to load.
+		 * @param bool $assoc Convert objects to associative arrays.
+		 * @param int $depth Recursion depth.
+		 * @param int $options Bit-mask of JSON options.
 		 */
-		public function __construct($bare = false)
+		public function __construct(bool $container, string $file = null, bool $assoc = false, int $depth = 512, int $options = 0)
 		{
-			if (!$bare)
+			if ($file !== null) {
+				$this->read($file, $container, $assoc, $depth, $options);
+			} else {
 				$this->data = new KeyValueContainer();
+			}
+
+			parent::__construct(null);
 		}
 
 		/**
@@ -74,9 +83,10 @@
 		/**
 		 * Populate the file object using loaded raw data.
 		 * Called directly after a successful read() call.
+		 * @param string $data Raw data.
 		 * @throws KrameWorkFileException
 		 */
-		public function parse()
+		public function parse(string $data)
 		{
 			$this->data = json_decode($this->rawData, $this->assoc, $this->depth, $this->options);
 			if ($this->data !== null) {

@@ -7,8 +7,9 @@
 		/**
 		 * Populate the file object using loaded raw data.
 		 * Called directly after a successful read() call.
+		 * @param string $data Data to parse.
 		 */
-		public function parse();
+		public function parse(string $data);
 
 		/**
 		 * Compile the populated data into a writable string.
@@ -56,8 +57,7 @@
 				throw new KrameWorkFileException("Cannot read file: Read error");
 
 			$this->lastPath = $file;
-			$this->rawData = $raw;
-			$this->parse();
+			$this->parse($raw);
 		}
 
 		/**
@@ -77,11 +77,6 @@
 
 			file_put_contents($file, $this->compile() ?? "");
 		}
-
-		/**
-		 * @var string
-		 */
-		protected $rawData;
 
 		/**
 		 * @var string
