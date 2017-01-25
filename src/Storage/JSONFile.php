@@ -22,9 +22,7 @@
 		 * @throws KrameWorkFileException
 		 */
 		public function __get($key) {
-			if ($this->data === null)
-				throw new KrameWorkFileException("Attempt to access non-initiated JSON file.");
-
+			$this->verifyDataObject();
 			return $this->data->__get($key);
 		}
 
@@ -35,10 +33,17 @@
 		 * @throws KrameWorkFileException
 		 */
 		public function __set($key, $value) {
-			if ($this->data === null)
-				throw new KrameWorkFileException("Attempt to set value to a non-initiated JSON file.");
-
+			$this->verifyDataObject();
 			$this->data->__set($key, $value);
+		}
+
+		/**
+		 * Unset a value from the underlying data object.
+		 * @param $key
+		 */
+		public function __unset($key) {
+			$this->verifyDataObject();
+			$this->data->__unset($key);
 		}
 
 		/**
@@ -115,6 +120,15 @@
 		 */
 		private function throwJSONError() {
 			throw new KrameWorkFileException("JSON error: " . json_last_error_msg());
+		}
+
+		/**
+		 * Throw an exception if the internal data object is not initiated.
+		 * @throws KrameWorkFileException
+		 */
+		private function verifyDataObject() {
+			if ($this->data === null)
+				throw new KrameWorkFileException("Attempt to set value to a non-initiated JSON file.");
 		}
 
 		/**
