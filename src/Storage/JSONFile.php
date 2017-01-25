@@ -1,6 +1,9 @@
 <?php
 	namespace KrameWork\Storage;
 
+	require_once("BaseFile.php");
+	require_once("KeyValueContainer.php");
+
 	class JSONFile extends BaseFile {
 		/**
 		 * JSONFile constructor.
@@ -130,7 +133,7 @@
 		 */
 		private function verifyDataObject() {
 			if ($this->data === null)
-				throw new KrameWorkFileException("Attempt to set value to a non-initiated JSON file.");
+				throw new KrameWorkFileException("Attempt to invoke value on a non-initiated JSON file.");
 		}
 
 		/**
