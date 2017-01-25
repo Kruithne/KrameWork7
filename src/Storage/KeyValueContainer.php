@@ -1,7 +1,7 @@
 <?php
 	namespace KrameWork\Storage;
 
-	class KeyValueContainer {
+	class KeyValueContainer implements \JsonSerializable {
 		/**
 		 * KeyValueContainer constructor.
 		 * @param KeyValueContainer|mixed|null $copy
