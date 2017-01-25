@@ -23,8 +23,7 @@
 		 * Called directly after a successful read() call.
 		 * @param string $data Raw data
 		 */
-		public function parse(string $data)
-		{
+		public function parse(string $data) {
 			$this->data = $data ?? "";
 		}
 
@@ -33,8 +32,7 @@
 		 * Called during a write() call for file-writing.
 		 * @return string Compiled data.
 		 */
-		public function compile(): string
-		{
+		public function compile(): string {
 			return $this->data ?? "";
 		}
 
