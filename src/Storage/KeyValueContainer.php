@@ -67,7 +67,7 @@
 		 * @since 5.4.0
 		 */
 		function jsonSerialize() {
-			return (object)$this->values;
+			return (object)$this->data;
 		}
 
 		/**
