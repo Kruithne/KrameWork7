@@ -36,11 +36,13 @@
 		/**
 		 * BaseFile constructor.
 		 * @param string|null $initialPath If provided, will attempt to read the file.
+		 * @param bool $autoLoad If true and file is provided, will attempt to load on construct.
 		 * @throws KrameWorkFileException
 		 */
-		public function __construct(string $initialPath = null) {
-			if ($initialPath !== null)
-				$this->read($initialPath);
+		public function __construct(string $initialPath = null, bool $autoLoad = true) {
+			$this->cachePath = $initialPath;
+			if ($this->cachePath !== null && $autoLoad)
+				$this->read($this->cachePath);
 		}
 
 		/**
@@ -56,7 +58,7 @@
 			if ($raw === null)
 				throw new KrameWorkFileException("Cannot read file: Read error");
 
-			$this->lastPath = $file;
+			$this->cachePath = $file;
 			$this->parse($raw);
 		}
 
@@ -67,7 +69,7 @@
 		 * @throws KrameWorkFileException
 		 */
 		public function save(string $file = null, bool $overwrite = true) {
-			$file = $file ?? $this->lastPath;
+			$file = $file ?? $this->cachePath;
 
 			if ($file === null)
 				throw new KrameWorkFileException("Save path not provided, and none cached from read() calls.");
@@ -81,5 +83,5 @@
 		/**
 		 * @var string
 		 */
-		protected $lastPath;
+		protected $cachePath;
 	}

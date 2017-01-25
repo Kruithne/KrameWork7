@@ -44,6 +44,16 @@
 		}
 
 		/**
+		 * Test file loading options/name caching.
+		 */
+		public function testNoAutoLoad() {
+			$src = "tests/resources/test_text_file.txt";
+			$file = new GenericFile($src, false);
+
+			$this->assertEquals("", $file->getData(), "File data was loaded when we specified not to.");
+		}
+
+		/**
 		 * Test writing some data to disk.
 		 */
 		public function testWriting() {

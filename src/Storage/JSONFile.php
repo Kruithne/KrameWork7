@@ -6,13 +6,15 @@
 		 * JSONFile constructor.
 		 * @param string $file Initial file to load.
 		 * @param bool $useContainer Loaded/inserted data will be contained using a KeyValueContainer.
+		 * @param bool $autoLoad If true and file is provided, will attempt to read on construct.
+		 * @throws KrameWorkFileException
 		 */
-		public function __construct(string $file = null, bool $useContainer = true) {
+		public function __construct(string $file = null, bool $useContainer = true, bool $autoLoad = true) {
 			$this->useContainer = $useContainer;
 			if ($useContainer && $file === null)
 				$this->data = new KeyValueContainer();
 
-			parent::__construct($file);
+			parent::__construct($file, $autoLoad);
 		}
 
 		/**
