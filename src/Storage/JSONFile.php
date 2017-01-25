@@ -88,7 +88,7 @@
 		 * @throws KrameWorkFileException
 		 */
 		public function parse(string $data) {
-			$decoded = json_decode($this->data, $this->assoc, $this->depth, $this->options);
+			$decoded = json_decode($data, $this->assoc, $this->depth, $this->options);
 			if ($decoded === null)
 				$this->throwJSONError();
 
