@@ -48,9 +48,14 @@
 		 */
 		public function testNoAutoLoad() {
 			$src = "tests/resources/test_text_file.txt";
-			$file = new GenericFile($src, false);
 
+			$file = new GenericFile($src, false);
 			$this->assertEquals("", $file->getData(), "File data was loaded when we specified not to.");
+
+			$text = "Unless someone like you cares a whole awful lot, nothing is going to get better. It's not.";
+
+			$file->read(); // Read without specifying a filename.
+			$this->assertEquals($text, $file->getData(), "File data did not match expected original.");
 		}
 
 		/**

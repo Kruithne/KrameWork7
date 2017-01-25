@@ -47,10 +47,15 @@
 
 		/**
 		 * Read data from a file.
-		 * @param string $file Path to the file.
+		 * @param string|null $file Path to the file.
 		 * @throws KrameWorkFileException
 		 */
-		public function read(string $file) {
+		public function read(string $file = null) {
+			$file = $file ?? $this->cachePath;
+
+			if ($file === null)
+				throw new KrameWorkFileException("Cannot read file: No path given.");
+
 			if (!file_exists($file))
 				throw new KrameWorkFileException("Cannot read file: It does not exist.");
 
