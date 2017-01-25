@@ -30,6 +30,12 @@
 		 * @param bool $overwrite If true and file exists, will overwrite.
 		 */
 		public function save(string $file, bool $overwrite = false);
+
+		/**
+		 * Check if the target file exists.
+		 * @return bool
+		 */
+		public function exists():bool;
 	}
 
 	abstract class BaseFile implements IFileFormat {
@@ -83,6 +89,14 @@
 				throw new KrameWorkFileException("Cannot write file: Already exists (specify overwrite?)");
 
 			file_put_contents($file, $this->compile() ?? "");
+		}
+
+		/**
+		 * Check if the target file exists.
+		 * @return bool
+		 */
+		public function exists(): bool {
+			return $this->cachePath ? file_exists($this->cachePath) : null;
 		}
 
 		/**

@@ -164,4 +164,21 @@
 
 			unlink($src);
 		}
+
+		/**
+		 * Test exists() functionality.
+		 */
+		public function testFileExists() {
+			$src = "GenericFileTest.NonExistent";
+
+			// Ensure clean environment.
+			if (file_exists($src))
+				unlink($src);
+
+			$file = new GenericFile("GenericFileTest.NonExistent", false);
+			$this->assertFalse($file->exists(), "Container claims file exists when it should not.");
+
+			$file = new GenericFile("tests/resources/test_text_file.txt");
+			$this->assertTrue($file->exists(), "Container claims file does not exist when it should.");
+		}
 	}
