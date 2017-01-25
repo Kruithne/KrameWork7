@@ -88,11 +88,11 @@
 		 * @throws KrameWorkFileException
 		 */
 		public function parse(string $data) {
-			$data = json_decode($this->rawData, $this->assoc, $this->depth, $this->options);
-			if ($data === null)
+			$decoded = json_decode($this->data, $this->assoc, $this->depth, $this->options);
+			if ($decoded === null)
 				$this->throwJSONError();
 
-			$this->data = $this->useContainer ? new KeyValueContainer($data) : $data;
+			$this->data = $this->useContainer ? new KeyValueContainer($decoded) : $decoded;
 		}
 
 		/**
