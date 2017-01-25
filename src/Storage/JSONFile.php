@@ -7,7 +7,7 @@
 		 * @param string $file Initial file to load.
 		 * @param bool $useContainer Loaded/inserted data will be contained using a KeyValueContainer.
 		 */
-		public function __construct(string $file, bool $useContainer = true) {
+		public function __construct(string $file = null, bool $useContainer = true) {
 			$this->useContainer = $useContainer;
 			if ($file === null)
 				$this->data = new KeyValueContainer();
