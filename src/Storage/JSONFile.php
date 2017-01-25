@@ -4,21 +4,15 @@
 	class JSONFile extends BaseFile {
 		/**
 		 * JSONFile constructor.
-		 * @param bool $container Create a KeyValueContainer for the internal data.
 		 * @param string $file Initial file to load.
-		 * @param bool $assoc Convert objects to associative arrays.
-		 * @param int $depth Recursion depth.
-		 * @param int $options Bit-mask of JSON options.
+		 * @param bool $useContainer Loaded/inserted data will be contained using a KeyValueContainer.
 		 */
-		public function __construct(bool $container, string $file = null, bool $assoc = false, int $depth = 512, int $options = 0)
-		{
-			if ($file !== null) {
-				$this->read($file, $container, $assoc, $depth, $options);
-			} else {
+		public function __construct(string $file, bool $useContainer = true) {
+			$this->useContainer = $useContainer;
+			if ($file === null)
 				$this->data = new KeyValueContainer();
-			}
 
-			parent::__construct(null);
+			parent::__construct($file);
 		}
 
 		/**
@@ -64,20 +58,27 @@
 		}
 
 		/**
-		 * Read data from a file.
-		 * @param string $file Path to the file.
-		 * @param bool $containData Place decoded data into a KeyValueContainer
-		 * @param bool $assoc Convert objects to associative arrays.
-		 * @param int $depth Recursion depth.
-		 * @param int $options Bit-mask of JSON options.
+		 * Set the recursion depth for file reading.
+		 * @param int $depth
 		 */
-		public function read(string $file, bool $containData = true, bool $assoc = false, int $depth = 512, int $options = 0)
-		{
-			$this->containData = $containData;
-			$this->assoc = $assoc;
+		public function setRecursionDepth(int $depth) {
 			$this->depth = $depth;
-			$this->options = $options;
-			parent::read($file);
+		}
+
+		/**
+		 * Set if this file should read objects as associative arrays.
+		 * @param bool $assoc
+		 */
+		public function setAssociative(bool $assoc) {
+			$this->assoc = $assoc;
+		}
+
+		/**
+		 * Set the JSON options bit-mask.
+		 * @param int $mask
+		 */
+		public function setOptions(int $mask) {
+			$this->options = $mask;
 		}
 
 		/**
@@ -86,15 +87,12 @@
 		 * @param string $data Raw data.
 		 * @throws KrameWorkFileException
 		 */
-		public function parse(string $data)
-		{
-			$this->data = json_decode($this->rawData, $this->assoc, $this->depth, $this->options);
-			if ($this->data !== null) {
-				if ($this->containData)
-					$this->data = new KeyValueContainer($this->data);
-			} else {
+		public function parse(string $data) {
+			$data = json_decode($this->rawData, $this->assoc, $this->depth, $this->options);
+			if ($data === null)
 				$this->throwJSONError();
-			}
+
+			$this->data = $this->useContainer ? new KeyValueContainer($data) : $data;
 		}
 
 		/**
@@ -103,8 +101,7 @@
 		 * @return string Compiled data.
 		 * @throws KrameWorkFileException
 		 */
-		public function compile(): string
-		{
+		public function compile(): string {
 			$encoded = json_encode($this->data);
 			if ($encoded === null)
 				$this->throwJSONError();
@@ -126,22 +123,22 @@
 		protected $data;
 
 		/**
-		 * @var bool Contain decoded data.
+		 * @var bool Store data inside a KeyValueContainer.
 		 */
-		protected $containData;
+		protected $useContainer;
 
 		/**
 		 * @var int Recursion depth.
 		 */
-		protected $depth;
+		protected $depth = 512;
 
 		/**
 		 * @var bool Convert objects into associative arrays.
 		 */
-		protected $assoc;
+		protected $assoc = false;
 
 		/**
 		 * @var int Bit-mask for JSON encoding options.
 		 */
-		protected $options;
+		protected $options = 0;
 	}
