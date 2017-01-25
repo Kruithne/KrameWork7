@@ -1,6 +1,8 @@
 <?php
 	namespace KrameWork\Storage;
 
+	require_once("BaseFile.php");
+
 	class GenericFile extends BaseFile {
 		/**
 		 * Get the data contained in this file.
