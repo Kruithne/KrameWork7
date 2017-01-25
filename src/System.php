@@ -9,13 +9,11 @@
 	 * Bootstrap and entry-point for the KrameWork system.
 	 */
 	class System {
-		const FEATURE_AUTO_LOADING = 0x1;
-
 		/**
 		 * System constructor.
 		 * @param int $flags System control flags.
 		 */
-		public function __construct($flags = 0) {
+		public function __construct() {
 			$this->flags = $flags;
 
 			if ($this->isFeatureEnabled(self::FEATURE_AUTO_LOADING)) {
