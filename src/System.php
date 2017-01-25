@@ -1,8 +1,6 @@
 <?php
 	namespace KrameWork;
 
-	class KrameWorkSystemFeatureException extends \Exception {}
-
 	/**
 	 * Class System
 	 * @package KrameWork
@@ -11,55 +9,23 @@
 	class System {
 		/**
 		 * System constructor.
-		 * @param int $flags System control flags.
+		 * @param mixed $config Path to config file, or key/value object.
 		 */
-		public function __construct() {
-			$this->flags = $flags;
-
-			if ($this->isFeatureEnabled(self::FEATURE_AUTO_LOADING)) {
-				require_once("AutoLoader.php");
-				$this->autoLoader = new AutoLoader();
-			}
+		public function __construct($config = null) {
+			require_once("SystemConfig.php");
+			$this->config = new SystemConfig($config);
 		}
 
 		/**
-		 * Check if a specific feature has been enabled.
-		 * @param int $flag Feature flag.
-		 * @return bool
+		 * Get the configuration for this system instance.
+		 * @return SystemConfig
 		 */
-		public function isFeatureEnabled($flag):bool {
-			return $this->flags & $flag;
+		public function getConfig():SystemConfig {
+			return $this->config;
 		}
 
 		/**
-		 * Obtain the auto-loader instance for the system.
-		 * @return AutoLoader
-		 * @throws KrameWorkSystemFeatureException
+		 * @var SystemConfig
 		 */
-		public function getAutoLoader():AutoLoader {
-			$this->verifyFeature(self::FEATURE_AUTO_LOADING);
-			return $this->autoLoader;
-		}
-
-		/**
-		 * Internal function to verify a feature is active before invoking.
-		 * @param $flag
-		 * @throws KrameWorkSystemFeatureException
-		 */
-		private function verifyFeature($flag) {
-			if (!$this->isFeatureEnabled($flag))
-				throw new KrameWorkSystemFeatureException("Cannot invoke instance for disabled feature.");
-		}
-
-		/**
-		 * User-defined flags for the system.
-		 * @var int
-		 */
-		private $flags;
-
-		/**
-		 * Internal auto-loader instance.
-		 * @var AutoLoader
-		 */
-		private $autoLoader;
+		private $config;
 	}
