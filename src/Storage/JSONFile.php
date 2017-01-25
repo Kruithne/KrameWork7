@@ -9,7 +9,7 @@
 		 */
 		public function __construct(string $file = null, bool $useContainer = true) {
 			$this->useContainer = $useContainer;
-			if ($file === null)
+			if ($useContainer && $file === null)
 				$this->data = new KeyValueContainer();
 
 			parent::__construct($file);
