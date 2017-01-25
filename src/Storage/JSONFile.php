@@ -111,7 +111,7 @@
 			if ($encoded === null)
 				$this->throwJSONError();
 
-			return json_encode($this->data);
+			return $encoded;
 		}
 
 		/**
