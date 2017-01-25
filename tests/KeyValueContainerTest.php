@@ -72,4 +72,20 @@
 
 			unset($target);
 		}
+
+		/**
+		 * Test JSON-based serialization.
+		 */
+		public function testJSONSerialization() {
+			$container = new KeyValueContainer();
+			$container->shoes = 300;
+
+			$encoded = json_encode($container);
+			$this->assertNotFalse($encoded, "Unable to encode data to JSON: " . json_last_error_msg());
+
+			$decoded = json_decode($encoded);
+			$this->assertNotFalse($decoded, "Unable to decode JSON to data: " . json_last_error_msg());
+
+			$this->assertEquals(300, $decoded->shoes, "Decoded data does not match expected original.");
+		}
 	}
