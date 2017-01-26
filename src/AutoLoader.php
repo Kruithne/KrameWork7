@@ -1,8 +1,8 @@
 <?php
 	namespace KrameWork;
 
-	use KrameWork\Utils\PathUtil;
-	require_once("src/Utils/PathUtil.php");
+	use KrameWork\Utils\StringUtil;
+	require_once("src/Utils/StringUtil.php");
 
 	/**
 	 * Class AutoLoader
@@ -37,7 +37,7 @@
 			foreach ($sources ?? [] as $source) {
 				var_dump($source);
 				if (is_array($source) && count($source) == 2) {
-					$real = realpath(PathUtil::formatSlashes($source[1]));
+					$real = realpath(StringUtil::formatDirectorySlashes($source[1]));
 					if ($real !== false) {
 						$source[1] = $real;
 
@@ -48,7 +48,7 @@
 						$this->sources[] = $source;
 					}
 				} else if (is_string($source)) {
-					$real = realpath(PathUtil::formatSlashes($source));
+					$real = realpath(StringUtil::formatDirectorySlashes($source));
 					if ($real !== false)
 						$this->sources[] = $real;
 				}
@@ -74,7 +74,7 @@
 			if (!$this->enabled)
 				return;
 
-			$className = PathUtil::formatSlashes($className);
+			$className = StringUtil::formatDirectorySlashes($className);
 			$queue = $this->sources;
 
 			while (count($queue)) {

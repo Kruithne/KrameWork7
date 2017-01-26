@@ -18,4 +18,17 @@
 			$this->assertTrue(StringUtil::endsWith($data, " jumped."));
 			$this->assertFalse(StringUtil::endsWith($data, " ran away."));
 		}
+
+		/**
+		 * Test the functionality of StringUtil::formatSlashes
+		 */
+		public function testFormatSlashes() {
+			// Set-up test string.
+			$sep = DIRECTORY_SEPARATOR == "/" ? "\\" : "/";
+			$parts = ["The", "dog", "pooped", "on", "the", "lawn"];
+			$str = join($sep, $parts);
+
+			$cleaned = StringUtil::formatDirectorySlashes($str);
+			$this->assertNotContains($sep, $cleaned, "Cleaned path still contains invalid slashes.");
+		}
 	}

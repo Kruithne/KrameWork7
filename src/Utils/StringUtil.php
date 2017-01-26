@@ -25,4 +25,13 @@
 			$length = strlen($needle);
 			return (substr($haystack, -$length, $length) === $needle);
 		}
+
+		/**
+		 * Convert all slahses in a string to match the environment directory separator.
+		 * @param $path
+		 * @return string
+		 */
+		static function formatDirectorySlashes($path):string {
+			return str_replace(DIRECTORY_SEPARATOR == "/" ? "\\" : "/", DIRECTORY_SEPARATOR, $path);
+		}
 	}
