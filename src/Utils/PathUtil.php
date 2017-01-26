@@ -8,6 +8,6 @@
 		 * @return string
 		 */
 		static function formatSlashes(string $path):string {
-			return str_replace(DIRECTORY_SEPARATOR == "/" ? "\\" : "/", DIRECTORY_SEPARATOR, $path);
+			return str_replace(["\\", "/"], DIRECTORY_SEPARATOR, $path);
 		}
 	}
