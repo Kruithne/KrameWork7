@@ -1,6 +1,9 @@
 <?php
 	namespace KrameWork;
 
+	use KrameWork\Utils\PathUtil;
+	require_once("src/Utils/PathUtil.php");
+
 	/**
 	 * Class AutoLoader
 	 * @package KrameWork
@@ -32,7 +35,7 @@
 				if (is_array($source) && count($source) == 2) {
 					$real = realpath($source[1]);
 					if ($real !== false) {
-						$source[1] = $real;
+						$source[1] = PathUtil::formatSlashes($real);
 
 						// Convert namespace separators if needed.
 						if (DIRECTORY_SEPARATOR == "/")
@@ -43,7 +46,7 @@
 				} else if (is_string($source)) {
 					$real = realpath($source);
 					if ($real !== false)
-						$this->sources[] = $real;
+						$this->sources[] = PathUtil::formatSlashes($real);
 				}
 			}
 
