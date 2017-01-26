@@ -1,10 +1,6 @@
 <?php
 	namespace KrameWork;
 
-	use Kramework\Utils\StringUtil;
-
-	require_once("Utils/StringUtil.php");
-
 	/**
 	 * Class AutoLoader
 	 * @package KrameWork
