@@ -37,7 +37,7 @@
 			foreach ($sources ?? [] as $source) {
 				var_dump($source);
 				if (is_array($source) && count($source) == 2) {
-					$real = realpath($source[1]);
+					$real = realpath(PathUtil::formatSlashes($source[1]));
 					if ($real !== false) {
 						$source[1] = $real;
 
@@ -48,7 +48,7 @@
 						$this->sources[] = $source;
 					}
 				} else if (is_string($source)) {
-					$real = realpath($source);
+					$real = realpath(PathUtil::formatSlashes($source));
 					if ($real !== false)
 						$this->sources[] = $real;
 				}
