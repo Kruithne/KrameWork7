@@ -40,7 +40,10 @@
 					$real = realpath(PathUtil::formatSlashes($source[1]));
 					if ($real !== false) {
 						$source[1] = $real;
-						$source[0] = PathUtil::formatSlashes($source[0]);
+
+						// Convert namespace separators if needed.
+						if (DIRECTORY_SEPARATOR == "/")
+							$source[0] = str_replace("\\", DIRECTORY_SEPARATOR, $source[0]);
 
 						$this->sources[] = $source;
 					}
