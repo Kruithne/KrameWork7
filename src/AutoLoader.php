@@ -32,7 +32,6 @@
 
 			// Pre-compute source paths/maps.
 			foreach ($sources ?? [] as $source) {
-				var_dump($source);
 				if (is_array($source) && count($source) == 2) {
 					$real = realpath(StringUtil::formatDirectorySlashes($source[1]));
 					if ($real !== false) {
