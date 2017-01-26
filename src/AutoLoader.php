@@ -30,12 +30,16 @@
 			foreach ($extensions ?? ["php"] as $ext)
 				$this->extensions[] = ltrim($ext, ".");
 
+			var_dump("SOURCES");
+			var_dump($sources);
+
 			// Pre-compute source paths/maps.
 			foreach ($sources ?? [] as $source) {
+				var_dump($source);
 				if (is_array($source) && count($source) == 2) {
 					$real = realpath($source[1]);
 					if ($real !== false) {
-						$source[1] = PathUtil::formatSlashes($real);
+						$source[1] = $real;
 
 						// Convert namespace separators if needed.
 						if (DIRECTORY_SEPARATOR == "/")
@@ -46,9 +50,11 @@
 				} else if (is_string($source)) {
 					$real = realpath($source);
 					if ($real !== false)
-						$this->sources[] = PathUtil::formatSlashes($real);
+						$this->sources[] = $real;
 				}
 			}
+
+			var_dump($this->sources);
 
 			if ($flags & self::INCLUDE_KRAMEWORK_DIRECTORY)
 				$this->sources["KrameWork"] = dirname(__FILE__);
@@ -81,10 +87,14 @@
 
 					$class = trim(substr($class, $namespaceLen), DIRECTORY_SEPARATOR);
 					$directory = $path;
+
+					var_dump($class);
+					var_dump($directory);
 				}
 
 				foreach ($this->extensions as $ext) {
 					$file = $directory . DIRECTORY_SEPARATOR . $class . '.' . $ext;
+					var_dump($file);
 					if (file_exists($file))
 						require_once($file);
 				}
