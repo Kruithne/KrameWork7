@@ -1,8 +1,9 @@
 <?php
-	namespace KrameWork\Storage;
+	use KrameWork\Storage\GenericFile;
 
 	// Create a file wrapper and read from disk.
 	// Will throw KrameWorkFileException if the file does not exist or cannot be read.
+
 	$file = new GenericFile("myFile.txt");
 
 	// Access the loaded data.

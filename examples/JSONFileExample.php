@@ -1,11 +1,12 @@
 <?php
-	namespace KrameWork\Storage;
+	use KrameWork\Storage\JSONFile;
 
 	// Inherits functionality from BaseFile and uses an internal KeyValueContainer.
 	// Check examples/documentation on those for more in-depth information.
 
 	// Load a JSON file. By default, this will use an internal KeyValueContainer to store it.
 	// Will throw a KrameWorkFileException if the file does not exist, or cannot be read.
+
 	$file = new JSONFile("bigData.json");
 
 	// Set options for this wrapper.

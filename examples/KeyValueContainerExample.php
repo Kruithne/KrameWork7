@@ -1,5 +1,5 @@
 <?php
-	namespace KrameWork\Storage;
+	use KrameWork\Storage\KeyValueContainer;
 
 	// A KeyValueContainer is a simple class that contains assigned data by a
 	// given key and can be serialized in various ways.
