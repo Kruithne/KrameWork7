@@ -68,15 +68,16 @@
 
 		/**
 		 * Attempt to load a given class.
-		 * @param $class
+		 * @param $className
 		 */
-		public function loadClass($class) {
+		public function loadClass($className) {
 			if (!$this->enabled)
 				return;
 
 			$queue = $this->sources;
 
 			while (count($queue)) {
+				$class = $className;
 				$directory = array_pop($queue);
 				if (is_array($directory)) {
 					list($namespace, $path) = $directory;
