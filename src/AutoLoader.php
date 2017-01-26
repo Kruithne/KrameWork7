@@ -74,6 +74,7 @@
 			if (!$this->enabled)
 				return;
 
+			$className = PathUtil::formatSlashes($className);
 			$queue = $this->sources;
 
 			while (count($queue)) {
