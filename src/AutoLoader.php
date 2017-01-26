@@ -71,9 +71,6 @@
 
 			$queue = $this->sources;
 
-			var_dump($queue);
-			var_dump($class);
-
 			while (count($queue)) {
 				$directory = array_pop($queue);
 				if (is_array($directory)) {
@@ -89,8 +86,6 @@
 
 				foreach ($this->extensions as $ext) {
 					$file = $directory . DIRECTORY_SEPARATOR . $class . '.' . $ext;
-					var_dump($file);
-					var_dump(file_exists($file));
 					if (file_exists($file))
 						require_once($file);
 				}
