@@ -1,8 +1,8 @@
 <?php
-	require_once("src/DependencyInjector.php");
+	require_once("src/DI/DependencyInjector.php");
 
-	use KrameWork\DependencyInjector;
-	use KrameWork\KrameWorkDependencyInjectorException;
+	use KrameWork\DI\DependencyInjector;
+	use KrameWork\DI\KrameWorkDependencyInjectorException;
 
 	interface DITestInterface {
 		public function test():string;
