@@ -169,7 +169,12 @@
 						continue;
 				}
 
-				$objects[] = $this->classList[$resolve] ?? $this->constructComponent($resolve);
+				$components = $this->classList[$resolve] ?? $this->constructComponent($resolve);
+				if (is_array($components))
+					foreach ($components as $component)
+						$objects[] = $component;
+				else
+					$objects[] = $components;
 			}
 			return $objects;
 		}
