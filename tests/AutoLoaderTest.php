@@ -30,6 +30,16 @@
 			unset($loader, $test);
 		}
 
+		public function testBasicTrailing() {
+			$loader = new AutoLoader(["tests/resources/"], null, 0);
+			$test = new \TestClass();
+
+			$this->assertEquals("Beep", $test->getTest(), "Auto-loader returned unexpected class.");
+			$loader->disable();
+
+			unset($loader, $test);
+		}
+
 		/**
 		 * Test loading of a class within a namespace.
 		 */
