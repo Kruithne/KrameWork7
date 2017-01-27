@@ -39,7 +39,7 @@
 			// Add initial interface bindings.
 			if ($bindings)
 				foreach ($bindings as $interface => $class)
-					$this->bindInterface($interface, $class);
+					$this->bind($interface, $class);
 		}
 
 		public function addComponent($class) {
@@ -228,7 +228,7 @@
 		private function bindInterfaces(string $className) {
 			$class = new \ReflectionClass($className);
 			foreach ($class->getInterfaceNames() as $interface)
-				$this->bindInterface($interface, $className);
+				$this->bind($interface, $className);
 		}
 
 		/**
@@ -237,7 +237,7 @@
 		 * @param $class
 		 * @throws KrameWorkDependencyInjectorException
 		 */
-		public function bindInterface(string $interface, $class) {
+		public function bind(string $interface, $class) {
 			if (is_object($class))
 				$class = get_class($class);
 

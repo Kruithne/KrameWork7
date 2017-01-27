@@ -139,7 +139,7 @@
 		 */
 		public function testInterfaceResolution() {
 			$injector = new DependencyInjector();
-			$injector->bindInterface("IException", "Exception");
+			$injector->bind("IException", "Exception");
 			$this->assertEquals("Exception", $injector->resolveClassName("IException"), "Interface did not resolve to class name.");
 			unset($injector);
 		}
@@ -276,7 +276,7 @@
 			$injector = new DependencyInjector(DependencyInjector::DEFAULT_FLAGS | DependencyInjector::AUTO_ADD_DEPENDENCIES);
 
 			$injector->addComponent("DINeedyTestClass");
-			$injector->bindInterface("DITestInterface", "DITestClass");
+			$injector->bind("DITestInterface", "DITestClass");
 			$component = $injector->getComponent("DINeedyTestClass", false); /** @var DINeedyTestClass $component */
 
 			$this->assertNotNull($component, "Returned instance of DINeedyTestClass was null?");
@@ -292,7 +292,7 @@
 			$injector = new DependencyInjector(DependencyInjector::DEFAULT_FLAGS & ~DependencyInjector::AUTO_ADD_DEPENDENCIES);
 
 			$injector->addComponent("DINeedyTestClass");
-			$injector->bindInterface("DITestInterface", "DITestClass");
+			$injector->bind("DITestInterface", "DITestClass");
 
 			try {
 				$injector->getComponent("DINeedyTestClass", false);
@@ -345,7 +345,7 @@
 			$injector = new DependencyInjector();
 
 			try {
-				$injector->bindInterface("ISomething", 1);
+				$injector->bind("ISomething", 1);
 				$this->fail("Injector did not throw exception when binding to invalid type.");
 			} catch (KrameWorkDependencyInjectorException $e) {
 				// Expected.
