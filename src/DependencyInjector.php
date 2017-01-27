@@ -14,7 +14,8 @@
 
 	class DependencyInjector {
 		const BIND_INTERFACES = 0x1;
-		const DEFAULT_FLAGS = self::BIND_INTERFACES;
+		const AUTO_ADD_DEPENDENCIES = 0x2;
+		const DEFAULT_FLAGS = self::BIND_INTERFACES | self::AUTO_ADD_DEPENDENCIES;
 
 		/**
 		 * DependencyInjector constructor.
@@ -45,7 +46,7 @@
 			// String: Class name, add to the internal class list.
 			if (is_string($class)) {
 				if (array_key_exists($class, $this->classList))
-					throw new KrameWorkDependencyInjectorException("A class named %s has already been added to the injector.", $class);
+					throw new KrameWorkDependencyInjectorException("A class named '%s' has already been added to the injector.", $class);
 
 				$this->classList[$class] = null;
 
@@ -75,6 +76,16 @@
 
 				return;
 			}
+		}
+
+		/**
+		 * Bind an interface to the given class. Class will also be added as a component.
+		 * @param string $interface Name of the interface to bind the class to.
+		 * @param string|object $class
+		 */
+		public function addBinding(string $interface, $class) {
+			$this->bindInterface($interface, $class);
+			$this->addComponent($class);
 		}
 
 		/**
@@ -112,13 +123,69 @@
 		}
 
 		/**
-		 * Bind an interface to the given class. Class will also be added as a component.
-		 * @param string $interface Name of the interface to bind the class to.
-		 * @param string|object $class
+		 * Get a constructed component from the injector.
+		 * @param string $className Name of the class to retrieve.
+		 * @param bool $add If true, will attempt to add class if missing.
+		 * @return object
+		 * @throws KrameWorkDependencyInjectorException
 		 */
-		public function addBinding(string $interface, $class) {
-			$this->bindInterface($interface, $class);
-			$this->addComponent($class);
+		public function getComponent(string $className, bool $add = false) {
+			$resolve = $this->resolveClassName($className);
+
+			// getComponent() should only ever return a single component.
+			if (is_array($resolve) || (array_key_exists($resolve, $this->classList) && is_array($this->classList[$resolve])))
+				throw new KrameWorkDependencyInjectorException("Class '%s' resolves to multiple classes. Consider getComponents() instead.", $resolve);
+
+			// Check if component is missing and react according to $add.
+			if (!array_key_exists($resolve, $this->classList)) {
+				if ($add)
+					$this->addComponent($resolve);
+				else
+					throw new KrameWorkDependencyInjectorException("Class '%s' has not been added to the injector.", $resolve);
+			}
+
+			// Return cached instance, or construct new one.
+			return $this->classList[$resolve] ?? $this->constructComponent($resolve);
+		}
+
+		/**
+		 * Construct a class by the given name.
+		 * @param string $className Name of the class to construct.
+		 * @return object
+		 * @throws KrameWorkDependencyInjectorException
+		 */
+		public function constructComponent(string $className) {
+			$class = new \ReflectionClass($className);
+
+			if (!$class->isInstantiable())
+				throw new KrameWorkDependencyInjectorException("Class '%s' cannot be instantiated!", $className);
+
+			$inject = [];
+			$constructor = $class->getConstructor();
+			$object = $class->newInstanceWithoutConstructor();
+
+			// Handle construction.
+			if ($constructor) {
+				// Process all parameters for the constructor.
+				foreach ($constructor->getParameters() as $param) {
+					$paramClass = $param->getClass();
+
+					// Ensure parameter has a class.
+					if ($paramClass === null)
+						throw new KrameWorkDependencyInjectorException("Constructor for '%s' contains parameters with an undefined class.", $className);
+
+					$paramClassName = $paramClass->getName();
+					if ($paramClassName == $className)
+						throw new KrameWorkDependencyInjectorException("Cyclic dependency occurred when constructing '%s'", $className);
+					
+					$inject[] = $this->getComponent($paramClassName, $this->flags & self::AUTO_ADD_DEPENDENCIES);
+				}
+
+				call_user_func_array([$object, "__construct"], $inject);
+			}
+
+			$this->classList[$className] = $object;
+			return $object;
 		}
 
 		/**
