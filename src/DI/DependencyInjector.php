@@ -91,16 +91,6 @@
 		}
 
 		/**
-		 * Bind an interface to the given class. Class will also be added as a component.
-		 * @param string $interface Name of the interface to bind the class to.
-		 * @param string|object $class
-		 */
-		public function addBinding(string $interface, $class) {
-			$this->bindInterface($interface, $class);
-			$this->addComponent($class);
-		}
-
-		/**
 		 * Resolve a given class name.
 		 * @param mixed $class
 		 * @param array $output
