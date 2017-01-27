@@ -134,7 +134,7 @@
 
 			// getComponent() should only ever return a single component.
 			if (is_array($resolve) || (array_key_exists($resolve, $this->classList) && is_array($this->classList[$resolve])))
-				throw new KrameWorkDependencyInjectorException("Class '%s' resolves to multiple classes. Consider getComponents() instead.", $resolve);
+				throw new KrameWorkDependencyInjectorException("Class '%s' resolves to multiple classes. Consider getComponents() instead.", $className);
 
 			// Check if component is missing and react according to $add.
 			if (!array_key_exists($resolve, $this->classList)) {
