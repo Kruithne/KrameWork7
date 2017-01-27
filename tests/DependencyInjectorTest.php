@@ -375,11 +375,12 @@
 		 * Test duplicate component handling.
 		 */
 		public function testDuplicateComponent() {
+			$class = new class {};
 			$injector = new DependencyInjector();
-			$injector->addComponent([new DITestClass(), new DITestClass()]);
+			$injector->addComponent([new $class, new $class]);
 
 			try {
-				$injector->getComponent("DITestClass", false);
+				$injector->getComponent(get_class($class), false);
 				$this->fail("Injector did not throw exception when retrieving duplicate components with getComponent()");
 			} catch (KrameWorkDependencyInjectorException $e) {
 				// Expected.
@@ -392,16 +393,17 @@
 		 * Test retrieval of duplicate components using getComponents().
 		 */
 		public function testDuplicateComponentRetrieval() {
-			$componentA = new DITestClass();
-			$componentB = new DITestClass();
+			$class = new class {};
+			$componentA = new $class;
+			$componentB = new $class;
 
 			$injector = new DependencyInjector();
 			$injector->addComponent([$componentA, $componentB]);
 
-			$components = $injector->getComponents("DITestClass"); /** @var DITestClass[] $components */
+			$components = $injector->getComponents(get_class($class));
 			$this->assertCount(2, $components, "Injector did not return the expected amount of instances.");
-			$this->assertEquals($componentA->getID(), $components[0]->getID(), "Unexpected instance returned.");
-			$this->assertEquals($componentB->getID(), $components[1]->getID(), "Unexpected instance returned.");
+			foreach ($components as $component)
+				$this->assertInstanceOf(get_class($class), $component, "Unexpected class returned.");
 
 			unset($injector, $componentA, $componentB);
 		}
