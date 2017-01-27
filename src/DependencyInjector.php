@@ -149,6 +149,32 @@
 		}
 
 		/**
+		 * Retrieve components for a class that has duplicate instances.
+		 * @param string $className
+		 * @param bool $add
+		 * @return array
+		 */
+		public function getComponents(string $className, bool $add = false) {
+			$resolves = $this->resolveClassName($className);
+			if (!is_array($resolves))
+				$resolves = [$resolves];
+
+			$objects = [];
+			foreach ($resolves as $resolve) {
+				// We don't have an instance of this class yet.
+				if (!array_key_exists($resolve, $this->classList)) {
+					if ($add)
+						$this->addComponent($resolve);
+					else
+						continue;
+				}
+
+				$objects[] = $this->classList[$resolve] ?? $this->constructComponent($resolve);
+			}
+			return $objects;
+		}
+
+		/**
 		 * Construct a class by the given name.
 		 * @param string $className Name of the class to construct.
 		 * @return object
@@ -177,7 +203,7 @@
 					$paramClassName = $paramClass->getName();
 					if ($paramClassName == $className)
 						throw new KrameWorkDependencyInjectorException("Cyclic dependency occurred when constructing '%s'", $className);
-					
+
 					$inject[] = $this->getComponent($paramClassName, $this->flags & self::AUTO_ADD_DEPENDENCIES);
 				}
 
