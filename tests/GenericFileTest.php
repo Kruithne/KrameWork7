@@ -1,5 +1,7 @@
 <?php
-	namespace KrameWork\Storage;
+	use KrameWork\Storage\GenericFile;
+	use KrameWork\Storage\KrameWorkFileException;
+
 	require_once("src/Storage/BaseFile.php");
 	require_once("src/Storage/GenericFile.php");
 

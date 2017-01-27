@@ -1,5 +1,6 @@
 <?php
-	namespace KrameWork\Storage;
+	use KrameWork\Storage\KeyValueContainer;
+
 	require_once("src/Storage/KeyValueContainer.php");
 
 	class KeyValueContainerTest extends \PHPUnit_Framework_TestCase {

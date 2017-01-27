@@ -1,6 +1,4 @@
 <?php
-	namespace KrameWork;
-
 	class SanityTest extends \PHPUnit_Framework_TestCase
 	{
 		/**

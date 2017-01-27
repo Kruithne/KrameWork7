@@ -1,5 +1,5 @@
 <?php
-	namespace KrameWork\Utils;
+	use Kramework\Utils\StringUtil;
 
 	require_once("src/Utils/StringUtil.php");
 

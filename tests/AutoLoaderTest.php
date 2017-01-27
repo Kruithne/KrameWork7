@@ -1,5 +1,5 @@
 <?php
-	namespace KrameWork;
+	use KrameWork\AutoLoader;
 
 	require_once("src/AutoLoader.php");
 

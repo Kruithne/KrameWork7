@@ -1,5 +1,7 @@
 <?php
-	namespace KrameWork\Storage;
+	use KrameWork\Storage\JSONFile;
+	use KrameWork\Storage\KrameWorkFileException;
+
 	require_once("src/Storage/JSONFile.php");
 
 	class JSONFileTest extends \PHPUnit_Framework_TestCase {
