@@ -2,7 +2,6 @@
 	namespace KrameWork\Storage;
 
 	require_once("BaseFile.php");
-	require_once("KeyValueContainer.php");
 
 	class JSONFile extends BaseFile {
 		/**
@@ -15,7 +14,7 @@
 		public function __construct(string $file = null, bool $useContainer = true, bool $autoLoad = true) {
 			$this->useContainer = $useContainer;
 			if ($useContainer && $file === null)
-				$this->data = new KeyValueContainer();
+				$this->data = new \ArrayObject();
 
 			parent::__construct($file, $autoLoad);
 		}
@@ -28,7 +27,7 @@
 		 */
 		public function __get($key) {
 			$this->verifyDataObject();
-			return $this->data->__get($key);
+			return $this->data[$key] ?? null;
 		}
 
 		/**
@@ -39,7 +38,7 @@
 		 */
 		public function __set($key, $value) {
 			$this->verifyDataObject();
-			$this->data->__set($key, $value);
+			$this->data[$key] = $value;
 		}
 
 		/**
@@ -48,7 +47,7 @@
 		 */
 		public function __unset($key) {
 			$this->verifyDataObject();
-			$this->data->__unset($key);
+			unset($this->data[$key]);
 		}
 
 		/**
@@ -102,7 +101,7 @@
 			if ($decoded === null)
 				$this->throwJSONError();
 
-			$this->data = $this->useContainer ? new KeyValueContainer($decoded) : $decoded;
+			$this->data = $this->useContainer ? new \ArrayObject($decoded) : $decoded;
 		}
 
 		/**
