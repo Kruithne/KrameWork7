@@ -442,4 +442,32 @@
 			$this->assertCount(2, $components, "Injector did not return expected amount of interface bound instances.");
 			unset($injector);
 		}
+
+		/**
+		 * Test components pre-collected in the constructor work as expected.
+		 */
+		public function testConstructorComponents() {
+			$class = new DITestClass();
+			$injector = new DependencyInjector(DependencyInjector::DEFAULT_FLAGS, [$class]);
+
+			$component = $injector->getComponent("DITestClass");
+			$this->assertEquals($class->getID(), $component->getID(), "Injector did not provide the correct instance.");
+
+			unset($injector, $class);
+		}
+
+		/**
+		 * Test bindings pre-collected in the constructor work as expected.
+		 */
+		public function testConstructorBindings() {
+			$class = new DITestClass();
+			$injector = new DependencyInjector(DependencyInjector::DEFAULT_FLAGS, [$class], [
+				"ITestInterfaceOfDoom" => "DITestClass"
+			]);
+
+			$component = $injector->getComponent("ITestInterfaceOfDoom");
+			$this->assertEquals($class->getID(), $component->getID(), "Injector did not provide the correct bound instance.");
+
+			unset($injector, $class);
+		}
 	}
