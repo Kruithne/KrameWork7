@@ -23,15 +23,23 @@
 
 		/**
 		 * DependencyInjector constructor.
-		 * @param mixed $components Classes to include initially.
 		 * @param int $flags Flags to control how this module behaves.
+		 * @param array $components Initial components.
+		 * @param array $bindings Initial bindings.
 		 */
-		public function __construct($components = null, int $flags = self::DEFAULT_FLAGS) {
+		public function __construct(int $flags = self::DEFAULT_FLAGS, array $components = null, array $bindings = null) {
 			$this->flags = $flags;
 			$this->classList = [];
 			$this->bindingList = [];
 
-			$this->addComponent($components);
+			// Add initial components.
+			if ($components !== null)
+				$this->addComponent($components);
+
+			// Add initial interface bindings.
+			if ($bindings)
+				foreach ($bindings as $interface => $class)
+					$this->bindInterface($interface, $class);
 		}
 
 		public function addComponent($class) {
