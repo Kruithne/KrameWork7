@@ -273,9 +273,4 @@
 		 * @var int
 		 */
 		private $flags;
-
-		/**
-		 * @var AutoLoader
-		 */
-		private $autoLoader;
 	}
