@@ -196,7 +196,7 @@
 		 */
 		public function testRetrieveInterfaceComponent() {
 			$str = "You can call, but I probably won't hear you.";
-			$injector = new DependencyInjector(null, DependencyInjector::DEFAULT_FLAGS | DependencyInjector::BIND_INTERFACES);
+			$injector = new DependencyInjector(DependencyInjector::DEFAULT_FLAGS | DependencyInjector::BIND_INTERFACES);
 
 			$injector->addComponent("DITestClass"); // Implements DITestInterface
 			$component = $injector->getComponent("DITestInterface"); /** @var DITestInterface $component */
@@ -273,7 +273,7 @@
 		 */
 		public function testObjectDependenciesAutoAdd() {
 			$str = "You can call, but I probably won't hear you.";
-			$injector = new DependencyInjector(null, DependencyInjector::DEFAULT_FLAGS | DependencyInjector::AUTO_ADD_DEPENDENCIES);
+			$injector = new DependencyInjector(DependencyInjector::DEFAULT_FLAGS | DependencyInjector::AUTO_ADD_DEPENDENCIES);
 
 			$injector->addComponent("DINeedyTestClass");
 			$injector->bindInterface("DITestInterface", "DITestClass");
@@ -289,7 +289,7 @@
 		 * Test that when trying to construct a dependency without AUTO_ADD_DEPENDENCIES, we throw an exception.
 		 */
 		public function testObjectDependenciesWithoutAutoAdd() {
-			$injector = new DependencyInjector(null, DependencyInjector::DEFAULT_FLAGS & ~DependencyInjector::AUTO_ADD_DEPENDENCIES);
+			$injector = new DependencyInjector(DependencyInjector::DEFAULT_FLAGS & ~DependencyInjector::AUTO_ADD_DEPENDENCIES);
 
 			$injector->addComponent("DINeedyTestClass");
 			$injector->bindInterface("DITestInterface", "DITestClass");
