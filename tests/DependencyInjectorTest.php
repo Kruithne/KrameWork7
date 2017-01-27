@@ -313,7 +313,7 @@
 
 			try {
 				$injector->getComponent("DICyclicTestClass");
-				$this->fail("Injector did not throw cyclic dependency expcetion when expected.");
+				$this->fail("Injector did not throw cyclic dependency exception when expected.");
 			} catch (KrameWorkDependencyInjectorException $e) {
 				// Expected.
 			}
