@@ -12,6 +12,10 @@
 		}
 	}
 
+	/**
+	 * Class DependencyInjector
+	 * @package KrameWork\DI
+	 */
 	class DependencyInjector {
 		const BIND_INTERFACES = 0x1;
 		const AUTO_ADD_DEPENDENCIES = 0x2;
