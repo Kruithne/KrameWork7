@@ -470,4 +470,20 @@
 
 			unset($injector, $class);
 		}
+
+		/**
+		 * Test DependencyInjector works with AutoLoader module.
+		 */
+		public function testAutoLoading() {
+			$loader = new KrameWork\AutoLoader(["tests/resources"]);
+
+			$injector = new DependencyInjector();
+			$injector->addComponent("DIAutoLoadTestClass");
+
+			$component = $injector->getComponent("DIAutoLoadTestClass");
+			$this->assertEquals("Beans", $component->getTestFood(), "DIAutoLoadTestClass did not return as expected.");
+
+			$loader->disable();
+			unset($loader, $injector);
+		}
 	}
