@@ -55,6 +55,14 @@
 		// You can't make me, bully.
 	}
 
+	class DINamespaceTestClass {
+		public function __construct(NamespaceTest\TestClass $test) {
+			$this->test = $test;
+		}
+
+		public $test;
+	}
+
 	class DependencyInjectorTest extends \PHPUnit_Framework_TestCase {
 		/**
 		 * Test that a class name (string) resolves to itself.
@@ -496,5 +504,21 @@
 
 			$component = $injector->getComponent("KrameWork\\DI\\DependencyInjector");
 			$this->assertEquals(400, $component->_id, "Injector did not return itself.");
+		}
+
+		/**
+		 * Test dependency injector works on components with namespaces.
+		 */
+		public function testNamespaceComponent() {
+			$loader = new KrameWork\AutoLoader(["tests/resources"]);
+
+			$injector = new DependencyInjector();
+			$injector->addComponent("DINamespaceTestClass");
+
+			$component = $injector->getComponent("DINamespaceTestClass");
+			$this->assertEquals("Honk", $component->test->getTest());
+
+			$loader->disable();
+			unset($loader, $injector, $component);
 		}
 	}
