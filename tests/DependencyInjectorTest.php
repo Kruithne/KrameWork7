@@ -486,4 +486,15 @@
 			$loader->disable();
 			unset($loader, $injector);
 		}
+
+		/**
+		 * Test that the DependencyInjector returns itself.
+		 */
+		public function testSelfInstance() {
+			$injector = new DependencyInjector();
+			$injector->_id = 400;
+
+			$component = $injector->getComponent("KrameWork\\DI\\DependencyInjector");
+			$this->assertEquals(400, $component->_id, "Injector did not return itself.");
+		}
 	}

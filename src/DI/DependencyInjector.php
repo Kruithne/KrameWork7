@@ -40,6 +40,9 @@
 			if ($bindings)
 				foreach ($bindings as $interface => $class)
 					$this->bind($interface, $class);
+
+			// If DependencyInjector is requested, we should return our own instance.
+			$this->addComponent($this);
 		}
 
 		public function addComponent($class) {
