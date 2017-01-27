@@ -407,4 +407,39 @@
 
 			unset($injector, $componentA, $componentB);
 		}
+
+		/**
+		 * Test exception is thrown when retrieving an interface with multiple instances bound.
+		 */
+		public function testDuplicateBinding() {
+			$classA = new class implements DITestInterfaceA {};
+			$classB = new class implements DITestInterfaceA {};
+
+			$injector = new DependencyInjector();
+			$injector->addComponent([$classA, $classB]);
+
+			try {
+				$injector->getComponent("DITestInterfaceA");
+				$this->fail("Injector did not throw exception when recalling interface with multiple instances bound.");
+			} catch (KrameWorkDependencyInjectorException $e) {
+				// Expected.
+			}
+
+			unset($injector);
+		}
+
+		/**
+		 * Test retrieval of multiple instances bound by the same interface.
+		 */
+		public function testDuplicateBindingRetrieval() {
+			$classA = new class implements DITestInterfaceA {};
+			$classB = new class implements DITestInterfaceA {};
+
+			$injector = new DependencyInjector();
+			$injector->addComponent([$classA, $classB]);
+
+			$components = $injector->getComponents("DITestInterfaceA");
+			$this->assertCount(2, $components, "Injector did not return expected amount of interface bound instances.");
+			unset($injector);
+		}
 	}
