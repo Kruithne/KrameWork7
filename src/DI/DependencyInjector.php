@@ -225,7 +225,7 @@
 		 * Detect interfaces for a class and bind them to it.
 		 * @param string $className Name of the class to look-up interfaces for.
 		 */
-		public function bindInterfaces(string $className) {
+		private function bindInterfaces(string $className) {
 			$class = new \ReflectionClass($className);
 			foreach ($class->getInterfaceNames() as $interface)
 				$this->bindInterface($interface, $className);
