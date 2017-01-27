@@ -25,7 +25,7 @@
 		}
 
 		/**
-		 * Convert all slahses in a string to match the environment directory separator.
+		 * Convert all slashes in a string to match the environment directory separator.
 		 * @param $path
 		 * @return string
 		 */
