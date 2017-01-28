@@ -13,6 +13,16 @@
 		 * Overwrite and include the code to benchmark inside this function.
 		 */
 		public function runCycle();
+
+		/**
+		 * Called just before the test is run.
+		 */
+		public function onStart();
+
+		/**
+		 * Called just after the test is run.
+		 */
+		public function onEnd();
 	}
 
 	abstract class Benchmark implements IBenchmark
@@ -26,10 +36,26 @@
 		}
 
 		/**
+		 * Called just before the test is run.
+		 */
+		public function onStart() {
+			// Overwrite to obtain functionality.
+		}
+
+		/**
+		 * Called just after the test is run.
+		 */
+		public function onEnd() {
+			// Overwrite to obtain functionality.
+		}
+
+		/**
 		 * Initiate the test.
 		 * @return \ArrayObject
 		 */
 		public function runTest():\ArrayObject {
+			$this->onStart();
+
 			$start = microtime(true);
 			$shortTime = null;
 			$longTime = null;
@@ -49,6 +75,8 @@
 
 				$cycleTimes[] = $cycleTime;
 			}
+
+			$this->onEnd();
 
 			return new \ArrayObject([
 				"executionTime" => microtime(true) - $start,
