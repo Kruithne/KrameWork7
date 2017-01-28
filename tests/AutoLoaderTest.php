@@ -45,6 +45,18 @@
 		}
 
 		/**
+		 * Test that providing an invalid source path throws an exception.
+		 */
+		public function testInvalidSourceException() {
+			try {
+				new AutoLoader(["somewhere/over/the/rainbow"], null, 0);
+				$this->fail("Auto-loader did not throw InvalidSourcePathException with invalid source path.");
+			} catch (\KrameWork\InvalidSourcePathException $e) {
+				// expected.
+			}
+		}
+
+		/**
 		 * Test loading of a class within a namespace.
 		 */
 		public function testNamespaceClassLoad() {
