@@ -34,25 +34,19 @@
 				$this->extensions[] = ltrim($ext, ".");
 
 			// Pre-compute source paths/maps.
-			foreach ($sources ?? [] as $source) {
-				if (is_array($source) && count($source) == 2) {
-					$real = realpath(StringUtil::formatDirectorySlashes($source[1]));
+			foreach ($sources ?? [] as $sourceName => $sourcePath) {
+				// Verify source path.
+				$real = realpath(StringUtil::formatDirectorySlashes($sourcePath));
+				if ($real === false)
+					throw new InvalidSourcePathException("Invalid source path: " . $sourcePath);
 
-					if ($real === false)
-						throw new InvalidSourcePathException("Invalid source path: " . $source[1]);
-
-					$source[1] = $real;
-
+				if (is_string($sourceName)) {
 					// Convert namespace separators if needed.
 					if (DIRECTORY_SEPARATOR == "/")
-						$source[0] = str_replace("\\", DIRECTORY_SEPARATOR, $source[0]);
+						$sourceName = str_replace("\\", DIRECTORY_SEPARATOR, $sourceName);
 
-					$this->sources[] = $source;
-				} else if (is_string($source)) {
-					$real = realpath(StringUtil::formatDirectorySlashes($source));
-					if ($real === false)
-						throw new InvalidSourcePathException("Invalid source path: " . $source);
-
+					$this->sources[] = [$sourceName, $sourcePath];
+				} else {
 					$this->sources[] = $real;
 				}
 			}
@@ -80,9 +74,13 @@
 			$className = StringUtil::formatDirectorySlashes($className);
 			$queue = $this->sources;
 
-			while (count($queue)) {
+			$i = 0;
+			$queueSize = count($queue);
+
+			while ($i < $queueSize) {
 				$class = $className;
-				$directory = array_shift($queue);
+				$directory = $queue[$i++];
+
 				if (is_array($directory)) {
 					list($namespace, $path) = $directory;
 					$namespaceLen = strlen($namespace);
@@ -109,8 +107,10 @@
 								continue;
 
 							$path = $directory . DIRECTORY_SEPARATOR . $entry;
-							if (is_dir($path))
+							if (is_dir($path)) {
 								array_push($queue, $path);
+								$queueSize++;
+							}
 						}
 
 						closedir($handle);
@@ -134,7 +134,7 @@
 		}
 
 		/**
-		 * @var string[]
+		 * @var array
 		 */
 		private $sources;
 

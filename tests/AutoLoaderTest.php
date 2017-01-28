@@ -57,6 +57,19 @@
 		}
 
 		/**
+		 * Test that recursive auto-loading works.
+		 */
+		public function testRecursiveLoading() {
+			$loader = new AutoLoader(["tests/resources/AutoLoadClasses"], null, AutoLoader::RECURSIVE_SOURCING);
+			$test = new DeepTestClass();
+
+			$this->assertEquals("Eek!", $test->getTest(), "DeepTestClass did not return expected string.");
+
+			$loader->disable();
+			unset($loader, $test);
+		}
+
+		/**
 		 * Test loading of a class within a namespace.
 		 */
 		public function testNamespaceClassLoad() {
@@ -73,7 +86,7 @@
 		 * Test loading of a mapped namespace class.
 		 */
 		public function testMappedNamespaceClassLoad() {
-			$loader = new AutoLoader([["SomeNamespace", "tests\\resources\\AutoLoadNamespaceTest"]], null, 0);
+			$loader = new AutoLoader(["SomeNamespace" => "tests\\resources\\AutoLoadNamespaceTest"], null, 0);
 			$test = new \SomeNamespace\TestClass();
 
 			$this->assertEquals("Boop", $test->getTest(), "Auto-loader returned the wrong class");
