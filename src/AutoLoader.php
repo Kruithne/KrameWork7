@@ -20,7 +20,7 @@
 
 		/**
 		 * AutoLoader constructor.
-		 * @param string[] $sources List of directories to auto-load from.
+		 * @param array $sources List of directories to auto-load from.
 		 * @param string[] $extensions Allowed extensions.
 		 * @param int $flags Flags to control auto-loading.
 		 * @throws InvalidSourcePathException
