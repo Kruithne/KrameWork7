@@ -1,5 +1,5 @@
 <?php
-	namespace KrameWork\DI;
+	namespace KrameWork;
 
 	class KrameWorkDependencyInjectorException extends \Exception
 	{

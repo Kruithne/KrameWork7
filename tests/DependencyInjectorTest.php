@@ -1,8 +1,8 @@
 <?php
-	require_once("src/DI/DependencyInjector.php");
+	require_once("src/DependencyInjector.php");
 
-	use KrameWork\DI\DependencyInjector;
-	use KrameWork\DI\KrameWorkDependencyInjectorException;
+	use KrameWork\DependencyInjector;
+	use KrameWork\KrameWorkDependencyInjectorException;
 
 	interface DITestInterface
 	{
@@ -510,7 +510,7 @@
 			$injector = new DependencyInjector();
 			$injector->_id = 400;
 
-			$component = $injector->getComponent("KrameWork\\DI\\DependencyInjector");
+			$component = $injector->getComponent("KrameWork\\DependencyInjector");
 			$this->assertEquals(400, $component->_id, "Injector did not return itself.");
 		}
 
