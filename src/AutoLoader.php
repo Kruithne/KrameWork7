@@ -60,6 +60,7 @@
 			// Register this auto-loader instance with PHP.
 			spl_autoload_register([$this, 'loadClass']);
 
+			$this->flags = $flags;
 			$this->enabled = true;
 		}
 
