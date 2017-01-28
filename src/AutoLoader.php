@@ -29,7 +29,7 @@
 			$this->sources = [];
 			$this->extensions = [];
 
-			// Remove any leading periods from extentions.
+			// Remove any leading periods from extensions.
 			foreach ($extensions ?? ["php"] as $ext)
 				$this->extensions[] = ltrim($ext, ".");
 
