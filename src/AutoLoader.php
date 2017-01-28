@@ -87,8 +87,10 @@
 
 				foreach ($this->extensions as $ext) {
 					$file = $directory . DIRECTORY_SEPARATOR . $class . '.' . $ext;
-					if (file_exists($file))
+					if (file_exists($file)) {
 						require_once($file);
+						return;
+					}
 				}
 
 				if ($this->flags & self::RECURSIVE_SOURCING) {
