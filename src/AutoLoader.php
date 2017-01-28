@@ -11,7 +11,8 @@
 	 * @package KrameWork
 	 * Handles the automatic loading of files based on class initiation.
 	 */
-	class AutoLoader {
+	class AutoLoader
+	{
 		const RECURSIVE_SOURCING = 0x1;
 		const INCLUDE_WORKING_DIRECTORY = 0x2;
 		const INCLUDE_KRAMEWORK_DIRECTORY = 0x4;

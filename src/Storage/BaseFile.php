@@ -3,7 +3,8 @@
 
 	class KrameWorkFileException extends \Exception {}
 
-	interface IFileFormat {
+	interface IFileFormat
+	{
 		/**
 		 * Populate the file object using loaded raw data.
 		 * Called directly after a successful read() call.
@@ -38,7 +39,8 @@
 		public function exists():bool;
 	}
 
-	abstract class BaseFile implements IFileFormat {
+	abstract class BaseFile implements IFileFormat
+	{
 		/**
 		 * BaseFile constructor.
 		 * @param string|null $initialPath If provided, will attempt to read the file.

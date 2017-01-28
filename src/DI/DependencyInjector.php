@@ -1,7 +1,8 @@
 <?php
 	namespace KrameWork\DI;
 
-	class KrameWorkDependencyInjectorException extends \Exception {
+	class KrameWorkDependencyInjectorException extends \Exception
+	{
 		/**
 		 * KrameWorkDependencyInjectorException constructor.
 		 * @param string $message Message of the exception.
@@ -16,7 +17,8 @@
 	 * Class DependencyInjector
 	 * @package KrameWork\DI
 	 */
-	class DependencyInjector {
+	class DependencyInjector
+	{
 		const BIND_INTERFACES = 0x1;
 		const AUTO_ADD_DEPENDENCIES = 0x2;
 		const DEFAULT_FLAGS = self::BIND_INTERFACES | self::AUTO_ADD_DEPENDENCIES;

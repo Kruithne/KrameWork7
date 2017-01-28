@@ -3,7 +3,8 @@
 
 	require_once("BaseFile.php");
 
-	class JSONFile extends BaseFile {
+	class JSONFile extends BaseFile
+	{
 		/**
 		 * JSONFile constructor.
 		 * @param string $file Initial file to load.

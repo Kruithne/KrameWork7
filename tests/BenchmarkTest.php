@@ -3,7 +3,8 @@
 
 	require_once("src/Utils/Timing/Benchmark.php");
 
-	class BenchmarkTest extends \PHPUnit_Framework_TestCase {
+	class BenchmarkTest extends \PHPUnit_Framework_TestCase
+	{
 		public function testBenchmark() {
 			$benchmark = new class (2000) extends Benchmark {
 				/**

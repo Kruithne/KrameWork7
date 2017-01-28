@@ -4,13 +4,15 @@
 	use KrameWork\DI\DependencyInjector;
 	use KrameWork\DI\KrameWorkDependencyInjectorException;
 
-	interface DITestInterface {
+	interface DITestInterface
+	{
 		public function test():string;
 	}
 
 	interface DITestInterfaceA {}
 
-	class DITestClass implements DITestInterface {
+	class DITestClass implements DITestInterface
+	{
 		public function __construct() {
 			$this->id = self::$increment++;
 		}
@@ -27,7 +29,8 @@
 		private static $increment = 1;
 	}
 
-	class DINeedyTestClass {
+	class DINeedyTestClass
+	{
 		public function __construct(DITestInterface $interface) {
 			$this->test = $interface->test();
 		}
@@ -39,23 +42,27 @@
 		private $test;
 	}
 
-	class DICyclicTestClass {
+	class DICyclicTestClass
+	{
 		public function __construct(DICyclicTestClass $class) {
 			// I am a bork.
 		}
 	}
 
-	class DIBrokenTestClass {
+	class DIBrokenTestClass
+	{
 		public function __construct($something) {
 			// I am a bork.
 		}
 	}
 
-	abstract class DIAbstractTestClass {
+	abstract class DIAbstractTestClass
+	{
 		// You can't make me, bully.
 	}
 
-	class DINamespaceTestClass {
+	class DINamespaceTestClass
+	{
 		public function __construct(NamespaceTest\TestClass $test) {
 			$this->test = $test;
 		}
@@ -63,7 +70,8 @@
 		public $test;
 	}
 
-	class DependencyInjectorTest extends \PHPUnit_Framework_TestCase {
+	class DependencyInjectorTest extends \PHPUnit_Framework_TestCase
+	{
 		/**
 		 * Test that a class name (string) resolves to itself.
 		 */

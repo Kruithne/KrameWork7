@@ -5,7 +5,8 @@
 	require_once("src/Storage/BaseFile.php");
 	require_once("src/Storage/GenericFile.php");
 
-	class GenericFileTest extends \PHPUnit_Framework_TestCase {
+	class GenericFileTest extends \PHPUnit_Framework_TestCase
+	{
 		/**
 		 * Test basic functionality of the class.
 		 */

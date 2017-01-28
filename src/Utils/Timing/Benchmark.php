@@ -1,7 +1,8 @@
 <?php
 	namespace Kramework\Utils\Timing;
 
-	interface IBenchmark {
+	interface IBenchmark
+	{
 		/**
 		 * Initiate the benchmark test.
 		 * @return \ArrayObject
@@ -14,7 +15,8 @@
 		public function runCycle();
 	}
 
-	abstract class Benchmark implements IBenchmark {
+	abstract class Benchmark implements IBenchmark
+	{
 		/**
 		 * Benchmark constructor.
 		 * @param int $cycles How many times should runCycle() be called?

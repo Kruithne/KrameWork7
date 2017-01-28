@@ -3,7 +3,8 @@
 
 	require_once("src/Utils/StringUtil.php");
 
-	class StringUtilTest extends \PHPUnit_Framework_TestCase {
+	class StringUtilTest extends \PHPUnit_Framework_TestCase
+	{
 		/**
 		 * Test StringUtil::startsWith() function.
 		 */

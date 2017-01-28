@@ -4,7 +4,8 @@
 
 	require_once("src/Storage/JSONFile.php");
 
-	class JSONFileTest extends \PHPUnit_Framework_TestCase {
+	class JSONFileTest extends \PHPUnit_Framework_TestCase
+	{
 		/**
 		 * Test basic data storage for the JSON file container.
 		 */

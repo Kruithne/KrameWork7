@@ -1,7 +1,8 @@
 <?php
 	namespace Kramework\Utils;
 
-	class StringUtil {
+	class StringUtil
+	{
 		/**
 		 * Check if a string starts with another string.
 		 * @param string $haystack

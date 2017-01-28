@@ -3,7 +3,8 @@
 
 	require_once("BaseFile.php");
 
-	class GenericFile extends BaseFile {
+	class GenericFile extends BaseFile
+	{
 		/**
 		 * Get the data contained in this file.
 		 * @return string
