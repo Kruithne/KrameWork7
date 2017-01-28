@@ -73,7 +73,7 @@
 
 			while (count($queue)) {
 				$class = $className;
-				$directory = array_pop($queue);
+				$directory = array_shift($queue);
 				if (is_array($directory)) {
 					list($namespace, $path) = $directory;
 					$namespaceLen = strlen($namespace);
