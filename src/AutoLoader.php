@@ -4,6 +4,8 @@
 	use KrameWork\Utils\StringUtil;
 	require_once("src/Utils/StringUtil.php");
 
+	class InvalidSourcePathException extends \Exception {}
+
 	/**
 	 * Class AutoLoader
 	 * @package KrameWork
@@ -20,6 +22,7 @@
 		 * @param string[] $sources List of directories to auto-load from.
 		 * @param string[] $extensions Allowed extensions.
 		 * @param int $flags Flags to control auto-loading.
+		 * @throws InvalidSourcePathException
 		 */
 		public function __construct(array $sources = null, array $extensions = null, int $flags = self::DEFAULT_FLAGS) {
 			$this->enabled = true;
@@ -34,19 +37,23 @@
 			foreach ($sources ?? [] as $source) {
 				if (is_array($source) && count($source) == 2) {
 					$real = realpath(StringUtil::formatDirectorySlashes($source[1]));
-					if ($real !== false) {
-						$source[1] = $real;
 
-						// Convert namespace separators if needed.
-						if (DIRECTORY_SEPARATOR == "/")
-							$source[0] = str_replace("\\", DIRECTORY_SEPARATOR, $source[0]);
+					if ($real === false)
+						throw new InvalidSourcePathException("Invalid source path: " . $source[1]);
 
-						$this->sources[] = $source;
-					}
+					$source[1] = $real;
+
+					// Convert namespace separators if needed.
+					if (DIRECTORY_SEPARATOR == "/")
+						$source[0] = str_replace("\\", DIRECTORY_SEPARATOR, $source[0]);
+
+					$this->sources[] = $source;
 				} else if (is_string($source)) {
 					$real = realpath(StringUtil::formatDirectorySlashes($source));
-					if ($real !== false)
-						$this->sources[] = $real;
+					if ($real === false)
+						throw new InvalidSourcePathException("Invalid source path: " . $source);
+
+					$this->sources[] = $real;
 				}
 			}
 

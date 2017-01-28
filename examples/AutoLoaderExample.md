@@ -22,7 +22,7 @@ To provide custom locations to source class files from, pass an array of paths t
 to note about the paths you provide:
 - Directory seperators do not need to match the environment, the auto-loader will fix them automatically.
 - Paths will be computed to absolute locations, meaning symlinks/relative paths will be resolved.
-- Paths that cannot be found/access will be discarded without an error, and classes will not load from them.
+- Source directories that cannot be found will throw an `InvalidSourcePathException`.
 - Trailing slashes can be included or omitted, no issues will occur either way.
 ```php
 new AutoLoader(["directory/relative/to/working/directory"]);
