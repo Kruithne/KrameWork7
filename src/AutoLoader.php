@@ -26,7 +26,6 @@
 		 * @throws InvalidSourcePathException
 		 */
 		public function __construct(array $sources = null, array $extensions = null, int $flags = self::DEFAULT_FLAGS) {
-			$this->enabled = true;
 			$this->sources = [];
 			$this->extensions = [];
 
@@ -66,6 +65,8 @@
 
 			// Register this auto-loader instance with PHP.
 			spl_autoload_register([$this, 'loadClass']);
+
+			$this->enabled = true;
 		}
 
 		/**
