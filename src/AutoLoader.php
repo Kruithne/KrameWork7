@@ -45,7 +45,7 @@
 					if (DIRECTORY_SEPARATOR == "/")
 						$sourceName = str_replace("\\", DIRECTORY_SEPARATOR, $sourceName);
 
-					$this->sources[] = [$sourceName, $sourcePath];
+					$this->sources[] = [$sourceName, $real];
 				} else {
 					$this->sources[] = $real;
 				}
