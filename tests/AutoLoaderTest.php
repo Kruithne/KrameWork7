@@ -31,6 +31,9 @@
 			unset($loader, $test);
 		}
 
+		/**
+		 * Test trailing-slashes don't throw the auto-loader off.
+		 */
 		public function testBasicTrailing() {
 			$loader = new AutoLoader(["tests/resources/"], null, 0);
 			$test = new \TestClass();
