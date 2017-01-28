@@ -101,13 +101,17 @@
 				}
 
 				if ($this->flags & self::RECURSIVE_SOURCING) {
-					foreach (scandir($directory) as $node) {
-						if ($node == "." || $node == "..")
-							continue;
+					if ($handle = opendir($directory)) {
+						while (($entry = readdir($handle)) !== false) {
+							if ($entry == "." || $entry == "..")
+								continue;
 
-						$path = $directory . DIRECTORY_SEPARATOR . $node;
-						if (is_dir($path))
-							array_unshift($queue, $path);
+							$path = $directory . DIRECTORY_SEPARATOR . $entry;
+							if (is_dir($path))
+								array_push($queue, $path);
+						}
+
+						closedir($handle);
 					}
 				}
 			}
