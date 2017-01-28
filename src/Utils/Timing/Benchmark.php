@@ -76,14 +76,15 @@
 				$cycleTimes[] = $cycleTime;
 			}
 
-			$this->onEnd();
-
-			return new \ArrayObject([
+			$result = new \ArrayObject([
 				"executionTime" => microtime(true) - $start,
 				"averageCycleTime" => array_sum($cycleTimes) / count($cycleTimes),
 				"shortestCycle" => $shortTime,
 				"longestCycle" => $longTime,
 			], \ArrayObject::ARRAY_AS_PROPS);
+
+			$this->onEnd();
+			return $result;
 		}
 
 		private $cycles;
