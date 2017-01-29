@@ -1,17 +1,17 @@
 <?php
-	use KrameWork\Storage\GenericFile;
+	use KrameWork\Storage\File;
 	use KrameWork\Storage\KrameWorkFileException;
 
 	require_once("src/Storage/BaseFile.php");
-	require_once("src/Storage/GenericFile.php");
+	require_once("src/Storage/File.php");
 
-	class GenericFileTest extends \PHPUnit_Framework_TestCase
+	class FileTest extends \PHPUnit_Framework_TestCase
 	{
 		/**
 		 * Test basic functionality of the class.
 		 */
 		public function testFoundation() {
-			$file = new GenericFile(); // Create without initial file.
+			$file = new File(); // Create without initial file.
 			$this->assertEquals("", $file->getData(), "Initial file data expected to be empty, was not!");
 			$this->assertEquals("", $file->compile(), "Initial compiled data expected to be empty, was not!");
 
@@ -30,10 +30,10 @@
 		public function testReading() {
 			$src = "tests/resources/test_text_file.txt";
 
-			$file = new GenericFile();
+			$file = new File();
 			$file->read($src); // Throws exceptions on IO errors.
 
-			$alt = new GenericFile($src);
+			$alt = new File($src);
 
 			$text = "Unless someone like you cares a whole awful lot, nothing is going to get better. It's not.";
 
@@ -52,7 +52,7 @@
 		public function testNoAutoLoad() {
 			$src = "tests/resources/test_text_file.txt";
 
-			$file = new GenericFile($src, false);
+			$file = new File($src, false);
 			$this->assertEquals("", $file->getData(), "File data was loaded when we specified not to.");
 
 			$text = "Unless someone like you cares a whole awful lot, nothing is going to get better. It's not.";
@@ -68,13 +68,13 @@
 			$src = "GenericFileTest.Experiment.tmp";
 			$data = "I like nonsense; it wakes up the brain cells.";
 
-			$file = new GenericFile();
+			$file = new File();
 			$file->setData($data);
 			$file->save($src, true);
 
 			$this->assertFileExists($src, "File was not written to disk.");
 
-			$file = new GenericFile(); // Fresh instance.
+			$file = new File(); // Fresh instance.
 			$file->read($src);
 			$this->assertEquals($data, $file->getData(), "Data from file did not match what we tried to write.");
 
@@ -88,12 +88,12 @@
 		public function testBlankWrite() {
 			$src = "GenericFileTest.BlankExperiment.tmp";
 
-			$file = new GenericFile();
+			$file = new File();
 			$file->save($src, true);
 
 			$this->assertFileExists($src, "File was not written to disk.");
 
-			$file = new GenericFile($src); // Fresh instance.
+			$file = new File($src); // Fresh instance.
 			$this->assertEquals("", $file->getData(), "File data did not match the empty string we expected");
 
 			unset($file);
@@ -111,7 +111,7 @@
 			if (file_exists($src))
 				unlink($src);
 
-			$file = new GenericFile();
+			$file = new File();
 			$file->setData($data);
 			$file->save($src); // Should not throw exception, since file does not exist.
 
@@ -127,7 +127,7 @@
 				// Expected, since we tried to overwrite without specifying.
 			}
 
-			$file = new GenericFile($src);
+			$file = new File($src);
 
 			$this->assertNotEquals($overwrite, $file->getData(), "File data was overwritten.");
 			$this->assertEquals($data, $file->getData(), "File data does not match original or overwritten?");
@@ -136,7 +136,7 @@
 			$file->setData($final);
 			$file->save($src, true);
 
-			$file = new GenericFile($src);
+			$file = new File($src);
 			$this->assertEquals($final, $file->getData(), "File did not get overwritten when we intended it to.");
 
 			unlink($src);
@@ -150,19 +150,19 @@
 			$data = "Maybe Christmas, the Grinch thought, doesn't come from a store.";
 
 			// Save our initial data we can use to test with.
-			$file = new GenericFile();
+			$file = new File();
 			$file->setData($data);
 			$file->save($src, true);
 
 			$newData = "Don't cry because it's over. Smile because it happened.";
 
 			// Attempt to save without the file name.
-			$file = new GenericFile($src);
+			$file = new File($src);
 			$file->setData($newData);
 			$file->save();
 
 			// Load the data gain to check it saved.
-			$file = new GenericFile($src);
+			$file = new File($src);
 			$this->assertEquals($newData, $file->getData(), "File data does not match after saving without a file name.");
 
 			unlink($src);
@@ -178,10 +178,10 @@
 			if (file_exists($src))
 				unlink($src);
 
-			$file = new GenericFile("GenericFileTest.NonExistent", false);
+			$file = new File("GenericFileTest.NonExistent", false);
 			$this->assertFalse($file->exists(), "Container claims file exists when it should not.");
 
-			$file = new GenericFile("tests/resources/test_text_file.txt");
+			$file = new File("tests/resources/test_text_file.txt");
 			$this->assertTrue($file->exists(), "Container claims file does not exist when it should.");
 		}
 	}

@@ -1,11 +1,11 @@
-## GenericFile
->- **Namespace**: KrameWork\Storage\GenericFile
->- **File**: KrameWork7/src/Storage/GenericFile.php
+## File
+>- **Namespace**: KrameWork\Storage\File
+>- **File**: KrameWork7/src/Storage/File.php
 
-The `GenericFile` class is a simple wrapper for files created mostly for testing the `BaseFile` class, but might be handy in 
+The `File` class is a simple wrapper for files created mostly for testing the `BaseFile` class, but might be handy in 
 saving you a couple of lines of code. Creating a file wrapper is simple, just construct the class!
 ```php
-$file = new GenericFile();
+$file = new File();
 ```
 Without any parameters, this will create an empty wrapper. But that's no fun, let's load some data into it! We didn't provide a 
 path, but we can provide one with the `read()` call, as follows.
@@ -19,7 +19,7 @@ It's important to note that the `read()` function will throw a `KrameWorkFileExc
 For these reaons, it's best to provide the path to the file through the constructor, so you can check if the wrapped file exists 
 by calling `exists()`.
 ```php
-$file = new GenericFile("myFile.txt");
+$file = new File("myFile.txt");
 if ($file->exists())
     $file->read(); // Since we provided the file name with the constructor, we don't need it here.
 ```
