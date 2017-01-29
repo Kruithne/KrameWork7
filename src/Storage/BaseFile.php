@@ -98,7 +98,7 @@
 		 * @return bool
 		 */
 		public function exists(): bool {
-			return $this->cachePath ? file_exists($this->cachePath) : null;
+			return $this->cachePath ? file_exists($this->cachePath) : false;
 		}
 
 		/**
