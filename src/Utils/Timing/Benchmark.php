@@ -79,8 +79,8 @@
 			$result = new \ArrayObject([
 				"executionTime" => microtime(true) - $start,
 				"averageCycleTime" => array_sum($cycleTimes) / count($cycleTimes),
-				"shortestCycle" => $shortTime,
-				"longestCycle" => $longTime,
+				"shortestCycleTime" => $shortTime,
+				"longestCycleTime" => $longTime,
 			], \ArrayObject::ARRAY_AS_PROPS);
 
 			$this->onEnd();
