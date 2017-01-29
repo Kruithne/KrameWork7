@@ -12,11 +12,11 @@ path, but we can provide one with the `read()` call, as follows.
 ```php
 $file->read("myFile.txt");
 ```
-It's important to note that the `read()` function will throw a `KrameWorkFileException` in the following cirumstances:
+It's important to note that the `read()` function will throw a `KrameWorkFileException` in the following circumstances:
 - No file was specified (either in the `read()` call or the wrapper constructor)
 - The file cannot be found.
 - The file cannot be accessed.
-For these reaons, it's best to provide the path to the file through the constructor, so you can check if the wrapped file exists 
+For these reasons, it's best to provide the path to the file through the constructor, so you can check if the wrapped file exists 
 by calling `exists()`.
 ```php
 $file = new File("myFile.txt");
