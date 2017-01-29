@@ -1,6 +1,6 @@
 ## JSONFile
 >- **Namespace**: KrameWork\Storage\JSONFile
->- **File**: KrameWork7/Storage/JSONFile.php
+>- **File**: KrameWork7/src/Storage/JSONFile.php
 
 The `JSONFile` class extends the `BaseFile` class and contains an internal `KeyValueContainer` by default.
 Understanding of these classes may help understand this class, although it's simple by nature!

@@ -1,6 +1,6 @@
 ## DependencyInjector
->- **Namespace**: KrameWork\DI\DependencyInjector
->- **File**: KrameWork7/src/DI/DependencyInjector.php
+>- **Namespace**: KrameWork\DependencyInjector
+>- **File**: KrameWork7/src/DependencyInjector.php
 
 ### General Usage
 The `DependencyInjector` is as the name suggests, a dependency injector. Below is a basic usage example.
