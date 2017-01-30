@@ -15,8 +15,8 @@
 		public function __construct(string $path, bool $autoLoad = true, $touch = false) {
 			parent::__construct($path);
 
-			if ($touch)
-				touch($this->path);
+			if ($touch && !$this->exists())
+				file_put_contents($this->path, "");
 
 			if ($autoLoad)
 				$this->read();
