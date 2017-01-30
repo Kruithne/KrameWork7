@@ -31,7 +31,7 @@
 		 * @param bool $trimTrail If true, trailing spaces/slashes will be trimmed.
 		 * @return string
 		 */
-		static function formatDirectorySlashes(string $path, bool $trimTrail):string {
+		static function formatDirectorySlashes(string $path, bool $trimTrail = false):string {
 			$clean = str_replace(DIRECTORY_SEPARATOR == "/" ? "\\" : "/", DIRECTORY_SEPARATOR, $path);
 			return $trimTrail ? rtrim($clean, "\t\n\r\0\x0B\\/") : $clean;
 		}
