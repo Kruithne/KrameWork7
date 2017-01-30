@@ -1,21 +1,21 @@
 <?php
 	namespace KrameWork\Storage;
 
-	require_once("BaseFile.php");
+	require_once(__DIR__ . "/File.php");
 
-	class JSONFile extends BaseFile
+	class JSONFile extends File
 	{
 		/**
 		 * JSONFile constructor.
-		 * @param string $file Initial file to load.
-		 * @param bool $useContainer Loaded/inserted data will be contained using a KeyValueContainer.
+		 * @param string $file Path to the file.
+		 * @param bool $useContainer Loaded/inserted data will be contained using an ArrayObject.
 		 * @param bool $autoLoad If true and file is provided, will attempt to read on construct.
 		 * @throws KrameWorkFileException
 		 */
-		public function __construct(string $file = null, bool $useContainer = true, bool $autoLoad = true) {
+		public function __construct(string $file, bool $useContainer = true, bool $autoLoad = true) {
 			$this->useContainer = $useContainer;
-			if ($useContainer && $file === null)
-				$this->data = new \ArrayObject();
+			if ($useContainer)
+				$this->jsonData = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
 
 			parent::__construct($file, $autoLoad);
 		}
@@ -28,7 +28,7 @@
 		 */
 		public function __get($key) {
 			$this->verifyDataObject();
-			return $this->data[$key] ?? null;
+			return $this->jsonData[$key] ?? null;
 		}
 
 		/**
@@ -39,7 +39,7 @@
 		 */
 		public function __set($key, $value) {
 			$this->verifyDataObject();
-			$this->data[$key] = $value;
+			$this->jsonData[$key] = $value;
 		}
 
 		/**
@@ -48,22 +48,83 @@
 		 */
 		public function __unset($key) {
 			$this->verifyDataObject();
-			unset($this->data[$key]);
+			unset($this->jsonData[$key]);
 		}
 
 		/**
-		 * Get the raw data contained in this JSON wrapper.
-		 * @return KeyValueContainer|mixed
+		 * Read data from a file.
+		 * @throws KrameWorkFileException
+		 */
+		public function read() {
+			parent::read();
+			$decoded = json_decode($this->data, $this->assoc, $this->depth, $this->options);
+			if ($decoded === null)
+				$this->throwJSONError();
+
+			$this->jsonData = $this->useContainer ? new \ArrayObject($decoded, \ArrayObject::ARRAY_AS_PROPS) : $decoded;
+		}
+
+		/**
+		 * Save the file to disk.
+		 * @param string|null $file Path to save the file. Defaults to loaded file location.
+		 * @param bool $overwrite If true and file exists, will overwrite.
+		 * @throws KrameWorkFileException
+		 */
+		public function save(string $file = null, bool $overwrite = true) {
+			$encoded = json_encode($this->jsonData);
+			if ($encoded === null)
+				$this->throwJSONError();
+
+			$this->data = $encoded;
+			parent::save($file, $overwrite);
+		}
+
+		/**
+		 * Throw the latest JSON error as an exception.
+		 * @throws KrameWorkFileException
+		 */
+		private function throwJSONError() {
+			throw new KrameWorkFileException("JSON error: " . json_last_error_msg());
+		}
+
+		/**
+		 * Throw an exception if the internal data object is not initiated.
+		 * @throws KrameWorkFileException
+		 */
+		private function verifyDataObject() {
+			if ($this->jsonData === null)
+				throw new KrameWorkFileException("Attempt to invoke value on a non-initiated JSON file.");
+		}
+
+		/**
+		 * Get the data contained by this file (empty until read()).
+		 * @return mixed
+		 */
+		public function getData() {
+			return $this->jsonData;
+		}
+
+		/**
+		 * Set the data for this file (requires save() to persist).
+		 * @param $data
+		 */
+		public function setData($data) {
+			$this->jsonData = $data;
+		}
+
+		/**
+		 * Get the raw data for this file.
+		 * @return string
 		 */
 		public function getRawData() {
 			return $this->data;
 		}
 
 		/**
-		 * Set the raw data contained in this JSON wrapper.
+		 * Set the raw data for this file.
 		 * @param $data
 		 */
-		public function setRawData($data) {
+		public function setRawData(string $data) {
 			$this->data = $data;
 		}
 
@@ -92,57 +153,12 @@
 		}
 
 		/**
-		 * Populate the file object using loaded raw data.
-		 * Called directly after a successful read() call.
-		 * @param string $data Raw data.
-		 * @throws KrameWorkFileException
+		 * @var \ArrayObject|string
 		 */
-		public function parse(string $data) {
-			$decoded = json_decode($data, $this->assoc, $this->depth, $this->options);
-			if ($decoded === null)
-				$this->throwJSONError();
-
-			$this->data = $this->useContainer ? new \ArrayObject($decoded) : $decoded;
-		}
+		protected $jsonData;
 
 		/**
-		 * Compile the populated data into a writable string.
-		 * Called during a write() call for file-writing.
-		 * @return string Compiled data.
-		 * @throws KrameWorkFileException
-		 */
-		public function compile(): string {
-			$encoded = json_encode($this->data);
-			if ($encoded === null)
-				$this->throwJSONError();
-
-			return $encoded;
-		}
-
-		/**
-		 * Throw the latest JSON error as an exception.
-		 * @throws KrameWorkFileException
-		 */
-		private function throwJSONError() {
-			throw new KrameWorkFileException("JSON error: " . json_last_error_msg());
-		}
-
-		/**
-		 * Throw an exception if the internal data object is not initiated.
-		 * @throws KrameWorkFileException
-		 */
-		private function verifyDataObject() {
-			if ($this->data === null)
-				throw new KrameWorkFileException("Attempt to invoke value on a non-initiated JSON file.");
-		}
-
-		/**
-		 * @var mixed Internal data object.
-		 */
-		protected $data;
-
-		/**
-		 * @var bool Store data inside a KeyValueContainer.
+		 * @var bool Store data inside an ArrayObject.
 		 */
 		protected $useContainer;
 

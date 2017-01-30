@@ -2,7 +2,7 @@
 >- **Namespace**: KrameWork\Storage\File
 >- **File**: KrameWork7/src/Storage/File.php
 
-The `File` class is a simple wrapper for files created mostly for testing the `BaseFile` class, but might be handy in 
+The `File` class is a simple wrapper for files created mostly for testing the `File` class, but might be handy in 
 saving you a couple of lines of code. Creating a file wrapper is simple, just construct the class!
 ```php
 $file = new File();
