@@ -43,7 +43,7 @@
 		 * @param int $mode File permissions (Non-Windows OS).
 		 * @return bool
 		 */
-		public function create($recursive = true, $mode = null):bool {
+		public function create($recursive = true, $mode = 0777):bool {
 			return @mkdir($this->path, $mode, $recursive);
 		}
 
