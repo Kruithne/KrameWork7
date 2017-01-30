@@ -160,14 +160,17 @@
 		/**
 		 * Create a new directory inside this directory.
 		 * @param string $name Name of the directory.
+		 * @param int $mode
 		 * @return Directory
 		 * @throws FileAlreadyExistsException
 		 */
-		public function createDirectory(string $name):Directory {
+		public function createDirectory(string $name, $mode = 0777):Directory {
 			if ($this->hasItem($name))
 				throw new FileAlreadyExistsException();
 
-			return new Directory($this->path . DIRECTORY_SEPARATOR . basename($name), true);
+			$dir = new Directory($this->path . DIRECTORY_SEPARATOR . basename($name), false);
+			$dir->create(false, $mode);
+			return $dir;
 		}
 
 		/**
