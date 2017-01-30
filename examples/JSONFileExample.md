@@ -2,34 +2,47 @@
 >- **Namespace**: KrameWork\Storage\JSONFile
 >- **File**: KrameWork7/src/Storage/JSONFile.php
 
-The `JSONFile` class extends the `File` class and contains an internal `KeyValueContainer` by default.
-Understanding of these classes may help understand this class, although it's simple by nature!
+The `JSONFile` class extends the `File` class and contains an internal `ArrayObject` by default. An understanding of both these classes will help when working with `JSONFile`.
 
-Load a JSON encoded file:
+### Reading
+Similar to the underlying `File` class, simply construct an instance and you're good to go.
 ```php
-$json = new JSONFile("bigData.json");
+$json = new JSONFile("myData.json");
+print($json->someValue); // Access JSON values instantly.
 ```
-Access JSON values:
+By default, the contents of the file will be loaded automatically. If the file does not exist, an exception will be thrown. If you'd rather check this, you can control auto-loading with the third construction parameter; check the [FileExample](FileExample.md) on handling that.
+
+If you're looking for some of the functionality of the internal `ArrayObject` beyond the `get`, `set` and `unset` methods exposed through `JSONFile`, you can access the internal container by calling `getData()`.
 ```php
-print($json->myValue);
+$json = new JSONFile("myData.json");
+var_dump($json->getData());
 ```
-Assign values:
+Perhaps you want the raw JSON data before it was parsed? You can access that with the `getRawData()` function, which returns the JSON string loaded from the file.
 ```php
-$json->myValue = 42;
+$json = new JSONFile("myData.json");
+print($json->getRawData()); // JSON string
 ```
-Save back to the file as encoded JSON:
+With this, you may also want to disable the use of the internal `ArrayObject` container, which can be done by provided `false` for `useContainer`, the second construction parameter; although at this point, you're better off using `File` ([FileExample](FileExample.md)) on its own.
+
+### Writing
+Once you have a `JSONFile` object, you can assign values to it. If you want to persist those changes to the disk, call `save()`. Check the [FileExample](FileExample.md) document for more information and examples on file-saving.
 ```php
+$json = new JSONFile("myData.json", true, false);
+$json->myValue = true;
 $json->save();
 ```
-Create a wrapper, set options, then read:
+### Decoding Options
+Three functions are available to control the decoding options:
+
+ - `setRecursionDepth(int)` - Sets the recursion depth for decoding. **Default: 512**
+ - `setAssociative(bool)` - If set to true, an associative array will be returned rather than an object. No effect unless bypassing the internal `ArrayObject` of `JSONFile`. **Default: false**
+ - `setOptions(int)` - Bit-mask flag of JSON options, such as `JSON_BIGINT_AS_STRING`.
+ 
+Note: These should be set *before* the file is read, or they will have no effect.
 ```php
-$json = new JSONFile("bigData.json", true, false);
-$json->setRecursionDepth(1024);
-$json->setOptions(JSON_BIGINT_AS_STRING);
+$json = new JSONFile("bigData.json", true, false); // No auto-load.
+$json->setOptions(JSON_BIGINT_AS_STRING); // Convert big numbers.
 $json->read();
-```
-Disable the internal container, and get the data raw.
-```php
-$json = new JSONFile("bigData.json", false);
-$data = $json->getRawData(); // Raw decoded JSON, non-contained.
+
+$bigNumStr = $json->myBigNumber; // string
 ```

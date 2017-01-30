@@ -2,38 +2,65 @@
 >- **Namespace**: KrameWork\Storage\File
 >- **File**: KrameWork7/src/Storage/File.php
 
-The `File` class is a simple wrapper for files created mostly for testing the `File` class, but might be handy in 
-saving you a couple of lines of code. Creating a file wrapper is simple, just construct the class!
+### Reading
+The `File` class is a simple wrapper for, as you might be able to guess, files. The `__construct` method to create a new `File` instance takes three parameters:
+
+ - `path` - **[Required]** Location of the file (even if it doesn't exist yet).
+ - `autoLoad` - If true, the file will be read during initiation. Will throw a `KrameWorkFileException` if the file does not exist. **Default = true**
+ - `touch` - If true, the file will be touched upon initiation of the instance. **Default = false**
+
+With this, we can load the contents of a file rather simply.
 ```php
-$file = new File();
+$file = new File("myFile.txt");
+var_dump($file->getData());
 ```
-Without any parameters, this will create an empty wrapper. But that's no fun, let's load some data into it! We didn't provide a 
-path, but we can provide one with the `read()` call, as follows.
-```php
-$file->read("myFile.txt");
-```
-It's important to note that the `read()` function will throw a `KrameWorkFileException` in the following circumstances:
-- No file was specified (either in the `read()` call or the wrapper constructor)
-- The file cannot be found.
-- The file cannot be accessed.
-For these reasons, it's best to provide the path to the file through the constructor, so you can check if the wrapped file exists 
-by calling `exists()`.
+Ideally, unless we're sure the file exists, we'll want to check that it does before we read the data from it. This can be achieved by passing `autoLoad` as `false` and checking `exists()` ourselves.
 ```php
 $file = new File("myFile.txt");
 if ($file->exists())
-    $file->read(); // Since we provided the file name with the constructor, we don't need it here.
+	// Fondle data.
 ```
-Now we've loaded the data from `myFile.txt` into the wrapper, how do we read it? A simple call to `getData()` will return the data  
-loaded from the file. Calling `getData()` on an empty wrapper will simply return an empty string.
+Another way to achieve this using exceptions would be to catch the `KrameWorkFileException` that is thrown from the instance construction if the file does not exist.
 ```php
-$data = $file->getData();
+try {
+	$file = new File("myFile.txt");
+	// Fondle data.
+} catch (KrameWorkFileException $e) {
+	// File does not exist, or could not be accessed.
+	// $e will contain more information about this.
+}
 ```
-As you may have guessed, you can set the data for the wrapper using the `setData($data)` call.
+Something to note, `exists()` will return `true` if something exists at the given path, even if that something is not a file. It's ideal to be more strict with this check, and use `isValid()`, which confirms existence as well as checking the file is indeed a file, followed by a call to `read()`.
 ```php
-$file->setData("Hello, file!");
+$file = new File("myFile.txt");
+if ($file->isValid()) {
+	$file->read();
+	// Fondle data.
+}
 ```
-This sets the data for the wrapper, but doesn't save it to the file yet. You can do that by calling `save()`. If you wish to save the 
-data to another location, you can provide a path to the `save($path)` call.
+### Writing/Saving
+Writing our own data to the file wrapper is as simply as calling `setData()` on the wrapper. This function takes any kind of object, but will attempt to cast it to a `string` later on, so make sure it's stringable! Once we've set the data, we can persist it to file using `save()`.
 ```php
-$file->save("somewhereElse.txt");
+$file = new File("myNewFile.txt", false, true);
+$file->setData("Hello, world!");
+$file->save();
+```
+Note the the third parameter, `touch`, is passed as true in the above example. As outlined in the first paragraph of this document, this will cause the file to be created if it does not yet exist.
+
+It's possible that we might want to save the data to another file, rather than the one we read from. This can easily be achieved by using the first parameter for `save()`, which expects a string; a file location to write to.
+```php
+$file = new File("sourceData.txt", true);
+$file->save("targetData.txt");
+```
+If the place we're trying to write to already exists, you'll end up with a `KrameWorkFileException` being thrown, this helps prevent writing over files we didn't expect to. In the case that you do want to overwrite a file, simply provide `true` to the second parameter of `save()`.
+```php
+$file = new File("existingData.txt", true);
+$file->setData("New data!");
+$file->save("existingData.txt", true); // Overwrite!
+```
+### Deleting
+Deleting a file is as simple as telling it to be deleted! No error will be thrown if the file does not exist; you can check before-hand with `exists()` or `isValid()` if needed.
+```php
+$file = new File("someFile.txt", false);
+$file->delete();
 ```
