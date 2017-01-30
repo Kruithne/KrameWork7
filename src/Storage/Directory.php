@@ -133,7 +133,7 @@
 		 * @return bool
 		 */
 		public function hasItem(string $name):bool {
-			$path = $this->path . DIRECTORY_SEPARATOR . basename($name);
+			$path = $this->path . DIRECTORY_SEPARATOR . $name;
 			return file_exists($path);
 		}
 
@@ -143,7 +143,7 @@
 		 * @return bool
 		 */
 		public function hasFile(string $name):bool {
-			$path = $this->path . DIRECTORY_SEPARATOR . basename($name);
+			$path = $this->path . DIRECTORY_SEPARATOR . $name;
 			return file_exists($path) && is_file($path);
 		}
 
@@ -153,7 +153,7 @@
 		 * @return bool
 		 */
 		public function hasDirectory(string $name):bool {
-			$path = $this->path . DIRECTORY_SEPARATOR . basename($name);
+			$path = $this->path . DIRECTORY_SEPARATOR . $name;
 			return file_exists($path) && is_dir($path);
 		}
 
@@ -168,7 +168,7 @@
 			if ($this->hasItem($name))
 				throw new FileAlreadyExistsException();
 
-			$dir = new Directory($this->path . DIRECTORY_SEPARATOR . basename($name), false);
+			$dir = new Directory($this->path . DIRECTORY_SEPARATOR . $name, false);
 			$dir->create(false, $mode);
 			return $dir;
 		}
@@ -183,6 +183,6 @@
 			if ($this->hasItem($name))
 				throw new FileAlreadyExistsException();
 
-			return new File($this->path . DIRECTORY_SEPARATOR . basename($name), false, true);
+			return new File($this->path . DIRECTORY_SEPARATOR . $name, false, true);
 		}
 	}
