@@ -1,5 +1,6 @@
 <?php
 	use KrameWork\Storage\Directory;
+	use KrameWork\Utils\StringUtil;
 
 	require_once("src/Storage/Directory.php");
 	require_once("src/Utils/StringUtil.php");
@@ -51,7 +52,7 @@
 			foreach ($items as $item) {
 				$expectedNode = $expected[$item->getName()] ?? null;
 				$this->assertNotNull($expectedNode, "Directory listing produced unexpected node.");
-				$this->assertEquals($expectedNode, basename(get_class($item)), "Directory node was of unexpected type.");
+				$this->assertEquals($expectedNode, StringUtil::namespaceBase(get_class($item)), "Directory node was of unexpected type.");
 			}
 
 			unset($dir, $items, $expected);
@@ -109,7 +110,7 @@
 		 * Test that full paths are returned correctly with Directory::RETURN_FULL_PATHS
 		 */
 		public function testFullPaths() {
-			$path = \Kramework\Utils\StringUtil::formatDirectorySlashes(__DIR__ . "/resources/DirectoryTest");
+			$path = StringUtil::formatDirectorySlashes(__DIR__ . "/resources/DirectoryTest");
 			$dir = new Directory($path);
 			$items = $dir->getFiles(Directory::RETURN_FULL_PATHS);
 

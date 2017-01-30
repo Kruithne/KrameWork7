@@ -35,4 +35,14 @@
 			$clean = str_replace(DIRECTORY_SEPARATOR == "/" ? "\\" : "/", DIRECTORY_SEPARATOR, $path);
 			return $trimTrail ? rtrim($clean, "\t\n\r\0\x0B\\/") : $clean;
 		}
+
+		/**
+		 * Get the base class-name from a namespace string.
+		 * @param string $namespace
+		 * @return string
+		 */
+		static function namespaceBase(string $namespace):string {
+			$parts = explode("\\", $namespace);
+			return $parts[count($parts) - 1];
+		}
 	}
