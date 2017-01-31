@@ -24,6 +24,10 @@
 
 	namespace Kramework\Utils\Timing;
 
+	/**
+	 * Interface IBenchmark
+	 * @package Kramework\Utils\Timing
+	 */
 	interface IBenchmark
 	{
 		/**
@@ -48,6 +52,10 @@
 		public function onEnd();
 	}
 
+	/**
+	 * Class Benchmark
+	 * @package Kramework\Utils\Timing
+	 */
 	abstract class Benchmark implements IBenchmark
 	{
 		/**

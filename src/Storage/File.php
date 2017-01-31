@@ -28,6 +28,10 @@
 	class FileReadException extends \Exception {}
 	class FileWriteException extends \Exception {}
 
+	/**
+	 * Class File
+	 * @package KrameWork\Storage
+	 */
 	class File extends DirectoryItem
 	{
 		/**

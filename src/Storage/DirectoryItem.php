@@ -27,6 +27,10 @@
 	use Kramework\Utils\StringUtil;
 	require_once(__DIR__ . "/../Utils/StringUtil.php");
 
+	/**
+	 * Interface IDirectoryItem
+	 * @package KrameWork\Storage
+	 */
 	interface IDirectoryItem
 	{
 		/**
@@ -60,6 +64,10 @@
 		public function delete():bool;
 	}
 
+	/**
+	 * Class DirectoryItem
+	 * @package KrameWork\Storage
+	 */
 	abstract class DirectoryItem implements IDirectoryItem
 	{
 		/**

@@ -30,6 +30,10 @@
 	class InvalidDirectoryException extends \Exception {}
 	class FileAlreadyExistsException extends \Exception {}
 
+	/**
+	 * Class Directory
+	 * @package KrameWork\Storage
+	 */
 	class Directory extends DirectoryItem
 	{
 		const USE_WRAPPERS = 0x1;

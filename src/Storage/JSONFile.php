@@ -28,6 +28,10 @@
 
 	class JSONException extends \Exception {}
 
+	/**
+	 * Class JSONFile
+	 * @package KrameWork\Storage
+	 */
 	class JSONFile extends File
 	{
 		/**
