@@ -49,7 +49,7 @@
 		 * Get a value from the underlying data object.
 		 * @param string $key
 		 * @return mixed|null
-		 * @throws KrameWorkFileException
+		 * @throws JSONException
 		 */
 		public function __get($key) {
 			$this->verifyDataObject();
@@ -60,7 +60,7 @@
 		 * Set a value of the underlying data object.
 		 * @param string $key
 		 * @param mixed $value
-		 * @throws KrameWorkFileException
+		 * @throws JSONException
 		 */
 		public function __set($key, $value) {
 			$this->verifyDataObject();
@@ -78,7 +78,7 @@
 
 		/**
 		 * Read data from a file.
-		 * @throws KrameWorkFileException
+		 * @throws JSONException
 		 */
 		public function read() {
 			parent::read();
@@ -93,7 +93,7 @@
 		 * Save the file to disk.
 		 * @param string|null $file Path to save the file. Defaults to loaded file location.
 		 * @param bool $overwrite If true and file exists, will overwrite.
-		 * @throws KrameWorkFileException
+		 * @throws JSONException
 		 */
 		public function save(string $file = null, bool $overwrite = true) {
 			$encoded = json_encode($this->jsonData);
@@ -106,7 +106,7 @@
 
 		/**
 		 * Throw the latest JSON error as an exception.
-		 * @throws KrameWorkFileException
+		 * @throws JSONException
 		 */
 		private function throwJSONError() {
 			throw new JSONException("JSON error: " . json_last_error_msg());
@@ -114,7 +114,7 @@
 
 		/**
 		 * Throw an exception if the internal data object is not initiated.
-		 * @throws KrameWorkFileException
+		 * @throws JSONException
 		 */
 		private function verifyDataObject() {
 			if ($this->jsonData === null)
