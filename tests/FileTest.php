@@ -3,7 +3,6 @@
 	require_once(__DIR__ . "/../src/Storage/File.php");
 
 	use KrameWork\Storage\File;
-	use KrameWork\Storage\KrameWorkFileException;
 
 	class FileTest extends \PHPUnit_Framework_TestCase
 	{
