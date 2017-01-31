@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/Kruithne/KrameWork7.svg?branch=master)
+![Build Status](https://travis-ci.org/Kruithne/KrameWork7.svg?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## KrameWork7 - PHP7 Web Framework (WIP)
 
