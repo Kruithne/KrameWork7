@@ -2,7 +2,6 @@
 	require_once(__DIR__ . "/../src/Storage/JSONFile.php");
 
 	use KrameWork\Storage\JSONFile;
-	use KrameWork\Storage\KrameWorkFileException;
 
 	class JSONFileTest extends \PHPUnit_Framework_TestCase
 	{
@@ -86,7 +85,7 @@
 			try {
 				$container->testValue = true;
 				$this->fail("JSONFile did not throw expected exception when invoking __set on non-initiated container.");
-			} catch (KrameWorkFileException $e) {
+			} catch (\KrameWork\Storage\JSONException $e) {
 				// Expected.
 				unset($container);
 			}
@@ -101,7 +100,7 @@
 			try {
 				$test = $container->testValue;
 				$this->fail("JSONFile did not throw expected exception when invoking __get on non-initiated container.");
-			} catch (KrameWorkFileException $e) {
+			} catch (\KrameWork\Storage\JSONException $e) {
 				// Expected.
 				unset($container);
 			}
@@ -116,7 +115,7 @@
 			try {
 				unset($container->test);
 				$this->fail("JSONFile did not throw exception when invoking __unset on a non-initiated container.");
-			} catch (KrameWorkFileException $e) {
+			} catch (\KrameWork\Storage\JSONException $e) {
 				// Expected.
 				unset($container);
 			}
@@ -159,7 +158,7 @@
 			try {
 				$container->read();
 				$this->fail("Expected exception was not thrown when exceeding recursion depth.");
-			} catch (KrameWorkFileException $e) {
+			} catch (\KrameWork\Storage\JSONException $e) {
 				// Expected.
 				unset($container);
 			}

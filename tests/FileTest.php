@@ -99,7 +99,7 @@
 
 				$file->save($src, false);
 				$this->fail("Attempt to overwrite a file without overwrite flag was not stopped by exception.");
-			} catch (KrameWorkFileException $e) {
+			} catch (\KrameWork\Storage\FileWriteException $e) {
 				// Expected, since we tried to overwrite without specifying.
 			}
 

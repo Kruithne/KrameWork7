@@ -26,6 +26,8 @@
 
 	require_once(__DIR__ . "/File.php");
 
+	class JSONException extends \Exception {}
+
 	class JSONFile extends File
 	{
 		/**
@@ -33,7 +35,7 @@
 		 * @param string $file Path to the file.
 		 * @param bool $useContainer Loaded/inserted data will be contained using an ArrayObject.
 		 * @param bool $autoLoad If true and file is provided, will attempt to read on construct.
-		 * @throws KrameWorkFileException
+		 * @throws JSONException
 		 */
 		public function __construct(string $file, bool $useContainer = true, bool $autoLoad = true) {
 			$this->useContainer = $useContainer;
@@ -107,7 +109,7 @@
 		 * @throws KrameWorkFileException
 		 */
 		private function throwJSONError() {
-			throw new KrameWorkFileException("JSON error: " . json_last_error_msg());
+			throw new JSONException("JSON error: " . json_last_error_msg());
 		}
 
 		/**
@@ -116,7 +118,7 @@
 		 */
 		private function verifyDataObject() {
 			if ($this->jsonData === null)
-				throw new KrameWorkFileException("Attempt to invoke value on a non-initiated JSON file.");
+				throw new JSONException("Attempt to invoke value on a non-initiated JSON file.");
 		}
 
 		/**

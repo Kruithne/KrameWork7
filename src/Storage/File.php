@@ -24,7 +24,9 @@
 
 	namespace KrameWork\Storage;
 
-	class KrameWorkFileException extends \Exception {}
+	class FileNotFoundException extends \Exception {}
+	class FileReadException extends \Exception {}
+	class FileWriteException extends \Exception {}
 
 	class File extends DirectoryItem
 	{
@@ -33,7 +35,7 @@
 		 * @param string $path Path to the file.
 		 * @param bool $autoLoad If true and file is provided, will attempt to load on construct.
 		 * @param bool $touch If true, file will be created blank on instance construct.
-		 * @throws KrameWorkFileException
+		 * @throws FileNotFoundException|FileReadException
 		 */
 		public function __construct(string $path, bool $autoLoad = true, $touch = false) {
 			parent::__construct($path);
@@ -63,18 +65,18 @@
 
 		/**
 		 * Read data from a file.
-		 * @throws KrameWorkFileException
+		 * @throws FileNotFoundException|FileReadException
 		 */
 		public function read() {
 			if ($this->path === null)
-				throw new KrameWorkFileException("Cannot read file: No path given.");
+				throw new FileNotFoundException("Cannot resolve file: No path given.");
 
 			if (!file_exists($this->path))
-				throw new KrameWorkFileException("Cannot read file: It does not exist.");
+				throw new FileNotFoundException("Cannot resolve file: It does not exist.");
 
 			$raw = file_get_contents($this->path);
 			if ($raw === null)
-				throw new KrameWorkFileException("Cannot read file: Read error");
+				throw new FileReadException("Unable to read data from file.");
 
 			$this->data = $raw;
 		}
@@ -83,16 +85,13 @@
 		 * Save the file to disk.
 		 * @param string|null $file Path to save the file. Defaults to loaded file location.
 		 * @param bool $overwrite If true and file exists, will overwrite.
-		 * @throws KrameWorkFileException
+		 * @throws FileWriteException
 		 */
 		public function save(string $file = null, bool $overwrite = true) {
 			$file = $file ?? $this->path;
 
-			if ($file === null)
-				throw new KrameWorkFileException("Save path not provided, and none cached from read() calls.");
-
 			if (!$overwrite && file_exists($file))
-				throw new KrameWorkFileException("Cannot write file: Already exists (specify overwrite?)");
+				throw new FileWriteException("Cannot write file: Already exists (specify overwrite?)");
 
 			file_put_contents($file, $this->data ?? "");
 		}

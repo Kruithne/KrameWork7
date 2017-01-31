@@ -6,7 +6,7 @@
 The `File` class is a simple wrapper for, as you might be able to guess, files. The `__construct` method to create a new `File` instance takes three parameters:
 
  - `path` - **[Required]** Location of the file (even if it doesn't exist yet).
- - `autoLoad` - If true, the file will be read during initiation. Will throw a `KrameWorkFileException` if the file does not exist. **Default = true**
+ - `autoLoad` - If true, the file will be read during initiation. Can throw `FileNotFoundException` or `FileReadException` **Default = true**
  - `touch` - If true, the file will be touched upon initiation of the instance. **Default = false**
 
 With this, we can load the contents of a file rather simply.
@@ -20,14 +20,15 @@ $file = new File("myFile.txt");
 if ($file->exists())
 	// Fondle data.
 ```
-Another way to achieve this using exceptions would be to catch the `KrameWorkFileException` that is thrown from the instance construction if the file does not exist.
+Another way to achieve this using exceptions would be to catch the exceptions that are thrown from the instance construction if the file does not exist.
 ```php
 try {
 	$file = new File("myFile.txt");
 	// Fondle data.
-} catch (KrameWorkFileException $e) {
+} catch (FileNotFoundException $e) {
 	// File does not exist, or could not be accessed.
-	// $e will contain more information about this.
+} catch (FileReadException $e) {
+	// File could not be read, permission error?
 }
 ```
 Something to note, `exists()` will return `true` if something exists at the given path, even if that something is not a file. It's ideal to be more strict with this check, and use `isValid()`, which confirms existence as well as checking the file is indeed a file, followed by a call to `read()`.
@@ -52,7 +53,7 @@ It's possible that we might want to save the data to another file, rather than t
 $file = new File("sourceData.txt", true);
 $file->save("targetData.txt");
 ```
-If the place we're trying to write to already exists, you'll end up with a `KrameWorkFileException` being thrown, this helps prevent writing over files we didn't expect to. In the case that you do want to overwrite a file, simply provide `true` to the second parameter of `save()`.
+If the place we're trying to write to already exists, you'll end up with a `FileWriteException` being thrown, this helps prevent writing over files we didn't expect to. In the case that you do want to overwrite a file, simply provide `true` to the second parameter of `save()`.
 ```php
 $file = new File("existingData.txt", true);
 $file->setData("New data!");
