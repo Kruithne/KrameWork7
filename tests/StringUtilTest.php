@@ -35,4 +35,13 @@
 			$cleaned = StringUtil::formatDirectorySlashes($str);
 			$this->assertNotContains($sep, $cleaned, "Cleaned path still contains invalid slashes.");
 		}
+
+		/**
+		 * Test functionality of StringUtil::namespaceBase
+		 */
+		public function testNamespaceBase() {
+			$namespace = "KrameWork\\Storage\\Fish";
+			$corrected = StringUtil::namespaceBase($namespace);
+			$this->assertEquals("Fish", $corrected, "Base namespace does not match expected.");
+		}
 	}
