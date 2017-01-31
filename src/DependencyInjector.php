@@ -35,9 +35,9 @@
 	 */
 	class DependencyInjector
 	{
-		const BIND_INTERFACES = 0x1;
+		const AUTO_BIND_INTERFACES = 0x1;
 		const AUTO_ADD_DEPENDENCIES = 0x2;
-		const DEFAULT_FLAGS = self::BIND_INTERFACES | self::AUTO_ADD_DEPENDENCIES;
+		const DEFAULT_FLAGS = self::AUTO_BIND_INTERFACES | self::AUTO_ADD_DEPENDENCIES;
 
 		/**
 		 * DependencyInjector constructor.
@@ -83,7 +83,7 @@
 
 				$this->classList[$class] = null;
 
-				if ($this->flags & self::BIND_INTERFACES)
+				if ($this->flags & self::AUTO_BIND_INTERFACES)
 					$this->bindInterfaces($class);
 
 				return;
@@ -97,7 +97,7 @@
 
 				$this->classList[$className] = $class;
 
-				if ($this->flags & self::BIND_INTERFACES)
+				if ($this->flags & self::AUTO_BIND_INTERFACES)
 					$this->bindInterfaces($className);
 
 				return;

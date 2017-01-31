@@ -211,7 +211,7 @@
 		 */
 		public function testRetrieveInterfaceComponent() {
 			$str = "You can call, but I probably won't hear you.";
-			$injector = new DependencyInjector(DependencyInjector::DEFAULT_FLAGS | DependencyInjector::BIND_INTERFACES);
+			$injector = new DependencyInjector(DependencyInjector::DEFAULT_FLAGS | DependencyInjector::AUTO_BIND_INTERFACES);
 
 			$injector->addComponent("DITestClass"); // Implements DITestInterface
 			$component = $injector->getComponent("DITestInterface"); /** @var DITestInterface $component */
