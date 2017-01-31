@@ -63,6 +63,11 @@
 			$this->addComponent($this);
 		}
 
+		/**
+		 * Add a component to the injector.
+		 * @param string|array|object $class
+		 * @throws DuplicateClassException
+		 */
 		public function addComponent($class) {
 			// Null: Do nothing.
 			if ($class === null)
