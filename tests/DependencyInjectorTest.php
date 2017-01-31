@@ -2,7 +2,6 @@
 	require_once(__DIR__ . "/../src/DependencyInjector.php");
 
 	use KrameWork\DependencyInjector;
-	use KrameWork\KrameWorkDependencyInjectorException;
 
 	interface DITestInterface
 	{
@@ -144,7 +143,7 @@
 			try {
 				$injector->resolveClassName(1);
 				$this->fail("Injector did not throw exception on invalid class resolution.");
-			} catch (KrameWorkDependencyInjectorException $e) {
+			} catch (\KrameWork\ClassResolutionException $e) {
 				// Expected.
 			}
 			unset($injector);
@@ -200,7 +199,7 @@
 			try {
 				$injector->getComponent("DITestClass", false);
 				$this->fail("Missing class did not throw exception from injector.");
-			} catch (KrameWorkDependencyInjectorException $e) {
+			} catch (\KrameWork\ClassResolutionException $e) {
 				// Expected.
 			}
 
@@ -313,7 +312,7 @@
 			try {
 				$injector->getComponent("DINeedyTestClass", false);
 				$this->fail("Injector did not throw exception when trying to construct object with missing dependencies.");
-			} catch (KrameWorkDependencyInjectorException $e) {
+			} catch (\KrameWork\ClassInstantiationException $e) {
 				// Expected.
 			}
 
@@ -330,7 +329,7 @@
 			try {
 				$injector->getComponent("DICyclicTestClass");
 				$this->fail("Injector did not throw cyclic dependency exception when expected.");
-			} catch (KrameWorkDependencyInjectorException $e) {
+			} catch (\KrameWork\ClassInstantiationException $e) {
 				// Expected.
 			}
 
@@ -347,7 +346,7 @@
 			try {
 				$injector->getComponent("DIBrokenTestClass");
 				$this->fail("Injector did not throw exception when constructing broken class.");
-			} catch (KrameWorkDependencyInjectorException $e) {
+			} catch (\KrameWork\ClassInstantiationException $e) {
 				// Expected.
 			}
 
@@ -363,7 +362,7 @@
 			try {
 				$injector->bind("ISomething", 1);
 				$this->fail("Injector did not throw exception when binding to invalid type.");
-			} catch (KrameWorkDependencyInjectorException $e) {
+			} catch (\KrameWork\InterfaceBindingException $e) {
 				// Expected.
 			}
 
@@ -380,7 +379,7 @@
 			try {
 				$injector->getComponent("DIAbstractTestClass");
 				$this->fail("Injector did not throw instantiation exception when constructing abstract class.");
-			} catch (KrameWorkDependencyInjectorException $e) {
+			} catch (\KrameWork\ClassInstantiationException $e) {
 				// Expected.
 			}
 
@@ -397,7 +396,7 @@
 			try {
 				$injector->addComponent([new $class, new $class]);
 				$this->fail("Injector did not throw exception when retrieving duplicate components with getComponent()");
-			} catch (KrameWorkDependencyInjectorException $e) {
+			} catch (\KrameWork\DuplicateClassException $e) {
 				// Expected.
 			}
 
@@ -435,7 +434,7 @@
 			try {
 				$injector->getComponent("DITestInterfaceA");
 				$this->fail("Injector did not throw exception when recalling interface with multiple instances bound.");
-			} catch (KrameWorkDependencyInjectorException $e) {
+			} catch (\KrameWork\DuplicateClassException $e) {
 				// Expected.
 			}
 

@@ -36,6 +36,11 @@
 		}
 	}
 
+	class DuplicateClassException extends \Exception {}
+	class ClassResolutionException extends \Exception {}
+	class ClassInstantiationException extends \Exception {}
+	class InterfaceBindingException extends \Exception {}
+
 	/**
 	 * Class DependencyInjector
 	 * @package KrameWork\DI
@@ -86,7 +91,7 @@
 			// String: Class name, add to the internal class list.
 			if (is_string($class)) {
 				if (array_key_exists($class, $this->classList))
-					throw new KrameWorkDependencyInjectorException("A class named '%s' has already been added to the injector.", $class);
+					throw new DuplicateClassException("Duplicate class added to injector: " . $class);
 
 				$this->classList[$class] = null;
 
@@ -100,7 +105,7 @@
 			if (is_object($class)) {
 				$className = get_class($class);
 				if (array_key_exists($className, $this->classList))
-					throw new KrameWorkDependencyInjectorException("Duplicate class '%s' added to injector.", $className);
+					throw new DuplicateClassException("Duplicate class added to injector: " . $className);
 
 				$this->classList[$className] = $class;
 
@@ -116,7 +121,7 @@
 		 * @param mixed $class
 		 * @param array $output
 		 * @return string|\string[]
-		 * @throws KrameWorkDependencyInjectorException
+		 * @throws ClassResolutionException
 		 */
 		public function resolveClassName($class, array &$output = null) {
 			$classes = &$output ?? [];
@@ -135,7 +140,7 @@
 
 			// If we don't have a string at this point, we can't do much with it.
 			if (!is_string($class))
-				throw new KrameWorkDependencyInjectorException("Unable to resolve class(es) for type '%s'", gettype($class));
+				throw new ClassResolutionException("Unable to resolve class for: " . gettype($class));
 
 			// Check interface bindings for the class.
 			if (array_key_exists($class, $this->bindingList))
@@ -150,21 +155,21 @@
 		 * @param string $className Name of the class to retrieve.
 		 * @param bool $add If true, will attempt to add class if missing.
 		 * @return object
-		 * @throws KrameWorkDependencyInjectorException
+		 * @throws ClassResolutionException
 		 */
 		public function getComponent(string $className, bool $add = false) {
 			$resolve = $this->resolveClassName($className);
 
 			// getComponent() should only ever return a single component.
 			if (is_array($resolve) || (array_key_exists($resolve, $this->classList) && is_array($this->classList[$resolve])))
-				throw new KrameWorkDependencyInjectorException("Class '%s' resolves to multiple classes. Consider getComponents() instead.", $className);
+				throw new ClassResolutionException("Injector contains multiple resolutions for class: " . $className);
 
 			// Check if component is missing and react according to $add.
 			if (!array_key_exists($resolve, $this->classList)) {
 				if ($add)
 					$this->addComponent($resolve);
 				else
-					throw new KrameWorkDependencyInjectorException("Class '%s' has not been added to the injector.", $resolve);
+					throw new ClassResolutionException("Injector does not have valid match for class: " . $resolve);
 			}
 
 			// Return cached instance, or construct new one.
@@ -206,13 +211,13 @@
 		 * Construct a class by the given name.
 		 * @param string $className Name of the class to construct.
 		 * @return object
-		 * @throws KrameWorkDependencyInjectorException
+		 * @throws ClassInstantiationException
 		 */
 		public function constructComponent(string $className) {
 			$class = new \ReflectionClass($className);
 
 			if (!$class->isInstantiable())
-				throw new KrameWorkDependencyInjectorException("Class '%s' cannot be instantiated!", $className);
+				throw new ClassInstantiationException("Non-instantiable class: " . $className);
 
 			$inject = [];
 			$constructor = $class->getConstructor();
@@ -226,11 +231,11 @@
 
 					// Ensure parameter has a class.
 					if ($paramClass === null)
-						throw new KrameWorkDependencyInjectorException("Constructor for '%s' contains parameters with an undefined class.", $className);
+						throw new ClassInstantiationException("Constructor contains undefined parameter: " . $className);
 
 					$paramClassName = $paramClass->getName();
 					if ($paramClassName == $className)
-						throw new KrameWorkDependencyInjectorException("Cyclic dependency occurred when constructing '%s'", $className);
+						throw new ClassInstantiationException("Cyclic dependency in class: " . $className);
 
 					$inject[] = $this->getComponent($paramClassName, $this->flags & self::AUTO_ADD_DEPENDENCIES);
 				}
@@ -256,14 +261,14 @@
 		 * Bind an interface to the given class.
 		 * @param string $interface
 		 * @param $class
-		 * @throws KrameWorkDependencyInjectorException
+		 * @throws InterfaceBindingException
 		 */
 		public function bind(string $interface, $class) {
 			if (is_object($class))
 				$class = get_class($class);
 
 			if (!is_string($class))
-				throw new KrameWorkDependencyInjectorException("Cannot create interface binding using type '%s'", gettype($class));
+				throw new InterfaceBindingException("Invalid input for interface binding: " . gettype($class));
 
 			if (array_key_exists($interface, $this->bindingList)) {
 				$node = $this->bindingList[$interface];
