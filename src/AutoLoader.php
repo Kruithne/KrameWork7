@@ -2,7 +2,7 @@
 	namespace KrameWork;
 
 	use KrameWork\Utils\StringUtil;
-	require_once("src/Utils/StringUtil.php");
+	require_once(__DIR__ . "/Utils/StringUtil.php");
 
 	class InvalidSourcePathException extends \Exception {}
 

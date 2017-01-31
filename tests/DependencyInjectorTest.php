@@ -1,5 +1,5 @@
 <?php
-	require_once("src/DependencyInjector.php");
+	require_once(__DIR__ . "/../src/DependencyInjector.php");
 
 	use KrameWork\DependencyInjector;
 	use KrameWork\KrameWorkDependencyInjectorException;

@@ -1,8 +1,8 @@
 <?php
+	require_once(__DIR__ . "/../src/Storage/JSONFile.php");
+
 	use KrameWork\Storage\JSONFile;
 	use KrameWork\Storage\KrameWorkFileException;
-
-	require_once("src/Storage/JSONFile.php");
 
 	class JSONFileTest extends \PHPUnit_Framework_TestCase
 	{

@@ -1,9 +1,9 @@
 <?php
+	require_once(__DIR__ . "/../src/Storage/Directory.php");
+	require_once(__DIR__ . "/../src/Utils/StringUtil.php");
+
 	use KrameWork\Storage\Directory;
 	use KrameWork\Utils\StringUtil;
-
-	require_once("src/Storage/Directory.php");
-	require_once("src/Utils/StringUtil.php");
 
 	class DirectoryTest extends \PHPUnit_Framework_TestCase
 	{

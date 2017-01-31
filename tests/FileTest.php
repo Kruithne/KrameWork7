@@ -1,9 +1,9 @@
 <?php
+	require_once(__DIR__ . "/../src/Storage/File.php");
+	require_once(__DIR__ . "/../src/Storage/File.php");
+
 	use KrameWork\Storage\File;
 	use KrameWork\Storage\KrameWorkFileException;
-
-	require_once("src/Storage/File.php");
-	require_once("src/Storage/File.php");
 
 	class FileTest extends \PHPUnit_Framework_TestCase
 	{

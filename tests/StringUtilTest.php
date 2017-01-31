@@ -1,7 +1,7 @@
 <?php
-	use Kramework\Utils\StringUtil;
+	require_once(__DIR__ . "/../src/Utils/StringUtil.php");
 
-	require_once("src/Utils/StringUtil.php");
+	use Kramework\Utils\StringUtil;
 
 	class StringUtilTest extends \PHPUnit_Framework_TestCase
 	{

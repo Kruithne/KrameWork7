@@ -1,7 +1,7 @@
 <?php
-	use KrameWork\AutoLoader;
+	require_once(__DIR__ . "/../src/AutoLoader.php");
 
-	require_once("src/AutoLoader.php");
+	use KrameWork\AutoLoader;
 
 	class AutoLoaderTest extends \PHPUnit_Framework_TestCase
 	{
