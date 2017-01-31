@@ -261,7 +261,7 @@
 			$injector->addComponent($obj);
 			$component = $injector->getComponent("DITestClass"); /** @var DITestClass $component */
 
-			$this->assertEquals($obj->getID(), $component->getID(), "Instance returned from injector did not match orignal.");
+			$this->assertEquals($obj->getID(), $component->getID(), "Instance returned from injector did not match original.");
 
 			unset($injector, $component);
 		}

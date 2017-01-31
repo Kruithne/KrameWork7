@@ -18,9 +18,9 @@ These options can be configured by providing the constructor a bit-mask flag as 
 new AutoLoader(null, null, AutoLoader::DEFAULT_FLAGS & ~AutoLoader::RECURSIVE_SOURCING);
 ```
 ### Adding Source Locations
-To provide custom locations to source class files from, pass an array of paths to the consturctor as the first parameter. Some things 
+To provide custom locations to source class files from, pass an array of paths to the constructor as the first parameter. Some things 
 to note about the paths you provide:
-- Directory seperators do not need to match the environment, the auto-loader will fix them automatically.
+- Directory separators do not need to match the environment, the auto-loader will fix them automatically.
 - Paths will be computed to absolute locations, meaning symlinks/relative paths will be resolved.
 - Source directories that cannot be found will throw an `InvalidSourcePathException`.
 - Trailing slashes can be included or omitted, no issues will occur either way.

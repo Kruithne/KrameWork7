@@ -11,7 +11,7 @@ $directory = new Directory("assets/images");
 ```
 The directory separators used in the provided path do not need to match the environment, since KrameWork will automatically substitute the current operating-system standard before processing.
 
-Attempts to read from a directory that doesn't exist, will throw an exception. It's best practice to check if the directory exists beforehand by calling `exists()`.
+Attempts to read from a directory that does not exist, will throw an exception. It's best practice to check if the directory exists beforehand by calling `exists()`.
 ```php
 $directory = new Directory("assets/images");
 if ($directory->exists())
