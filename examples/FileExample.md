@@ -5,7 +5,7 @@
 ### Reading
 The `File` class is a simple wrapper for, as you might be able to guess, files. The `__construct` method to create a new `File` instance takes three parameters:
 
- - `path` - **[Required]** Location of the file (even if it doesn't exist yet).
+ - `path` - **[Required]** Location of the file (even if it does not exist yet).
  - `autoLoad` - If true, the file will be read during initiation. Can throw `FileNotFoundException` or `FileReadException` **Default = true**
  - `touch` - If true, the file will be touched upon initiation of the instance. **Default = false**
 
