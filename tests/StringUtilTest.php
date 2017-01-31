@@ -14,6 +14,9 @@
 			$this->assertFalse(StringUtil::startsWith($data, "A hairy "));
 		}
 
+		/**
+		 * Test StringUtil::endsWith() function
+		 */
 		public function testEndsWith() {
 			$data = "A fat dog jumped.";
 			$this->assertTrue(StringUtil::endsWith($data, " jumped."));
