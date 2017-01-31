@@ -99,17 +99,10 @@
 			// Object: Extract class and add that.
 			if (is_object($class)) {
 				$className = get_class($class);
-				if (array_key_exists($className, $this->classList)) {
-					$node = $this->classList[$className];
+				if (array_key_exists($className, $this->classList))
+					throw new KrameWorkDependencyInjectorException("Duplicate class '%s' added to injector.", $className);
 
-					if (!is_array($node))
-						$node = [$node];
-
-					$node[] = $class;
-					$this->classList[$className] = $node;
-				} else {
-					$this->classList[$className] = $class;
-				}
+				$this->classList[$className] = $class;
 
 				if ($this->flags & self::BIND_INTERFACES)
 					$this->bindInterfaces($className);
