@@ -312,7 +312,7 @@
 			try {
 				$injector->getComponent("DINeedyTestClass", false);
 				$this->fail("Injector did not throw exception when trying to construct object with missing dependencies.");
-			} catch (\KrameWork\ClassInstantiationException $e) {
+			} catch (\KrameWork\ClassResolutionException $e) {
 				// Expected.
 			}
 
