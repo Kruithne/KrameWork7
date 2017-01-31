@@ -434,7 +434,7 @@
 			try {
 				$injector->getComponent("DITestInterfaceA");
 				$this->fail("Injector did not throw exception when recalling interface with multiple instances bound.");
-			} catch (\KrameWork\DuplicateClassException $e) {
+			} catch (\KrameWork\ClassResolutionException $e) {
 				// Expected.
 			}
 
