@@ -72,7 +72,7 @@ injector. The constructor takes three arguments: `flags`, `components[]` and `bi
 
 `flags` is a bit-mask value that defines the behavior of the injector. Below are the possible options, which can be found as 
 public constants on the `DependencyInjector` class. All of these options are enabled by default.
-- BIND_INTERFACES - When adding a component, it's class will be found to any interfaces it implements.
+- AUTO_BIND_INTERFACES - When adding a component, it's class will be found to any interfaces it implements.
 - AUTO_ADD_DEPENDENCIES - During component construction, missing dependencies will be added/constructed.
 
 The `components[]` and `bindings[]` arguments are both arrays which allow you to provide components and bindings straight 
