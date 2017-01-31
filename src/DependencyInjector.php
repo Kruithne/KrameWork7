@@ -24,18 +24,6 @@
 
 	namespace KrameWork;
 
-	class KrameWorkDependencyInjectorException extends \Exception
-	{
-		/**
-		 * KrameWorkDependencyInjectorException constructor.
-		 * @param string $message Message of the exception.
-		 * @param int $className Name of the class involved in the exception.
-		 */
-		public function __construct($message, $className) {
-			parent::__construct(sprintf($message, $className), 0, null);
-		}
-	}
-
 	class DuplicateClassException extends \Exception {}
 	class ClassResolutionException extends \Exception {}
 	class ClassInstantiationException extends \Exception {}
