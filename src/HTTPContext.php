@@ -277,12 +277,6 @@
 		}
 
 		/**
-		 * True if the request has query data.
-		 * @var bool
-		 */
-		private $hasQueryData;
-
-		/**
 		 * True if the request has form data.
 		 * @var bool
 		 */
