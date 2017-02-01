@@ -113,7 +113,7 @@
 		 * Resolve a given class name.
 		 * @param mixed $class
 		 * @param array $output
-		 * @return string|\string[]
+		 * @return string|string[]
 		 * @throws ClassResolutionException
 		 */
 		public function resolveClassName($class, array &$output = null) {
