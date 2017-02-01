@@ -212,7 +212,7 @@
 
 		/**
 		 * Retrieve the URI of this request (includes query string).
-		 * Defaults to null if unable to establish.
+		 * Defaults to a blank string if unable to establish.
 		 * @return string
 		 */
 		public function getRequestURI():string {
