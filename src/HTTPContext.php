@@ -207,7 +207,7 @@
 		 * @return string
 		 */
 		public function getRemoteAddress():string {
-			return $_SERVER["REMOTE_ADDR"] ?? null;
+			return $_SERVER["REMOTE_ADDR"] ?? "";
 		}
 
 		/**
@@ -216,7 +216,7 @@
 		 * @return string
 		 */
 		public function getRequestURI():string {
-			return $_SERVER["REQUEST_URI"] ?? null;
+			return $_SERVER["REQUEST_URI"] ?? "";
 		}
 
 		/**
