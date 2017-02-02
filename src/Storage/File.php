@@ -79,6 +79,17 @@
 		}
 
 		/**
+		 * Get the extension of this file (without leading period).
+		 * Defaults to an empty string if none exists.
+		 * @return string
+		 */
+		public function getExtension():string {
+			$parts = explode(".", $this->name);
+			$size = count($parts);
+			return $size > 1 ? $parts[$size - 1] : "";
+		}
+
+		/**
 		 * Read data from a file.
 		 * @throws FileNotFoundException|FileReadException
 		 */

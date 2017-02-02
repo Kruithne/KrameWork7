@@ -168,4 +168,13 @@
 			$this->assertEquals(148, $file->getSize());
 			unset($file);
 		}
+
+		/**
+		 * Test the file extension returns as expected.
+		 */
+		public function testGetExtension() {
+			$file = new File("tests/resources/test_json_file.json", false);
+			$this->assertEquals("json", $file->getExtension());
+			unset($file);
+		}
 	}
