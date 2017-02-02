@@ -24,6 +24,8 @@
 
 	namespace KrameWork\Storage;
 
+	require_once(__DIR__ . "/DirectoryItem.php");
+
 	class FileNotFoundException extends \Exception {}
 	class FileReadException extends \Exception {}
 	class FileWriteException extends \Exception {}

@@ -24,7 +24,6 @@
 
 	namespace KrameWork\Storage;
 
-	require_once(__DIR__ . "/DirectoryItem.php");
 	require_once(__DIR__ . "/File.php");
 
 	class InvalidDirectoryException extends \Exception {}
