@@ -77,14 +77,6 @@
 		}
 
 		/**
-		 * Get the MIME type for this file.
-		 * @return string
-		 */
-		public function getType():string {
-			return mime_content_type($this->path);
-		}
-
-		/**
 		 * Read data from a file.
 		 * @throws FileNotFoundException|FileReadException
 		 */
