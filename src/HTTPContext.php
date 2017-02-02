@@ -259,10 +259,10 @@
 				$value = urldecode($value);
 
 				// Skip zero-length values.
-				if (strlen($value) == 0)
+				if (\strlen($value) == 0)
 					continue;
 
-				$keyLen = strlen($key);
+				$keyLen = \strlen($key);
 				if (substr($key, $keyLen - 2) == "[]") {
 					$key = urldecode(substr($key, 0, $keyLen - 2));
 					if (!array_key_exists($key, $out))

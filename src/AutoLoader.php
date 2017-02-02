@@ -107,7 +107,7 @@
 
 				if (is_array($directory)) {
 					list($namespace, $path) = $directory;
-					$namespaceLen = strlen($namespace);
+					$namespaceLen = \strlen($namespace);
 
 					if (strncmp($class, $namespace, $namespaceLen) !== 0)
 						continue;

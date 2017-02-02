@@ -33,7 +33,7 @@
 		 * @return bool
 		 */
 		static function startsWith(string $haystack, string $needle):bool {
-			return strncmp($haystack, $needle, strlen($needle)) === 0;
+			return strncmp($haystack, $needle, \strlen($needle)) === 0;
 		}
 
 		/**
@@ -44,7 +44,7 @@
 		 * @return bool
 		 */
 		static function endsWith(string $haystack, string $needle):bool {
-			$length = strlen($needle);
+			$length = \strlen($needle);
 			return (substr($haystack, -$length, $length) === $needle);
 		}
 
