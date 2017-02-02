@@ -36,7 +36,7 @@
 		 * Obtain uploaded files with the given key.
 		 * @param string $key
 		 * @param bool $useWrappers Use KrameWork\Storage\File class to wrap files.
-		 * @return array
+		 * @return \ArrayObject[]|Storage\UploadedFile[]
 		 */
 		public function getFiles(string $key, $useWrappers = true) {
 			$files = [];
