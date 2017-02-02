@@ -59,6 +59,10 @@
 					if ($file->isValid())
 						$files[] = $file;
 				} else {
+					$tmp = $node["tmp_name"][$i];
+					if (!file_exists($tmp))
+						continue;
+
 					$files[] = new \ArrayObject([
 						"name" => $node["name"][$i],
 						"type" => $node["type"][$i],
