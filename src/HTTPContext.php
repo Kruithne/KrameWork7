@@ -33,6 +33,55 @@
 	class HTTPContext
 	{
 		/**
+		 * Obtain uploaded files with the given key.
+		 * @param string $key
+		 * @param bool $useWrappers Use KrameWork\Storage\File class to wrap files.
+		 * @return array
+		 */
+		public function getFiles(string $key, $useWrappers = true) {
+			$files = [];
+			$node = $_FILES[$key] ?? null;
+
+			// No files to return, lame.
+			if ($node === null)
+				return $files;
+
+			$size = count($node["name"]);
+			if ($size == 0) // Bork.
+				return $files;
+
+			if ($useWrappers)
+				require_once(__DIR__ . "/Storage/UploadedFile.php");
+
+			for ($i = 0; $i < $size; $i++) {
+				if ($useWrappers) {
+					$file = new Storage\UploadedFile($node["tmp_name"][$i], $node["name"][$i], false);
+					if ($file->isValid())
+						$files[] = $file;
+				} else {
+					$files[] = new \ArrayObject([
+						"name" => $node["name"][$i],
+						"type" => $node["type"][$i],
+						"path" => $node["tmp_name"][$i],
+						"error" => $node["error"][$i],
+						"size" => $node["size"][$i]
+					], \ArrayObject::ARRAY_AS_PROPS);
+				}
+			}
+
+			return $files;
+		}
+
+		/**
+		 * Check if this request contains an uploaded file with the given key.
+		 * @param string $key
+		 * @return bool
+		 */
+		public function hasFile(string $key) {
+			return array_key_exists($key, $_FILES);
+		}
+
+		/**
 		 * Retrieve the decoded query string for this request.
 		 * @return array
 		 */
