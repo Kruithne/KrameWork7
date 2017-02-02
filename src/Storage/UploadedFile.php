@@ -9,10 +9,24 @@
 		 * UploadedFile constructor.
 		 * @param string $path Temporary location.
 		 * @param string $name Uploaded name.
-		 * @param bool $autoLoad Load the data for the file on construction.
+		 * @param int $errorCode
 		 */
-		public function __construct(string $path, string $name, $autoLoad = true) {
-			parent::__construct($path, $autoLoad, false);
+		public function __construct(string $path, string $name, int $errorCode) {
+			parent::__construct($path, false, false);
 			$this->name = $name;
+			$this->errorCode = $errorCode;
 		}
+
+		/**
+		 * Error code for the upload.
+		 * @return int
+		 */
+		public function getErrorCode():int {
+			return $this->errorCode;
+		}
+
+		/**
+		 * @var int
+		 */
+		protected $errorCode;
 	}

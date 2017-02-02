@@ -55,7 +55,7 @@
 
 			for ($i = 0; $i < $size; $i++) {
 				if ($useWrappers) {
-					$file = new Storage\UploadedFile($node["tmp_name"][$i], $node["name"][$i], false);
+					$file = new Storage\UploadedFile($node["tmp_name"][$i], $node["name"][$i], $node["error"][$i]);
 					if ($file->isValid())
 						$files[] = $file;
 				} else {
