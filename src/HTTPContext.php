@@ -199,6 +199,15 @@
 		}
 
 		/**
+		 * Check if this request was made over https protocol.
+		 * @return bool
+		 */
+		public function isSecure():bool {
+			// ISAPI IIS returns "off", others do not set.
+			return ($_SERVER["HTTPS"] ?? "off") !== "off";
+		}
+
+		/**
 		 * Retrieve the raw content of the request.
 		 * @return string
 		 */
