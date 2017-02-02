@@ -55,14 +55,8 @@
 
 			for ($i = 0; $i < $size; $i++) {
 				if ($useWrappers) {
-					$file = new Storage\UploadedFile($node["tmp_name"][$i], $node["name"][$i], $node["error"][$i]);
-					if ($file->isValid())
-						$files[] = $file;
+					$files[] = new Storage\UploadedFile($node["tmp_name"][$i], $node["name"][$i], $node["error"][$i]);
 				} else {
-					$tmp = $node["tmp_name"][$i];
-					if (!file_exists($tmp))
-						continue;
-
 					$files[] = new \ArrayObject([
 						"name" => $node["name"][$i],
 						"type" => $node["type"][$i],
