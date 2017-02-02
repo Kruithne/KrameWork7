@@ -177,4 +177,17 @@
 			$this->assertEquals("json", $file->getExtension());
 			unset($file);
 		}
+
+		/**
+		 * Test File function getFileType().
+		 */
+		public function testFileType() {
+			$file = new File("tests/resources/test_json_file.json", false);
+			$this->assertEquals("text/plain", $file->getFileType(), "Unexpected file type!");
+
+			$file = new File("tests/resources/HTTPContextTest/tmp/phpbF6s1h", false);
+			$this->assertEquals("image/png", $file->getFileType());
+
+			unset($file);
+		}
 	}

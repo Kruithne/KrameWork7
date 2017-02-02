@@ -90,6 +90,22 @@
 		}
 
 		/**
+		 * Attempts to get the MIME type of a file.
+		 * Requires php_fileinfo extension to be enabled.
+		 * @return string MIME type, or "unknown".
+		 */
+		public function getFileType():string {
+			if (function_exists("finfo_file")) {
+				$info = new \finfo(FILEINFO_MIME_TYPE);
+				$type = $info->file($this->path);
+
+				if ($type !== null && strlen($type) > 0)
+					return $type;
+			}
+			return "unknown";
+		}
+
+		/**
 		 * Read data from a file.
 		 * @throws FileNotFoundException|FileReadException
 		 */
