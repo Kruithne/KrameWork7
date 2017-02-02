@@ -159,4 +159,13 @@
 
 			unset($src);
 		}
+
+		/**
+		 * Test file size returns as expected.
+		 */
+		public function testGetSize() {
+			$file = new File("tests/resources/test_json_file.json", false);
+			$this->assertEquals(148, $file->getSize());
+			unset($file);
+		}
 	}
