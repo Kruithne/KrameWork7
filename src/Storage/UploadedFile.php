@@ -18,6 +18,14 @@
 		}
 
 		/**
+		 * Check if the directory file is valid.
+		 * @return bool
+		 */
+		public function isValid(): bool {
+			return $this->errorCode == UPLOAD_ERR_NO_FILE && parent::isValid();
+		}
+
+		/**
 		 * Error code for the upload.
 		 * @return int
 		 */
