@@ -68,6 +68,15 @@
 		}
 
 		/**
+		 * Get the size of this file.
+		 * @return int
+		 */
+		public function size():int {
+			$size = @filesize($this->path);
+			return $size !== false ? $size : 0;
+		}
+
+		/**
 		 * Read data from a file.
 		 * @throws FileNotFoundException|FileReadException
 		 */
