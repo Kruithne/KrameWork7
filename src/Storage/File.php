@@ -71,7 +71,7 @@
 		 * Get the size of this file.
 		 * @return int
 		 */
-		public function size():int {
+		public function getSize():int {
 			$size = @filesize($this->path);
 			return $size !== false ? $size : 0;
 		}
@@ -80,7 +80,7 @@
 		 * Get the MIME type for this file.
 		 * @return string
 		 */
-		public function type():string {
+		public function getType():string {
 			return mime_content_type($this->path);
 		}
 
