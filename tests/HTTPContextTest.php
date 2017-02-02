@@ -245,4 +245,56 @@
 			unset($http);
 			$_SERVER[$QUERY_STRING] = $orig;
 		}
+
+		/**
+		 * Test HTTPContext->hasFiles() and HTTPContext->getFiles().
+		 */
+		public function testFileAccess() {
+			// Setup
+			$orig = $_FILES;
+			$_FILES = [ // Emulation of a possible array file upload (with one uncaught failure).
+				"test" => [
+					"name" => [
+						"(15)_Twitter_-_Google_Chrome_2016-07-27_17-51-04.png",
+						"2015-11-01_21-15-13.png",
+						"this-file_does_not.exist"
+					],
+					"type" => ["image/png", "image/png", "text/plain"],
+					"tmp_name" => [
+						__DIR__ . "/resources/HTTPContextTest/tmp/phpKpG7lj",
+						__DIR__ . "/resources/HTTPContextTest/tmp/phpbF6s1h",
+						__DIR__ . "/resources/HTTPContextTest/tmp/phpn3jDjf"
+					],
+					"error" => [0, 0, UPLOAD_ERR_NO_FILE],
+					"size" => [87781, 117552, 373623]
+				]
+			];
+
+			// Testing
+			$http = new HTTPContext();
+			$this->assertFalse($http->hasFile("doesNotExist"), "Context claims non-existing file exists.");
+			$this->assertTrue($http->hasFile("test"), "Context claims existing file does not exist.");
+
+			// Test Wrappers.
+			$testFiles = $http->getFiles("test", true);
+			$this->assertTrue(is_array($testFiles), "Context did not return array as expected.");
+			$this->assertCount(3, $testFiles, "Context did not return correct amount of files.");
+
+			foreach ($testFiles as $file) {
+				$this->assertInstanceOf("KrameWork\\Storage\\UploadedFile", $file, "File was not wrapped.");
+
+				if ($file->getErrorCode() != UPLOAD_ERR_OK)
+					$this->assertFalse($file->isValid(), "File should be invalid when an error occurs.");
+				else
+					$this->assertTrue($file->isValid(), "File was expected to be valid.");
+			}
+
+			// Test Without Wrappers.
+			$testFiles = $http->getFiles("test", false);
+			$this->assertTrue(is_array($testFiles), "Context did not return array as expected.");
+			$this->assertCount(3, $testFiles, "Context did not return correct amount of files.");
+
+			// Cleanup
+			$_FILES = $orig;
+		}
 	}
