@@ -255,7 +255,11 @@
 			$out = [];
 			$components = explode("&", $input);
 			foreach ($components as $component) {
-				list($key, $value) = explode("=", $component);
+				$parts = explode("=", $component);
+				if (count($parts) < 2)
+					continue;
+
+				list($key, $value) = $parts;
 				$value = urldecode($value);
 
 				// Skip zero-length values.
