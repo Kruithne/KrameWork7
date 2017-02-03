@@ -413,7 +413,7 @@
 			$injector = new DependencyInjector();
 			$injector->addComponent([$componentA, $componentB]);
 
-			$components = $injector->getComponents("DITestInterfaceA");
+			$components = $injector->getImplementingComponents("DITestInterfaceA");
 			$this->assertCount(2, $components, "Injector did not return the expected amount of instances.");
 			foreach ($components as $component)
 				$this->assertInstanceOf("DITestInterfaceA", $component, "Unexpected class returned.");
@@ -451,7 +451,7 @@
 			$injector = new DependencyInjector();
 			$injector->addComponent([$classA, $classB]);
 
-			$components = $injector->getComponents("DITestInterfaceA");
+			$components = $injector->getImplementingComponents("DITestInterfaceA");
 			$this->assertCount(2, $components, "Injector did not return expected amount of interface bound instances.");
 			unset($injector);
 		}

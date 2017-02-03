@@ -29,49 +29,66 @@
 
 	/**
 	 * Interface IDirectoryItem
+	 *
 	 * @package KrameWork\Storage
+	 * @author Kruithne (kruithne@gmail.com)
 	 */
 	interface IDirectoryItem
 	{
 		/**
 		 * Return the name of this directory item.
-		 * @return string
+		 *
+		 * @api
+		 * @return string Name of the directory item.
 		 */
 		public function getName():string;
 
 		/**
 		 * Return the path of this directory item.
-		 * @return string
+		 *
+		 * @api
+		 * @return string Full path of the directory item.
 		 */
 		public function getPath():string;
 
 		/**
 		 * Check if this directory item exists.
-		 * @return bool
+		 *
+		 * @api
+		 * @return bool Directory item exists.
 		 */
 		public function exists():bool;
 
 		/**
 		 * Check if the directory item is valid.
-		 * @return bool
+		 *
+		 * @api
+		 * @return bool Directory item exists and is valid.
 		 */
 		public function isValid():bool;
 
 		/**
 		 * Attempt to delete the directory item.
-		 * @return bool
+		 *
+		 * @api
+		 * @return bool Deletion success.
 		 */
 		public function delete():bool;
 	}
 
 	/**
 	 * Class DirectoryItem
+	 * Base class for file-system wrapper classes.
+	 *
 	 * @package KrameWork\Storage
+	 * @author Kruithne (kruithne@gmail.com)
 	 */
 	abstract class DirectoryItem implements IDirectoryItem
 	{
 		/**
 		 * DirectoryItem constructor.
+		 *
+		 * @api
 		 * @param string $path Path to the directory item.
 		 */
 		public function __construct($path) {
@@ -81,7 +98,9 @@
 
 		/**
 		 * Check if this directory item exists.
-		 * @return bool
+		 *
+		 * @api
+		 * @return bool Directory item exists.
 		 */
 		public function exists():bool {
 			return file_exists($this->path);
@@ -89,17 +108,21 @@
 
 		/**
 		 * Return the name of this directory item.
-		 * @return string
+		 *
+		 * @api
+		 * @return string Name of this directory item.
 		 */
-		public function getName(): string {
+		public function getName():string {
 			return $this->name;
 		}
 
 		/**
 		 * Return the path of this directory item.
-		 * @return string
+		 *
+		 * @api
+		 * @return string Full path of this directory item.
 		 */
-		public function getPath(): string {
+		public function getPath():string {
 			return $this->path;
 		}
 

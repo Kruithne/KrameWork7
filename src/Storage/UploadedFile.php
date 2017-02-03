@@ -3,10 +3,19 @@
 
 	require_once(__DIR__ . "/File.php");
 
+	/**
+	 * Class UploadedFile
+	 * Wrapper class for easily managing uploaded files.
+	 *
+	 * @package KrameWork\Storage
+	 * @author Kruithne (kruithne@gmail.com)
+	 */
 	class UploadedFile extends File
 	{
 		/**
 		 * UploadedFile constructor.
+		 *
+		 * @api
 		 * @param string $path Temporary location.
 		 * @param string $name Uploaded name.
 		 * @param int $errorCode
@@ -18,15 +27,19 @@
 		}
 
 		/**
-		 * Check if the directory file is valid.
-		 * @return bool
+		 * Check if the uploaded file is valid.
+		 *
+		 * @api
+		 * @return bool Uploaded file is valid.
 		 */
 		public function isValid(): bool {
 			return $this->errorCode === UPLOAD_ERR_OK && parent::isValid();
 		}
 
 		/**
-		 * Error code for the upload.
+		 * Get the error code for this upload.
+		 *
+		 * @api
 		 * @return int
 		 */
 		public function getErrorCode():int {
@@ -34,7 +47,7 @@
 		}
 
 		/**
-		 * @var int
+		 * @var int Error code for the upload.
 		 */
 		protected $errorCode;
 	}

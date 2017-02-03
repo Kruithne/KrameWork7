@@ -31,7 +31,10 @@
 
 	/**
 	 * Class Directory
+	 * Wrapper class to easily manage a file-system directory.
+	 *
 	 * @package KrameWork\Storage
+	 * @author Kruithne (kruithne@gmail.com)
 	 */
 	class Directory extends DirectoryItem
 	{
@@ -45,10 +48,12 @@
 
 		/**
 		 * Directory constructor.
+		 *
+		 * @api
 		 * @param string $path Path to the directory.
-		 * @param bool $create If true, directory will be created if missing.
+		 * @param bool $create Create directory if missing.
 		 */
-		public function __construct($path, $create = false) {
+		public function __construct($path, bool $create = false) {
 			parent::__construct($path);
 
 			if (!$this->exists() && $create)
@@ -56,27 +61,33 @@
 		}
 
 		/**
-		 * Check if the directory is valid.
-		 * @return bool
+		 * Check if the directory exists and is valid.
+		 *
+		 * @api
+		 * @return bool Directory exists and is valid.
 		 */
-		public function isValid(): bool {
+		public function isValid():bool {
 			return $this->exists() && is_dir($this->path);
 		}
 
 		/**
-		 * Attempt to create this directory.
+		 * Attempt to create the directory.
+		 *
+		 * @api
 		 * @param bool $recursive Create all directories in the path.
-		 * @param int $mode File permissions (Non-Windows OS).
-		 * @return bool
+		 * @param int $mode File permissions (No effect on Windows).
+		 * @return bool Directory was created successfully.
 		 */
 		public function create($recursive = true, $mode = 0777):bool {
 			return @mkdir($this->path, $mode, $recursive);
 		}
 
 		/**
-		 * Attempt to delete the directory item.
-		 * @param bool $recursive If true, will recursively delete a directory.
-		 * @return bool
+		 * Attempt to delete the directory.
+		 *
+		 * @api
+		 * @param bool $recursive Recursively delete the directory.
+		 * @return bool Directory was deleted successfully.
 		 */
 		public function delete($recursive = false):bool {
 			if ($recursive) {
@@ -100,12 +111,14 @@
 		}
 
 		/**
-		 * Retrieve a list of all items in the directory.
-		 * @param int $flags
-		 * @return string[]|DirectoryItem[]
+		 * Retrieve a all items contained in the directory.
+		 *
+		 * @api
+		 * @param int $flags Bit-mask flags to control retrieval.
+		 * @return string[]|DirectoryItem[] Array of directory items.
 		 * @throws InvalidDirectoryException
 		 */
-		public function getItems($flags = self::DEFAULT_FLAGS) {
+		public function getItems(int $flags = self::DEFAULT_FLAGS):array {
 			if (!$this->isValid())
 				throw new InvalidDirectoryException("Directory could not be resolved.");
 
@@ -137,26 +150,34 @@
 
 		/**
 		 * Retrieve a list of all files in the directory.
-		 * @param int $flags
-		 * @return array
+		 * Alias of getItems() with INCLUDE_FILES and ~INCLUDE_DIRECTORIES.
+		 *
+		 * @api
+		 * @param int $flags Bit-mask flags to control retrieval.
+		 * @return array Files contained in the directory.
 		 */
-		public function getFiles($flags = self::DEFAULT_FLAGS) {
+		public function getFiles($flags = self::DEFAULT_FLAGS):array {
 			return $this->getItems(($flags & ~self::INCLUDE_DIRECTORIES) | self::INCLUDE_FILES);
 		}
 
 		/**
 		 * Retrieve a list of all directories in the directory.
-		 * @param int $flags
-		 * @return array
+		 * Alias of getItems() with INCLUDE_DIRECTORIES and ~INCLUDE_FILES.
+		 *
+		 * @api
+		 * @param int $flags Bit-mask flags to control retrieval.
+		 * @return array Directories contained in the directory.
 		 */
-		public function getDirectories($flags = self::DEFAULT_FLAGS) {
+		public function getDirectories($flags = self::DEFAULT_FLAGS):array {
 			return $this->getItems(($flags & ~self::INCLUDE_FILES) | self::INCLUDE_DIRECTORIES);
 		}
 
 		/**
 		 * Check if this directory contains an item with the given name.
-		 * @param string $name
-		 * @return bool
+		 *
+		 * @api
+		 * @param string $name Name to check the directory for.
+		 * @return bool Directory contains something with the given name.
 		 */
 		public function hasItem(string $name):bool {
 			$path = $this->path . DIRECTORY_SEPARATOR . $name;
@@ -165,8 +186,11 @@
 
 		/**
 		 * Check if this directory contains a file with the given name.
-		 * @param string $name
-		 * @return bool
+		 * Mimics hasItem() with additional file type check.
+		 *
+		 * @api
+		 * @param string $name Name of the file to check for.
+		 * @return bool Directory contains a file with the given name.
 		 */
 		public function hasFile(string $name):bool {
 			$path = $this->path . DIRECTORY_SEPARATOR . $name;
@@ -175,8 +199,11 @@
 
 		/**
 		 * Check if this directory contains a directory with the given name.
-		 * @param string $name
-		 * @return bool
+		 * Mimics hasItem() with additional directory type check.
+		 *
+		 * @api
+		 * @param string $name Name of the directory to check for.
+		 * @return bool Directory contains a directory with the given name.
 		 */
 		public function hasDirectory(string $name):bool {
 			$path = $this->path . DIRECTORY_SEPARATOR . $name;
@@ -185,9 +212,13 @@
 
 		/**
 		 * Create a new directory inside this directory.
-		 * @param string $name Name of the directory.
-		 * @param int $mode
-		 * @return Directory
+		 * Directory creation is not guaranteed. Confirm with isValid() check
+		 * on the returned Directory wrapper object.
+		 *
+		 * @api
+		 * @param string $name Name of the directory to create.
+		 * @param int $mode Permissions mode (No effect on Windows).
+		 * @return Directory Wrapper for the created directory.
 		 * @throws FileAlreadyExistsException
 		 */
 		public function createDirectory(string $name, $mode = 0777):Directory {
@@ -201,8 +232,12 @@
 
 		/**
 		 * Create a new file inside this directory.
-		 * @param string $name
-		 * @return File
+		 * File create is not guaranteed, confirm with isValid() check
+		 * on the returned File wrapper object.
+		 *
+		 * @api
+		 * @param string $name Name of the file to create.
+		 * @return File Wrapper for the created file.
 		 * @throws FileAlreadyExistsException
 		 */
 		public function createFile(string $name):File {

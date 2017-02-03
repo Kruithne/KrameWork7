@@ -32,18 +32,23 @@
 
 	/**
 	 * Class File
+	 * Wrapper class for easily managing file-system files.
+	 *
 	 * @package KrameWork\Storage
+	 * @author Kruithne (kruithne@gmail.com)
 	 */
 	class File extends DirectoryItem
 	{
 		/**
 		 * File constructor.
+		 *
+		 * @api
 		 * @param string $path Path to the file.
-		 * @param bool $autoLoad If true and file is provided, will attempt to load on construct.
-		 * @param bool $touch If true, file will be created blank on instance construct.
+		 * @param bool $autoLoad Attempt to load the file contents on instantiation.
+		 * @param bool $touch Touch the file, creating it if missing.
 		 * @throws FileNotFoundException|FileReadException
 		 */
-		public function __construct(string $path, bool $autoLoad = true, $touch = false) {
+		public function __construct(string $path, bool $autoLoad = true, bool $touch = false) {
 			parent::__construct($path);
 
 			if ($touch && !$this->exists())
@@ -54,24 +59,30 @@
 		}
 
 		/**
-		 * Check if the directory file is valid.
-		 * @return bool
+		 * Check if the file exists and is valid.
+		 *
+		 * @api
+		 * @return bool File exists and is valid.
 		 */
 		public function isValid():bool {
 			return $this->exists() && is_file($this->path);
 		}
 
 		/**
-		 * Attempt to delete the directory item.
-		 * @return bool
+		 * Attempt to delete the file.
+		 *
+		 * @api
+		 * @return bool File deleted successfully.
 		 */
 		public function delete():bool {
 			return @unlink($this->path);
 		}
 
 		/**
-		 * Get the size of this file.
-		 * @return int
+		 * Get the size of this file in bytes.
+		 *
+		 * @api
+		 * @return int Size of the file.
 		 */
 		public function getSize():int {
 			$size = @filesize($this->path);
@@ -80,8 +91,9 @@
 
 		/**
 		 * Get the extension of this file (without leading period).
-		 * Defaults to an empty string if none exists.
-		 * @return string
+		 *
+		 * @api
+		 * @return string File extension, or empty string if missing.
 		 */
 		public function getExtension():string {
 			$parts = explode(".", $this->name);
@@ -92,7 +104,9 @@
 		/**
 		 * Attempts to get the MIME type of a file.
 		 * Requires php_fileinfo extension to be enabled.
-		 * @return string MIME type, or "unknown".
+		 *
+		 * @api
+		 * @return string MIME type, or "unknown" on failure.
 		 */
 		public function getFileType():string {
 			if (function_exists("finfo_file")) {
@@ -106,7 +120,10 @@
 		}
 
 		/**
-		 * Read data from a file.
+		 * Attempt to read the data from a file.
+		 * Read data is not returned, but available through the wrapper.
+		 *
+		 * @api
 		 * @throws FileNotFoundException|FileReadException
 		 */
 		public function read() {
@@ -124,9 +141,13 @@
 		}
 
 		/**
-		 * Save the file to disk.
-		 * @param string|null $file Path to save the file. Defaults to loaded file location.
-		 * @param bool $overwrite If true and file exists, will overwrite.
+		 * Attempt to save the data in the wrapper to a file.
+		 * Using an alternative path to save will not change the original
+		 * path stored by the wrapper.
+		 *
+		 * @api
+		 * @param string|null $file Path to save the file. If omitted, will use wrapper path.
+		 * @param bool $overwrite Overwrite the file if it exists.
 		 * @throws FileWriteException
 		 */
 		public function save(string $file = null, bool $overwrite = true) {
@@ -139,16 +160,20 @@
 		}
 
 		/**
-		 * Get the data contained by this file (empty until read()).
-		 * @return mixed
+		 * Get the data contained by the wrapper after a read() or manual set.
+		 *
+		 * @api
+		 * @return string|null
 		 */
 		public function getData() {
 			return $this->data;
 		}
 
 		/**
-		 * Set the data for this file (requires save() to persist).
-		 * @param $data
+		 * Set the data for this file wrapper. Overwrites existing.
+		 *
+		 * @api
+		 * @param mixed $data Data to store in the wrapper.
 		 */
 		public function setData($data) {
 			$this->data = $data;
@@ -156,7 +181,7 @@
 
 		/**
 		 * Data loaded from the file.
-		 * @var string
+		 * @var string|null
 		 */
 		protected $data;
 	}

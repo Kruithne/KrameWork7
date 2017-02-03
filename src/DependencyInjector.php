@@ -31,7 +31,10 @@
 
 	/**
 	 * Class DependencyInjector
+	 * Constructs instantiable classes and their dependencies.
+	 *
 	 * @package KrameWork\DI
+	 * @author Kruithne (kruithne@gmail.com)
 	 */
 	class DependencyInjector
 	{
@@ -41,6 +44,8 @@
 
 		/**
 		 * DependencyInjector constructor.
+		 *
+		 * @api
 		 * @param int $flags Flags to control how this module behaves.
 		 * @param array $components Initial components.
 		 * @param array $bindings Initial bindings.
@@ -65,6 +70,11 @@
 
 		/**
 		 * Add a component to the injector.
+		 * string: Name of a class which can be instantiated.
+		 * object: Pre-constructed object.
+		 * array: Multiple of the above.
+		 *
+		 * @api
 		 * @param string|array|object $class
 		 * @throws DuplicateClassException
 		 */
@@ -111,6 +121,11 @@
 
 		/**
 		 * Resolve a given class name.
+		 * object: Resolves the class name of the object.
+		 * string: Resolves the given string as a class name.
+		 * array: Multiple of the above, returns array.
+		 *
+		 * @internal
 		 * @param mixed $class
 		 * @param array $output
 		 * @return string|string[]
@@ -144,11 +159,14 @@
 		}
 
 		/**
-		 * Get a constructed component from the injector.
-		 * @param string $className Name of the class to retrieve.
-		 * @param bool $add If true, will attempt to add class if missing.
+		 * Obtain the injectors instance of a specific component.
+		 * Non-constructed object instances will be instantiated.
+		 *
+		 * @api
+		 * @param string $className Class name of the component to create.
+		 * @param bool $add Attempt to add the class to the injector if missing.
 		 * @return object
-		 * @throws ClassResolutionException
+		 * @throws ClassResolutionException|ClassInstantiationException
 		 */
 		public function getComponent(string $className, bool $add = false) {
 			$resolve = $this->resolveClassName($className);
@@ -170,19 +188,21 @@
 		}
 
 		/**
-		 * Retrieve components for a class that has duplicate instances.
-		 * @param string $className
-		 * @param bool $add
+		 * Retrieve components from the injector that implement the given interface.
+		 *
+		 * @api
+		 * @param string $interfaceName Interface components must implement to be returned.
+		 * @param bool $add Attempt to add the class to the injector if missing.
 		 * @return array
 		 */
-		public function getComponents(string $className, bool $add = false) {
-			$resolves = $this->resolveClassName($className);
+		public function getImplementingComponents(string $interfaceName, bool $add = false) {
+			$resolves = $this->resolveClassName($interfaceName);
 			if (!is_array($resolves))
 				$resolves = [$resolves];
 
 			$objects = [];
 			foreach ($resolves as $resolve) {
-				// We don't have an instance of this class yet.
+				// Class has not yet been registered with the injector.
 				if (!array_key_exists($resolve, $this->classList)) {
 					if ($add)
 						$this->addComponent($resolve);
@@ -201,9 +221,11 @@
 		}
 
 		/**
-		 * Construct a class by the given name.
+		 * Attempt to construct a class with the given name.
+		 *
+		 * @internal
 		 * @param string $className Name of the class to construct.
-		 * @return object
+		 * @return object Constructed class.
 		 * @throws ClassInstantiationException
 		 */
 		public function constructComponent(string $className) {
@@ -242,7 +264,9 @@
 
 		/**
 		 * Detect interfaces for a class and bind them to it.
-		 * @param string $className Name of the class to look-up interfaces for.
+		 *
+		 * @internal
+		 * @param string $className Class to bind interfaces for.
 		 */
 		private function bindInterfaces(string $className) {
 			$class = new \ReflectionClass($className);
@@ -251,9 +275,13 @@
 		}
 
 		/**
-		 * Bind an interface to the given class.
-		 * @param string $interface
-		 * @param $class
+		 * Manually bind an interface to a class.
+		 * $class string: Binds to class name.
+		 * $class object: Binds to the objects class name.
+		 *
+		 * @api
+		 * @param string $interface Interface name to bind class to.
+		 * @param string|object $class Class to bind the interface to.
 		 * @throws InterfaceBindingException
 		 */
 		public function bind(string $interface, $class) {

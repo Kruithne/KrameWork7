@@ -31,8 +31,10 @@
 
 	/**
 	 * Class AutoLoader
-	 * @package KrameWork
 	 * Handles the automatic loading of files based on class initiation.
+	 *
+	 * @package KrameWork
+	 * @author Kruithne (kruithne@gmail.com)
 	 */
 	class AutoLoader
 	{
@@ -43,6 +45,8 @@
 
 		/**
 		 * AutoLoader constructor.
+		 *
+		 * @api
 		 * @param array $sources List of sources (strings) or namespace/source key-value array.
 		 * @param string[] $extensions Allowed extensions.
 		 * @param int $flags Flags to control auto-loading.
@@ -89,9 +93,11 @@
 
 		/**
 		 * Attempt to load a given class.
-		 * @param $className
+		 *
+		 * @api
+		 * @param string $className Name of the class to load.
 		 */
-		public function loadClass($className) {
+		public function loadClass(string $className) {
 			if (!$this->enabled)
 				return;
 
@@ -144,14 +150,18 @@
 		}
 
 		/**
-		 * Disable this auto-loader.
+		 * Disable this auto-loader, preventing it from loading classes.
+		 *
+		 * @api
 		 */
 		public function disable() {
 			$this->enabled = false;
 		}
 
 		/**
-		 * Enable this auto-loader.
+		 * Enable this auto-loader, allowing it to load classes.
+		 *
+		 * @api
 		 */
 		public function enable() {
 			$this->enabled = true;
