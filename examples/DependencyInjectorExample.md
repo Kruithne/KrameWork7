@@ -43,15 +43,13 @@ produce an instance of `MyClass` (providing it's the only component implementing
 ```php
 $component = $injector->getComponent("IMyInterface");
 ```
-The `getComponent` call will only ever return a single object instance, and if you request a class/interface that has multiple 
-associated components in the injector, you'll get an exception. For recalling multiple components under a single class/interface 
-name, use `getComponents()`.
+When retrieving components that implement an interface, it's better to make use of the `getImplementors()` function as, unlike `getComponent()`, it can return multiple components at once.
 ```php
 $classA = new class implements IMyInterface {};
 $classB = new class implements IMyInterface {};
 
 $injector->addComponent([$classA, $classB]);
-$components = $injector->getComponents("IMyInterface"); // Returns $classA and $classB in an array.
+$components = $injector->getImplementors("IMyInterface"); // Returns $classA and $classB in an array.
 ```
 As you may have spotted in that last example, we called `addComponent()` with an array instead of a class name (string). The 
 `addComponent()` call also accepts pre-constructed objects, which will be mapped to their own class name.

@@ -195,7 +195,7 @@
 		 * @param bool $add Attempt to add the class to the injector if missing.
 		 * @return array
 		 */
-		public function getImplementingComponents(string $interfaceName, bool $add = false) {
+		public function getImplementors(string $interfaceName, bool $add = false) {
 			$resolves = $this->resolveClassName($interfaceName);
 			if (!is_array($resolves))
 				$resolves = [$resolves];
