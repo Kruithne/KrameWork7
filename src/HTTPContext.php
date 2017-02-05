@@ -209,23 +209,33 @@
 		 * @api
 		 * @param bool $decode Parse the string and validate it.
 		 * @param bool $ignoreContentType Skip validation of the content-type.
+		 * @param bool $wrapper Wrap the decoded JSON object in a JSONFile wrapper.
 		 * @return mixed|string Decoded JSON object or raw string, depending on $decode
 		 * @throws InvalidRequestTypeException
 		 */
-		public function getJSON(bool $decode = true, bool $ignoreContentType = false) {
+		public function getJSON(bool $decode = true, bool $ignoreContentType = false, bool $wrapper = true) {
 			if (!$ignoreContentType && $this->getContentType(false) != "application/json")
 				throw new InvalidRequestTypeException("Request content is not declared as application/json.");
 
-			$content = $this->getRequestContent();
-			if ($decode) {
-				$decoded = json_decode($content);
-				if ($decoded === false)
+			if ($wrapper) {
+				require_once(__DIR__ . "/Storage/JSONFile.php");
+				try {
+					return new Storage\JSONFile("php://input", true, true);
+				} catch (Storage\JSONException $e) {
 					throw new InvalidRequestTypeException("Request content did not contain valid json.");
+				}
+			} else {
+				$content = $this->getRequestContent();
+				if ($decode) {
+					$decoded = json_decode($content);
+					if ($decoded === false)
+						throw new InvalidRequestTypeException("Request content did not contain valid json.");
 
-				return $decoded;
+					return $decoded;
+				}
+
+				return $content;
 			}
-
-			return $content;
 		}
 
 		/**
