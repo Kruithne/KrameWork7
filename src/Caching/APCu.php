@@ -1,6 +1,8 @@
 <?php
 	namespace KrameWork\Caching;
 
+	require_once(__DIR__ . "/IDataCache.php");
+
 	/**
 	 * Class APCu
 	 * Interface for APCu.
