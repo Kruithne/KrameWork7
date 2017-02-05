@@ -30,9 +30,22 @@
 		 * @api
 		 * @param string $key Key to store the value under.
 		 * @param mixed $value Value to store in the cache.
+		 * @param int $expire Expiry time as Unix timestamp, 0 = never.
+		 */
+		public function store(string $key, $value, int $expire = 0): void {
+			apcu_store($key, $value, time() - $expire);
+		}
+
+		/**
+		 * Store a value in the cache.
+		 * Value will not expire, use store() if needed.
+		 *
+		 * @api
+		 * @param string $key Key to store the value under.
+		 * @param mixed $value Value to store in the cache.
 		 */
 		public function __set(string $key, $value): void {
-			apcu_store($key, $value);
+			$this->store($key, $value);
 		}
 
 		/**

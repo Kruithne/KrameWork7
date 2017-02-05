@@ -41,13 +41,26 @@
 
 		/**
 		 * Store a value in the cache.
+		 * Value will not expire. Use store() if needed.
+		 *
+		 * @api
+		 * @param string $key Key to store the value under.
+		 * @param mixed $value Value to store in the cache.
+		 * @param int $expire Expiry time as Unix timestamp, 0 = never.
+		 */
+		public function store(string $key, $value, int $expire = 0): void {
+			$this->cache->set($key, $value, $expire);
+		}
+
+		/**
+		 * Store a value in the cache.
 		 *
 		 * @api
 		 * @param string $key Key to store the value under.
 		 * @param mixed $value Value to store in the cache.
 		 */
 		public function __set(string $key, $value): void {
-			$this->cache->set($key, $value);
+			$this->store($key, $value);
 		}
 
 		/**
