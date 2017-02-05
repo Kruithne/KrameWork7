@@ -100,7 +100,7 @@
 			$timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
 			$timer->start();
 
-			usleep(10);
+			usleep(50);
 			$original = $timer->restart();
 			$this->assertGreaterThanOrEqual(0.0009, $original);
 
