@@ -22,7 +22,7 @@
 	 * SOFTWARE.
 	 */
 
-	namespace Kramework\Utils\Timing;
+	namespace Kramework\Timing;
 
 	/**
 	 * Interface IBenchmark
