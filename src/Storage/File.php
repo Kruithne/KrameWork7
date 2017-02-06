@@ -174,6 +174,15 @@
 		}
 
 		/**
+		 * Retrieve the raw data of this file encoded as base64.
+		 * @param bool $forceRead Call read() if data is missing.
+		 * @return string
+		 */
+		public function getBase64Data(bool $forceRead = false):string {
+			return base64_encode($this->getData($forceRead));
+		}
+
+		/**
 		 * Set the data for this file wrapper. Overwrites existing.
 		 *
 		 * @api
