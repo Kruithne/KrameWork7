@@ -50,7 +50,7 @@
 			if ($this->compiled === null) {
 				$comp = $this->raw;
 				foreach ($this->subs as $key => $value)
-					$comp = str_replace("{$key}", $value, $comp);
+					$comp = str_replace(sprintf("{%s}", $key), $value, $comp);
 
 				$this->compiled = $comp;
 			}
