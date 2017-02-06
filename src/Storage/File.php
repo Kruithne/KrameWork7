@@ -163,9 +163,13 @@
 		 * Get the data contained by the wrapper after a read() or manual set.
 		 *
 		 * @api
-		 * @return string|null
+		 * @param bool $forceRead Call read() if data is missing.
+		 * @return null|string
 		 */
-		public function getData() {
+		public function getData(bool $forceRead = false) {
+			if ($forceRead && $this->data === null)
+				$this->read();
+
 			return $this->data;
 		}
 
