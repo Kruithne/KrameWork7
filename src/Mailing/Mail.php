@@ -47,14 +47,14 @@
 	{
 		/**
 		 * Mail constructor.
-		 * @param bool $containsHTML Send message as HTML.
+		 *
+		 * @api
 		 */
-		public function __construct(bool $containsHTML = false) {
+		public function __construct() {
 			$this->recipients = [];
 			$this->headers = [];
 			$this->files = [];
 
-			$this->containsHTML = $containsHTML;
 			$this->addHeader('MIME-Version', '1.0');
 		}
 
@@ -174,14 +174,13 @@
 			return $this;
 		}
 
-		/**
-		 * Set the body of this e-mail.
-		 *
-		 * @param string $body
-		 * @return Mail
-		 */
-		public function setBody($body):Mail {
-			$this->body = strval($body);
+		public function setHTMLBody($content):Mail {
+			$this->htmlBody = $content;
+			return $this;
+		}
+
+		public function setPlainBody($content):Mail {
+			$this->plainBody = $content;
 			return $this;
 		}
 
@@ -253,24 +252,36 @@
 				throw new MissingSenderException('Cannot send mail without a sender.');
 
 			$headers = $this->headers;
-			$body = chunk_split(base64_encode($this->body ?? ''), 70, "\r\n");
 
 			$cBody = new StringBuilder();
 			$cBody->setLineEnd(StringBuilder::LE_UNIX);
 
-			$contentType = 'text/' . ($this->containsHTML ? 'html' : 'plain') . '; charset=UTF-8';
+			// Compile Body
+			$bound = '=__' . md5(time()) . '__=';
+			$headers['Content-Type'] = 'multipart/mixed; boundary="' . $bound. '"';
 
-			// Compile body.
-			if (count($this->files)) {
-				$bound = '=__' . md5(time()) . '__=';
-				$headers['Content-Type'] = 'multipart/mixed; boundary="' . $bound. '"';
+			$subBound = '=__' . md5(time() . 'sub') . '__=';
 
-				$cBody->appendLine('--' . $bound);
-				$cBody->appendLine('Content-Type: ' . $contentType);
+			$cBody->appendLine('--' . $bound);
+			$cBody->appendLine('Content-Type: multipart/alternative; boundary="' . $subBound . '"');
+
+			if ($this->plainBody !== null || $this->htmlBody === null) {
+				$cBody->appendLine('--' . $subBound);
+				$cBody->appendLine('Content-Type: text/plain; charset=UTF-8');
+				$cBody->appendLine('Content-Transfer-Encoding: 7bit');
+				$cBody->appendLine('Content-Disposition: inline')->newLine();
+				$cBody->appendLine($this->plainBody ?? '');
+			}
+
+			if ($this->htmlBody !== null) {
+				$cBody->appendLine('--' . $subBound);
+				$cBody->appendLine('Content-Type: text/html; charset=UTF-8');
 				$cBody->appendLine('Content-Transfer-Encoding: base64');
 				$cBody->appendLine('Content-Disposition: inline')->newLine();
-				$cBody->appendLine($body)->newLine();
+				$cBody->appendLine(chunk_split(base64_encode($this->htmlBody), 70, "\r\n"));
+			}
 
+			if (count($this->files)) {
 				/**
 				 * @var File $file
 				 */
@@ -281,17 +292,11 @@
 					$cBody->appendLine('--' . $bound);
 					$cBody->appendLine('Content-Type: ' . $file->getFileType() . '; name="' . $file->getName() . '"');
 					$cBody->appendLine('Content-Disposition: attachment; filename="' . $file->getName() . '"');
-					$cBody->appendLine('Content-Transfer-Encoding: base64');
+					$cBody->appendLine('Content-Transfer-Encoding: base64')->newLine();
 					$cBody->appendLine(chunk_split($file->getBase64Data(true), 76, "\r\n"))->newLine();
 				}
 
-				$cBody->appendLine('--' . $bound)->newLine();
-			} else {
-				$headers['Content-Type'] = $contentType;
-				$headers['Content-Transfer-Encoding'] = 'base64';
-				$headers['Content-Disposition'] = 'inline';
-
-				$cBody->append($body);
+				$cBody->appendLine('--' . $bound . '--');
 			}
 
 			// Compile headers.
@@ -332,15 +337,15 @@
 		/**
 		 * @var string
 		 */
-		private $body;
+		private $plainBody;
+
+		/**
+		 * @var string
+		 */
+		private $htmlBody;
 
 		/**
 		 * @var array
 		 */
 		private $files;
-
-		/**
-		 * @var bool
-		 */
-		private $containsHTML;
 	}
