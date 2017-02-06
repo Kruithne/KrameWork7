@@ -35,27 +35,34 @@
 
 		/**
 		 * Add a recipient to the e-mail.
+		 * Array input must be in email=>name format (name can be null).
 		 *
 		 * @api
-		 * @param array|string $recipient Valid RFC 822 e-mail address(es).
+		 * @param array|string $email Valid RFC 822 e-mail address(es).
+		 * @param null $name Name of the recipient.
+		 * @param bool $encode Recipient name will be encoded in base64.
 		 * @return Mail
 		 * @throws InvalidRecipientException
 		 */
-		public function addRecipient($recipient):Mail {
-			// Array: Treat all elements as individual recipients.
-			if (is_array($recipient)) {
-				foreach ($recipient as $node)
-					$this->addRecipient($node);
+		public function addRecipient($email, $name = null, $encode = true):Mail {
+			// Array: Treat array as $email => $name key/value pair array.
+			if (is_array($email)) {
+				foreach ($email as $nodeEmail => $nodeName)
+					$this->addRecipient($nodeEmail, $nodeName, $encode);
 			} else {
 				// filter_var provides RFC 822 validation, mail() requires
 				// RFC 2822 compliance, but this should be enough to catch
 				// most issues.
-				$validate = filter_var($recipient, FILTER_VALIDATE_EMAIL);
+				$validate = filter_var($email, FILTER_VALIDATE_EMAIL);
 				if ($validate === false)
 					throw new InvalidRecipientException("Invalid e-mail address (RFC 822)");
 
+				// Encode name.
+				if ($encode)
+					$name = sprintf("=?UTF-8?B?%s?=", base64_encode($name));
+
 				// Add the recipient to the stack.
-				$this->recipients[strval($recipient)] = true;
+				$this->recipients[strval($email)] = $name;
 			}
 			return $this;
 		}
@@ -64,20 +71,20 @@
 		 * Remove a recipient from the e-mail.
 		 *
 		 * @api
-		 * @param array|string $recipient E-mail address(es).
+		 * @param array|string $email E-mail address(es).
 		 * @return Mail
 		 */
-		public function removeRecipient($recipient):Mail {
+		public function removeRecipient($email):Mail {
 			// Array: Treat all elements as individual recipients.
-			if (is_array($recipient)) {
-				foreach ($recipient as $node)
+			if (is_array($email)) {
+				foreach ($email as $node)
 					$this->removeRecipient($node);
 			} else {
-				$recipient = strval($recipient); // Ensure we have a string.
+				$email = strval($email); // Ensure we have a string.
 
 				// Delete the recipient from the stack.
-				if (array_key_exists($recipient, $this->recipients))
-					unset($this->recipients[$recipient]);
+				if (array_key_exists($email, $this->recipients))
+					unset($this->recipients[$email]);
 			}
 			return $this;
 		}
@@ -114,11 +121,18 @@
 		 * Set the sender of this e-mail.
 		 *
 		 * @api
-		 * @param string $sender
+		 * @param string $sender E-mail address that sent this mail.
+		 * @param bool $generateMessageID Generate a Message-Id header using this sender.
 		 * @return Mail
 		 */
-		public function setSender(string $sender):Mail {
+		public function setSender(string $sender, bool $generateMessageID):Mail {
 			$this->addHeader("From", $sender);
+
+			if ($generateMessageID) {
+				$domain = explode("@", $sender);
+				$this->addHeader("Message-Id", sprintf("<%s@%s>", uniqid(rand()), $domain[count($domain) - 1]));
+			}
+
 			return $this;
 		}
 
@@ -258,7 +272,11 @@
 			$cHeaders = implode("\n", $cHeaders);
 
 			// Compile recipients.
-			$cRecipients = implode(",", array_keys($this->recipients));
+			$cRecipients = [];
+			foreach ($this->recipients as $email => $name) {
+				$cRecipients[] = sprintf("\"%s\" <%s>", $name, $email);
+			}
+			$cRecipients = implode(",", $cRecipients);
 
 			// Compile subject.
 			$cSubject = sprintf("=?UTF-8?B?%s?=", base64_encode($this->subject));
