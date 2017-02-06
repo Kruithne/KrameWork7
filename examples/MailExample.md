@@ -41,24 +41,20 @@ $mail->removeRecipient('foo@bar.net');
 ```
 In the situation that you want to remove all recipients from the mail object, a call to `clearRecipients()` would be simpler and cleaner; it does exactly what it says on the tin!
 ## Body
-The body of the e-mail is the most important part; we can set the contents of it using `setBody()`.
+There are two bodies for an e-mail, a plain-text version which can be set using `setPlainBody(content)`, and the HTML version which can be set using `setHTMLBody(content)`. It's highly recommended that you always provide a plain-text version, even when providing a HTML version, for clients that do not support HTML. While both versions will be sent, only the most relevant version will be rendered by the client.
 ```php
 $mail = new Mail();
-$mail->setBody('Hey Felicia!');
-```
-By default, the contents of the body will be sent as `text/plain`. If you plan on using HTML in the e-mail, you can specify this with the `containsHTML` parameter in the class constructor, which will send the body as `text/html` instead.
-```php
-$mail = new Mail(true); // Specify HTML.
-$mail->setBody('<h1>Important E-mail Regarding Gummie Bears</h1>');
+$mail->setPlainText('Dear Foo. Please send help.');
+$mail->setHTMLVersion('<i>Dear Foo.</i><br/><b>Please send help!</b>');
 ```
 ## Custom Headers
-For various reasons, you may find yourself wanting to add custom headers to the mail object. This can be done with call to `addHeader(name, value)`, with both `name` and `value` being strings.
+For various reasons, you may find yourself wanting to add custom headers to the mail object. This can be done with a call to `addHeader(name, value)`, with both `name` and `value` being strings.
 ```php
 $mail = new Mail();
 $mail->addHeader('Reply-To', 'foo@bar.net');
 ```
 > **Note**: By default, `MIME-Version` is set to `1.0`. It's not recommended to change this unless you know what you're doing as internals of the `Mail` object rely on it.
-> **Note**: When calling `send()`, the headers `Content-Type`, `Content-Transfer-Encoding` and `Content-Disposition` will be over-written by the mailer depending on content type/attachments.
+> **Note**: When calling `send()`, the headers `Content-Type`, `Content-Transfer-Encoding` and `Content-Disposition` may be over-written by the mailer depending on content type/attachments.
 ## Attachments
 ### Adding
 Attachments can be added to a mail object by simply calling `attachFile(file)`, where `file` is either a path to a file (string) or an instance of the `File` class provided by KW7; some examples of these different cases can be seen below.
@@ -95,4 +91,4 @@ If you wish to remove *all* attachments on the mail object, a call to `clearFile
 ### Sending
 When everything is configured as you like, make a call to `send()` and, providing your server/environment mailing is set up correctly, your e-mail will be flying off through the internets for honor and glory.
 
-E-mails are sent as `multipart/mixed` messages, encoded in `base64`.
+E-mails are sent as `multipart/mixed` with a sub-boundary of `multipart/alternative` for the content, which can contain both plain-text and HTML versions of the same message based on your input. Mail subjects, attachments, recipient names (by default) and HTML content are encoded in `base64`, while everything else uses `7bit` encoding. The `UTF-8` charset is used for everything in the mail instance.
