@@ -218,7 +218,7 @@
 				throw new MissingSenderException("Cannot send mail without a sender.");
 
 			$headers = $this->headers;
-			$body = chunk_split(base64_encode($this->body), "70", "\r\n");
+			$body = chunk_split(base64_encode($this->body ?? ""), 70, "\r\n");
 
 			$cBody = new StringBuilder();
 			$contentType = sprintf("text/%s; charset=UTF-8", $this->containsHTML ? "html" : "plain");
