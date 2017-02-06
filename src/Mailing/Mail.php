@@ -218,6 +218,8 @@
 		public function removeFile($attachment):Mail {
 			if ($attachment instanceof File)
 				$attachment = $attachment->getName();
+			else
+				$attachment = basename($attachment);
 
 			if (array_key_exists($attachment, $this->files))
 				unset($this->files[$attachment]);
