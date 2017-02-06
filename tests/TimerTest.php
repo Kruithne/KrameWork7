@@ -107,7 +107,7 @@
 			$this->assertGreaterThanOrEqual(Time::MICROSECOND * 1, $original);
 
 			usleep(2);
-			$this->assertLessThan($original, $timer->getElapsed());
+			$this->assertTrue($original < $timer->getElapsed());
 
 			unset($timer);
 		}
