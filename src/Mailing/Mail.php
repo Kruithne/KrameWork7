@@ -2,6 +2,8 @@
 	namespace KrameWork\Mailing;
 
 	use KrameWork\Storage\File;
+	require_once(__DIR__ . "/../Storage/File.php");
+
 	use KrameWork\Utils\StringBuilder;
 	require_once(__DIR__ . "/../Utils/StringBuilder.php");
 
@@ -9,6 +11,7 @@
 	class ExcessiveSubjectLengthException extends \Exception {}
 	class MissingSenderException extends \Exception {}
 	class AttachmentNotFoundException extends \Exception {}
+	class DuplicateAttachmentException extends \Exception {}
 
 	/**
 	 * Class Mail
@@ -163,18 +166,22 @@
 		 * Attach a file to be sent with this mail.
 		 *
 		 * @api
-		 * @param string $path Path of the file to attach.
+		 * @param string|File $attachment Attachment.
 		 * @return Mail
 		 * @throws AttachmentNotFoundException
+		 * @throws DuplicateAttachmentException
 		 */
-		public function attachFile(string $path):Mail {
-			if (!file_exists($path))
-				throw new AttachmentNotFoundException("Unable to locate attachment: " . $path);
+		public function attachFile($attachment):Mail {
+			if (!($attachment instanceof File)) {
+				$attachment = new File($attachment, false, false);
+				if (!$attachment->isValid())
+					throw new AttachmentNotFoundException("Cannot attach: " . $attachment->getName());
+			}
 
-			if (!is_file($path))
-				throw new AttachmentNotFoundException("Not a valid attachment: " . $path);
+			if (array_key_exists($attachment->getName(), $this->files))
+				throw new DuplicateAttachmentException("Attachment already exists: " . $attachment->getName());
 
-			$this->files[$path] = true;
+			$this->files[$attachment->getName()] = $attachment;
 			return $this;
 		}
 
@@ -182,12 +189,15 @@
 		 * Remove an attached file from this mail object.
 		 *
 		 * @api
-		 * @param string $path Path of the file to remove.
+		 * @param string|File $attachment Attachment to remove.
 		 * @return Mail
 		 */
-		public function removeFile(string $path):Mail {
-			if (array_key_exists($path, $this->files))
-				unset($this->files[$path]);
+		public function removeFile($attachment):Mail {
+			if ($attachment instanceof File)
+				$attachment = $attachment->getName();
+
+			if (array_key_exists($attachment, $this->files))
+				unset($this->files[$attachment]);
 
 			return $this;
 		}
@@ -225,8 +235,6 @@
 
 			// Compile body.
 			if (count($this->files)) {
-				require_once(__DIR__ . "/../Storage/File.php");
-
 				$bound = sprintf("=__%s__=", md5(time()));
 				$headers["Content-Type"] = sprintf("multipart/mixed; boundary=\"%s\"", $bound);
 
@@ -236,10 +244,10 @@
 				$cBody->append("Content-Disposition: inline\n\n");
 				$cBody->appendf("%s\n\n", $body);
 
-				foreach (array_keys($this->files) as $file) {
-					if (!($file instanceof File))
-						$file = new File($file);
-
+				/**
+				 * @var File $file
+				 */
+				foreach ($this->files as $file) {
 					if (!$file->isValid())
 						throw new AttachmentNotFoundException("Unable to attach file: " . $file->getName());
 
