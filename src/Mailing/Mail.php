@@ -7,7 +7,6 @@
 
 	class InvalidRecipientException extends \Exception {}
 	class ExcessiveSubjectLengthException extends \Exception {}
-	class MissingSubjectException extends \Exception {}
 	class MissingSenderException extends \Exception {}
 	class AttachmentNotFoundException extends \Exception {}
 
@@ -210,14 +209,10 @@
 		 * @api
 		 * @throws InvalidRecipientException
 		 * @throws MissingSenderException
-		 * @throws MissingSubjectException
 		 */
 		public function send() {
 			if (!count($this->recipients))
 				throw new InvalidRecipientException("Cannot send mail without recipients.");
-
-			if ($this->subject === null)
-				throw new MissingSubjectException("Cannot send mail without a subject.");
 
 			if (!array_key_exists("From", $this->headers))
 				throw new MissingSenderException("Cannot send mail without a sender.");
@@ -279,7 +274,7 @@
 			$cRecipients = implode(",", $cRecipients);
 
 			// Compile subject.
-			$cSubject = sprintf("=?UTF-8?B?%s?=", base64_encode($this->subject));
+			$cSubject = sprintf("=?UTF-8?B?%s?=", base64_encode($this->subject ?? "No Subject"));
 
 			mail($cRecipients, $cSubject, $cBody, $cHeaders);
 		}
