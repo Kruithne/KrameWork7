@@ -254,6 +254,8 @@
 			$body = chunk_split(base64_encode($this->body ?? ''), 70, "\r\n");
 
 			$cBody = new StringBuilder();
+			$cBody->setLineEnd(StringBuilder::LE_UNIX);
+
 			$contentType = 'text/' . ($this->containsHTML ? 'html' : 'plain') . '; charset=UTF-8';
 
 			// Compile body.
@@ -261,11 +263,11 @@
 				$bound = '=__' . md5(time()) . '__=';
 				$headers['Content-Type'] = 'multipart/mixed; boundary="' . $bound. '"';
 
-				$cBody->append('--', $bound, "\n");
-				$cBody->append('Content-Type: ', $contentType, "\n");
-				$cBody->append('Content-Transfer-Encoding: base64', "\n");
-				$cBody->append('Content-Disposition: inline', "\n\n");
-				$cBody->append($body, "\n\n");
+				$cBody->appendLine('--' . $bound);
+				$cBody->appendLine('Content-Type: ' . $contentType);
+				$cBody->appendLine('Content-Transfer-Encoding: base64');
+				$cBody->appendLine('Content-Disposition: inline')->newLine();
+				$cBody->appendLine($body)->newLine();
 
 				/**
 				 * @var File $file
@@ -274,14 +276,14 @@
 					if (!$file->isValid())
 						throw new AttachmentNotFoundException('Unable to attach file: ' . $file->getName());
 
-					$cBody->append('--', $bound, "\n");
-					$cBody->append('Content-Type: ', $file->getFileType(), '; name="', $file->getName(), "\"\n");
-					$cBody->append('Content-Disposition: attachment; filename"', $file->getName(), "\"\n");
-					$cBody->append('Content-Transfer-Encoding: base64', "\n");
-					$cBody->append(chunk_split($file->getBase64Data(true), 76, "\n"), "\n\n");
+					$cBody->appendLine('--' . $bound);
+					$cBody->appendLine('Content-Type: ' . $file->getFileType() . '; name="' . $file->getName() . '"');
+					$cBody->appendLine('Content-Disposition: attachment; filename="' . $file->getName() . '"');
+					$cBody->appendLine('Content-Transfer-Encoding: base64');
+					$cBody->appendLine(chunk_split($file->getBase64Data(true), 76, "\r\n"))->newLine();
 				}
 
-				$cBody->append('--', $bound, "--\n\n");
+				$cBody->appendLine('--' . $bound)->newLine();
 			} else {
 				$headers['Content-Type'] = $contentType;
 				$headers['Content-Transfer-Encoding'] = 'base64';
