@@ -114,4 +114,43 @@
 			$this->assertEquals("I am Batman! ...Or am I?", $builder->__toString());
 			unset($builder);
 		}
+
+		/**
+		 * Test length() functionality.
+		 */
+		public function testLength() {
+			$str = 'Hello, world!';
+			$builder = new StringBuilder($str);
+
+			$this->assertEquals(strlen($str), $builder->length());
+			unset($builder);
+		}
+
+		/**
+		 * Test isEmpty() functionality.
+		 */
+		public function testIsEmpty() {
+			$builder = new StringBuilder();
+			$this->assertTrue($builder->isEmpty());
+
+			$builder = new StringBuilder('Hello', 'World');
+			$this->assertFalse($builder->isEmpty());
+
+			unset($builder);
+		}
+
+		/**
+		 * Test StringBuilder separator functionality.
+		 */
+		public function testSeparator() {
+			$builder = new StringBuilder('Hello');
+
+			$builder->setSeparator(' ')->append('World');
+			$this->assertEquals('Hello World', $builder->__toString());
+
+			$builder->prepend('Extra');
+			$this->assertEquals('Extra Hello World', $builder->__toString());
+
+			unset($builder);
+		}
 	}

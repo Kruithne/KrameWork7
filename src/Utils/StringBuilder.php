@@ -57,6 +57,9 @@
 					foreach ($arg as $subArg)
 						$this->append($subArg);
 				} else {
+					if ($this->separator !== null && !$this->isEmpty())
+						$this->data .= $this->separator;
+
 					$this->data .= strval($arg);
 				}
 			}
@@ -87,6 +90,9 @@
 					foreach ($arg as $subArg)
 						$this->prepend($subArg);
 				} else {
+					if ($this->separator !== null && !$this->isEmpty())
+						$arg .= $this->separator;
+
 					$this->data = strval($arg) . $this->data;
 				}
 			}
@@ -130,7 +136,6 @@
 			return $this->data;
 		}
 
-
 		/**
 		 * Clear any input data to the string builder.
 		 *
@@ -143,7 +148,46 @@
 		}
 
 		/**
+		 * Retrieve the length of the builder string.
+		 *
+		 * @api
+		 * @return int
+		 */
+		public function length():int {
+			return strlen($this->data);
+		}
+
+		/**
+		 * Check if the builder is empty.
+		 *
+		 * @api
+		 * @return bool
+		 */
+		public function isEmpty():bool {
+			return $this->length() == 0;
+		}
+
+		/**
+		 * Set the separator for the StringBuilder.
+		 * Not retroactive; only effects newly appended content.
+		 * To disable, set separator value to null.
+		 *
+		 * @api
+		 * @param string|null $sep
+		 * @return StringBuilder
+		 */
+		public function setSeparator($sep):StringBuilder {
+			$this->separator = $sep;
+			return $this;
+		}
+
+		/**
 		 * @var string
 		 */
 		private $data;
+
+		/**
+		 * @var string
+		 */
+		private $separator;
 	}
