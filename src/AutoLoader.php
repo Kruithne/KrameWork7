@@ -25,7 +25,7 @@
 	namespace KrameWork;
 
 	use KrameWork\Utils\StringUtil;
-	require_once(__DIR__ . "/Utils/StringUtil.php");
+	require_once(__DIR__ . '/Utils/StringUtil.php');
 
 	class InvalidSourcePathException extends \Exception {}
 
@@ -57,7 +57,7 @@
 			$this->extensions = [];
 
 			// Remove any leading periods from extensions.
-			foreach ($extensions ?? ["php"] as $ext)
+			foreach ($extensions ?? ['php'] as $ext)
 				$this->extensions[] = ltrim($ext, ".");
 
 			// Pre-compute source paths/maps.
@@ -65,12 +65,12 @@
 				// Verify source path.
 				$real = realpath(StringUtil::formatDirectorySlashes($sourcePath));
 				if ($real === false)
-					throw new InvalidSourcePathException("Invalid source path: " . $sourcePath);
+					throw new InvalidSourcePathException('Invalid source path: ' . $sourcePath);
 
 				if (is_string($sourceName)) {
 					// Convert namespace separators if needed.
-					if (DIRECTORY_SEPARATOR == "/")
-						$sourceName = str_replace("\\", DIRECTORY_SEPARATOR, $sourceName);
+					if (DIRECTORY_SEPARATOR == '/')
+						$sourceName = str_replace('\\', DIRECTORY_SEPARATOR, $sourceName);
 
 					$this->sources[] = [$sourceName, $real];
 				} else {
@@ -79,7 +79,7 @@
 			}
 
 			if ($flags & self::INCLUDE_KRAMEWORK_DIRECTORY)
-				$this->sources["KrameWork"] = dirname(__FILE__);
+				$this->sources['KrameWork'] = dirname(__FILE__);
 
 			if ($flags & self::INCLUDE_WORKING_DIRECTORY)
 				$this->sources[] = getcwd();
@@ -133,7 +133,7 @@
 				if ($this->flags & self::RECURSIVE_SOURCING) {
 					if ($handle = opendir($directory)) {
 						while (($entry = readdir($handle)) !== false) {
-							if ($entry == "." || $entry == "..")
+							if ($entry == '.' || $entry == '..')
 								continue;
 
 							$path = $directory . DIRECTORY_SEPARATOR . $entry;

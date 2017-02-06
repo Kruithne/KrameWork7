@@ -48,7 +48,7 @@
 		 * @return StringBuilder
 		 */
 		public function appendf(string $format):StringBuilder {
-			return $this->append(\call_user_func_array("sprintf", func_get_args()));
+			return $this->append(\call_user_func_array('sprintf', func_get_args()));
 		}
 
 		/**
@@ -78,7 +78,7 @@
 		 * @return StringBuilder
 		 */
 		public function prependf(string $format):StringBuilder {
-			return $this->prepend(\call_user_func_array("sprintf", func_get_args()));
+			return $this->prepend(\call_user_func_array('sprintf', func_get_args()));
 		}
 
 		/**
@@ -115,7 +115,7 @@
 		 * @return StringBuilder
 		 */
 		public function clear():StringBuilder {
-			$this->data = "";
+			$this->data = '';
 			return $this;
 		}
 

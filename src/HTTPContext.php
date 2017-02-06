@@ -49,23 +49,23 @@
 			if ($node === null)
 				return $files;
 
-			$size = count($node["name"]);
+			$size = count($node['name']);
 			if ($size == 0) // Bork.
 				return $files;
 
 			if ($useWrappers)
-				require_once(__DIR__ . "/Storage/UploadedFile.php");
+				require_once(__DIR__ . '/Storage/UploadedFile.php');
 
 			for ($i = 0; $i < $size; $i++) {
 				if ($useWrappers) {
-					$files[] = new Storage\UploadedFile($node["tmp_name"][$i], $node["name"][$i], $node["error"][$i]);
+					$files[] = new Storage\UploadedFile($node['tmp_name'][$i], $node['name'][$i], $node['error'][$i]);
 				} else {
 					$files[] = new \ArrayObject([
-						"name" => $node["name"][$i],
-						"type" => $node["type"][$i],
-						"path" => $node["tmp_name"][$i],
-						"error" => $node["error"][$i],
-						"size" => $node["size"][$i]
+						'name' => $node['name'][$i],
+						'type' => $node['type'][$i],
+						'path' => $node['tmp_name'][$i],
+						'error' => $node['error'][$i],
+						'size' => $node['size'][$i]
 					], \ArrayObject::ARRAY_AS_PROPS);
 				}
 			}
@@ -214,22 +214,22 @@
 		 * @throws InvalidRequestTypeException
 		 */
 		public function getJSON(bool $decode = true, bool $ignoreContentType = false, bool $wrapper = true) {
-			if (!$ignoreContentType && $this->getContentType(false) != "application/json")
-				throw new InvalidRequestTypeException("Request content is not declared as application/json.");
+			if (!$ignoreContentType && $this->getContentType(false) != 'application/json')
+				throw new InvalidRequestTypeException('Request content is not declared as application/json.');
 
 			if ($wrapper) {
-				require_once(__DIR__ . "/Storage/JSONFile.php");
+				require_once(__DIR__ . '/Storage/JSONFile.php');
 				try {
-					return new Storage\JSONFile("php://input", true, true);
+					return new Storage\JSONFile('php://input', true, true);
 				} catch (Storage\JSONException $e) {
-					throw new InvalidRequestTypeException("Request content did not contain valid json.");
+					throw new InvalidRequestTypeException('Request content did not contain valid json.');
 				}
 			} else {
 				$content = $this->getRequestContent();
 				if ($decode) {
 					$decoded = json_decode($content);
 					if ($decoded === false)
-						throw new InvalidRequestTypeException("Request content did not contain valid json.");
+						throw new InvalidRequestTypeException('Request content did not contain valid json.');
 
 					return $decoded;
 				}
@@ -246,7 +246,7 @@
 		 */
 		public function isSecure():bool {
 			// ISAPI IIS returns "off", others do not set.
-			return ($_SERVER["HTTPS"] ?? "off") !== "off";
+			return ($_SERVER['HTTPS'] ?? 'off') !== 'off';
 		}
 
 		/**
@@ -257,7 +257,7 @@
 		 * @return string
 		 */
 		public function getRequestContent():string {
-			return file_get_contents("php://input");
+			return file_get_contents('php://input');
 		}
 
 		/**
@@ -267,7 +267,7 @@
 		 * @return int Length of the request content.
 		 */
 		public function getContentLength():int {
-			return intval($_SERVER["CONTENT_LENGTH"] ?? 0);
+			return intval($_SERVER['CONTENT_LENGTH'] ?? 0);
 		}
 
 		/**
@@ -277,7 +277,7 @@
 		 * @return string User-agent or "Unknown" if not available.
 		 */
 		public function getUserAgent():string {
-			return $_SERVER["HTTP_USER_AGENT"] ?? "Unknown";
+			return $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
 		}
 
 		/**
@@ -287,7 +287,7 @@
 		 * @return string Referer URL, or empty string if not available.
 		 */
 		public function getReferer():string {
-			return $_SERVER["HTTP_REFERER"] ?? "";
+			return $_SERVER['HTTP_REFERER'] ?? '';
 		}
 
 		/**
@@ -298,9 +298,9 @@
 		 * @return string Content-type, defaults to "text/plain" if not available.
 		 */
 		public function getContentType(bool $parameters = true):string {
-			$type = $_SERVER["CONTENT_TYPE"] ?? "text/plain";
+			$type = $_SERVER['CONTENT_TYPE'] ?? 'text/plain';
 			if (!$parameters) {
-				$parting = strpos($type, ";");
+				$parting = strpos($type, ';');
 				if ($parting !== false)
 					$type = substr($type, 0, $parting);
 			}
@@ -314,7 +314,7 @@
 		 * @return string Remote address, or empty string if not available.
 		 */
 		public function getRemoteAddress():string {
-			return $_SERVER["REMOTE_ADDR"] ?? "";
+			return $_SERVER['REMOTE_ADDR'] ?? '';
 		}
 
 		/**
@@ -324,7 +324,7 @@
 		 * @return string Request URI, or empty string if not available.
 		 */
 		public function getRequestURI():string {
-			return $_SERVER["REQUEST_URI"] ?? "";
+			return $_SERVER['REQUEST_URI'] ?? '';
 		}
 
 		/**
@@ -334,7 +334,7 @@
 		 * @return string Query string, or empty string if not available.
 		 */
 		public function getQueryString():string {
-			return $_SERVER["QUERY_STRING"] ?? "";
+			return $_SERVER['QUERY_STRING'] ?? '';
 		}
 
 		/**
@@ -344,7 +344,7 @@
 		 * @return string Request method. Defaults to "GET" if not available.
 		 */
 		public function getRequestMethod():string {
-			return $_SERVER["REQUEST_METHOD"] ?? "GET";
+			return $_SERVER['REQUEST_METHOD'] ?? 'GET';
 		}
 
 		/**
@@ -354,8 +354,8 @@
 		 */
 		private function checkFormDataPresence() {
 			$contentType = $this->getContentType(false);
-			$this->hasMultipartFormData = $contentType == "multipart/form-data";
-			$this->hasFormData = $this->hasMultipartFormData || $contentType == "application/x-www-form-urlencoded";
+			$this->hasMultipartFormData = $contentType == 'multipart/form-data';
+			$this->hasFormData = $this->hasMultipartFormData || $contentType == 'application/x-www-form-urlencoded';
 		}
 
 		/**
@@ -367,9 +367,9 @@
 		 */
 		private function extractURLEncodedData(string $input):array {
 			$out = [];
-			$components = explode("&", $input);
+			$components = explode('&', $input);
 			foreach ($components as $component) {
-				$parts = explode("=", $component);
+				$parts = explode('=', $component);
 				if (count($parts) < 2)
 					continue;
 
@@ -381,7 +381,7 @@
 					continue;
 
 				$keyLen = \strlen($key);
-				if (substr($key, $keyLen - 2) == "[]") {
+				if (substr($key, $keyLen - 2) == '[]') {
 					$key = urldecode(substr($key, 0, $keyLen - 2));
 					if (!array_key_exists($key, $out))
 						$out[$key] = [];

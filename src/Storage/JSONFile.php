@@ -24,7 +24,7 @@
 
 	namespace KrameWork\Storage;
 
-	require_once(__DIR__ . "/File.php");
+	require_once(__DIR__ . '/File.php');
 
 	class JSONException extends \Exception {}
 
@@ -131,7 +131,7 @@
 		 * @throws JSONException
 		 */
 		private function throwJSONError() {
-			throw new JSONException("JSON error: " . json_last_error_msg());
+			throw new JSONException('JSON error: ' . json_last_error_msg());
 		}
 
 		/**
@@ -142,7 +142,7 @@
 		 */
 		private function verifyDataObject() {
 			if ($this->jsonData === null)
-				throw new JSONException("Attempt to invoke value on a non-initiated JSON file.");
+				throw new JSONException('Attempt to invoke value on a non-initiated JSON file.');
 		}
 
 		/**

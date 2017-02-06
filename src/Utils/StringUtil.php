@@ -55,7 +55,7 @@
 		 * @return string
 		 */
 		static function formatDirectorySlashes(string $path, bool $trimTrail = false):string {
-			$clean = str_replace(DIRECTORY_SEPARATOR == "/" ? "\\" : "/", DIRECTORY_SEPARATOR, $path);
+			$clean = str_replace(DIRECTORY_SEPARATOR == '/' ? '\\' : '/', DIRECTORY_SEPARATOR, $path);
 			return $trimTrail ? rtrim($clean, "\t\n\r\0\x0B\\/") : $clean;
 		}
 
@@ -65,7 +65,7 @@
 		 * @return string
 		 */
 		static function namespaceBase(string $namespace):string {
-			$parts = explode("\\", $namespace);
+			$parts = explode('\\', $namespace);
 			return $parts[count($parts) - 1];
 		}
 	}

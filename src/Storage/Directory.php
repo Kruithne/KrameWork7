@@ -24,7 +24,7 @@
 
 	namespace KrameWork\Storage;
 
-	require_once(__DIR__ . "/File.php");
+	require_once(__DIR__ . '/File.php');
 
 	class InvalidDirectoryException extends \Exception {}
 	class FileAlreadyExistsException extends \Exception {}
@@ -120,15 +120,15 @@
 		 */
 		public function getItems(int $flags = self::DEFAULT_FLAGS):array {
 			if (!$this->isValid())
-				throw new InvalidDirectoryException("Directory could not be resolved.");
+				throw new InvalidDirectoryException('Directory could not be resolved.');
 
 			$handle = @opendir($this->path);
 			if ($handle === false)
-				throw new InvalidDirectoryException("Unable to access directory.");
+				throw new InvalidDirectoryException('Unable to access directory.');
 
 			$entries = [];
 			while (($entry = readdir($handle)) !== false) {
-				if ($entry == "." || $entry == "..")
+				if ($entry == '.' || $entry == '..')
 					continue;
 
 				// Skip hidden entries if not desired.

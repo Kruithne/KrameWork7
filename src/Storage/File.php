@@ -24,7 +24,7 @@
 
 	namespace KrameWork\Storage;
 
-	require_once(__DIR__ . "/DirectoryItem.php");
+	require_once(__DIR__ . '/DirectoryItem.php');
 
 	class FileNotFoundException extends \Exception {}
 	class FileReadException extends \Exception {}
@@ -52,7 +52,7 @@
 			parent::__construct($path);
 
 			if ($touch && !$this->exists())
-				file_put_contents($this->path, "");
+				file_put_contents($this->path, '');
 
 			if ($autoLoad)
 				$this->read();
@@ -98,7 +98,7 @@
 		public function getExtension():string {
 			$parts = explode(".", $this->name);
 			$size = count($parts);
-			return $size > 1 ? $parts[$size - 1] : "";
+			return $size > 1 ? $parts[$size - 1] : '';
 		}
 
 		/**
@@ -109,14 +109,14 @@
 		 * @return string MIME type, or "unknown" on failure.
 		 */
 		public function getFileType():string {
-			if (function_exists("finfo_file")) {
+			if (function_exists('finfo_file')) {
 				$info = new \finfo(FILEINFO_MIME_TYPE);
 				$type = $info->file($this->path);
 
 				if ($type !== null && strlen($type) > 0)
 					return $type;
 			}
-			return "unknown";
+			return 'unknown';
 		}
 
 		/**
@@ -128,14 +128,14 @@
 		 */
 		public function read() {
 			if ($this->path === null)
-				throw new FileNotFoundException("Cannot resolve file: No path given.");
+				throw new FileNotFoundException('Cannot resolve file: No path given.');
 
 			if (!file_exists($this->path))
-				throw new FileNotFoundException("Cannot resolve file: It does not exist.");
+				throw new FileNotFoundException('Cannot resolve file: It does not exist.');
 
 			$raw = file_get_contents($this->path);
 			if ($raw === null)
-				throw new FileReadException("Unable to read data from file.");
+				throw new FileReadException('Unable to read data from file.');
 
 			$this->data = $raw;
 		}
@@ -154,9 +154,9 @@
 			$file = $file ?? $this->path;
 
 			if (!$overwrite && file_exists($file))
-				throw new FileWriteException("Cannot write file: Already exists (specify overwrite?)");
+				throw new FileWriteException('Cannot write file: Already exists (specify overwrite?)');
 
-			file_put_contents($file, $this->data ?? "");
+			file_put_contents($file, $this->data ?? '');
 		}
 
 		/**

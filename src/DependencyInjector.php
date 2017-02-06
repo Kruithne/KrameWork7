@@ -94,7 +94,7 @@
 			// String: Class name, add to the internal class list.
 			if (is_string($class)) {
 				if (array_key_exists($class, $this->classList))
-					throw new DuplicateClassException("Duplicate class added to injector: " . $class);
+					throw new DuplicateClassException('Duplicate class added to injector: ' . $class);
 
 				$this->classList[$class] = null;
 
@@ -108,7 +108,7 @@
 			if (is_object($class)) {
 				$className = get_class($class);
 				if (array_key_exists($className, $this->classList))
-					throw new DuplicateClassException("Duplicate class added to injector: " . $className);
+					throw new DuplicateClassException('Duplicate class added to injector: ' . $className);
 
 				$this->classList[$className] = $class;
 
@@ -148,7 +148,7 @@
 
 			// If we don't have a string at this point, we can't do much with it.
 			if (!is_string($class))
-				throw new ClassResolutionException("Unable to resolve class for: " . gettype($class));
+				throw new ClassResolutionException('Unable to resolve class for: ' . gettype($class));
 
 			// Check interface bindings for the class.
 			if (array_key_exists($class, $this->bindingList))
@@ -173,14 +173,14 @@
 
 			// getComponent() should only ever return a single component.
 			if (is_array($resolve) || (array_key_exists($resolve, $this->classList) && is_array($this->classList[$resolve])))
-				throw new ClassResolutionException("Injector contains multiple resolutions for class: " . $className);
+				throw new ClassResolutionException('Injector contains multiple resolutions for class: ' . $className);
 
 			// Check if component is missing and react according to $add.
 			if (!array_key_exists($resolve, $this->classList)) {
 				if ($add)
 					$this->addComponent($resolve);
 				else
-					throw new ClassResolutionException("Injector does not have valid match for class: " . $resolve);
+					throw new ClassResolutionException('Injector does not have valid match for class: ' . $resolve);
 			}
 
 			// Return cached instance, or construct new one.
@@ -232,7 +232,7 @@
 			$class = new \ReflectionClass($className);
 
 			if (!$class->isInstantiable())
-				throw new ClassInstantiationException("Non-instantiable class: " . $className);
+				throw new ClassInstantiationException('Non-instantiable class: ' . $className);
 
 			$inject = [];
 			$constructor = $class->getConstructor();
@@ -246,16 +246,16 @@
 
 					// Ensure parameter has a class.
 					if ($paramClass === null)
-						throw new ClassInstantiationException("Constructor contains undefined parameter: " . $className);
+						throw new ClassInstantiationException('Constructor contains undefined parameter: ' . $className);
 
 					$paramClassName = $paramClass->getName();
 					if ($paramClassName == $className)
-						throw new ClassInstantiationException("Cyclic dependency in class: " . $className);
+						throw new ClassInstantiationException('Cyclic dependency in class: ' . $className);
 
 					$inject[] = $this->getComponent($paramClassName, $this->flags & self::AUTO_ADD_DEPENDENCIES);
 				}
 
-				call_user_func_array([$object, "__construct"], $inject);
+				call_user_func_array([$object, '__construct'], $inject);
 			}
 
 			$this->classList[$className] = $object;
@@ -289,7 +289,7 @@
 				$class = get_class($class);
 
 			if (!is_string($class))
-				throw new InterfaceBindingException("Invalid input for interface binding: " . gettype($class));
+				throw new InterfaceBindingException('Invalid input for interface binding: ' . gettype($class));
 
 			if (array_key_exists($interface, $this->bindingList)) {
 				$node = $this->bindingList[$interface];

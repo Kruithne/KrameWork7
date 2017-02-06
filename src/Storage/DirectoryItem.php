@@ -25,7 +25,7 @@
 	namespace KrameWork\Storage;
 
 	use Kramework\Utils\StringUtil;
-	require_once(__DIR__ . "/../Utils/StringUtil.php");
+	require_once(__DIR__ . '/../Utils/StringUtil.php');
 
 	/**
 	 * Interface IDirectoryItem
