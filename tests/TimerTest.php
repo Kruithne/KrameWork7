@@ -99,14 +99,14 @@
 		 * Test restart functionality.
 		 */
 		public function testRestart() {
-			$timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
+			$timer = new Timer(Timer::FORMAT_SECONDS, false);
 			$timer->start();
 
-			usleep(1);
+			sleep(1);
 			$original = $timer->restart();
-			$this->assertGreaterThanOrEqual(Time::MICROSECOND * 1, $original);
+			$this->assertGreaterThanOrEqual(Time::SECOND * 1, $original);
 
-			usleep(2);
+			sleep(2);
 			$this->assertTrue($original < $timer->getElapsed());
 
 			unset($timer);
