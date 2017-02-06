@@ -92,4 +92,26 @@
 			$this->assertEquals("HelloWorld", $builder->__toString());
 			unset($builder);
 		}
+
+		/**
+		 * Test appendf functionality.
+		 */
+		public function testAppendf() {
+			$builder = new StringBuilder("Fact: ");
+			$builder->appendf("I am %s!", "Batman");
+
+			$this->assertEquals("Fact: I am Batman!", $builder->__toString());
+			unset($builder);
+		}
+
+		/**
+		 * Test prependf functionality.
+		 */
+		public function testPrependf() {
+			$builder = new StringBuilder(" ...Or am I?");
+			$builder->prependf("I am %s!", "Batman");
+
+			$this->assertEquals("I am Batman! ...Or am I?", $builder->__toString());
+			unset($builder);
+		}
 	}

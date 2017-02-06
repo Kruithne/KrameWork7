@@ -42,3 +42,10 @@ $builder = new StringBuilder("BATMAN!");
 $builder->repeat("NA ", 14, false);
 print($builder); // > NA NA NA NA NA NA NA NA NA NA NA NA NA NA BATMAN!
 ```
+### Format Patterns
+In addition to `append()` and `prepend()`, the functions `appendf()` and `prependf()` also exist, which allow you to add a formatted string directly to the builder. The first argument for these calls **must** be a string, and all further arguments must be valid for string-formatting.
+```php
+$builder = new StringBuilder();
+$builder->appendf("I am %s!", "Batman");
+print($builder); // > I am Batman!
+```

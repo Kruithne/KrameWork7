@@ -41,6 +41,17 @@
 		}
 
 		/**
+		 * Append a formatted string to the builder.
+		 *
+		 * @api
+		 * @param string $format Format pattern.
+		 * @return StringBuilder
+		 */
+		public function appendf(string $format):StringBuilder {
+			return $this->append(\call_user_func_array("sprintf", func_get_args()));
+		}
+
+		/**
 		 * Prepend string(s) to the builder.
 		 * Accepts variable arguments of strings, arrays or objects.
 		 *
@@ -57,6 +68,17 @@
 				}
 			}
 			return $this;
+		}
+
+		/**
+		 * Prepend a formatted string to the builder.
+		 *
+		 * @api
+		 * @param string $format Format pattern.
+		 * @return StringBuilder
+		 */
+		public function prependf(string $format):StringBuilder {
+			return $this->prepend(\call_user_func_array("sprintf", func_get_args()));
 		}
 
 		/**
