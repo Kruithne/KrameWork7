@@ -257,10 +257,11 @@
 			$cBody->setLineEnd(StringBuilder::LE_UNIX);
 
 			// Compile Body
-			$bound = '=__' . md5(time()) . '__=';
+			$bound_id = md5(time());
+			$bound = '=__' . $bound_id . '__=';
 			$headers['Content-Type'] = 'multipart/mixed; boundary="' . $bound. '"';
 
-			$subBound = '=__' . md5(time() . 'sub') . '__=';
+			$subBound = '=__sub' . $bound_id . '__=';
 
 			$cBody->appendLine('--' . $bound);
 			$cBody->appendLine('Content-Type: multipart/alternative; boundary="' . $subBound . '"');
