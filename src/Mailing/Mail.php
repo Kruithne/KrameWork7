@@ -125,7 +125,7 @@
 		 * @param bool $generateMessageID Generate a Message-Id header using this sender.
 		 * @return Mail
 		 */
-		public function setSender(string $sender, bool $generateMessageID):Mail {
+		public function setSender(string $sender, bool $generateMessageID = false):Mail {
 			$this->addHeader("From", $sender);
 
 			if ($generateMessageID) {
