@@ -24,8 +24,6 @@
 
 	namespace KrameWork\Storage;
 
-	class MemoryFileException extends \Exception {}
-
 	/**
 	 * Class MemoryFile
 	 * In-memory file implementation.
@@ -45,6 +43,7 @@
 			parent::__construct($name, false, false);
 			$this->content = $content;
 			$this->contentType = $contentType;
+			$this->valid = true;
 		}
 
 		/**
@@ -54,7 +53,7 @@
 		 * @return bool File exists and is valid.
 		 */
 		public function isValid(): bool {
-			return true;
+			return $this->valid;
 		}
 
 		/**
@@ -103,10 +102,11 @@
 		 *
 		 * @api
 		 * @return bool File deleted successfully.
-		 * @throws MemoryFileException
 		 */
 		public function delete(): bool {
-			throw new MemoryFileException("Cannot delete in-memory file.");
+			$this->valid = false;
+			$this->content = null;
+			return true;
 		}
 
 		/**
@@ -127,4 +127,9 @@
 		 * @var string
 		 */
 		protected $contentType;
+
+		/**
+		 * @var bool
+		 */
+		protected $valid;
 	}
