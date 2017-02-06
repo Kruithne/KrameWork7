@@ -22,7 +22,7 @@
 	 * SOFTWARE.
 	 */
 
-	namespace KrameWork;
+	namespace KrameWork\Caching;
 
 	class SessionInitiationException extends \Exception {}
 
