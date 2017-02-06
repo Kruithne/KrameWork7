@@ -68,7 +68,7 @@
 		 * @param bool $append True = Append, False = Prepend.
 		 * @return StringBuilder
 		 */
-		public function repeat($input, $count = 1, $append = true):StringBuilder {
+		public function repeat($input, $count = 1, bool $append = true):StringBuilder {
 			$line = str_repeat(strval($input), $count);
 			$append ? $this->append($line) : $this->prepend($line);
 
