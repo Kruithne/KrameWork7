@@ -150,9 +150,13 @@
 		 * Returns a string if not using containers (see constructor).
 		 *
 		 * @api
-		 * @return \ArrayObject|string|null
+		 * @param bool $forceRead Call read() if no data.
+		 * @return \ArrayObject|null|string
 		 */
-		public function getData() {
+		public function getData(bool $forceRead = false) {
+			if ($forceRead && $this->data === null)
+				$this->read();
+
 			return $this->jsonData;
 		}
 
