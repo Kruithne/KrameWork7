@@ -33,6 +33,10 @@
 	 */
 	class StringBuilder
 	{
+		const LE_WIN = "\r\n";
+		const LE_DARWIN = "\r";
+		const LE_UNIX = "\n";
+
 		/**
 		 * StringBuilder constructor.
 		 * Accepts variable arguments of strings, arrays and objects.
@@ -64,6 +68,21 @@
 				}
 			}
 			return $this;
+		}
+
+		/**
+		 * Append a line-end terminated/prefixed string to this builder.
+		 *
+		 * @api
+		 * @param string $line String to append.
+		 * @param bool $trailLineEnd Terminate string with line-end, otherwise prefix it.
+		 * @return StringBuilder
+		 */
+		public function appendLine($line, bool $trailLineEnd = true):StringBuilder {
+			if ($trailLineEnd)
+				return $this->append($line, $this->getLineEnd());
+			else
+				return $this->append($this->getLineEnd(), $line);
 		}
 
 		/**
@@ -100,6 +119,21 @@
 		}
 
 		/**
+		 * Prepend a line-end terminated/prefixed string to this builder.
+		 *
+		 * @api
+		 * @param $line String to prepend.
+		 * @param bool $trailLineEnd Terminate string with line-end, otherwise prefix it.
+		 * @return StringBuilder
+		 */
+		public function prependLine($line, bool $trailLineEnd = true):StringBuilder {
+			if ($trailLineEnd)
+				return $this->prepend($this->getLineEnd(), $line);
+			else
+				return $this->prepend($line, $this->getLineEnd());
+		}
+
+		/**
 		 * Prepend a formatted string to the builder.
 		 *
 		 * @api
@@ -124,16 +158,6 @@
 			$append ? $this->append($line) : $this->prepend($line);
 
 			return $this;
-		}
-
-		/**
-		 * Return the compiled result of the string builder.
-		 *
-		 * @return string
-		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
-		 */
-		function __toString() {
-			return $this->data;
 		}
 
 		/**
@@ -182,12 +206,49 @@
 		}
 
 		/**
+		 * Get the line-end used by this string builder.
+		 *
+		 * @api
+		 * @return string
+		 */
+		public function getLineEnd():string {
+			return $this->lineEnd ?? self::LE_UNIX;
+		}
+
+		/**
+		 * Set the line-ending to use for new-line operations.
+		 *
+		 * @api
+		 * @param string $lineEnd Line-end; check StringBuilder constants.
+		 * @return StringBuilder
+		 */
+		public function setLineEnd(string $lineEnd):StringBuilder {
+			$this->lineEnd = $lineEnd;
+			return $this;
+		}
+
+		/**
+		 * Return the compiled result of the string builder.
+		 *
+		 * @return string
+		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
+		 */
+		function __toString() {
+			return $this->data;
+		}
+
+		/**
 		 * @var string
 		 */
 		private $data;
 
 		/**
-		 * @var string
+		 * @var string|null
 		 */
 		private $separator;
+
+		/**
+		 * @var string|null
+		 */
+		private $lineEnd;
 	}

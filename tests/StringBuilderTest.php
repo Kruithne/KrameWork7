@@ -153,4 +153,52 @@
 
 			unset($builder);
 		}
+
+		/**
+		 * Test appendLine (termination) functionality.
+		 */
+		public function testAppendLineTerminate() {
+			$builder = new StringBuilder();
+			$builder->setLineEnd(StringBuilder::LE_UNIX);
+			$builder->appendLine("Hello", true)->appendLine("World", true);
+
+			$this->assertEquals("Hello\nWorld\n", $builder->__toString());
+			unset($builder);
+		}
+
+		/**
+		 * Test appendLine (prefixed) functionality.
+		 */
+		public function testAppendLinePrefix() {
+			$builder = new StringBuilder();
+			$builder->setLineEnd(StringBuilder::LE_UNIX);
+			$builder->appendLine("Hello", false)->appendLine("World", false);
+
+			$this->assertEquals("\nHello\nWorld", $builder->__toString());
+			unset($builder);
+		}
+
+		/**
+		 * Test prependLine (termination) functionality.
+		 */
+		public function testPrependLineTerminate() {
+			$builder = new StringBuilder();
+			$builder->setLineEnd(StringBuilder::LE_UNIX);
+			$builder->prependLine("Hello", true)->prependLine("World", true);
+
+			$this->assertEquals("World\nHello\n", $builder->__toString());
+			unset($builder);
+		}
+
+		/**
+		 * Test prependLine (prefixed) functionality.
+		 */
+		public function testPrependLinePrefix() {
+			$builder = new StringBuilder();
+			$builder->setLineEnd(StringBuilder::LE_UNIX);
+			$builder->prependLine("Hello", false)->prependLine("World", false);
+
+			$this->assertEquals("\nWorld\nHello", $builder->__toString());
+			unset($builder);
+		}
 	}
