@@ -1,7 +1,9 @@
 <?php
 	use KrameWork\Timing\Timer;
+	use KrameWork\Timing\Time;
 
 	require_once(__DIR__ . "/../src/Timing/Timer.php");
+	require_once(__DIR__ . "/../src/Timing/Time.php");
 
 	class TimerTest extends \PHPUnit_Framework_TestCase
 	{
@@ -45,7 +47,7 @@
 
 			usleep(10);
 
-			$this->assertGreaterThanOrEqual(0.0009, $timer->getElapsed());
+			$this->assertGreaterThanOrEqual(Time::MICROSECOND * 10, $timer->getElapsed());
 		}
 
 		/**
@@ -55,7 +57,7 @@
 			$timer = new Timer(Timer::FORMAT_MICROSECONDS, true);
 
 			usleep(10);
-			$this->assertGreaterThanOrEqual(0.0009, $timer->getElapsed());
+			$this->assertGreaterThanOrEqual(Time::MICROSECOND * 10, $timer->getElapsed());
 
 			unset($timer);
 		}
@@ -69,7 +71,7 @@
 
 			usleep(10);
 			$result = $timer->stop();
-			$this->assertGreaterThanOrEqual(0.0009, $result);
+			$this->assertGreaterThanOrEqual(Time::MICROSECOND * 10, $result);
 
 			usleep(20);
 			$this->assertEquals($result, $timer->getElapsed());
@@ -100,11 +102,11 @@
 			$timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
 			$timer->start();
 
-			usleep(50);
+			usleep(1);
 			$original = $timer->restart();
-			$this->assertGreaterThanOrEqual(0.0009, $original);
+			$this->assertGreaterThanOrEqual(Time::MICROSECOND * 1, $original);
 
-			usleep(5);
+			usleep(2);
 			$this->assertLessThan($original, $timer->getElapsed());
 
 			unset($timer);
