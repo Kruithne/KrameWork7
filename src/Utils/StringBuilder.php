@@ -161,6 +161,17 @@
 		}
 
 		/**
+		 * Add a line-end to the string.
+		 *
+		 * @api
+		 * @param bool $append Append, otherwise prepend.
+		 * @return StringBuilder
+		 */
+		public function newLine(bool $append = true):StringBuilder {
+			return $append ? $this->append($this->getLineEnd()) : $this->prepend($this->getLineEnd());
+		}
+
+		/**
 		 * Clear any input data to the string builder.
 		 *
 		 * @api

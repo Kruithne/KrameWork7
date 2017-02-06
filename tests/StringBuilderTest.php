@@ -201,4 +201,28 @@
 			$this->assertEquals("\nWorld\nHello", $builder->__toString());
 			unset($builder);
 		}
+
+		/**
+		 * Test newLine() functionality (append).
+		 */
+		public function testNewLineAppend() {
+			$builder = new StringBuilder();
+			$builder->setLineEnd(StringBuilder::LE_UNIX);
+			$builder->append("Hello")->newLine(true)->newLine(true)->append("World");
+
+			$this->assertEquals("Hello\n\nWorld", $builder->__toString());
+			unset($builder);
+		}
+
+		/**
+		 * Test newline() functionality (prepend).
+		 */
+		public function testNewLinePrepend() {
+			$builder = new StringBuilder();
+			$builder->setLineEnd(StringBuilder::LE_UNIX);
+			$builder->append("Hello")->newLine(false)->newLine(false)->append("World");
+
+			$this->assertEquals("\n\nHelloWorld", $builder->__toString());
+			unset($builder);
+		}
 	}
