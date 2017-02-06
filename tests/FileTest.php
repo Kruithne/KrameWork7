@@ -190,4 +190,28 @@
 
 			unset($file);
 		}
+
+		/**
+		 * Test the forceRead flag for getData() calls.
+		 */
+		public function testForceRead() {
+			$str = "Unless someone like you cares a whole awful lot, nothing is going to get better. It's not.";
+			$file = new File("tests/resources/test_text_file.txt", false);
+
+			$this->assertEquals($str, $file->getData(true));
+			unset($file);
+		}
+
+		/**
+		 * Test functionality of getBase64Data().
+		 */
+		public function testGetBase64Data() {
+			$str = "Unless someone like you cares a whole awful lot, nothing is going to get better. It's not.";
+			$encoded = base64_encode($str);
+
+			$file = new File("tests/resources/test_text_file.txt", false);
+			$this->assertEquals($encoded, $file->getBase64Data(true));
+
+			unset($file);
+		}
 	}
