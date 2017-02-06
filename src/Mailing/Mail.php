@@ -1,10 +1,15 @@
 <?php
 	namespace KrameWork\Mailing;
 
+	use KrameWork\Storage\File;
+	use KrameWork\Utils\StringBuilder;
+	require_once(__DIR__ . "/../Utils/StringBuilder.php");
+
 	class InvalidRecipientException extends \Exception {}
 	class ExcessiveSubjectLengthException extends \Exception {}
 	class MissingSubjectException extends \Exception {}
 	class MissingSenderException extends \Exception {}
+	class AttachmentNotFoundException extends \Exception {}
 
 	/**
 	 * Class Mail
@@ -17,10 +22,15 @@
 	{
 		/**
 		 * Mail constructor.
+		 * @param bool $containsHTML Send message as HTML.
 		 */
-		public function __construct() {
-			$this->clearRecipients();
+		public function __construct(bool $containsHTML = false) {
+			$this->recipients = [];
 			$this->headers = [];
+			$this->files = [];
+
+			$this->containsHTML = $containsHTML;
+			$this->addHeader("MIME-Version", "1.0");
 		}
 
 		/**
@@ -45,7 +55,7 @@
 					throw new InvalidRecipientException("Invalid e-mail address (RFC 822)");
 
 				// Add the recipient to the stack.
-				$this->recipients[] = strval($recipient);
+				$this->recipients[strval($recipient)] = true;
 			}
 			return $this;
 		}
@@ -66,8 +76,8 @@
 				$recipient = strval($recipient); // Ensure we have a string.
 
 				// Delete the recipient from the stack.
-				if (($index = array_search($recipient, $this->recipients)) !== false)
-					unset($this->recipients[$index]);
+				if (array_key_exists($recipient, $this->recipients))
+					unset($this->recipients[$recipient]);
 			}
 			return $this;
 		}
@@ -137,6 +147,50 @@
 		}
 
 		/**
+		 * Attach a file to be sent with this mail.
+		 *
+		 * @api
+		 * @param string $path Path of the file to attach.
+		 * @return Mail
+		 * @throws AttachmentNotFoundException
+		 */
+		public function attachFile(string $path):Mail {
+			if (!file_exists($path))
+				throw new AttachmentNotFoundException("Unable to locate attachment: " . $path);
+
+			if (!is_file($path))
+				throw new AttachmentNotFoundException("Not a valid attachment: " . $path);
+
+			$this->files[$path] = true;
+			return $this;
+		}
+
+		/**
+		 * Remove an attached file from this mail object.
+		 *
+		 * @api
+		 * @param string $path Path of the file to remove.
+		 * @return Mail
+		 */
+		public function removeFile(string $path):Mail {
+			if (array_key_exists($path, $this->files))
+				unset($this->files[$path]);
+
+			return $this;
+		}
+
+		/**
+		 * Remove all files attached to this mail object.
+		 *
+		 * @api
+		 * @return Mail
+		 */
+		public function clearFiles():Mail {
+			$this->files = [];
+			return $this;
+		}
+
+		/**
 		 * Send this mail!
 		 *
 		 * @api
@@ -154,21 +208,62 @@
 			if (!array_key_exists("From", $this->headers))
 				throw new MissingSenderException("Cannot send mail without a sender.");
 
+			$headers = $this->headers;
+			$body = chunk_split(base64_encode($this->body), "70", "\r\n");
+
+			$cBody = new StringBuilder();
+			$contentType = sprintf("text/%s; charset=UTF-8", $this->containsHTML ? "html" : "plain");
+
+			// Compile body.
+			if (count($this->files)) {
+				require_once(__DIR__ . "/../Storage/File.php");
+
+				$bound = sprintf("=__%s__=", md5(time()));
+				$headers["Content-Type"] = sprintf("multipart/mixed; boundary=\"%s\"", $bound);
+
+				$cBody->appendf("--%s\n", $bound);
+				$cBody->appendf("Content-Type: %s\n", $contentType);
+				$cBody->append("Content-Transfer-Encoding: base64\n");
+				$cBody->append("Content-Disposition: inline\n\n");
+				$cBody->appendf("%s\n\n", $body);
+
+				foreach (array_keys($this->files) as $file) {
+					if (!($file instanceof File))
+						$file = new File($file);
+
+					if (!$file->isValid())
+						throw new AttachmentNotFoundException("Unable to attach file: " . $file->getName());
+
+					$cBody->appendf("--%s\n", $bound);
+					$cBody->appendf("Content-Type: %s; name=\"%s\"\n", $file->getFileType(), $file->getName());
+					$cBody->appendf("Content-Disposition: attachment; filename=\"%s\"\n", $file->getName());
+					$cBody->append("Content-Transfer-Encoding: base64\n");
+					$cBody->append(chunk_split($file->getBase64Data(true), 76, "\n"))->append("\n\n");
+				}
+
+				$cBody->appendf("--%s--\n\n", $bound);
+			} else {
+				$headers["Content-Type"] = $contentType;
+				$headers["Content-Transfer-Encoding"] = "base64";
+				$headers["Content-Disposition"] = "inline";
+
+				$cBody->append($body);
+			}
+
 			// Compile headers.
-			$headers = [];
-			foreach ($this->headers as $name => $value)
-				$headers[] = $name . ": " . $value;
+			$cHeaders = [];
+			foreach ($headers as $name => $value)
+				$cHeaders[] = $name . ": " . $value;
+
+			$cHeaders = implode("\n", $cHeaders);
 
 			// Compile recipients.
-			$recipients = implode(",", $this->recipients);
+			$cRecipients = implode(",", array_keys($this->recipients));
 
-			// Parse body.
-			$body = str_replace("\r\n", "__CRLF__", $this->body);
-			$body = str_replace("\n", "\r\n", $body);
-			$body = str_replace("__CRLF__", "\r\n", $body);
-			$body = wordwrap($body, 70, "\r\n");
+			// Compile subject.
+			$cSubject = sprintf("=?UTF-8?B?%s?=", base64_encode($this->subject));
 
-			mail($recipients, $this->subject, $body, $headers);
+			mail($cRecipients, $cSubject, $cBody, $cHeaders);
 		}
 
 		/**
@@ -190,4 +285,14 @@
 		 * @var string
 		 */
 		private $body;
+
+		/**
+		 * @var array
+		 */
+		private $files;
+
+		/**
+		 * @var bool
+		 */
+		private $containsHTML;
 	}
