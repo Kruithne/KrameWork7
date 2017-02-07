@@ -50,29 +50,148 @@
 		 * @api
 		 */
 		public function __construct() {
-			$this->recipients = [];
 			$this->headers = [];
 			$this->files = [];
+			$this->recipients = new \ArrayObject([
+				'normal' => [], 'bcc' => [], 'cc' => []
+			], \ArrayObject::ARRAY_AS_PROPS);
 
 			$this->addHeader('MIME-Version', '1.0');
 		}
 
 		/**
-		 * Add a recipient to the e-mail.
+		 * Add recipients to the e-mail.
 		 * Array input must be in email=>name format (name can be null).
 		 *
 		 * @api
 		 * @param array|string $email Valid RFC 822 e-mail address(es).
-		 * @param null $name Name of the recipient.
+		 * @param null|string $name Recipient name.
 		 * @param bool $encode Recipient name will be encoded in base64.
 		 * @return Mail
 		 * @throws InvalidRecipientException
 		 */
 		public function addRecipient($email, $name = null, $encode = true):Mail {
+			$this->addEmail($this->recipients->normal, $email, $name, $encode);
+			return $this;
+		}
+
+		/**
+		 * Add Cc recipients to this e-mail.
+		 * Array input must be in email=>name format (name can be null).
+		 *
+		 * @api
+		 * @param array|string $email Valid RFC822 e-mail address(es).
+		 * @param null|string $name Recipient name.
+		 * @param bool $encode Recipient name will be encoded in base64.
+		 * @return Mail
+		 * @throws InvalidRecipientException
+		 */
+		public function addCc($email, $name = null, $encode = true):Mail {
+			$this->addEmail($this->recipients->cc, $email, $name, $encode);
+			return $this;
+		}
+
+		/**
+		 * Add Bcc recipients to this e-mail.
+		 * Array input must be in email=>name format (name can be null).
+		 *
+		 * @api
+		 * @param array|string $email Valid RFC822 e-mail address(es).
+		 * @param null|string $name Recipient name.
+		 * @param bool $encode Recipient name will be encoded in base64.
+		 * @return Mail
+		 * @throws InvalidRecipientException
+		 */
+		public function addBcc($email, $name = null, $encode = true):Mail {
+			$this->addEmail($this->recipients->bcc, $email, $name, $encode);
+			return $this;
+		}
+
+		/**
+		 * Remove a recipient from the e-mail.
+		 *
+		 * @api
+		 * @param string|array $email E-mail address(es) to remove.
+		 * @return Mail
+		 */
+		public function removeRecipient($email):Mail {
+			$this->removeEmail($this->recipients->normal, $email);
+			return $this;
+		}
+
+		/**
+		 * Remove a Cc recipient from the e-mail.
+		 *
+		 * @api
+		 * @param string|array $email E-mail address(es) to remove.
+		 * @return Mail
+		 */
+		public function removeCc($email):Mail {
+			$this->removeEmail($this->recipients->cc, $email);
+			return $this;
+		}
+
+		/**
+		 * Remove a Bcc recipient from the e-mail.
+		 *
+		 * @api
+		 * @param string|array $email E-mail address(es) to remove.
+		 * @return Mail
+		 */
+		public function removeBcc($email):Mail {
+			$this->removeEmail($this->recipients->bcc, $email);
+			return $this;
+		}
+
+		/**
+		 * Clear all recipients from the e-mail.
+		 *
+		 * @api
+		 * @return Mail
+		 */
+		public function clearRecipients():Mail {
+			$this->recipients->normal = [];
+			return $this;
+		}
+
+		/**
+		 * Clear all Bcc recipients from the mail.
+		 *
+		 * @api
+		 * @return Mail
+		 */
+		public function clearBcc():Mail {
+			$this->recipients->bcc = [];
+			return $this;
+		}
+
+		/**
+		 * Clear all Cc recipients from the mail.
+		 *
+		 * @api
+		 * @return Mail
+		 */
+		public function clearCc():Mail {
+			$this->recipients->cc = [];
+			return $this;
+		}
+
+		/**
+		 * Validate and add an e-mail address to a specific stack.
+		 * Array input must be in email=>name format (name can be null).
+		 *
+		 * @internal
+		 * @param array $stack Stack to add the e-mail address to.
+		 * @param array|string $email Valid RFC 822 e-mail address(es).
+		 * @param null|string $name Name of the recipient.
+		 * @param bool $encode Recipient name will be encoded in base64.
+		 * @throws InvalidRecipientException
+		 */
+		private function addEmail(&$stack, $email, $name = null, $encode = true) {
 			// Array: Treat array as $email => $name key/value pair array.
 			if (is_array($email)) {
 				foreach ($email as $nodeEmail => $nodeName)
-					$this->addRecipient($nodeEmail, $nodeName, $encode);
+					$this->addEmail($stack, $nodeEmail, $nodeName, $encode);
 			} else {
 				// filter_var provides RFC 822 validation, mail() requires
 				// RFC 2822 compliance, but this should be enough to catch
@@ -86,41 +205,30 @@
 					$name = '=?UTF-8?B?' . base64_encode($name) . '?=';
 
 				// Add the recipient to the stack.
-				$this->recipients[strval($email)] = $name;
+				$stack[strval($email)] = $name;
 			}
-			return $this;
 		}
 
 		/**
 		 * Remove a recipient from the e-mail.
 		 *
 		 * @api
+		 * @param array $stack Stack to remove the recipient from.
 		 * @param array|string $email E-mail address(es).
 		 * @return Mail
 		 */
-		public function removeRecipient($email):Mail {
+		public function removeEmail(&$stack, $email):Mail {
 			// Array: Treat all elements as individual recipients.
 			if (is_array($email)) {
 				foreach ($email as $node)
-					$this->removeRecipient($node);
+					$this->removeEmail($stack, $node);
 			} else {
 				$email = strval($email); // Ensure we have a string.
 
 				// Delete the recipient from the stack.
-				if (array_key_exists($email, $this->recipients))
-					unset($this->recipients[$email]);
+				if (array_key_exists($email, $stack))
+					unset($stack[$email]);
 			}
-			return $this;
-		}
-
-		/**
-		 * Clear all recipients from the e-mail.
-		 *
-		 * @api
-		 * @return Mail
-		 */
-		public function clearRecipients():Mail {
-			$this->recipients = [];
 			return $this;
 		}
 
@@ -268,20 +376,38 @@
 				$cHeaders[] = $name . ': ' . $value;
 
 			// Compile recipients.
-			$cRecipients = [];
-			foreach ($this->recipients as $email => $name)
-				$cRecipients[] = '"' . $name . '" <' . $email . '>';
+			$cRecipients = $this->compileRecipientStack($this->recipients->normal);
+			if (count($this->recipients->bcc))
+				$cHeaders[] = 'Bcc: ' . $this->compileRecipientStack($this->recipients->bcc);
+
+			if (count($this->recipients->cc))
+				$cHeaders[] = 'Cc: ' . $this->compileRecipientStack($this->recipients->cc);
 
 			// Compile subject.
 			$cSubject = '=?UTF-8?B?' . base64_encode($this->subkect ?? 'No Subject') . '?=';
 
-			mail(implode(",", $cRecipients), $cSubject, $bParent->compile(),  implode("\n", $cHeaders));
+			mail($cRecipients, $cSubject, $bParent->compile(),  implode("\n", $cHeaders));
+		}
+
+		/**
+		 * Compile a recipient stack into a string.
+		 *
+		 * @internal
+		 * @param array $stack Email=>Name recipient stack.
+		 * @return string
+		 */
+		private function compileRecipientStack($stack):string {
+			$result = [];
+			foreach ($stack as $email => $name)
+				$result[] = '"' . $name . '" <' . $email . '>';
+
+			return implode(',', $result);
 		}
 
 		/**
 		 * Compile the plain-text body of this e-mail and return it as a content block.
 		 *
-		 * @api
+		 * @internal
 		 * @return MailMultipartContent
 		 */
 		private function compilePlainBody():MailMultipartContent {
@@ -295,7 +421,7 @@
 		/**
 		 * Compile the HTML body of this email and return it as a content block.
 		 *
-		 * @api
+		 * @internal
 		 * @return MailMultipartContent
 		 */
 		private function compileHTMLBody():MailMultipartContent {
@@ -309,7 +435,7 @@
 		/**
 		 * Compile attachments into the given multipart block.
 		 *
-		 * @api
+		 * @internal
 		 * @param MailMultipart $container
 		 * @throws AttachmentNotFoundException
 		 */
@@ -328,7 +454,7 @@
 		}
 
 		/**
-		 * @var array
+		 * @var \ArrayObject
 		 */
 		private $recipients;
 
