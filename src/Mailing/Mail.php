@@ -25,10 +25,9 @@
 	namespace KrameWork\Mailing;
 
 	use KrameWork\Storage\File;
-	require_once(__DIR__ . '/../Storage/File.php');
 
-	use KrameWork\Utils\StringBuilder;
-	require_once(__DIR__ . '/../Utils/StringBuilder.php');
+	require_once(__DIR__ . '/../Storage/File.php');
+	require_once(__DIR__ . '/MailMultipart.php');
 
 	class InvalidRecipientException extends \Exception {}
 	class ExcessiveSubjectLengthException extends \Exception {}
@@ -251,73 +250,81 @@
 			if (!array_key_exists('From', $this->headers))
 				throw new MissingSenderException('Cannot send mail without a sender.');
 
-			$headers = $this->headers;
-
-			$cBody = new StringBuilder();
-			$cBody->setLineEnd(StringBuilder::LE_UNIX);
-
 			// Compile Body
-			$bound_id = md5(time());
-			$bound = '=__' . $bound_id . '__=';
-			$headers['Content-Type'] = 'multipart/mixed; boundary="' . $bound. '"';
+			$bParent = new MailMultipart('mixed');
+			$bBody = new MailMultipart('alternative', $bParent);
 
-			$subBound = '=__sub' . $bound_id . '__=';
+			if ($this->plainBody !== null || $this->htmlBody === null)
+				$bBody->add($this->compilePlainBody());
 
-			$cBody->appendLine('--' . $bound);
-			$cBody->appendLine('Content-Type: multipart/alternative; boundary="' . $subBound . '"');
+			if ($this->htmlBody !== null)
+				$bBody->add($this->compileHTMLBody());
 
-			if ($this->plainBody !== null || $this->htmlBody === null) {
-				$cBody->appendLine('--' . $subBound);
-				$cBody->appendLine('Content-Type: text/plain; charset=UTF-8');
-				$cBody->appendLine('Content-Transfer-Encoding: 7bit');
-				$cBody->appendLine('Content-Disposition: inline')->newLine();
-				$cBody->appendLine($this->plainBody ?? '');
-			}
-
-			if ($this->htmlBody !== null) {
-				$cBody->appendLine('--' . $subBound);
-				$cBody->appendLine('Content-Type: text/html; charset=UTF-8');
-				$cBody->appendLine('Content-Transfer-Encoding: base64');
-				$cBody->appendLine('Content-Disposition: inline')->newLine();
-				$cBody->appendLine(chunk_split(base64_encode($this->htmlBody), 70, "\r\n"));
-			}
-
-			if (count($this->files)) {
-				/**
-				 * @var File $file
-				 */
-				foreach ($this->files as $file) {
-					if (!$file->isValid())
-						throw new AttachmentNotFoundException('Unable to attach file: ' . $file->getName());
-
-					$cBody->appendLine('--' . $bound);
-					$cBody->appendLine('Content-Type: ' . $file->getFileType() . '; name="' . $file->getName() . '"');
-					$cBody->appendLine('Content-Disposition: attachment; filename="' . $file->getName() . '"');
-					$cBody->appendLine('Content-Transfer-Encoding: base64')->newLine();
-					$cBody->appendLine(chunk_split($file->getBase64Data(true), 76, "\r\n"))->newLine();
-				}
-
-				$cBody->appendLine('--' . $bound . '--');
-			}
+			$this->compileAttachments($bParent);
 
 			// Compile headers.
-			$cHeaders = [];
-			foreach ($headers as $name => $value)
+			$cHeaders = ['Content-Type: ' . $bParent->getContentType()];
+			foreach ($this->headers as $name => $value)
 				$cHeaders[] = $name . ': ' . $value;
-
-			$cHeaders = implode("\n", $cHeaders);
 
 			// Compile recipients.
 			$cRecipients = [];
 			foreach ($this->recipients as $email => $name)
 				$cRecipients[] = '"' . $name . '" <' . $email . '>';
 
-			$cRecipients = implode(",", $cRecipients);
-
 			// Compile subject.
 			$cSubject = '=?UTF-8?B?' . base64_encode($this->subkect ?? 'No Subject') . '?=';
 
-			mail($cRecipients, $cSubject, $cBody, $cHeaders);
+			mail(implode(",", $cRecipients), $cSubject, $bParent->compile(),  implode("\n", $cHeaders));
+		}
+
+		/**
+		 * Compile the plain-text body of this e-mail and return it as a content block.
+		 *
+		 * @api
+		 * @return MailMultipartContent
+		 */
+		private function compilePlainBody():MailMultipartContent {
+			$content = new MailMultipartContent('text/plain; charset=UTF-8');
+			$content->setTransferEncoding('7bit');
+			$content->setContentDisposition('inline');
+			$content->setContent($this->plainBody ?? '', false);
+			return $content;
+		}
+
+		/**
+		 * Compile the HTML body of this email and return it as a content block.
+		 *
+		 * @api
+		 * @return MailMultipartContent
+		 */
+		private function compileHTMLBody():MailMultipartContent {
+			$content = new MailMultipartContent('text/html; charset=UTF-8');
+			$content->setTransferEncoding('base64');
+			$content->setContentDisposition('inline');
+			$content->setContent($this->htmlBody, true);
+			return $content;
+		}
+
+		/**
+		 * Compile attachments into the given multipart block.
+		 *
+		 * @api
+		 * @param MailMultipart $container
+		 * @throws AttachmentNotFoundException
+		 */
+		private function compileAttachments(MailMultipart $container) {
+			if (count($this->files)) {
+				foreach ($this->files as $file) {
+					if (!$file->isValid())
+						throw new AttachmentNotFoundException('Unable to attach file: ' . $file->getName());
+
+					$bFile = new MailMultipartContent($file->getFileType() . '; name="' . $file->getName() . '"', $container);
+					$bFile->setContentDisposition('attachment; filename="' . $file->getName() . '"');
+					$bFile->setTransferEncoding('base64');
+					$bFile->setContent($file->getData(true), true);
+				}
+			}
 		}
 
 		/**
@@ -346,7 +353,7 @@
 		private $htmlBody;
 
 		/**
-		 * @var array
+		 * @var File[]
 		 */
 		private $files;
 	}
