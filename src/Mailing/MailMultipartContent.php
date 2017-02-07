@@ -80,7 +80,7 @@
 		 * @param string $id
 		 */
 		public function setAttachmentID(string $id) {
-			$this->addHeader('Content-ID', $id);
+			$this->addHeader('Content-ID', '<' . $id . '>');
 			$this->addHeader('X-Attachment-Id', $id);
 		}
 
