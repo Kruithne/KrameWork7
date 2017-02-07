@@ -4,14 +4,16 @@
 
 The `Mail` class, also known as **Micheal**, is an instance-based mail sending object with a fluent API. Below is the bare-bones example of how to send an e-mail using this class.
 ```php
-new Mail()->addRecipient('foo@bar.net')->setSender('no-reply@bar.net')->send();
+$mail = new Mail();
+$mail->to->add("foo@bar.net");
+$mail->setSender("no-reply@bar.net");
 // Blank e-mail, subject: "No Subject", to foo@bar.net from no-reply@bar.net
 ```
 > **Note**: Failure to add at least one recipient will throw an `InvalidRecipientException` upon `send()`.
 > **Note**: Failure to set the sender for a mail object will throw a `MissingSenderException` upon `send()`.
 ### Mail Recipients
 #### Adding
-As shown in the original example, adding a recipient can be done by calling `addRecipient()` which has two overloads, the most common of which takes three parameters as follows.
+As shown in the original example, adding a recipient can be done by calling `$mail->to->add()` which has two overloads, the most common of which takes three parameters as follows.
 
  - `email (string)` - RFC 822 compliant e-mail address.
  - `name (string)` - Recipient name (8-bit unless next parameter is true).
@@ -22,7 +24,7 @@ As shown in the original example, adding a recipient can be done by calling `add
 The second overload takes an `array` in-place of the `email` parameter, and will treat it as a key/value pair array in the `email => name` format. If you wish to provide multiple recipients but omit the names, simply set them to null.
 ```php
 $mail = new Mail();
-$mail->addRecipient([
+$mail->to->add([
 	'foo@bar.net' => 'Foo Bar', // Named recipient.
 	'bar@foo.net' => null, // Non-named recipient.
 ]);
@@ -31,15 +33,23 @@ $mail->addRecipient([
 If needed with the second overload, you can disable the base64 encoding of recipient names the same way you would with the first overload, using the third parameter (omit second as `null`).
 
 #### Removing
-To remove a recipient from the mail object, simply call `removeRecipient()` with the e-mail address of the recipient.
+To remove a recipient from the mail object, simply call `$mail->to->remove()` with the e-mail address of the recipient.
 ```php
 $mail = new Mail();
-$mail->addRecipient('foo@bar.net', 'Foo Bar');
-$mail->addRecipient('bar@foo.net');
-$mail->removeRecipient('foo@bar.net');
+$mail->to->add('foo@bar.net', 'Foo Bar');
+$mail->to->add('bar@foo.net');
+$mail->to->remove('foo@bar.net');
 // Sends to: bar@foo.net
 ```
-In the situation that you want to remove all recipients from the mail object, a call to `clearRecipients()` would be simpler and cleaner; it does exactly what it says on the tin!
+In the situation that you want to remove all recipients from the mail object, a call to `$mail->to->clear()` would be simpler and cleaner; it does exactly what it says on the tin!
+### CC / BCC
+Identical to the `to` property, the properties `bcc` and `cc` also exist, which can be used in the same way as adding normal recipients above.
+```php
+$mail = new Mail();
+$mail->to->add('foo@bar.net'); // Primary Recipient.
+$mail->cc->add('bar@foo.net'); // Cc
+$mail->bcc->add('net@foo.bar'); // Bcc
+```
 ## Body
 There are two bodies for an e-mail, a plain-text version which can be set using `setPlainBody(content)`, and the HTML version which can be set using `setHTMLBody(content)`. It's highly recommended that you always provide a plain-text version, even when providing a HTML version, for clients that do not support HTML. While both versions will be sent, only the most relevant version will be rendered by the client.
 ```php
