@@ -29,6 +29,7 @@
 	require_once(__DIR__ . '/../Storage/File.php');
 	require_once(__DIR__ . '/MailMultipart.php');
 	require_once(__DIR__ . '/RecipientCollection.php');
+	require_once(__DIR__ . '/EncodedContent.php');
 
 	class ExcessiveSubjectLengthException extends \Exception {}
 	class MissingSenderException extends \Exception {}
@@ -52,9 +53,13 @@
 		public function __construct() {
 			$this->headers = [];
 			$this->files = [];
+
 			$this->to = new RecipientCollection();
 			$this->cc = new RecipientCollection();
 			$this->bcc = new RecipientCollection();
+
+			$this->plainContent = new EncodedContent(EncodedContent::E_7BIT);
+			$this->htmlContent = new EncodedContent(EncodedContent::E_QUOTED_PRINTABLE);
 
 			$this->addHeader('MIME-Version', '1.0');
 		}
@@ -105,16 +110,6 @@
 		 */
 		public function addHeader(string $name, string $value):Mail {
 			$this->headers[$name] = trim($value);
-			return $this;
-		}
-
-		public function setHTMLBody($content):Mail {
-			$this->htmlBody = $content;
-			return $this;
-		}
-
-		public function setPlainBody($content):Mail {
-			$this->plainBody = $content;
 			return $this;
 		}
 
@@ -189,10 +184,10 @@
 			$bParent = new MailMultipart('mixed');
 			$bBody = new MailMultipart('alternative', $bParent);
 
-			if ($this->plainBody !== null || $this->htmlBody === null)
+			if ($this->plainContent->hasContent())
 				$bBody->add($this->compilePlainBody());
 
-			if ($this->htmlBody !== null)
+			if ($this->htmlContent->hasContent())
 				$bBody->add($this->compileHTMLBody());
 
 			$this->compileAttachments($bParent);
@@ -223,9 +218,9 @@
 		 */
 		private function compilePlainBody():MailMultipartContent {
 			$content = new MailMultipartContent('text/plain; charset=UTF-8');
-			$content->setTransferEncoding('7bit');
+			$content->setTransferEncoding($this->plainContent->getEncoding());
 			$content->setContentDisposition('inline');
-			$content->setContent($this->plainBody ?? '', false);
+			$content->setContent($this->plainContent, false);
 			return $content;
 		}
 
@@ -237,9 +232,9 @@
 		 */
 		private function compileHTMLBody():MailMultipartContent {
 			$content = new MailMultipartContent('text/html; charset=UTF-8');
-			$content->setTransferEncoding('base64');
+			$content->setTransferEncoding($this->htmlContent->getEncoding());
 			$content->setContentDisposition('inline');
-			$content->setContent($this->htmlBody, true);
+			$content->setContent($this->htmlContent, false);
 			return $content;
 		}
 
@@ -280,6 +275,16 @@
 		public $bcc;
 
 		/**
+		 * @var EncodedContent
+		 */
+		public $plainContent;
+
+		/**
+		 * @var EncodedContent
+		 */
+		public $htmlContent;
+
+		/**
 		 * @var string
 		 */
 		private $subject;
@@ -288,16 +293,6 @@
 		 * @var array
 		 */
 		private $headers;
-
-		/**
-		 * @var string
-		 */
-		private $plainBody;
-
-		/**
-		 * @var string
-		 */
-		private $htmlBody;
 
 		/**
 		 * @var File[]

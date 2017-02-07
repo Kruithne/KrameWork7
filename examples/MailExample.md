@@ -51,12 +51,17 @@ $mail->cc->add('bar@foo.net'); // Cc
 $mail->bcc->add('net@foo.bar'); // Bcc
 ```
 ## Body
-There are two bodies for an e-mail, a plain-text version which can be set using `setPlainBody(content)`, and the HTML version which can be set using `setHTMLBody(content)`. It's highly recommended that you always provide a plain-text version, even when providing a HTML version, for clients that do not support HTML. While both versions will be sent, only the most relevant version will be rendered by the client.
+There are two bodies for an e-mail, a plain-text version which can be controlled using the `plainContent` property, and the HTML version which can be controlled using the `htmlContent` property. It's highly recommended that you always provide a plain-text version, even when providing a HTML version, for clients that do not support HTML. While both versions will be sent, only the most relevant version will be rendered by the client.
 ```php
 $mail = new Mail();
-$mail->setPlainText('Dear Foo. Please send help.');
-$mail->setHTMLVersion('<i>Dear Foo.</i><br/><b>Please send help!</b>');
+$mail->htmlContent->setContent('<i>Dear Foo.</i><br/><b>Please send help!</b>');
+$mail->plainContent->setContent('Dear Foo. Please send help.');
 ```
+By default, the encoding for the plain content will be `7bit` and the encoding for the HTML content will be `quoted-printable`. You can change the encoding at any point using the `setEncoding()` method on each content property.
+```php
+$mail->htmlContent->setEncoding('base64');
+```
+Content provided to the mail object will be automatically converted depending on the encoding you set, for example if you set the encoding to `base64` as shown in the example above, the content you set will be encoded to `base64` before being provided to the e-mail agent.
 ## Custom Headers
 For various reasons, you may find yourself wanting to add custom headers to the mail object. This can be done with a call to `addHeader(name, value)`, with both `name` and `value` being strings.
 ```php
