@@ -72,7 +72,7 @@ $mail->addHeader('Reply-To', 'foo@bar.net');
 > **Note**: When calling `send()`, the headers `Content-Type`, `Content-Transfer-Encoding` and `Content-Disposition` may be over-written by the mailer depending on content type/attachments.
 ## Attachments
 ### Adding
-Attachments can be added to a mail object by simply calling `attachFile(file)`, where `file` is either a path to a file (string) or an instance of the `File` class provided by KW7; some examples of these different cases can be seen below.
+Attachments can be added to a mail object by simply calling `attachFile(file)`, where `file` is either a path to a file (string) or an instance of the `AttachmentFile`, an extension of the KW7 `File` class; some examples of these different cases can be seen below.
 ```php
 // Example: Using a file path (string).
 $mail = new Mail();
@@ -81,7 +81,7 @@ $mail->attachFile('attachments/duckPic.jpg');
 ```
 ```php
 $mail = new Mail();
-$file = new File('attachments/horseDuck.jpg');
+$file = new AttachmentFile('attachments/horseDuck.jpg');
 $mail->attachFile($file);
 // > Attaches 'attachments/horseDuck.jpg' as 'horseDuck.jpg'.
 ```
@@ -93,7 +93,7 @@ $mail->attachFile($file);
 ```
 > **Note**: Attachments are indexed by their basename, thus two files with the same basename cannot be added. Attempting to do this will throw a `DuplicateAttachmentException`.
 ### Removing
-To remove an attachment, simply call `removeFile(file)`, where `file` is either the name of the file, the full path, or a `File` object.
+To remove an attachment, simply call `removeFile(file)`, where `file` is either the name of the file, the full path, or a `AttachmentFile` object.
 ```php
 $mail = new Mail();
 $mail->attachFile('attachments/ducks.jpg')->attachFile('attachments/horses.jpg');
@@ -102,6 +102,20 @@ $mail->removeFile('horses.jpg'); // Also valid.
 // > 'attachments/ducks.jpg' will be the only attachment left.
 ```
 If you wish to remove *all* attachments on the mail object, a call to `clearFiles()` would be simpler and cleaner!
+### Inline
+By default, attachments are attached as attachments.. which sounds obvious, but there is another option! Attachments can also have their disposition set to `inline`, which means they are available for embedding within content. This can be achieved by providing `true` to the second parameter of `attachFile()`.
+```php
+$mail = new Mail();
+$mail->attachFile('attachments/duck.jpg', true);
+$mail->htmlContent->setContent('<img src="cid:duck.jpg"/>');
+```
+As shown in the example above, files are embedded with their base name as the content ID (CID) by default. If you wish to provide your own CID, you'll need to provide your own instance of `AttachmentFile` with the CID set using `setContentID(string id)`.
+```php
+$mail = new Mail();
+$file = new AttachmentFile('attachments/duck.jpg', false);
+$file->setContentID(uniqid('attach'));
+$mail->attachFile($file, true);
+```
 
 ### Sending
 When everything is configured as you like, make a call to `send()` and, providing your server/environment mailing is set up correctly, your e-mail will be flying off through the internets for honor and glory.

@@ -74,6 +74,17 @@
 		}
 
 		/**
+		 * Set the attachment/content ID for this block.
+		 *
+		 * @api
+		 * @param string $id
+		 */
+		public function setAttachmentID(string $id) {
+			$this->addHeader('Content-ID', $id);
+			$this->addHeader('X-Attachment-Id', $id);
+		}
+
+		/**
 		 * Set the content for this multipart content block.
 		 *
 		 * @api

@@ -24,9 +24,7 @@
 
 	namespace KrameWork\Mailing;
 
-	use KrameWork\Storage\File;
-
-	require_once(__DIR__ . '/../Storage/File.php');
+	require_once(__DIR__ . '/AttachmentFile.php');
 	require_once(__DIR__ . '/MailMultipart.php');
 	require_once(__DIR__ . '/RecipientCollection.php');
 	require_once(__DIR__ . '/EncodedContent.php');
@@ -127,14 +125,15 @@
 		 * Attach a file to be sent with this mail.
 		 *
 		 * @api
-		 * @param string|File $attachment Attachment.
+		 * @param string|AttachmentFile $attachment Attachment.
+		 * @param bool $inline Is the attachment an inline embed?
 		 * @return Mail
 		 * @throws AttachmentNotFoundException
 		 * @throws DuplicateAttachmentException
 		 */
-		public function attachFile($attachment):Mail {
-			if (!($attachment instanceof File)) {
-				$attachment = new File($attachment, false, false);
+		public function attachFile($attachment, bool $inline = false):Mail {
+			if (!($attachment instanceof AttachmentFile)) {
+				$attachment = new AttachmentFile($attachment, false, false);
 				if (!$attachment->isValid())
 					throw new AttachmentNotFoundException('Cannot attach: ' . $attachment->getName());
 			}
@@ -142,6 +141,7 @@
 			if (array_key_exists($attachment->getName(), $this->files))
 				throw new DuplicateAttachmentException('Attachment already exists: ' . $attachment->getName());
 
+			$attachment->setInline($inline);
 			$this->files[$attachment->getName()] = $attachment;
 			return $this;
 		}
@@ -150,11 +150,11 @@
 		 * Remove an attached file from this mail object.
 		 *
 		 * @api
-		 * @param string|File $attachment Attachment to remove.
+		 * @param string|AttachmentFile $attachment Attachment to remove.
 		 * @return Mail
 		 */
 		public function removeFile($attachment):Mail {
-			if ($attachment instanceof File)
+			if ($attachment instanceof AttachmentFile)
 				$attachment = $attachment->getName();
 			else
 				$attachment = basename($attachment);
@@ -262,9 +262,12 @@
 						throw new AttachmentNotFoundException('Unable to attach file: ' . $file->getName());
 
 					$bFile = new MailMultipartContent($file->getFileType() . '; name="' . $file->getName() . '"', $container);
-					$bFile->setContentDisposition('attachment; filename="' . $file->getName() . '"');
+					$bFile->setContentDisposition(($file->isInline() ? 'inline' : 'attachment') . '; filename="' . $file->getName() . '"');
 					$bFile->setTransferEncoding('base64');
 					$bFile->setContent($file->getData(true), true);
+
+					if ($file->isInline())
+						$bFile->setAttachmentID($file->getContentID());
 				}
 			}
 		}
@@ -310,7 +313,7 @@
 		private $headers;
 
 		/**
-		 * @var File[]
+		 * @var AttachmentFile[]
 		 */
 		private $files;
 	}
