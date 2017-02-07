@@ -85,17 +85,27 @@
 		 * Set the sender of this e-mail.
 		 *
 		 * @api
-		 * @param string $sender E-mail address that sent this mail.
+		 * @param string $senderEmail E-mail address of the sender.
+		 * @param string $senderName Name of the sender.
 		 * @param bool $generateMessageID Generate a Message-Id header using this sender.
 		 * @return Mail
 		 */
-		public function setSender(string $sender, bool $generateMessageID = false):Mail {
-			$this->addHeader('From', $sender);
+		public function setSender(string $senderEmail, $senderName = null, bool $generateMessageID = false):Mail {
+			// Store e-mail address for setting envelope sender later.
+			$this->sender = $senderEmail;
 
+			// Generate message-ID if requested.
 			if ($generateMessageID) {
-				$domain = explode('@', $sender);
+				$domain = explode('@', $senderEmail);
 				$this->addHeader('Message-Id', '<' . uniqid(rand()) . '@' . $domain[count($domain) - 1] . '>');
 			}
+
+			// Store as header.
+			$sender = $senderEmail;
+			if ($senderName !== null)
+				$sender = $senderName . ' <' . $sender . '>';
+
+			$this->addHeader('From', $sender);
 
 			return $this;
 		}
@@ -207,7 +217,7 @@
 			// Compile subject.
 			$cSubject = '=?UTF-8?B?' . base64_encode($this->subkect ?? 'No Subject') . '?=';
 
-			mail($this->to, $cSubject, $bParent->compile(),  implode("\n", $cHeaders));
+			mail($this->to, $cSubject, $bParent->compile(),  implode("\n", $cHeaders), '-f ' . $this->sender);
 		}
 
 		/**
@@ -273,6 +283,11 @@
 		 * @var RecipientCollection
 		 */
 		public $bcc;
+
+		/**
+		 * @var string
+		 */
+		private $sender;
 
 		/**
 		 * @var EncodedContent
