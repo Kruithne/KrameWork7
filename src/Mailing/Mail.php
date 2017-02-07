@@ -103,7 +103,7 @@
 			// Store as header.
 			$sender = $senderEmail;
 			if ($senderName !== null)
-				$sender = $senderName . ' <' . $sender . '>';
+				$sender = '"' . $senderName . '" <' . $sender . '>';
 
 			$this->addHeader('From', $sender);
 
