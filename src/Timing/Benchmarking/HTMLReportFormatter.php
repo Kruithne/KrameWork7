@@ -60,7 +60,7 @@
 				$builder->append('<td>', $result->getElapsedFormatted(), '</td>');
 				$builder->append('<td>', $result->getShortestFormatted(), '</td>');
 				$builder->append('<td>', $result->getLongestFormatted(), '</td>');
-				$builder->append('<td>', $result->getStandardDeviation(), '</td>');
+				$builder->append('<td>', $result->getStandardDeviationFormatted(), '</td>');
 				$builder->append('<td>', $result->getSetCount(), '</td>');
 				$builder->append('<td>', $result->getExecutionsPerSet(), '</td>');
 				$builder->append('</tr>');

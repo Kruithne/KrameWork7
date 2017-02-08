@@ -170,6 +170,16 @@
 		}
 
 		/**
+		 * Get the standard deviation (formatted).
+		 *
+		 * @api
+		 * @return string
+		 */
+		public function getStandardDeviationFormatted():string {
+			return sprintf($this->format, $this->stddev);
+		}
+
+		/**
 		 * Get the set count.
 		 *
 		 * @api

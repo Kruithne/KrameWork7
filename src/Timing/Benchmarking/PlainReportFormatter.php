@@ -62,7 +62,7 @@
 				$this->addField($builder, $result->getElapsedFormatted());
 				$this->addField($builder, $result->getShortestFormatted());
 				$this->addField($builder, $result->getLongestFormatted());
-				$this->addField($builder, $result->getStandardDeviation());
+				$this->addField($builder, $result->getStandardDeviationFormatted());
 				$this->addField($builder, $result->getSetCount());
 				$this->addField($builder, $result->getExecutionsPerSet());
 				$this->addField($builder, '// ' . $result->getName());

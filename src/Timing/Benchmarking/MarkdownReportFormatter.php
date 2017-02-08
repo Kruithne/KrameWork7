@@ -55,7 +55,7 @@
 			foreach ($results as $result) {
 				$builder->newLine();
 				$builder->append($result->getName(), $result->getAverageFormatted(), $result->getElapsedFormatted());
-				$builder->append($result->getShortestFormatted(), $result->getLongestFormatted(), $result->getStandardDeviation());
+				$builder->append($result->getShortestFormatted(), $result->getLongestFormatted(), $result->getStandardDeviationFormatted());
 				$builder->append($result->getSetCount(), $result->getExecutionsPerSet());
 			}
 
