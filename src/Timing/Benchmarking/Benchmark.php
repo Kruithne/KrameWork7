@@ -41,7 +41,7 @@
 		/**
 		 * Overwrite and include the code to benchmark inside this function.
 		 */
-		public function runCycle();
+		public function execute();
 
 		/**
 		 * Called just before the test is run.
@@ -62,12 +62,14 @@
 	{
 		/**
 		 * Benchmark constructor.
-		 * @param int $cycles How many times should runCycle() be called?
+		 * @param int $cycles How many execution cycles?
+		 * @param int $executionsPerCycle How many executions per cycle?
 		 * @param string $name A name to identify this benchmark.
 		 */
-		public function __construct(int $cycles = 2000, string $name = null) {
+		public function __construct(int $cycles = 200, int $executionsPerCycle = 1000, string $name = null) {
 			$this->name = $name;
-			$this->cycles = $cycles;
+			$this->sets = $cycles;
+			$this->executions = $executionsPerCycle;
 		}
 
 		/**
@@ -92,12 +94,15 @@
 			$this->onStart();
 
 			$testStartTime = microtime(true); // Test start time.
-			$cycleTimes = array_fill(0, $this->cycles, 0); // Pre-allocate.
+			$cycleTimes = array_fill(0, $this->sets, 0); // Pre-allocate.
 
-			// Run the cycles.
-			for ($i = 0; $i < $this->cycles; $i++) {
+			// Execute the sets.
+			for ($i = 0; $i < $this->sets; $i++) {
 				$cycleStartTime = microtime(true);
-				$this->runCycle();
+
+				for ($e = 0; $e < $this->executions; $e++)
+					$this->execute();
+
 				$cycleTimes[$i] = microtime(true) - $cycleStartTime;
 			}
 
@@ -117,7 +122,8 @@
 				$shortTime, // Shortest cycle time
 				$longTime, // Longest cycle time
 				$testEndTime, // Elapsed time
-				$this->cycles, // Cycle count
+				$this->sets, // Set count
+				$this->executions, // Executions per set.
 				$this->name // Benchmark name
 			);
 
@@ -128,7 +134,12 @@
 		/**
 		 * @var int
 		 */
-		private $cycles;
+		private $sets;
+
+		/**
+		 * @var int
+		 */
+		private $executions;
 
 		/**
 		 * @var string

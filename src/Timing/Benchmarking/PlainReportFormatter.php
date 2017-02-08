@@ -48,10 +48,12 @@
 		public function format(array $results): string {
 			$builder = new StringBuilder();
 
-			$this->addField($builder, 'AverageTime');
-			$this->addField($builder, 'ElapsedTime');
-			$this->addField($builder, 'ShortestCycle');
-			$this->addField($builder, 'LongestCycle');
+			$this->addField($builder, 'Average');
+			$this->addField($builder, 'Elapsed');
+			$this->addField($builder, 'Shortest');
+			$this->addField($builder, 'Longest');
+			$this->addField($builder, 'Sets');
+			$this->addField($builder, 'Execs (p/set)');
 			$builder->newLine();
 
 			foreach ($results as $result) {
@@ -59,7 +61,9 @@
 				$this->addField($builder, $result->getElapsedFormatted());
 				$this->addField($builder, $result->getShortestFormatted());
 				$this->addField($builder, $result->getLongestFormatted());
-				$this->addField($builder, '// ' . $result->getName() . '(' . $result->getCount() . ')');
+				$this->addField($builder, $result->getSetCount());
+				$this->addField($builder, $result->getExecutionsPerSet());
+				$this->addField($builder, '// ' . $result->getName());
 				$builder->newLine();
 			}
 

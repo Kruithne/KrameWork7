@@ -41,15 +41,17 @@
 		 * @param float $shortest Shortest cycle time.
 		 * @param float $longest Longest cycle time.
 		 * @param float $elapsed Elapsed benchmark time.
-		 * @param int $count Cycle count
+		 * @param int $sets Amount of sets to execute.
+		 * @param int $execs Executions per set.
 		 * @param string|null $name Name of the benchmark.
 		 */
-		public function __construct(float $average, float $shortest, float $longest, float $elapsed, int $count, $name = null) {
+		public function __construct(float $average, float $shortest, float $longest, float $elapsed, int $sets, int $execs, $name = null) {
 			$this->average = $average;
 			$this->shortest = $shortest;
 			$this->longest = $longest;
 			$this->elapsed = $elapsed;
-			$this->count = $count;
+			$this->sets = $sets;
+			$this->executions = $execs;
 			$this->name = $name ?? 'Benchmark' . self::$index++;
 
 			$this->format = '%.5e';
@@ -156,13 +158,23 @@
 		}
 
 		/**
-		 * Get the cycle count.
+		 * Get the set count.
 		 *
 		 * @api
 		 * @return int
 		 */
-		public function getCount():int {
-			return $this->count;
+		public function getSetCount():int {
+			return $this->sets;
+		}
+
+		/**
+		 * Get how many executions occur per set.
+		 *
+		 * @api
+		 * @return int
+		 */
+		public function getExecutionsPerSet():int {
+			return $this->executions;
 		}
 
 		/**
@@ -193,7 +205,12 @@
 		/**
 		 * @var int
 		 */
-		private $count;
+		private $sets;
+
+		/**
+		 * @var int
+		 */
+		private $executions;
 
 		/**
 		 * @var string

@@ -49,13 +49,14 @@
 			$builder = new StringBuilder();
 			$builder->setSeparator(' | ');
 			$builder->append('Benchmark', 'AverageTime', 'ElapsedTime');
-			$builder->append('ShortestCycle', 'LongestCycle', 'CycleCount');
+			$builder->append('ShortestCycle', 'LongestCycle', 'SetCount', 'Execs (p/set)');
 			$builder->newLine()->repeat('---', 6);
 
 			foreach ($results as $result) {
 				$builder->newLine();
 				$builder->append($result->getName(), $result->getAverageFormatted(), $result->getElapsedFormatted());
-				$builder->append($result->getShortestFormatted(), $result->getLongestFormatted(), $result->getCount());
+				$builder->append($result->getShortestFormatted(), $result->getLongestFormatted(), $result->getSetCount());
+				$builder->append($result->getExecutionsPerSet());
 			}
 
 			return $builder;

@@ -6,11 +6,11 @@
 	class BenchmarkTest extends \PHPUnit_Framework_TestCase
 	{
 		public function testBenchmark() {
-			$benchmark = new class (2000) extends Benchmark {
+			$benchmark = new class (20, 100) extends Benchmark {
 				/**
 				 * Overwrite and include the code to benchmark inside this function.
 				 */
-				public function runCycle() {
+				public function execute() {
 					usleep(1000);
 				}
 			};
