@@ -54,8 +54,8 @@
 
 			foreach ($results as $result) {
 				$builder->newLine();
-				$builder->append($result->getName(), $result->getAverage(), $result->getElapsed());
-				$builder->append($result->getShortest(), $result->getLongest(), $result->getCount());
+				$builder->append($result->getName(), $result->getAverageFormatted(), $result->getElapsedFormatted());
+				$builder->append($result->getShortestFormatted(), $result->getLongestFormatted(), $result->getCount());
 			}
 
 			return $builder;
