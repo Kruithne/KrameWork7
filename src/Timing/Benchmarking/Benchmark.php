@@ -62,13 +62,13 @@
 	{
 		/**
 		 * Benchmark constructor.
-		 * @param int $cycles How many execution cycles?
+		 * @param int $sets How many execution cycles?
 		 * @param int $executionsPerCycle How many executions per cycle?
 		 * @param string $name A name to identify this benchmark.
 		 */
-		public function __construct(int $cycles = 200, int $executionsPerCycle = 1000, string $name = null) {
+		public function __construct(int $sets = 200, int $executionsPerCycle = 1000, string $name = null) {
 			$this->name = $name;
-			$this->sets = $cycles;
+			$this->sets = $sets;
 			$this->executions = $executionsPerCycle;
 		}
 
