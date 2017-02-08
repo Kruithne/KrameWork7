@@ -45,9 +45,9 @@
 			$timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
 			$timer->start();
 
-			usleep(10);
+			sleep(1);
 
-			$this->assertGreaterThanOrEqual(Time::MICROSECOND * 10, $timer->getElapsed());
+			$this->assertGreaterThanOrEqual(1, $timer->getElapsed());
 		}
 
 		/**
@@ -56,8 +56,8 @@
 		public function testAutoInitiatedTimer() {
 			$timer = new Timer(Timer::FORMAT_MICROSECONDS, true);
 
-			usleep(10);
-			$this->assertGreaterThanOrEqual(Time::MICROSECOND * 10, $timer->getElapsed());
+			sleep(1);
+			$this->assertGreaterThanOrEqual(1, $timer->getElapsed());
 
 			unset($timer);
 		}
@@ -69,11 +69,11 @@
 			$timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
 			$timer->start();
 
-			usleep(10);
+			sleep(1);
 			$result = $timer->stop();
-			$this->assertGreaterThanOrEqual(Time::MICROSECOND * 10, $result);
+			$this->assertGreaterThanOrEqual(1, $result);
 
-			usleep(20);
+			sleep(1);
 			$this->assertEquals($result, $timer->getElapsed());
 
 			unset($timer);
@@ -86,10 +86,10 @@
 			$timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
 			$timer->start();
 
-			usleep(10);
+			sleep(1);
 			$result = $timer->getElapsed();
 
-			usleep(20);
+			sleep(1);
 			$this->assertNotEquals($result, $timer->getElapsed());
 
 			unset($timer);
