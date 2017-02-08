@@ -48,18 +48,18 @@
 		public function format(array $results): string {
 			$builder = new StringBuilder();
 
-			$this->addField($builder, 'ExecutionTime');
-			$this->addField($builder, 'AverageTime');
-			$this->addField($builder, 'ShortestCycle');
-			$this->addField($builder, 'LongestCycle');
+			$this->addField($builder, 'AverageTime', false);
+			$this->addField($builder, 'ExecutionTime', false);
+			$this->addField($builder, 'ShortestCycle', false);
+			$this->addField($builder, 'LongestCycle', false);
 			$builder->newLine();
 
 			foreach ($results as $result) {
-				$this->addField($builder, $result->executionTime);
 				$this->addField($builder, $result->averageCycleTime);
+				$this->addField($builder, $result->executionTime);
 				$this->addField($builder, $result->shortestCycleTime);
 				$this->addField($builder, $result->longestCycleTime);
-				$this->addField($builder, '// ' . $result->benchmarkName);
+				$this->addField($builder, '// ' . $result->benchmarkName . '(' . $result->cycleCount . ')', false);
 				$builder->newLine();
 			}
 
@@ -71,10 +71,14 @@
 		 *
 		 * @internal
 		 * @param StringBuilder $target
-		 * @param string $content
+		 * @param mixed $content
+		 * @param bool $format Format value as a float to 5 decimal places.
 		 */
-		private function addField(StringBuilder $target, string $content)
+		private function addField(StringBuilder $target, $content, bool $format = true)
 		{
-			$target->append(str_pad($content, 18), "\t");
+			if ($format)
+				$content = sprintf('%.5e', $content);
+
+			$target->append(str_pad($content, 10), "\t");
 		}
 	}

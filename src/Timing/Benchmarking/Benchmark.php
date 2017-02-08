@@ -124,7 +124,8 @@
 				'averageCycleTime' => array_sum($cycleTimes) / count($cycleTimes),
 				'shortestCycleTime' => $shortTime,
 				'longestCycleTime' => $longTime,
-				'benchmarkName' => $this->getName()
+				'benchmarkName' => $this->getName(),
+				'cycleCount' => $this->cycles,
 			], \ArrayObject::ARRAY_AS_PROPS);
 
 			$this->onEnd();
