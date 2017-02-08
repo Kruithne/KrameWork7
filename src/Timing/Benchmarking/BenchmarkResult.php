@@ -92,7 +92,7 @@
 		 * @return string
 		 */
 		public function getAverageFormatted():string {
-			return sprintf($this->format, $this->shortest);
+			return sprintf($this->format, $this->average);
 		}
 
 		/**
