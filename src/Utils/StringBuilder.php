@@ -46,6 +46,7 @@
 		public function __construct() {
 			$this->clear();
 			$this->append(func_get_args());
+
 		}
 
 		/**
@@ -80,9 +81,9 @@
 		 */
 		public function appendLine($line, bool $trailLineEnd = true):StringBuilder {
 			if ($trailLineEnd)
-				return $this->append($line, $this->getLineEnd());
+				return $this->append($line . $this->getLineEnd());
 			else
-				return $this->append($this->getLineEnd(), $line);
+				return $this->append($this->getLineEnd() . $line);
 		}
 
 		/**
@@ -128,9 +129,9 @@
 		 */
 		public function prependLine($line, bool $trailLineEnd = true):StringBuilder {
 			if ($trailLineEnd)
-				return $this->prepend($this->getLineEnd(), $line);
+				return $this->prepend($line . $this->getLineEnd());
 			else
-				return $this->prepend($line, $this->getLineEnd());
+				return $this->prepend($this->getLineEnd() . $line);
 		}
 
 		/**
@@ -168,7 +169,12 @@
 		 * @return StringBuilder
 		 */
 		public function newLine(bool $append = true):StringBuilder {
-			return $append ? $this->append($this->getLineEnd()) : $this->prepend($this->getLineEnd());
+			if ($append)
+				$this->data .= $this->getLineEnd();
+			else
+				$this->data = $this->getLineEnd() . $this->data;
+
+			return $this;
 		}
 
 		/**
