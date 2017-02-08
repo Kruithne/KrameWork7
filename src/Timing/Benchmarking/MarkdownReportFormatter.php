@@ -24,8 +24,18 @@
 
 	namespace KrameWork\Timing\Benchmarking;
 
-	require_once(__DIR__ . '/IBenchmarkReportFormatter.php');
+	use KrameWork\Utils\StringBuilder;
 
+	require_once(__DIR__ . '/IBenchmarkReportFormatter.php');
+	require_once(__DIR__ . '/../../Utils/StringBuilder.php');
+
+	/**
+	 * Class MarkdownReportFormatter
+	 * Markdown formatter for benchmark reports.
+	 *
+	 * @package KrameWork\Timing\Benchmarking
+	 * @author Kruithne (kruithne@gmail.com)
+	 */
 	class MarkdownReportFormatter implements IBenchmarkReportFormatter
 	{
 		/**
@@ -36,7 +46,18 @@
 		 * @return string
 		 */
 		public function format(array $results): string {
-			// ToDo: Implement markdown formatter.
-			return '';
+			$builder = new StringBuilder();
+			$builder->setSeparator(' | ');
+			$builder->append('Benchmark', 'AverageTime', 'ExecutionTime');
+			$builder->append('ShortestCycle', 'LongestCycle', 'CycleCount');
+			$builder->newLine()->repeat('---', 6);
+
+			foreach ($results as $result) {
+				$builder->newLine();
+				$builder->append($result->benchmarkName, $result->averageCycleTime, $result->executionTime);
+				$builder->append($result->shortestCycleTime, $result->longestCycleTime, $result->cycleCount);
+			}
+
+			return $builder;
 		}
 	}
