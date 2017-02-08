@@ -1,7 +1,7 @@
 <?php
-	require_once(__DIR__ . "/../src/Timing/Benchmark.php");
+	require_once(__DIR__ . "/../src/Timing/Benchmarking/Benchmark.php");
 
-	use Kramework\Timing\Benchmark;
+	use Kramework\Timing\Benchmarking\Benchmark;
 
 	class BenchmarkTest extends \PHPUnit_Framework_TestCase
 	{

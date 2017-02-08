@@ -22,11 +22,11 @@
 	 * SOFTWARE.
 	 */
 
-	namespace Kramework\Timing;
+	namespace Kramework\Timing\Benchmarking;
 
 	/**
 	 * Interface IBenchmark
-	 * @package Kramework\Utils\Timing
+	 * @package Kramework\Timing\Benchmarking
 	 */
 	interface IBenchmark
 	{
@@ -54,7 +54,7 @@
 
 	/**
 	 * Class Benchmark
-	 * @package Kramework\Utils\Timing
+	 * @package Kramework\Timing\Benchmarking
 	 */
 	abstract class Benchmark implements IBenchmark
 	{

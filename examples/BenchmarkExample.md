@@ -1,6 +1,6 @@
 ## Benchmark
->- **Namespace**: KrameWork\Timing\Benchmark
->- **File**: KrameWork7/Storage/JSONFile.php
+>- **Namespace**: KrameWork\Timing\Benchmarking\Benchmark
+>- **File**: KrameWork7/Timing/Benchmarking
 
 ### Basic Usage
 The `Benchmark` class provided by KrameWork7 is an easy-to-use class for creating simple benchmarks of your code. The quickest (and most common) method of using this class is to create an anonymous class that extends `Benchmark`.
