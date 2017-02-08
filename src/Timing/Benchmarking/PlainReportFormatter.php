@@ -25,6 +25,7 @@
 	namespace KrameWork\Timing\Benchmarking;
 
 	use KrameWork\Utils\StringBuilder;
+	use Kramework\Utils\StringUtil;
 
 	require_once(__DIR__ . '/IBenchmarkReportFormatter.php');
 	require_once(__DIR__ . '/../../Utils/StringBuilder.php');
@@ -46,41 +47,45 @@
 		 * @return string
 		 */
 		public function format(array $results): string {
-			$builder = new StringBuilder();
+			$this->builder = new StringBuilder();
 
-			$this->addField($builder, 'Average');
-			$this->addField($builder, 'Elapsed');
-			$this->addField($builder, 'Shortest');
-			$this->addField($builder, 'Longest');
-			$this->addField($builder, 'StdDev');
-			$this->addField($builder, 'Sets');
-			$this->addField($builder, 'Execs (p/set)');
-			$builder->newLine();
+			$this->addField('Average');
+			$this->addField('Elapsed');
+			$this->addField('Shortest');
+			$this->addField('Longest');
+			$this->addField('StdDev');
+			$this->addField('Sets');
+			$this->addField('Execs (p/set)');
+			$this->builder->newLine();
 
 			foreach ($results as $result) {
-				$this->addField($builder, $result->getAverageFormatted());
-				$this->addField($builder, $result->getElapsedFormatted());
-				$this->addField($builder, $result->getShortestFormatted());
-				$this->addField($builder, $result->getLongestFormatted());
-				$this->addField($builder, $result->getStandardDeviationFormatted());
-				$this->addField($builder, $result->getSetCount());
-				$this->addField($builder, $result->getExecutionsPerSet());
-				$this->addField($builder, '// ' . $result->getName());
-				$builder->newLine();
+				$this->addField($result->getAverageFormatted());
+				$this->addField($result->getElapsedFormatted());
+				$this->addField($result->getShortestFormatted());
+				$this->addField($result->getLongestFormatted());
+				$this->addField($result->getStandardDeviationFormatted());
+				$this->addField($result->getSetCount());
+				$this->addField($result->getExecutionsPerSet());
+				$this->addField('// ' . $result->getName());
+				$this->builder->newLine();
 			}
 
-			return $builder;
+			return $this->builder;
 		}
 
 		/**
 		 * Add a formatted field to the target string builder.
 		 *
 		 * @internal
-		 * @param StringBuilder $target
 		 * @param mixed $content
 		 */
-		private function addField(StringBuilder $target, $content)
+		private function addField($content)
 		{
-			$target->append(str_pad($content, 10), "\t");
+			$this->builder->append(str_pad($content, 10), "\t");
 		}
+
+		/**
+		 * @var StringBuilder
+		 */
+		private $builder;
 	}
