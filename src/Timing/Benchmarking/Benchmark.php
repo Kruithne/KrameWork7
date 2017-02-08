@@ -61,9 +61,21 @@
 		/**
 		 * Benchmark constructor.
 		 * @param int $cycles How many times should runCycle() be called?
+		 * @param string $name A name to identify this benchmark.
 		 */
-		public function __construct(int $cycles = 2000) {
+		public function __construct(int $cycles = 2000, string $name = null) {
+			$this->name = $name ?? 'Benchmark' . self::$index++;
 			$this->cycles = $cycles;
+		}
+
+		/**
+		 * Get the name of this benchmark.
+		 *
+		 * @api
+		 * @return string
+		 */
+		public function getName():string {
+			return $this->name;
 		}
 
 		/**
@@ -112,11 +124,25 @@
 				'averageCycleTime' => array_sum($cycleTimes) / count($cycleTimes),
 				'shortestCycleTime' => $shortTime,
 				'longestCycleTime' => $longTime,
+				'benchmarkName' => $this->getName()
 			], \ArrayObject::ARRAY_AS_PROPS);
 
 			$this->onEnd();
 			return $result;
 		}
 
+		/**
+		 * @var int
+		 */
 		private $cycles;
+
+		/**
+		 * @var string
+		 */
+		private $name;
+
+		/**
+		 * @var int
+		 */
+		private static $index = 1;
 	}

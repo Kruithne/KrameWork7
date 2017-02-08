@@ -59,6 +59,7 @@
 				$this->addField($builder, $result->averageCycleTime);
 				$this->addField($builder, $result->shortestCycleTime);
 				$this->addField($builder, $result->longestCycleTime);
+				$this->addField($builder, '// ' . $result->benchmarkName);
 				$builder->newLine();
 			}
 
