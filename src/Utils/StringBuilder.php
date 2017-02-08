@@ -61,13 +61,15 @@
 					foreach ($arg as $subArg)
 						$this->append($subArg);
 				} else {
-					//if ($this->separator !== null && !$this->isEmpty())
-						//$this->data .= $this->separator;
+					$index = $this->getLineIndex(); // Bottom-most line index.
+					$line = $this->data[$index]; // Line data itself.
 
-					if ($this->separator !== null && !$this->isStartOfLine)
-						$this->data .= $this->separator;
+					// Append a separator first if needed.
+					if ($this->separator !== null && \strlen($line) > 0)
+						$line .= $this->separator;
 
-					$this->data .= strval($arg);
+					// Append new data to the line and update in the stack.
+					$this->data[$index] = $line . $arg;
 				}
 			}
 			return $this;
@@ -82,11 +84,10 @@
 		 * @return StringBuilder
 		 */
 		public function appendLine($line, bool $trailLineEnd = true):StringBuilder {
-			if ($trailLineEnd) {
-				$this->append($line . $this->getLineEnd());
-			}
+			if ($trailLineEnd)
+				$this->append($line)->newLine(true);
 			else
-				return $this->append($this->getLineEnd() . $line);
+				$this->newLine(true)->append($line);
 
 			return $this;
 		}
@@ -115,10 +116,14 @@
 					foreach ($arg as $subArg)
 						$this->prepend($subArg);
 				} else {
-					//if ($this->separator !== null && !$this->isEmpty())
-						//$arg .= $this->separator;
+					$line = $this->data[0]; // Top-most line.
 
-					$this->data = strval($arg) . $this->data;
+					// Append separator to the new data.
+					if ($this->separator !== null && \strlen($line) > 0)
+						$arg .= $this->separator;
+
+					// Prepend new data to the line and update in the stack.
+					$this->data[0] = $arg . $line;
 				}
 			}
 			return $this;
@@ -134,9 +139,11 @@
 		 */
 		public function prependLine($line, bool $trailLineEnd = true):StringBuilder {
 			if ($trailLineEnd)
-				return $this->prepend($this->getLineEnd(), $line);
+				$this->newline(false)->prepend($line);
 			else
-				return $this->prepend($line, $this->getLineEnd());
+				$this->prepend($line)->newline(false);
+
+			return $this;
 		}
 
 		/**
@@ -174,7 +181,8 @@
 		 * @return StringBuilder
 		 */
 		public function newLine(bool $append = true):StringBuilder {
-			return $append ? $this->append($this->getLineEnd()) : $this->prepend($this->getLineEnd());
+			$append ? array_push($this->data, '') : array_unshift($this->data, '');
+			return $this;
 		}
 
 		/**
@@ -184,7 +192,7 @@
 		 * @return StringBuilder
 		 */
 		public function clear():StringBuilder {
-			$this->data = '';
+			$this->data = [''];
 			return $this;
 		}
 
@@ -195,7 +203,11 @@
 		 * @return int
 		 */
 		public function length():int {
-			return strlen($this->data);
+			$len = 0;
+			foreach ($this->data as $line)
+				$len += strlen($line);
+
+			return $len;
 		}
 
 		/**
@@ -250,12 +262,22 @@
 		 * @return string
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
-		function __toString() {
-			return $this->data;
+		public function __toString() {
+			return implode($this->getLineEnd(), $this->data);
 		}
 
 		/**
-		 * @var string
+		 * Get the bottom-most line index of the data stack.
+		 *
+		 * @internal
+		 * @return int
+		 */
+		private function getLineIndex() {
+			return count($this->data) - 1;
+		}
+
+		/**
+		 * @var array
 		 */
 		private $data;
 
@@ -268,9 +290,4 @@
 		 * @var string|null
 		 */
 		private $lineEnd;
-
-		/**
-		 * @var bool
-		 */
-		private $isStartOfLine;
 	}
