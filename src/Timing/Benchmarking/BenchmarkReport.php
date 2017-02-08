@@ -25,6 +25,7 @@
 	namespace KrameWork\Timing;
 
 	use KrameWork\Timing\Benchmarking\Benchmark;
+	use KrameWork\Timing\Benchmarking\BenchmarkResult;
 	use KrameWork\Timing\Benchmarking\HTMLReportFormatter;
 	use KrameWork\Timing\Benchmarking\IBenchmarkReportFormatter;
 	use KrameWork\Timing\Benchmarking\MarkdownReportFormatter;
@@ -121,7 +122,24 @@
 			foreach ($this->benchmarks as $benchmark)
 				$results[] = $benchmark->runTest();
 
+			usort($results, [$this, 'sortResults']);
+
 			return $this->formatter->format($results);
+		}
+
+		/**
+		 * Comparator for result sorting.
+		 *
+		 * @internal
+		 * @param BenchmarkResult $a
+		 * @param BenchmarkResult $b
+		 * @return int
+		 */
+		public function sortResults(BenchmarkResult $a, BenchmarkResult $b) {
+			if ($a->getAverage() == $b->getAverage()) {
+				return 0;
+			}
+			return ($a->getAverage() < $b->getAverage()) ? -1 : 1;
 		}
 
 		/**
