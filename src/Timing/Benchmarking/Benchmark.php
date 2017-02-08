@@ -108,19 +108,10 @@
 
 			$testEndTime = microtime(true) - $testStartTime; // Grab the test end time.
 
-			// Process short/long times.
-			$shortTime = null;
-			$longTime = null;
-
-			foreach ($cycleTimes as $entry) {
-				$shortTime = $shortTime == null ? $entry : min($entry, $shortTime);
-				$longTime = $longTime == null ? $entry : max($entry, $longTime);
-			}
-
 			$result = new BenchmarkResult(
 				array_sum($cycleTimes) / count($cycleTimes), // Average time
-				$shortTime, // Shortest cycle time
-				$longTime, // Longest cycle time
+				min($cycleTimes), // Shortest cycle time
+				max($cycleTimes), // Longest cycle time
 				$testEndTime, // Elapsed time
 				$this->sets, // Set count
 				$this->executions, // Executions per set.
