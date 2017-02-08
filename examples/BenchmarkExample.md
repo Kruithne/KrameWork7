@@ -21,12 +21,21 @@ With the call to `runTest()`, our benchmark will run **2000** times, and the res
  - `averageCycleTime` - Average duration of all cycles.
  - `shortestCycleTime` - Duration of the shortest cycle.
  - `longestCycleTime` - Duration of the longest cycle.
+ - `benchmarkName` - Name of the benchmark, given at construction.
+ - `cycleCount` - How many cycles the benchmark run.
 
 ### Controlling Cycle Count
 As stated above, a benchmark will run **2000** times by default; it's likely that you'll want to customize this value, which can be done by passing a new value into the constructor. The following example will execute **1,000,000** times.
 ```php
 $benchmark = new class (1000000) extends Benchmark {
 	//...
+}
+```
+### Naming Benchmarks
+All good benchmarks deserve a name, they're real people too. The second parameter to the constructor can be used to provide a name for the benchmark, otherwise a boring generic one will be assigned.
+```php
+$benchmark = new class(100, 'Carl') extends Benchmark {
+    //...
 }
 ```
 ### Pre/Post Benchmark Operations
