@@ -1,6 +1,6 @@
 ![Build Status](https://travis-ci.org/Kruithne/KrameWork7.svg?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## KrameWork7 - PHP7 Web Framework (WIP)
+## KrameWork7 - PHP7 Web Framework
 
 ### What is this?
 For a long time, sites I developed would be based on [KrameWork](https://github.com/Kruithne/KrameWork), however as time has gone on, this has become more and more out-of-date. With the release of PHP7, rather than combing through the code-base and updating things, my plan is to redesign the framework from the ground-up using newer features and tech.
