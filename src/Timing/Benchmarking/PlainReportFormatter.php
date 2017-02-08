@@ -49,7 +49,7 @@
 			$builder = new StringBuilder();
 
 			$this->addField($builder, 'AverageTime');
-			$this->addField($builder, 'ExecutionTime');
+			$this->addField($builder, 'ElapsedTime');
 			$this->addField($builder, 'ShortestCycle');
 			$this->addField($builder, 'LongestCycle');
 			$builder->newLine();

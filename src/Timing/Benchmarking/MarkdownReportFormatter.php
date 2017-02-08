@@ -48,7 +48,7 @@
 		public function format(array $results): string {
 			$builder = new StringBuilder();
 			$builder->setSeparator(' | ');
-			$builder->append('Benchmark', 'AverageTime', 'ExecutionTime');
+			$builder->append('Benchmark', 'AverageTime', 'ElapsedTime');
 			$builder->append('ShortestCycle', 'LongestCycle', 'CycleCount');
 			$builder->newLine()->repeat('---', 6);
 
