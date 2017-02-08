@@ -91,33 +91,35 @@
 		public function runTest():BenchmarkResult {
 			$this->onStart();
 
-			$start = microtime(true);
-			$shortTime = null;
-			$longTime = null;
-			$cycleTimes = [];
+			$testStartTime = microtime(true); // Test start time.
+			$cycleTimes = array_fill(0, $this->cycles, 0); // Pre-allocate.
 
+			// Run the cycles.
 			for ($i = 0; $i < $this->cycles; $i++) {
 				$cycleStartTime = microtime(true);
-
 				$this->runCycle();
-
-				$cycleTime = microtime(true) - $cycleStartTime;
-				if ($shortTime == null || $cycleTime < $shortTime)
-					$shortTime = $cycleTime;
-
-				if ($longTime == null || $cycleTime > $longTime)
-					$longTime = $cycleTime;
-
-				$cycleTimes[] = $cycleTime;
+				$cycleTimes[$i] = microtime(true) - $cycleStartTime;
 			}
 
-			$end = microtime(true) - $start;
+			$testEndTime = microtime(true) - $testStartTime; // Grab the test end time.
+
+			// Process short/long times.
+			$shortTime = null;
+			$longTime = null;
+
+			foreach ($cycleTimes as $entry) {
+				if ($shortTime == null || $entry < $shortTime)
+					$shortTime = $entry;
+
+				if ($longTime == null || $entry > $longTime)
+					$longTime = $entry;
+			}
 
 			$result = new BenchmarkResult(
 				array_sum($cycleTimes) / count($cycleTimes), // Average time
 				$shortTime, // Shortest cycle time
 				$longTime, // Longest cycle time
-				$end, // Elapsed time
+				$testEndTime, // Elapsed time
 				$this->cycles, // Cycle count
 				$this->name // Benchmark name
 			);
