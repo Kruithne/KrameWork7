@@ -50,7 +50,7 @@
 			$builder->setSeparator(' | ');
 			$builder->append('Benchmark', 'Average', 'Elapsed');
 			$builder->append('Shortest', 'Longest', 'Sets', 'Execs (p/set)');
-			$builder->newLine()->repeat('---', 6);
+			$builder->newLine()->repeat('---', 7);
 
 			foreach ($results as $result) {
 				$builder->newLine();
