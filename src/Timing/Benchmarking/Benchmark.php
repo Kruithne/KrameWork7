@@ -111,11 +111,13 @@
 				$cycleTimes[] = $cycleTime;
 			}
 
+			$end = microtime(true) - $start;
+
 			$result = new BenchmarkResult(
 				array_sum($cycleTimes) / count($cycleTimes), // Average time
 				$shortTime, // Shortest cycle time
 				$longTime, // Longest cycle time
-				microtime(true) - $start, // Elapsed time
+				$end, // Elapsed time
 				$this->cycles, // Cycle count
 				$this->name // Benchmark name
 			);
