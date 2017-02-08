@@ -49,8 +49,8 @@
 			$builder = new StringBuilder();
 			$builder->append('<table><tr>');
 			$builder->append('<th>Benchmark</th>', '<th>Average</th>', '<th>Elapsed</th>');
-			$builder->append('<th>Shortest</th>', '<th>Longest</th>', '<th>Sets</th>');
-			$builder->append('<th>Execs (p/set)</th>');
+			$builder->append('<th>Shortest</th>', '<th>Longest</th>', '<th>StdDev</th>');
+			$builder->append('<th>Sets</th>', '<th>Execs (p/set)</th>');
 			$builder->append('</tr>');
 
 			foreach ($results as $result) {
@@ -60,6 +60,7 @@
 				$builder->append('<td>', $result->getElapsedFormatted(), '</td>');
 				$builder->append('<td>', $result->getShortestFormatted(), '</td>');
 				$builder->append('<td>', $result->getLongestFormatted(), '</td>');
+				$builder->append('<td>', $result->getStandardDeviation(), '</td>');
 				$builder->append('<td>', $result->getSetCount(), '</td>');
 				$builder->append('<td>', $result->getExecutionsPerSet(), '</td>');
 				$builder->append('</tr>');

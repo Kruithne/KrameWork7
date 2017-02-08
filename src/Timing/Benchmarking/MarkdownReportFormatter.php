@@ -48,15 +48,15 @@
 		public function format(array $results): string {
 			$builder = new StringBuilder();
 			$builder->setSeparator(' | ');
-			$builder->append('Benchmark', 'Average', 'Elapsed');
-			$builder->append('Shortest', 'Longest', 'Sets', 'Execs (p/set)');
-			$builder->newLine()->repeat('---', 7);
+			$builder->append('Benchmark', 'Average', 'Elapsed', 'Shortest');
+			$builder->append('Longest', 'StdDev', 'Sets', 'Execs (p/set)');
+			$builder->newLine()->repeat('---', 8);
 
 			foreach ($results as $result) {
 				$builder->newLine();
 				$builder->append($result->getName(), $result->getAverageFormatted(), $result->getElapsedFormatted());
-				$builder->append($result->getShortestFormatted(), $result->getLongestFormatted(), $result->getSetCount());
-				$builder->append($result->getExecutionsPerSet());
+				$builder->append($result->getShortestFormatted(), $result->getLongestFormatted(), $result->getStandardDeviation());
+				$builder->append($result->getSetCount(), $result->getExecutionsPerSet());
 			}
 
 			return $builder;

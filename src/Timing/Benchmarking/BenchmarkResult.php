@@ -41,15 +41,17 @@
 		 * @param float $shortest Shortest cycle time.
 		 * @param float $longest Longest cycle time.
 		 * @param float $elapsed Elapsed benchmark time.
+		 * @param float $stddev Standard deviation.
 		 * @param int $sets Amount of sets to execute.
 		 * @param int $execs Executions per set.
 		 * @param string|null $name Name of the benchmark.
 		 */
-		public function __construct(float $average, float $shortest, float $longest, float $elapsed, int $sets, int $execs, $name = null) {
+		public function __construct(float $average, float $shortest, float $longest, float $elapsed, float $stddev, int $sets, int $execs, $name = null) {
 			$this->average = $average;
 			$this->shortest = $shortest;
 			$this->longest = $longest;
 			$this->elapsed = $elapsed;
+			$this->stddev = $stddev;
 			$this->sets = $sets;
 			$this->executions = $execs;
 			$this->name = $name ?? 'Benchmark' . self::$index++;
@@ -158,6 +160,16 @@
 		}
 
 		/**
+		 * Get the standard deviation.
+		 *
+		 * @api
+		 * @return float
+		 */
+		public function getStandardDeviation():float {
+			return $this->stddev;
+		}
+
+		/**
 		 * Get the set count.
 		 *
 		 * @api
@@ -206,6 +218,11 @@
 		 * @var int
 		 */
 		private $sets;
+
+		/**
+		 * @var float
+		 */
+		private $stddev;
 
 		/**
 		 * @var int

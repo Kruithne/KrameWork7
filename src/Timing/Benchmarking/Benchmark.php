@@ -113,6 +113,7 @@
 				min($cycleTimes), // Shortest cycle time
 				max($cycleTimes), // Longest cycle time
 				$testEndTime, // Elapsed time
+				$this->std_arr($cycleTimes),
 				$this->sets, // Set count
 				$this->executions, // Executions per set.
 				$this->name // Benchmark name
@@ -120,6 +121,30 @@
 
 			$this->onEnd();
 			return $result;
+		}
+
+		/**
+		 * Calculate the square of value-mean.
+		 *
+		 * @internal
+		 * @param number $value
+		 * @param number $mean
+		 * @return number
+		 */
+		private function std_square($value, $mean) {
+			return pow($value - $mean, 2);
+		}
+
+		/**
+		 * Calculate the standard deviation of an array.
+		 *
+		 * @internal
+		 * @param $arr
+		 * @return float
+		 */
+		private function std_arr($arr) {
+			$size = count($arr);
+			return sqrt(array_sum(array_map([$this, 'std_square'], $arr, array_fill(0, $size,(array_sum($arr) / $size)))) / ($size - 1));
 		}
 
 		/**
