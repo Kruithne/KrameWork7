@@ -25,7 +25,6 @@
 	namespace KrameWork\Timing\Benchmarking;
 
 	use KrameWork\Utils\StringBuilder;
-	use Kramework\Utils\StringUtil;
 
 	require_once(__DIR__ . '/IBenchmarkReportFormatter.php');
 	require_once(__DIR__ . '/../../Utils/StringBuilder.php');
