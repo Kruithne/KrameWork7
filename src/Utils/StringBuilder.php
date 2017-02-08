@@ -79,11 +79,14 @@
 		 * Append a line-end terminated/prefixed string to this builder.
 		 *
 		 * @api
-		 * @param string $line String to append.
+		 * @param string|null $line String to append.
 		 * @param bool $trailLineEnd Terminate string with line-end, otherwise prefix it.
 		 * @return StringBuilder
 		 */
-		public function appendLine($line, bool $trailLineEnd = true):StringBuilder {
+		public function appendLine($line = null, bool $trailLineEnd = true):StringBuilder {
+			if ($line === null)
+				return $this->newLine(true);
+
 			if ($trailLineEnd)
 				$this->append($line)->newLine(true);
 			else
@@ -133,11 +136,14 @@
 		 * Prepend a line-end terminated/prefixed string to this builder.
 		 *
 		 * @api
-		 * @param $line String to prepend.
+		 * @param string|null $line String to prepend.
 		 * @param bool $trailLineEnd Terminate string with line-end, otherwise prefix it.
 		 * @return StringBuilder
 		 */
-		public function prependLine($line, bool $trailLineEnd = true):StringBuilder {
+		public function prependLine($line = null, bool $trailLineEnd = true):StringBuilder {
+			if ($line === null)
+				return $this->newLine(false);
+
 			if ($trailLineEnd)
 				$this->newline(false)->prepend($line);
 			else
