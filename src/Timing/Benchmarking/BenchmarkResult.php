@@ -51,6 +51,18 @@
 			$this->elapsed = $elapsed;
 			$this->count = $count;
 			$this->name = $name ?? 'Benchmark' . self::$index++;
+
+			$this->format = '%.5e';
+		}
+
+		/**
+		 * Set the format used for formatted methods.
+		 *
+		 * @api
+		 * @param $format String format.
+		 */
+		public function setFormat($format) {
+			$this->format = $format;
 		}
 
 		/**
@@ -59,7 +71,7 @@
 		 * @api
 		 * @return string
 		 */
-		public function getName(): string {
+		public function getName():string {
 			return $this->name;
 		}
 
@@ -69,8 +81,18 @@
 		 * @api
 		 * @return float
 		 */
-		public function getAverage(): float {
+		public function getAverage():float {
 			return $this->average;
+		}
+
+		/**
+		 * Get the average cycle time (formatted).
+		 *
+		 * @api
+		 * @return string
+		 */
+		public function getAverageFormatted():string {
+			return sprintf($this->format, $this->shortest);
 		}
 
 		/**
@@ -79,8 +101,18 @@
 		 * @api
 		 * @return float
 		 */
-		public function getShortest(): float {
+		public function getShortest():float {
 			return $this->shortest;
+		}
+
+		/**
+		 * Get the shortest cycle time (formatted).
+		 *
+		 * @api
+		 * @return string
+		 */
+		public function getShortestFormatted():string {
+			return sprintf($this->format, $this->shortest);
 		}
 
 		/**
@@ -89,8 +121,18 @@
 		 * @api
 		 * @return float
 		 */
-		public function getLongest(): float {
+		public function getLongest():float {
 			return $this->longest;
+		}
+
+		/**
+		 * Get the longest cycle time (formatted).
+		 *
+		 * @api
+		 * @return string
+		 */
+		public function getLongestFormatted():string {
+			return sprintf($this->format, $this->longest);
 		}
 
 		/**
@@ -99,8 +141,18 @@
 		 * @api
 		 * @return float
 		 */
-		public function getElapsed(): float {
+		public function getElapsed():float {
 			return $this->elapsed;
+		}
+
+		/**
+		 * Get the total elapsed time (formatted).
+		 *
+		 * @api
+		 * @return string
+		 */
+		public function getElapsedFormatted():string {
+			return sprintf($this->format, $this->elapsed);
 		}
 
 		/**
@@ -109,7 +161,7 @@
 		 * @api
 		 * @return int
 		 */
-		public function getCount(): int {
+		public function getCount():int {
 			return $this->count;
 		}
 
@@ -142,6 +194,11 @@
 		 * @var int
 		 */
 		private $count;
+
+		/**
+		 * @var string
+		 */
+		private $format;
 
 		/**
 		 * @var int

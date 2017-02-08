@@ -48,18 +48,18 @@
 		public function format(array $results): string {
 			$builder = new StringBuilder();
 
-			$this->addField($builder, 'AverageTime', false);
-			$this->addField($builder, 'ExecutionTime', false);
-			$this->addField($builder, 'ShortestCycle', false);
-			$this->addField($builder, 'LongestCycle', false);
+			$this->addField($builder, 'AverageTime');
+			$this->addField($builder, 'ExecutionTime');
+			$this->addField($builder, 'ShortestCycle');
+			$this->addField($builder, 'LongestCycle');
 			$builder->newLine();
 
 			foreach ($results as $result) {
-				$this->addField($builder, $result->getAverage());
-				$this->addField($builder, $result->getElapsed());
-				$this->addField($builder, $result->getShortest());
-				$this->addField($builder, $result->getLongest());
-				$this->addField($builder, '// ' . $result->getName() . '(' . $result->getCount() . ')', false);
+				$this->addField($builder, $result->getAverageFormatted());
+				$this->addField($builder, $result->getElapsedFormatted());
+				$this->addField($builder, $result->getShortestFormatted());
+				$this->addField($builder, $result->getLongestFormatted());
+				$this->addField($builder, '// ' . $result->getName() . '(' . $result->getCount() . ')');
 				$builder->newLine();
 			}
 
@@ -72,13 +72,9 @@
 		 * @internal
 		 * @param StringBuilder $target
 		 * @param mixed $content
-		 * @param bool $format Format value as a float to 5 decimal places.
 		 */
-		private function addField(StringBuilder $target, $content, bool $format = true)
+		private function addField(StringBuilder $target, $content)
 		{
-			if ($format)
-				$content = sprintf('%.5e', $content);
-
 			$target->append(str_pad($content, 10), "\t");
 		}
 	}
