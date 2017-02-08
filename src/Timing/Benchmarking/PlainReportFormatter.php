@@ -29,6 +29,13 @@
 	require_once(__DIR__ . '/IBenchmarkReportFormatter.php');
 	require_once(__DIR__ . '/../../Utils/StringBuilder.php');
 
+	/**
+	 * Class PlainReportFormatter
+	 * Plain-text formatter for benchmark reports.
+	 *
+	 * @package KrameWork\Timing\Benchmarking
+	 * @author Kruithne (kruithne@gmail.com)
+	 */
 	class PlainReportFormatter implements IBenchmarkReportFormatter
 	{
 		/**
