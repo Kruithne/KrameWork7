@@ -42,7 +42,7 @@
 		 * Format the given results.
 		 *
 		 * @api
-		 * @param \ArrayObject[] $results
+		 * @param BenchmarkResult[] $results
 		 * @return string
 		 */
 		public function format(array $results): string {
@@ -55,11 +55,11 @@
 			$builder->newLine();
 
 			foreach ($results as $result) {
-				$this->addField($builder, $result->averageCycleTime);
-				$this->addField($builder, $result->executionTime);
-				$this->addField($builder, $result->shortestCycleTime);
-				$this->addField($builder, $result->longestCycleTime);
-				$this->addField($builder, '// ' . $result->benchmarkName . '(' . $result->cycleCount . ')', false);
+				$this->addField($builder, $result->getAverage());
+				$this->addField($builder, $result->getElapsed());
+				$this->addField($builder, $result->getShortest());
+				$this->addField($builder, $result->getLongest());
+				$this->addField($builder, '// ' . $result->getName() . '(' . $result->getCount() . ')', false);
 				$builder->newLine();
 			}
 

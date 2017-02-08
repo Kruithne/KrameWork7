@@ -15,7 +15,8 @@
 				}
 			};
 
-			$results = $benchmark->runTest();
-			$this->assertGreaterThanOrEqual(2, $results->executionTime, "Benchmark didn't run for expected forced time.");
+			$result = $benchmark->runTest();
+			$this->assertGreaterThanOrEqual(2, $result->getElapsed(), "Benchmark didn't run for expected forced time.");
+			$this->assertEquals('Benchmark1', $result->getName());
 		}
 	}

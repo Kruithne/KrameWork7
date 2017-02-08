@@ -36,7 +36,7 @@
 		 * Format the given results.
 		 *
 		 * @api
-		 * @param \ArrayObject[] $results
+		 * @param BenchmarkResult[] $results
 		 * @return string
 		 */
 		public function format(array $results):string;

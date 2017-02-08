@@ -24,6 +24,8 @@
 
 	namespace Kramework\Timing\Benchmarking;
 
+	require_once(__DIR__ . '/BenchmarkResult.php');
+
 	/**
 	 * Interface IBenchmark
 	 * @package Kramework\Timing\Benchmarking
@@ -32,9 +34,9 @@
 	{
 		/**
 		 * Initiate the benchmark test.
-		 * @return \ArrayObject
+		 * @return BenchmarkResult
 		 */
-		public function runTest():\ArrayObject;
+		public function runTest():BenchmarkResult;
 
 		/**
 		 * Overwrite and include the code to benchmark inside this function.
@@ -64,18 +66,8 @@
 		 * @param string $name A name to identify this benchmark.
 		 */
 		public function __construct(int $cycles = 2000, string $name = null) {
-			$this->name = $name ?? 'Benchmark' . self::$index++;
+			$this->name = $name;
 			$this->cycles = $cycles;
-		}
-
-		/**
-		 * Get the name of this benchmark.
-		 *
-		 * @api
-		 * @return string
-		 */
-		public function getName():string {
-			return $this->name;
 		}
 
 		/**
@@ -94,9 +86,9 @@
 
 		/**
 		 * Initiate the test.
-		 * @return \ArrayObject
+		 * @return BenchmarkResult
 		 */
-		public function runTest():\ArrayObject {
+		public function runTest():BenchmarkResult {
 			$this->onStart();
 
 			$start = microtime(true);
@@ -119,14 +111,14 @@
 				$cycleTimes[] = $cycleTime;
 			}
 
-			$result = new \ArrayObject([
-				'executionTime' => microtime(true) - $start,
-				'averageCycleTime' => array_sum($cycleTimes) / count($cycleTimes),
-				'shortestCycleTime' => $shortTime,
-				'longestCycleTime' => $longTime,
-				'benchmarkName' => $this->getName(),
-				'cycleCount' => $this->cycles,
-			], \ArrayObject::ARRAY_AS_PROPS);
+			$result = new BenchmarkResult(
+				array_sum($cycleTimes) / count($cycleTimes), // Average time
+				$shortTime, // Shortest cycle time
+				$longTime, // Longest cycle time
+				microtime(true) - $start, // Elapsed time
+				$this->cycles, // Cycle count
+				$this->name // Benchmark name
+			);
 
 			$this->onEnd();
 			return $result;
@@ -141,9 +133,4 @@
 		 * @var string
 		 */
 		private $name;
-
-		/**
-		 * @var int
-		 */
-		private static $index = 1;
 	}

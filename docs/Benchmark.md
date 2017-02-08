@@ -15,14 +15,15 @@ Your anonymous class must implement the `runCycle()` function, which is called b
 ```php
 $result = $benchmark->runTest();
 ```
-With the call to `runTest()`, our benchmark will run **2000** times, and the results will be stored in `$result`, an `ArrayObject`, which contains the following properties:
-
- - `executionTime` - Duration of the entire benchmark.
- - `averageCycleTime` - Average duration of all cycles.
- - `shortestCycleTime` - Duration of the shortest cycle.
- - `longestCycleTime` - Duration of the longest cycle.
- - `benchmarkName` - Name of the benchmark, given at construction.
- - `cycleCount` - How many cycles the benchmark run.
+With the call to `runTest()`, our benchmark will run **2000** times, and the results will be stored in `$result`, a `BenchmarkResult`, detailed below.
+Method | Type | Description
+--- | --- |---
+**getName()** | string | Name of the benchmark. Produces sensible default if omitted in `Benchmark` constructor.
+**getAverage()** | float | Average time for all cycles in the benchmark.
+**getShortest()** | float | Time of the shortest cycle.
+**getLongest()** | float | Time of the longest cycle.
+**getElapsed()** | float | Total elapsed time of the entire benchmark.
+**getCount()** | int | Cycle count (as provided in the `Benchmark` constructor).
 
 ### Controlling Cycle Count
 As stated above, a benchmark will run **2000** times by default; it's likely that you'll want to customize this value, which can be done by passing a new value into the constructor. The following example will execute **1,000,000** times.

@@ -42,7 +42,7 @@
 		 * Format the given results.
 		 *
 		 * @api
-		 * @param \ArrayObject[] $results
+		 * @param BenchmarkResult[] $results
 		 * @return string
 		 */
 		public function format(array $results): string {
@@ -54,8 +54,8 @@
 
 			foreach ($results as $result) {
 				$builder->newLine();
-				$builder->append($result->benchmarkName, $result->averageCycleTime, $result->executionTime);
-				$builder->append($result->shortestCycleTime, $result->longestCycleTime, $result->cycleCount);
+				$builder->append($result->getName(), $result->getAverage(), $result->getElapsed());
+				$builder->append($result->getShortest(), $result->getLongest(), $result->getCount());
 			}
 
 			return $builder;
