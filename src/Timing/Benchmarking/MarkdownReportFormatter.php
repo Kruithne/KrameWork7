@@ -48,8 +48,8 @@
 		public function format(array $results): string {
 			$builder = new StringBuilder();
 			$builder->setSeparator(' | ');
-			$builder->append('Benchmark', 'AverageTime', 'ElapsedTime');
-			$builder->append('ShortestCycle', 'LongestCycle', 'SetCount', 'Execs (p/set)');
+			$builder->append('Benchmark', 'Average', 'Elapsed');
+			$builder->append('Shortest', 'Longest', 'Sets', 'Execs (p/set)');
 			$builder->newLine()->repeat('---', 6);
 
 			foreach ($results as $result) {

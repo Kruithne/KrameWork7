@@ -48,8 +48,8 @@
 			 */
 			$builder = new StringBuilder();
 			$builder->append('<table><tr>');
-			$builder->append('<th>Benchmark</th>', '<th>AverageTime</th>', '<th>ElapsedTime</th>');
-			$builder->append('<th>ShortestCycle</th>', '<th>LongestCycle</th>', '<th>SetCount</th>');
+			$builder->append('<th>Benchmark</th>', '<th>Average</th>', '<th>Elapsed</th>');
+			$builder->append('<th>Shortest</th>', '<th>Longest</th>', '<th>Sets</th>');
 			$builder->append('<th>Execs (p/set)</th>');
 			$builder->append('</tr>');
 
