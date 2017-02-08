@@ -46,7 +46,6 @@
 		public function __construct() {
 			$this->clear();
 			$this->append(func_get_args());
-			return $this;
 		}
 
 		/**
@@ -62,7 +61,10 @@
 					foreach ($arg as $subArg)
 						$this->append($subArg);
 				} else {
-					if ($this->separator !== null && !$this->isEmpty())
+					//if ($this->separator !== null && !$this->isEmpty())
+						//$this->data .= $this->separator;
+
+					if ($this->separator !== null && !$this->isStartOfLine)
 						$this->data .= $this->separator;
 
 					$this->data .= strval($arg);
@@ -80,10 +82,13 @@
 		 * @return StringBuilder
 		 */
 		public function appendLine($line, bool $trailLineEnd = true):StringBuilder {
-			if ($trailLineEnd)
-				return $this->append($line, $this->getLineEnd());
+			if ($trailLineEnd) {
+				$this->append($line . $this->getLineEnd());
+			}
 			else
-				return $this->append($this->getLineEnd(), $line);
+				return $this->append($this->getLineEnd() . $line);
+
+			return $this;
 		}
 
 		/**
@@ -110,8 +115,8 @@
 					foreach ($arg as $subArg)
 						$this->prepend($subArg);
 				} else {
-					if ($this->separator !== null && !$this->isEmpty())
-						$arg .= $this->separator;
+					//if ($this->separator !== null && !$this->isEmpty())
+						//$arg .= $this->separator;
 
 					$this->data = strval($arg) . $this->data;
 				}
@@ -263,4 +268,9 @@
 		 * @var string|null
 		 */
 		private $lineEnd;
+
+		/**
+		 * @var bool
+		 */
+		private $isStartOfLine;
 	}
