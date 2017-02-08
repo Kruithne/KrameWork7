@@ -167,8 +167,8 @@
 		 * @return StringBuilder
 		 */
 		public function repeat($input, $count = 1, bool $append = true):StringBuilder {
-			$line = str_repeat(strval($input), $count);
-			$append ? $this->append($line) : $this->prepend($line);
+			for ($i = 0; $i < $count; $i++)
+				$append ? $this->append($input) : $this->prepend($input);
 
 			return $this;
 		}
