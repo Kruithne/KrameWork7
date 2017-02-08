@@ -108,11 +108,8 @@
 			$longTime = null;
 
 			foreach ($cycleTimes as $entry) {
-				if ($shortTime == null || $entry < $shortTime)
-					$shortTime = $entry;
-
-				if ($longTime == null || $entry > $longTime)
-					$longTime = $entry;
+				$shortTime = $shortTime == null ? $entry : min($entry, $shortTime);
+				$longTime = $longTime == null ? $entry : max($entry, $longTime);
 			}
 
 			$result = new BenchmarkResult(
