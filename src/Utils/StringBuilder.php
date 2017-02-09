@@ -172,7 +172,7 @@
 		 * @param bool $append True = Append, False = Prepend.
 		 * @return StringBuilder
 		 */
-		public function repeat(string $input, $count = 1, bool $append = true):StringBuilder {
+		public function repeat(string $input, int $count = 1, bool $append = true):StringBuilder {
 			for ($i = 0; $i < $count; $i++)
 				$append ? $this->append($input) : $this->prepend($input);
 
