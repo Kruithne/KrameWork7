@@ -167,12 +167,12 @@
 		 * Append/prepend a string $count amount of times.
 		 *
 		 * @api
-		 * @param mixed $input Object that can be cast to a string.
+		 * @param string $input String to repeat.
 		 * @param int $count How many times to append/prepend the string.
 		 * @param bool $append True = Append, False = Prepend.
 		 * @return StringBuilder
 		 */
-		public function repeat($input, $count = 1, bool $append = true):StringBuilder {
+		public function repeat(string $input, $count = 1, bool $append = true):StringBuilder {
 			for ($i = 0; $i < $count; $i++)
 				$append ? $this->append($input) : $this->prepend($input);
 
