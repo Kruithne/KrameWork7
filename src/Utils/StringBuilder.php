@@ -280,6 +280,7 @@
 		/**
 		 * Return the compiled result of the string builder.
 		 *
+		 * @api
 		 * @return string
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
