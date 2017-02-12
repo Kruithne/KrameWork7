@@ -39,24 +39,25 @@
 
 		/**
 		 * StringBuilder constructor.
-		 * Accepts variable arguments of strings, arrays and objects.
 		 *
 		 * @api
+		 * @param array $args Initial elements to append to the builder.
 		 */
-		public function __construct() {
+		public function __construct(...$args) {
 			$this->clear();
-			$this->append(func_get_args());
+			$this->append($args);
 		}
 
 		/**
-		 * Append string(s) to the builder.
-		 * Accepts variable arguments of strings, arrays or objects.
+		 * Append one or more elements to the builder.
+		 * Arrays will be recursively iterated with all elements appended.
 		 *
 		 * @api
+		 * @param array $args Elements to append to the builder.
 		 * @return StringBuilder
 		 */
-		public function append():StringBuilder {
-			foreach (func_get_args() as $arg) {
+		public function append(...$args):StringBuilder {
+			foreach ($args as $arg) {
 				if (is_array($arg)) {
 					foreach ($arg as $subArg)
 						$this->append($subArg);
@@ -76,18 +77,21 @@
 		}
 
 		/**
-		 * Append a line-end terminated/prefixed string to this builder.
+		 * Append elements to the builder with a line-end prefix/suffix.
+		 * Defaults to Unix line-end unless specified using setLineEnd().
+		 * Providing a null element is equivalent to calling newLine(true).
+		 * Note: One line-end added per function call, not per element.
 		 *
 		 * @api
-		 * @param string|null $line String to append.
-		 * @param bool $trailLineEnd Terminate string with line-end, otherwise prefix it.
+		 * @param string|array|null $line Element(s) to append.
+		 * @param bool $suffix Line-end will be suffix, otherwise prefix.
 		 * @return StringBuilder
 		 */
-		public function appendLine($line = null, bool $trailLineEnd = true):StringBuilder {
+		public function appendLine($line = null, bool $suffix = true):StringBuilder {
 			if ($line === null)
 				return $this->newLine(true);
 
-			if ($trailLineEnd)
+			if ($suffix)
 				$this->append($line)->newLine(true);
 			else
 				$this->newLine(true)->append($line);
@@ -96,25 +100,28 @@
 		}
 
 		/**
-		 * Append a formatted string to the builder.
+		 * Append a single formatted string to the builder.
 		 *
 		 * @api
-		 * @param string $format Format pattern.
+		 * @param string $format String format pattern.
+		 * @param array $args Components for the format pattern.
 		 * @return StringBuilder
 		 */
-		public function appendf(string $format):StringBuilder {
-			return $this->append(\call_user_func_array('sprintf', func_get_args()));
+		public function appendf(string $format, ...$args):StringBuilder {
+			array_unshift($args, $format); // Push the format string onto the args.
+			return $this->append(\call_user_func_array('sprintf', $args));
 		}
 
 		/**
-		 * Prepend string(s) to the builder.
-		 * Accepts variable arguments of strings, arrays or objects.
+		 * Prepend one or more element to the builder.
+		 * Arrays will be recursively iterated with all elements prepended.
 		 *
 		 * @api
+		 * @param array $args Elements to prepend to the builder.
 		 * @return StringBuilder
 		 */
-		public function prepend():StringBuilder {
-			foreach (func_get_args() as $arg) {
+		public function prepend(...$args):StringBuilder {
+			foreach ($args as $arg) {
 				if (is_array($arg)) {
 					foreach ($arg as $subArg)
 						$this->prepend($subArg);
@@ -133,18 +140,21 @@
 		}
 
 		/**
-		 * Prepend a line-end terminated/prefixed string to this builder.
+		 * Prepend elements to the builder with a line-end prefix/suffix.
+		 * Defaults to Unix line-end unless specified using setLineEnd().
+		 * Providing a null element is equivalent to calling newLine(false).
+		 * Note: One line-end added per function call, not per element.
 		 *
 		 * @api
-		 * @param string|null $line String to prepend.
-		 * @param bool $trailLineEnd Terminate string with line-end, otherwise prefix it.
+		 * @param string|array|null $line Element to prepend.
+		 * @param bool $suffix Line-end will be suffix, otherwise prefix.
 		 * @return StringBuilder
 		 */
-		public function prependLine($line = null, bool $trailLineEnd = true):StringBuilder {
+		public function prependLine($line = null, bool $suffix = true):StringBuilder {
 			if ($line === null)
 				return $this->newLine(false);
 
-			if ($trailLineEnd)
+			if ($suffix)
 				$this->newline(false)->prepend($line);
 			else
 				$this->prepend($line)->newline(false);
@@ -153,26 +163,29 @@
 		}
 
 		/**
-		 * Prepend a formatted string to the builder.
+		 * Prepend a single formatted string to the builder.
 		 *
 		 * @api
-		 * @param string $format Format pattern.
+		 * @param string $format String format pattern.
+		 * @param array $args Components for the format pattern.
 		 * @return StringBuilder
 		 */
-		public function prependf(string $format):StringBuilder {
-			return $this->prepend(\call_user_func_array('sprintf', func_get_args()));
+		public function prependf(string $format, ...$args):StringBuilder {
+			array_unshift($args, $format); // Push the format string onto the args.
+			return $this->prepend(\call_user_func_array('sprintf', $args));
 		}
 
 		/**
-		 * Append/prepend a string $count amount of times.
+		 * Add an element $count amount of times to the builder.
+		 * Arrays will be recursively iterated with each element added.
 		 *
 		 * @api
-		 * @param string $input String to repeat.
-		 * @param int $count How many times to append/prepend the string.
-		 * @param bool $append True = Append, False = Prepend.
+		 * @param string|array $input Element to repeat.
+		 * @param int $count How many times to append/prepend the element.
+		 * @param bool $append Append the element, otherwise prepend.
 		 * @return StringBuilder
 		 */
-		public function repeat(string $input, int $count = 1, bool $append = true):StringBuilder {
+		public function repeat($input, int $count = 1, bool $append = true):StringBuilder {
 			for ($i = 0; $i < $count; $i++)
 				$append ? $this->append($input) : $this->prepend($input);
 
@@ -180,10 +193,11 @@
 		}
 
 		/**
-		 * Add a line-end to the string.
+		 * Add a single line-end to the builder.
+		 * Defaults to Unix line-end unless specified using setLineEnd().
 		 *
 		 * @api
-		 * @param bool $append Append, otherwise prepend.
+		 * @param bool $append Append the line-end, otherwise prepend.
 		 * @return StringBuilder
 		 */
 		public function newLine(bool $append = true):StringBuilder {
@@ -192,7 +206,8 @@
 		}
 
 		/**
-		 * Clear any input data to the string builder.
+		 * Clear the builder, resetting it completely and deleting all
+		 * elements that have been added.
 		 *
 		 * @api
 		 * @return StringBuilder
@@ -203,7 +218,7 @@
 		}
 
 		/**
-		 * Retrieve the length of the builder string.
+		 * Retrieve the total length of content contained in the builder.
 		 *
 		 * @api
 		 * @return int
@@ -229,10 +244,10 @@
 		/**
 		 * Set the separator for the StringBuilder.
 		 * Not retroactive; only effects newly appended content.
-		 * To disable, set separator value to null.
+		 * To disable, supply a null value.
 		 *
 		 * @api
-		 * @param string|null $sep
+		 * @param string|null $sep Separator character.
 		 * @return StringBuilder
 		 */
 		public function setSeparator($sep):StringBuilder {
@@ -241,7 +256,7 @@
 		}
 
 		/**
-		 * Get the line-end used by this string builder.
+		 * Get the line-end character used by this string builder.
 		 *
 		 * @api
 		 * @return string
@@ -251,10 +266,10 @@
 		}
 
 		/**
-		 * Set the line-ending to use for new-line operations.
+		 * Set the line-end character to use in this builder.
 		 *
 		 * @api
-		 * @param string $lineEnd Line-end; check StringBuilder constants.
+		 * @param string $lineEnd Line-end; check StringBuilder::LE_* constants.
 		 * @return StringBuilder
 		 */
 		public function setLineEnd(string $lineEnd):StringBuilder {
