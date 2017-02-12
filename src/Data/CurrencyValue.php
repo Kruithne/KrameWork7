@@ -1,6 +1,5 @@
 <?php
 	namespace KrameWork\Data;
-	use KrameWork\Reporting\DecimalValue;
 
 	/**
 	 * Class CurrencyValue
