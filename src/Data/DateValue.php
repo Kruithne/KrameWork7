@@ -9,7 +9,7 @@
 	{
 		public function __construct($value)
 		{
-			parent::__construct(strtotime($value));
+			parent::__construct(is_numeric($value) || $value === null ? $value : strtotime($value));
 		}
 
 		public function JSON()

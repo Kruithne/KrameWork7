@@ -9,7 +9,7 @@
 	{
 		public function __construct($value)
 		{
-			parent::__construct(intval($value));
+			parent::__construct($value === null ? null : intval($value));
 		}
 
 		public function Compare($to)
