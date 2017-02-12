@@ -7,6 +7,10 @@
 	 */
 	class IntegerValue extends Value
 	{
+		/**
+		 * IntegerValue constructor.
+		 * @param int|mixed $value A value to be cast to int and encapsulated
+		 */
 		public function __construct($value)
 		{
 			parent::__construct($value === null ? null : intval($value));

@@ -7,6 +7,10 @@
 	 */
 	class DateValue extends Value
 	{
+		/**
+		 * DateValue constructor.
+		 * @param string|int $value String to be converted to a timestamp, or a unix timestamp
+		 */
 		public function __construct($value)
 		{
 			parent::__construct(is_numeric($value) || $value === null ? $value : strtotime($value));

@@ -7,6 +7,10 @@
 	 */
 	class DecimalValue extends Value
 	{
+		/**
+		 * DecimalValue constructor.
+		 * @param float|mixed $value Value to be cast to float and encapsulated
+		 */
 		public function __construct($value)
 		{
 			parent::__construct($value === null ? null : floatval($value));
