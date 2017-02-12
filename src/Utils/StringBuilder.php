@@ -40,7 +40,7 @@
 		/**
 		 * StringBuilder constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param array $args Initial elements to append to the builder.
 		 */
 		public function __construct(...$args) {
@@ -52,7 +52,7 @@
 		 * Append one or more elements to the builder.
 		 * Arrays will be recursively iterated with all elements appended.
 		 *
-		 * @api
+		 * @api append
 		 * @param array $args Elements to append to the builder.
 		 * @return StringBuilder
 		 */
@@ -82,7 +82,7 @@
 		 * Providing a null element is equivalent to calling newLine(true).
 		 * Note: One line-end added per function call, not per element.
 		 *
-		 * @api
+		 * @api appendLine
 		 * @param string|array|null $line Element(s) to append.
 		 * @param bool $suffix Line-end will be suffix, otherwise prefix.
 		 * @return StringBuilder
@@ -102,7 +102,7 @@
 		/**
 		 * Append a single formatted string to the builder.
 		 *
-		 * @api
+		 * @api appendf
 		 * @param string $format String format pattern.
 		 * @param array $args Components for the format pattern.
 		 * @return StringBuilder
@@ -116,7 +116,7 @@
 		 * Prepend one or more element to the builder.
 		 * Arrays will be recursively iterated with all elements prepended.
 		 *
-		 * @api
+		 * @api prepend
 		 * @param array $args Elements to prepend to the builder.
 		 * @return StringBuilder
 		 */
@@ -145,7 +145,7 @@
 		 * Providing a null element is equivalent to calling newLine(false).
 		 * Note: One line-end added per function call, not per element.
 		 *
-		 * @api
+		 * @api prependLine
 		 * @param string|array|null $line Element to prepend.
 		 * @param bool $suffix Line-end will be suffix, otherwise prefix.
 		 * @return StringBuilder
@@ -165,7 +165,7 @@
 		/**
 		 * Prepend a single formatted string to the builder.
 		 *
-		 * @api
+		 * @api prependf
 		 * @param string $format String format pattern.
 		 * @param array $args Components for the format pattern.
 		 * @return StringBuilder
@@ -179,7 +179,7 @@
 		 * Add an element $count amount of times to the builder.
 		 * Arrays will be recursively iterated with each element added.
 		 *
-		 * @api
+		 * @api repeat
 		 * @param string|array $input Element to repeat.
 		 * @param int $count How many times to append/prepend the element.
 		 * @param bool $append Append the element, otherwise prepend.
@@ -196,7 +196,7 @@
 		 * Add a single line-end to the builder.
 		 * Defaults to Unix line-end unless specified using setLineEnd().
 		 *
-		 * @api
+		 * @api newLine
 		 * @param bool $append Append the line-end, otherwise prepend.
 		 * @return StringBuilder
 		 */
@@ -209,7 +209,7 @@
 		 * Clear the builder, resetting it completely and deleting all
 		 * elements that have been added.
 		 *
-		 * @api
+		 * @api clear
 		 * @return StringBuilder
 		 */
 		public function clear():StringBuilder {
@@ -220,7 +220,7 @@
 		/**
 		 * Retrieve the total length of content contained in the builder.
 		 *
-		 * @api
+		 * @api length
 		 * @return int
 		 */
 		public function length():int {
@@ -234,7 +234,7 @@
 		/**
 		 * Check if the builder is empty.
 		 *
-		 * @api
+		 * @api isEmpty
 		 * @return bool
 		 */
 		public function isEmpty():bool {
@@ -246,7 +246,7 @@
 		 * Not retroactive; only effects newly appended content.
 		 * To disable, supply a null value.
 		 *
-		 * @api
+		 * @api setSeparator
 		 * @param string|null $sep Separator character.
 		 * @return StringBuilder
 		 */
@@ -258,7 +258,7 @@
 		/**
 		 * Get the line-end character used by this string builder.
 		 *
-		 * @api
+		 * @api getLineEnd
 		 * @return string
 		 */
 		public function getLineEnd():string {
@@ -268,7 +268,7 @@
 		/**
 		 * Set the line-end character to use in this builder.
 		 *
-		 * @api
+		 * @api setLineEnd
 		 * @param string $lineEnd Line-end; check StringBuilder::LE_* constants.
 		 * @return StringBuilder
 		 */
@@ -280,7 +280,7 @@
 		/**
 		 * Return the compiled result of the string builder.
 		 *
-		 * @api
+		 * @api __toString()
 		 * @return string
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
