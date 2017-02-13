@@ -39,9 +39,9 @@
 		/**
 		 * Timer constructor.
 		 *
-		 * @api
-		 * @param int $format Timing format.
-		 * @param bool $autoStart Timer will start on construction.
+		 * @api __construct
+		 * @param int $format Timing format, use Timer::FORMAT_ constants.
+		 * @param bool $autoStart Timer will start when constructed.
 		 */
 		public function __construct(int $format = self::FORMAT_SECONDS, bool $autoStart = false) {
 			$this->format = $format;
@@ -52,7 +52,7 @@
 		/**
 		 * Start this timer.
 		 *
-		 * @api
+		 * @api start
 		 */
 		public function start() {
 			$this->startTime = $this->getCurrentTime();
@@ -62,7 +62,7 @@
 		/**
 		 * Stop the timer and return the current elapsed time.
 		 *
-		 * @api
+		 * @api stop
 		 */
 		public function stop() {
 			$this->stopTime = $this->getCurrentTime();
@@ -72,7 +72,7 @@
 		/**
 		 * Restart the timer and return the current elapsed time.
 		 *
-		 * @api
+		 * @api restart
 		 */
 		public function restart() {
 			$stop = $this->stop();
@@ -83,7 +83,7 @@
 		/**
 		 * Get the elapsed time of this timer.
 		 *
-		 * @api
+		 * @api getElapsed
 		 * @return float|int
 		 */
 		public function getElapsed() {
@@ -96,6 +96,7 @@
 		/**
 		 * Return the elapsed time as a string.
 		 *
+		 * @api __toString
 		 * @return string
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
