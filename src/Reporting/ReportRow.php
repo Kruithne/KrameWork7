@@ -1,5 +1,6 @@
 <?php
 	namespace KrameWork\Reporting;
+
 	use KrameWork\Data\Value;
 
 	/**
@@ -8,8 +9,7 @@
 	 */
 	class ReportRow implements \JsonSerializable
 	{
-		public function __construct($data)
-		{
+		public function __construct($data) {
 			$this->data = $data;
 		}
 
@@ -20,8 +20,7 @@
 		 * which is a value of any type other than a resource.
 		 * @since 5.4.0
 		 */
-		function jsonSerialize()
-		{
+		function jsonSerialize() {
 			$serialize = [];
 			foreach ($this->data as $field => $data)
 				if ($data instanceof Value)

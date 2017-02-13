@@ -15,13 +15,10 @@
 		/**
 		 * @return \Closure[] Filters in the format function(&$row)
 		 */
-		protected function GetFilters()
-		{
+		protected function GetFilters() {
 			$filters = [];
-			foreach ($this->Columns() as $key => $col)
-			{
-				switch ($col->type)
-				{
+			foreach ($this->Columns() as $key => $col) {
+				switch ($col->type) {
 					case ReportColumn::COL_DECIMAL:
 					case ReportColumn::COL_CURRENCY:
 					case ReportColumn::COL_INTEGER:
@@ -39,10 +36,8 @@
 		 * @param string $class Column container class
 		 * @return \Closure
 		 */
-		protected function MakeFilter(string $key, string $class)
-		{
-			return function (&$row) use ($key, $class)
-			{
+		protected function MakeFilter(string $key, string $class) {
+			return function (&$row) use ($key, $class) {
 				if (!isset($row[$key]) || $row[$key] == null)
 					return;
 				$row[$key] = new $class($row[$key]);
@@ -54,12 +49,10 @@
 		 * @param array $data
 		 * @return ReportRow[]
 		 */
-		protected function PostProcess(array $data)
-		{
+		protected function PostProcess(array $data) {
 			$filters = $this->GetFilters();
 			$output = [];
-			foreach ($data as $row)
-			{
+			foreach ($data as $row) {
 				foreach ($filters as $filter)
 					$filter($row);
 				$output[] = new ReportRow($row);

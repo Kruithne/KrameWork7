@@ -11,24 +11,21 @@
 		 * Value constructor.
 		 * @param $value mixed The encapsulated value
 		 */
-		public function __construct($value)
-		{
+		public function __construct($value) {
 			$this->value = $value;
 		}
 
 		/**
 		 * @return mixed The encapsulated value
 		 */
-		public function Real()
-		{
+		public function Real() {
 			return $this->value;
 		}
 
 		/**
 		 * @return mixed The value to be encoded into JSON
 		 */
-		public function JSON()
-		{
+		public function JSON() {
 			return $this->value;
 		}
 
@@ -37,16 +34,14 @@
 		 * @param $to Value|mixed A value to compare against
 		 * @return int Sorting index
 		 */
-		public function Compare($to)
-		{
+		public function Compare($to) {
 			return strnatcasecmp((string)$this->value, (string)$to);
 		}
 
 		/**
 		 * @return string The encapsulated value as presented by a string
 		 */
-		public function __toString()
-		{
+		public function __toString() {
 			return (string)$this->value;
 		}
 

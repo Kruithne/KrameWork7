@@ -22,10 +22,8 @@
 		 * @param string $type Column type, use SQLReportColumn COL_ constants.
 		 * @throws \Exception
 		 */
-		public function __construct(string $label, $type = self::COL_STRING)
-		{
-			switch ($type)
-			{
+		public function __construct(string $label, $type = self::COL_STRING) {
+			switch ($type) {
 				case self::COL_NONE:
 				case self::COL_STRING:
 				case self::COL_DECIMAL:
@@ -46,8 +44,7 @@
 		public $label;
 		public $type;
 
-		public function JsonSerialize()
-		{
+		public function JsonSerialize() {
 			return ['Label' => $this->label, 'Type' => $this->type];
 		}
 	}
