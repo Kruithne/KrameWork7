@@ -14,7 +14,7 @@
 
 		public function testDateValueJsonSerialization() {
 			$data = [['test' => 1],['test' => new DateValue('1980-01-01')]];
-			$expect = [$data[0],['test'=>date('c',$data[1]['test']->real())]];
+			$expect = [['test' => 1],['test'=> '1980-01-01T00:00:00+00:00']];
 			$row = new \KrameWork\Reporting\ReportRow($data);
 			$this->assertEquals($expect, $row->jsonSerialize());
 		}
