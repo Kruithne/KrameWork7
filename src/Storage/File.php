@@ -46,7 +46,8 @@
 		 * @param string $path Path to the file.
 		 * @param bool $autoLoad Attempt to load the file contents on instantiation.
 		 * @param bool $touch Touch the file, creating it if missing.
-		 * @throws FileNotFoundException|FileReadException
+		 * @throws FileNotFoundException
+		 * @throws FileReadException
 		 */
 		public function __construct(string $path, bool $autoLoad = true, bool $touch = false) {
 			parent::__construct($path);
