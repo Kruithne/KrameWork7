@@ -348,7 +348,7 @@
 		 * Defaults to 'GET' if not available.
 		 *
 		 * @api getRequestMethod
-		 * @return string Request method. Defaults to "GET" if not available.
+		 * @return string
 		 */
 		public function getRequestMethod():string {
 			return $_SERVER['REQUEST_METHOD'] ?? 'GET';
