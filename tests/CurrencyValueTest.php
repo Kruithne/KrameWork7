@@ -3,7 +3,7 @@
 
 	require_once(__DIR__ . "/../src/Data/CurrencyValue.php");
 
-	class CurrencyValueTest extends \PHPUnit_Framework_TestCase
+	class CurrencyValueTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Verify that a value can be null
@@ -26,7 +26,7 @@
 		 */
 		public function testValueToString() {
 			$value = new CurrencyValue(4.2);
-			$this->assertEquals("4.2", (string)$value);
+			$this->assertEquals("4,20", (string)$value);
 		}
 
 		/**
@@ -42,7 +42,7 @@
 		 */
 		public function testValueCompareSmaller() {
 			$value = new CurrencyValue(1.5);
-			$this->assertSmallerThan(0, $value->compare(2.5));
+			$this->assertLessThan(0, $value->compare(2.5));
 		}
 
 		/**

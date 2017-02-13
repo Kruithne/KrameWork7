@@ -45,7 +45,7 @@
 		 */
 		public function JSON() {
 			// Use ISO 8601 format to support moment.js client side
-			return $this->value ? date($this->value, 'c') : null;
+			return $this->value ? date('c', $this->value) : null;
 		}
 
 		/**

@@ -3,7 +3,7 @@
 
 	require_once(__DIR__ . "/../src/Data/Value.php");
 
-	class ValueTest extends \PHPUnit_Framework_TestCase
+	class ValueTest extends \PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Verify that a value can be null
@@ -58,7 +58,7 @@
 		 */
 		public function testValueCompareSmaller() {
 			$value = new Value(1);
-			$this->assertSmallerThan(0, $value->compare(2));
+			$this->assertLessThan(0, $value->compare(2));
 		}
 
 		/**
@@ -75,5 +75,17 @@
 		public function testValueCompareBigger() {
 			$value = new Value(2);
 			$this->assertGreaterThan(0, $value->compare(1));
+		}
+
+		public function testValueCompareNull() {
+			$value = new Value(42);
+			$this->assertGreaterThan(0, $value->compare(null));
+			$this->assertGreaterThan(0, $value->compare(new Value(null)));
+		}
+
+		public function testNullCompareNull() {
+			$value = new Value(null);
+			$this->assertEquals(0, $value->compare(null));
+			$this->assertEquals(0, $value->compare(new Value(null)));
 		}
 	}

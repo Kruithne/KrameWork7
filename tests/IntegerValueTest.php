@@ -3,7 +3,7 @@
 
 	require_once(__DIR__ . "/../src/Data/IntegerValue.php");
 
-	class IntegerValueTest extends \PHPUnit_Framework_TestCase
+	class IntegerValueTest extends \PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Verify that a value can be null
@@ -42,7 +42,7 @@
 		 */
 		public function testValueCompareSmaller() {
 			$value = new IntegerValue(1);
-			$this->assertSmallerThan(0, $value->compare(2));
+			$this->assertLessThan(0, $value->compare(2));
 		}
 
 		/**
@@ -59,5 +59,20 @@
 		public function testValueCompareBigger() {
 			$value = new IntegerValue(2);
 			$this->assertGreaterThan(0, $value->compare(1));
+		}
+
+
+		public function testValueCompareNull() {
+			for ($i = -1; $i < 2; ++$i) {
+				$value = new IntegerValue($i);
+				$this->assertGreaterThan(0, $value->compare(null));
+				$this->assertGreaterThan(0, $value->compare(new IntegerValue(null)));
+			}
+		}
+
+		public function testNullCompareNull() {
+			$value = new IntegerValue(null);
+			$this->assertEquals(0, $value->compare(null));
+			$this->assertEquals(0, $value->compare(new IntegerValue(null)));
 		}
 	}

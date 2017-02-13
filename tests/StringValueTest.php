@@ -3,7 +3,7 @@
 
 	require_once(__DIR__ . "/../src/Data/StringValue.php");
 
-	class StringValueTest extends \PHPUnit_Framework_TestCase
+	class StringValueTest extends \PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Verify that a value can be null
@@ -42,7 +42,7 @@
 		 */
 		public function testValueCompareSmaller() {
 			$value = new StringValue("test 1");
-			$this->assertSmallerThan(0, $value->compare("test 2"));
+			$this->assertLessThan(0, $value->compare("test 2"));
 		}
 
 		/**
@@ -59,5 +59,17 @@
 		public function testValueCompareBigger() {
 			$value = new StringValue("test 2");
 			$this->assertGreaterThan(0, $value->compare("test 1"));
+		}
+
+		public function testValueCompareNull() {
+			$value = new StringValue('test');
+			$this->assertGreaterThan(0, $value->compare(null));
+			$this->assertGreaterThan(0, $value->compare(new StringValue(null)));
+		}
+
+		public function testNullCompareNull() {
+			$value = new StringValue(null);
+			$this->assertEquals(0, $value->compare(null));
+			$this->assertEquals(0, $value->compare(new StringValue(null)));
 		}
 	}

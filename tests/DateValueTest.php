@@ -3,7 +3,7 @@
 
 	require_once(__DIR__ . "/../src/Data/DateValue.php");
 
-	class DateValueTest extends \PHPUnit_Framework_TestCase
+	class DateValueTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Verify that a value can be null
@@ -33,31 +33,43 @@
 		 * Verify that the JSON method works
 		 */
 		public function testValueToJSON() {
-			$value = new DateValue(0);
-			$this->assertEquals(date('c',0), $value->JSON());
+			$value = new DateValue('1980-01-01');
+			$this->assertEquals(date('c',$value->real()), $value->JSON());
 		}
 
 		/**
 		 * Check that the compare function works for a < b
 		 */
 		public function testValueCompareSmaller() {
-			$value = new DateValue(1);
-			$this->assertSmallerThan(0, $value->compare(2));
+			$value = new DateValue('1980-01-01');
+			$this->assertLessThan(0, $value->compare(new DateValue('1981-01-01')));
 		}
 
 		/**
 		 * Check that the compare function works for a < b
 		 */
 		public function testValueCompareEqual() {
-			$value = new DateValue(1);
-			$this->assertEquals(0, $value->compare(1));
+			$value = new DateValue('1980-01-01');
+			$this->assertEquals(0, $value->compare(new DateValue('1980-01-01')));
 		}
 
 		/**
 		 * Check that the compare function works for a > b
 		 */
 		public function testValueCompareBigger() {
-			$value = new DateValue(2);
-			$this->assertGreaterThan(0, $value->compare(1));
+			$value = new DateValue('1981-01-01');
+			$this->assertGreaterThan(0, $value->compare(new DateValue('1980-01-01')));
+		}
+
+		public function testValueCompareNull() {
+			$value = new DateValue('1980-01-01');
+			$this->assertGreaterThan(0, $value->compare(null));
+			$this->assertGreaterThan(0, $value->compare(new DateValue(null)));
+		}
+
+		public function testNullCompareNull() {
+			$value = new DateValue(null);
+			$this->assertEquals(0, $value->compare(null));
+			$this->assertEquals(0, $value->compare(new DateValue(null)));
 		}
 	}
