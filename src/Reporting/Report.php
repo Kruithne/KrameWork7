@@ -5,7 +5,7 @@
 	 * Class SQLReport
 	 * Encapsulates a formatted SQL report, adding column definitions with data types
 	 */
-	abstract class Report extends SQLReportRunner
+	abstract class Report extends ReportRunner
 	{
 		/**
 		 * @return ReportColumn[]

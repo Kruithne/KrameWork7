@@ -5,7 +5,7 @@
 	 * Class SQLReportRunner
 	 * Encapsulates executing and caching data from SQL
 	 */
-	class SQLReportRunner extends ReportRunner
+	abstract class SQLReport extends Report
 	{
 		public function __construct($db, string $sql, array $param = [], bool $debug = false, int $cacheTTL = 300)
 		{
