@@ -1,51 +1,119 @@
-## StringBuilder
->- **Namespace**: KrameWork\Utils\StringBuilder
->- **File**: KrameWork7/src/Utils\StringBuilder.php
+[fluent api]: https://en.wikipedia.org/wiki/Fluent_interface
+## KrameWork\Utils\StringBuilder
 
-### Basic Usage
-The `StringBuilder` class, or as his friends call him, **Sam**, is a fluent API class that allows dynamic construction of strings with various helper functions.
+***Table of Contents***
+* **Overview** - Information about the class.
+* **Examples** - Usage examples.
+* **Functions** - Comprehensive list of all functions in the class.
+___
+### Overview
+`StringBuilder` is a [fluent API] class that allows object-orientated string concatenation and manipulation. Elements can be appended and prepended in various ways using the functions provided to seamlessly create a string using a combination of different types and methods.
 
-The constructor accepts any number of objects that can be cast to a string either nativly or by `__toString()` which will be added to the stack upon instantiation.
-```php
-$builder = new StringBuilder("Agent ", 47);
-print($builder); // > Agent 47
-```
-### Appending/Prepending
-The `append()` function will add things to the stack in the same way that the constructor will, however in addition to accepting native types and objects that implement `__toString()`, it also accepts arrays which will be iterated and called per-item.
-```php
-$builder = new StringBuilder();
-$builder->append("1", 2, [3, [4, 5], 6]);
-print($builder); // > 123456
-```
-To add things to the front of the stack, we can use the `prepend()` call, which accepts a variable amount of arguments in the same fashion as `append()`.
-```php
-$builder = new StringBuilder();
-$builder->append("1", 2, [3, [4, 5], 6]);
-print($builder); // > 654321
-```
-### Resetting
-Rather than creating a new instance of `StringBuilder` to start again, we can simply make a call to `clear()`, and the internal stack will be reset.
-```php
-$builder = new StringBuilder("Fish");
-$builder->append("Crabs")->clear()->append("Shark");
-print($builder); // > Shark
-```
-### Repeat
-A 'handy' function available in the `StringBuilder` class is `repeat(input, int count, bool append)`, which allows us to append/prepend something a specific amount of times.
+Internally, the `StringBuilder` class stores elements by-line in an array stack to speed up processing of various helper functions; this has no effect on the compiled outcome once `__toString()` is invoked.
+___
+### Functions
+##### > __construct() : `void`
+StringBuilder constructor.
 
- - `input` - Native type or object that implements `__toString()`. Arrays not welcome here.
- - `count` - How many times the string will be added.
- - `append` - True = append, false = prepend.
+parameter | type | description
+--- | --- | ---
+`$args` | `array` | Initial elements to append to the builder.
+##### > append() : `StringBuilder`
+Append one or more elements to the builder. Arrays will be recursively iterated with all elements appended.
 
+parameter | type | description
+--- | --- | ---
+`$args` | `array` | Elements to append to the builder.
+##### > appendLine() : `StringBuilder`
+Append elements to the builder with a line-end prefix/suffix. Defaults to Unix line-end unless specified using setLineEnd(). Providing a null element is equivalent to calling newLine(true). Note: One line-end added per function call, not per element.
+
+parameter | type | description
+--- | --- | ---
+`$line` | `string|array|null` | Element(s) to append.
+`$suffix` | `bool` | Line-end will be suffix, otherwise prefix.
+##### > appendf() : `StringBuilder`
+Append a single formatted string to the builder.
+
+parameter | type | description
+--- | --- | ---
+`$format` | `string` | String format pattern.
+`$args` | `array` | Components for the format pattern.
+##### > prepend() : `StringBuilder`
+Prepend one or more element to the builder. Arrays will be recursively iterated with all elements prepended.
+
+parameter | type | description
+--- | --- | ---
+`$args` | `array` | Elements to prepend to the builder.
+##### > prependLine() : `StringBuilder`
+Prepend elements to the builder with a line-end prefix/suffix. Defaults to Unix line-end unless specified using setLineEnd(). Providing a null element is equivalent to calling newLine(false). Note: One line-end added per function call, not per element.
+
+parameter | type | description
+--- | --- | ---
+`$line` | `string|array|null` | Element to prepend.
+`$suffix` | `bool` | Line-end will be suffix, otherwise prefix.
+##### > prependf() : `StringBuilder`
+Prepend a single formatted string to the builder.
+
+parameter | type | description
+--- | --- | ---
+`$format` | `string` | String format pattern.
+`$args` | `array` | Components for the format pattern.
+##### > repeat() : `StringBuilder`
+Add an element $count amount of times to the builder. Arrays will be recursively iterated with each element added.
+
+parameter | type | description
+--- | --- | ---
+`$input` | `string|array` | Element to repeat.
+`$count` | `int` | How many times to append/prepend the element.
+`$append` | `bool` | Append the element, otherwise prepend.
+##### > newLine() : `StringBuilder`
+Add a single line-end to the builder. Defaults to Unix line-end unless specified using setLineEnd().
+
+parameter | type | description
+--- | --- | ---
+`$append` | `bool` | Append the line-end, otherwise prepend.
+##### > clear() : `StringBuilder`
+Clear the builder, resetting it completely and deleting all elements that have been added.
+##### > length() : `int`
+Retrieve the total length of content contained in the builder.
+##### > isEmpty() : `bool`
+Check if the builder is empty.
+##### > setSeparator() : `StringBuilder`
+Set the separator for the StringBuilder. Not retroactive; only effects newly appended content. To disable, supply a null value.
+
+parameter | type | description
+--- | --- | ---
+`$sep` | `string|null` | Separator character.
+##### > getLineEnd() : `string`
+Get the line-end character used by this string builder.
+##### > setLineEnd() : `StringBuilder`
+Set the line-end character to use in this builder.
+
+parameter | type | description
+--- | --- | ---
+`$lineEnd` | `string` | Line-end; check StringBuilder::LE_* constants.
+##### > __toString() : `string`
+Return the compiled result of the string builder.
+
+___
+##### Inserting Elements
+Elements can be inserted to a builder instance through various methods, some of which are exampled below. All elements must be a native type or implement `__toString()`. If an element is an array, the array will be recursively iterated and all elements appended; some functions, such as `appendf`, do not accept arrays - check the function reference at the bottom of the page.
 ```php
-$builder = new StringBuilder("BATMAN!");
-$builder->repeat("NA ", 14, false);
-print($builder); // > NA NA NA NA NA NA NA NA NA NA NA NA NA NA BATMAN!
-```
-### Format Patterns
-In addition to `append()` and `prepend()`, the functions `appendf()` and `prependf()` also exist, which allow you to add a formatted string directly to the builder. The first argument for these calls **must** be a string, and all further arguments must be valid for string-formatting.
-```php
-$builder = new StringBuilder();
-$builder->appendf("I am %s!", "Batman");
-print($builder); // > I am Batman!
+// Anything passed to the constructor is appended.
+$builder = new StringBuilder('Agent', 47); // > Agent47
+
+// The append() call can take multiple arguments, and we can chain calls using fluent API.
+$builder->append(' look ', 'like')->append('?'); // > Agent47 look like?
+
+// Prepending works the same, but adds elements to the start of the string.
+// Note: Items are prepended one after the other, check the input compared to output below.
+$builder->prepend(' does ', 'What'); // > What does Agent47 look like?
+
+// Insert formatted strings!
+$builder->appendf(' Very %s!', 'scary'); // > What does Agent47 look like? Very scary!
+
+// Insert an element, followed by a line-end.
+// By default, line-endings will be Unix style (\n), however this can be changed using
+// the setLineEnd() call; check the function reference for more details.
+$builder->appendLine(' Very Strong!'); // > What does Agent47 look like? Very scary! Very strong!\n
 ```
