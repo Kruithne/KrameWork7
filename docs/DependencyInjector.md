@@ -1,8 +1,12 @@
-## DependencyInjector
->- **Namespace**: KrameWork\DependencyInjector
->- **File**: KrameWork7/src/DependencyInjector.php
+## KrameWork\DependencyInjector
 
-### General Usage
+***Table of Contents***
+* **Examples** - Usage examples.
+* **Constants** - Constants exposed by this class.
+* **Functions** - Comprehensive list of all functions in the class.
+___
+### Examples
+##### General Usage
 The `DependencyInjector` is as the name suggests, a dependency injector. Below is a basic usage example.
 
 ```php
@@ -58,13 +62,13 @@ $obj = new MyClass();
 $injector->addComponent($obj);
 $component = $injector->getComponent("MyClass"); // Returns $obj
 ```
-### Manual Binding
+##### Manual Binding
 In some cases, you may want to bind one class (or interface) name to another. We can achieve that with a simple call to `bind()`.
 ```php
 $injector->bind("NotARealClassName", "MyClass");
 $component = $injector->getComponent("NotARealClassName"); // Returns instance of MyClass.
 ```
-### Constructor
+##### Constructor
 For default behavior, the constructor of `DependencyInjector` can be empty, however we may want to customize the behavior of the 
 injector. The constructor takes three arguments: `flags`, `components[]` and `bindings[]`.
 
@@ -85,3 +89,62 @@ $injector->addComponent("MyClassA");
 $injector->addComponent("MyClassB");
 $injector->bind("INotReal", "MyClassA");
 ```
+___
+### Constants
+Constants available in the `DependencyInjector` class:
+
+constant | value | description
+--- | --- | ---
+`AUTO_BIND_INTERFACES` | `0x1` | Automatically bind the interfaces of added class objects.
+`AUTO_ADD_DEPENDENCIES` | `0x2` | Dependencies for components will be automatically added to the injector.
+`DEFAULT_FLAGS` | `*` | Alias flag with both flags above enabled.
+___
+### Functions
+##### > __construct() : `void`
+DependencyInjector constructor.
+
+parameter | type | description
+--- | --- | ---
+`$flags` | `int` | Flags to control how this module behaves.
+`$components` | `array` | Initial components.
+`$bindings` | `array` | Initial bindings.
+##### > addComponent() : `void`
+Add a component to the injector. string: Name of a class which can be instantiated. object: Pre-constructed object. array: Multiple of the above.
+
+parameter | type | description
+--- | --- | ---
+`$class` | `string|array|object` | 
+
+exception | reason
+--- | ---
+`DuplicateClassException` | Class with that name has already been added.
+##### > getComponent() : `object`
+Obtain the injectors instance of a specific component. Non-constructed object instances will be instantiated.
+
+parameter | type | description
+--- | --- | ---
+`$className` | `string` | Class name of the component to create.
+`$add` | `bool` | Attempt to add the class to the injector if missing.
+
+exception | reason
+--- | ---
+`ClassResolutionException` | Requested class could not be resolved.
+`ClassInstantiationException` | ProvidedClass could not be instantiated (abstract? borked?)
+##### > getImplementors() : `array`
+Retrieve components from the injector that implement the given interface.
+
+parameter | type | description
+--- | --- | ---
+`$interfaceName` | `string` | Interface components must implement to be returned.
+`$add` | `bool` | Attempt to add the class to the injector if missing.
+##### > bind() : `void`
+Manually bind an interface to a class. $class string: Binds to class name. $class object: Binds to the objects class name.
+
+parameter | type | description
+--- | --- | ---
+`$interface` | `string` | Interface name to bind class to.
+`$class` | `string|object` | Class to bind the interface to.
+
+exception | reason
+--- | ---
+`InterfaceBindingException` | `$class` was something invalid and unexpected.
