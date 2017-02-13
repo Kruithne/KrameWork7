@@ -125,7 +125,8 @@
 		 * Read data is not returned, but available through the wrapper.
 		 *
 		 * @api read
-		 * @throws FileNotFoundException|FileReadException
+		 * @throws FileNotFoundException
+		 * @throws FileReadException
 		 */
 		public function read() {
 			if ($this->path === null)
