@@ -38,10 +38,10 @@
 		/**
 		 * UploadedFile constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param string $path Temporary location.
 		 * @param string $name Uploaded name.
-		 * @param int $errorCode
+		 * @param int $errorCode Upload error code.
 		 */
 		public function __construct(string $path, string $name, int $errorCode) {
 			parent::__construct($path, false, false);
@@ -52,8 +52,8 @@
 		/**
 		 * Check if the uploaded file is valid.
 		 *
-		 * @api
-		 * @return bool Uploaded file is valid.
+		 * @api isValid
+		 * @return bool
 		 */
 		public function isValid(): bool {
 			return $this->errorCode === UPLOAD_ERR_OK && parent::isValid();
@@ -62,7 +62,7 @@
 		/**
 		 * Get the error code for this upload.
 		 *
-		 * @api
+		 * @api getErrorCode
 		 * @return int
 		 */
 		public function getErrorCode():int {
