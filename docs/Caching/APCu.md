@@ -1,4 +1,4 @@
-## KrameWork\Caching\APCu
+## KrameWork\Caching\APCu : IDataStore
 
 ***Table of Contents***
 * **Overview** - Information about the class.
