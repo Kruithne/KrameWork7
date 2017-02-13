@@ -45,7 +45,7 @@
 		/**
 		 * DependencyInjector constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param int $flags Flags to control how this module behaves.
 		 * @param array $components Initial components.
 		 * @param array $bindings Initial bindings.
@@ -74,7 +74,7 @@
 		 * object: Pre-constructed object.
 		 * array: Multiple of the above.
 		 *
-		 * @api
+		 * @api addComponent
 		 * @param string|array|object $class
 		 * @throws DuplicateClassException
 		 */
@@ -162,7 +162,7 @@
 		 * Obtain the injectors instance of a specific component.
 		 * Non-constructed object instances will be instantiated.
 		 *
-		 * @api
+		 * @api getComponent
 		 * @param string $className Class name of the component to create.
 		 * @param bool $add Attempt to add the class to the injector if missing.
 		 * @return object
@@ -190,7 +190,7 @@
 		/**
 		 * Retrieve components from the injector that implement the given interface.
 		 *
-		 * @api
+		 * @api getImplementors
 		 * @param string $interfaceName Interface components must implement to be returned.
 		 * @param bool $add Attempt to add the class to the injector if missing.
 		 * @return array
@@ -279,7 +279,7 @@
 		 * $class string: Binds to class name.
 		 * $class object: Binds to the objects class name.
 		 *
-		 * @api
+		 * @api bind
 		 * @param string $interface Interface name to bind class to.
 		 * @param string|object $class Class to bind the interface to.
 		 * @throws InterfaceBindingException
