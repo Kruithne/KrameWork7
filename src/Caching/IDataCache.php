@@ -35,10 +35,11 @@
 	{
 		/**
 		 * Obtain a value from the cache.
+		 * Returns null if the item does not exist.
 		 *
 		 * @api __get
 		 * @param string $key Key of the value.
-		 * @return mixed|null Value, or null if not found.
+		 * @return mixed|null
 		 */
 		public function __get(string $key);
 
