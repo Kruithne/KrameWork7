@@ -46,7 +46,7 @@
 		/**
 		 * AutoLoader constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param array $sources List of sources (strings) or namespace/source key-value array.
 		 * @param string[] $extensions Allowed extensions.
 		 * @param int $flags Flags to control auto-loading.
@@ -94,7 +94,7 @@
 		/**
 		 * Attempt to load a given class.
 		 *
-		 * @api
+		 * @api loadClass
 		 * @param string $className Name of the class to load.
 		 */
 		public function loadClass(string $className) {
@@ -152,7 +152,7 @@
 		/**
 		 * Disable this auto-loader, preventing it from loading classes.
 		 *
-		 * @api
+		 * @api disable
 		 */
 		public function disable() {
 			$this->enabled = false;
@@ -161,7 +161,7 @@
 		/**
 		 * Enable this auto-loader, allowing it to load classes.
 		 *
-		 * @api
+		 * @api enable
 		 */
 		public function enable() {
 			$this->enabled = true;
