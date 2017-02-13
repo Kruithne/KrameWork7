@@ -35,9 +35,11 @@
 	{
 		/**
 		 * MemoryFile constructor.
-		 * @param string $name
-		 * @param string $content
-		 * @param string $contentType
+		 *
+		 * @api __construct
+		 * @param string $name File name.
+		 * @param string $content Data for the file.
+		 * @param string $contentType Data content-type.
 		 */
 		public function __construct(string $name, string $content, string $contentType = "text/plain") {
 			parent::__construct($name, false, false);
@@ -48,9 +50,10 @@
 
 		/**
 		 * Check if the file exists and is valid.
+		 * A MemoryFile is valid until delete() is called.
 		 *
-		 * @api
-		 * @return bool File exists and is valid.
+		 * @api isValid
+		 * @return bool
 		 */
 		public function isValid(): bool {
 			return $this->valid;
@@ -59,8 +62,8 @@
 		/**
 		 * Get the size of this file in bytes.
 		 *
-		 * @api
-		 * @return int Size of the file.
+		 * @api getSize
+		 * @return int
 		 */
 		public function getSize(): int {
 			return strlen($this->content);
@@ -69,17 +72,17 @@
 		/**
 		 * Get the content type of this file.
 		 *
-		 * @api
-		 * @return string MIME type, or "unknown" on failure.
+		 * @api getFileType
+		 * @return string
 		 */
 		public function getFileType(): string {
 			return $this->contentType;
 		}
 
 		/**
-		 * Get the data contained in this file.
+		 * Get the data contained in this memory file.
 		 *
-		 * @api
+		 * @api getData
 		 * @param bool $forceRead No effect, included for implementation sake.
 		 * @return null|string
 		 */
@@ -88,9 +91,9 @@
 		}
 
 		/**
-		 * Set the data contained in this file.
+		 * Set the data contained in this memory file.
 		 *
-		 * @api
+		 * @api setData
 		 * @param mixed $data Data to store in the wrapper.
 		 */
 		public function setData($data) {
@@ -98,10 +101,11 @@
 		}
 
 		/**
-		 * Attempt to delete the file.
+		 * 'Delete' the memory file, erasing the content from the
+		 * container and marking the instance as invalid.
 		 *
-		 * @api
-		 * @return bool File deleted successfully.
+		 * @api delete
+		 * @return bool
 		 */
 		public function delete(): bool {
 			$this->valid = false;
@@ -111,6 +115,8 @@
 
 		/**
 		 * Retrieve the raw data of this file encoded as base64.
+		 *
+		 * @api getBase64Data
 		 * @param bool $forceRead No effect, included for implementation sake.
 		 * @return string
 		 */
