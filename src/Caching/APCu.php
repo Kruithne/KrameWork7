@@ -64,6 +64,16 @@
 		}
 
 		/**
+		 * Check if a value exists in the cache.
+		 *
+		 * @param string $key Key used to store the value.
+		 * @return bool True if the key exists in the cache.
+		 */
+		public function exists(string $key): bool {
+			return apcu_exists($key);
+		}
+
+		/**
 		 * Store a value in the cache.
 		 * Value will not expire, use store() if needed.
 		 *

@@ -77,6 +77,17 @@
 		}
 
 		/**
+		 * Check if a value exists in the cache.
+		 *
+		 * @param string $key Key used to store the value.
+		 * @return bool True if the key exists in the cache.
+		 */
+		public function exists(string $key): bool {
+			$this->cache->get($key);
+			return $this->cache->getResultCode() != \Memcached::RES_NOTFOUND;
+		}
+
+		/**
 		 * Store a value in the cache.
 		 *
 		 * @api __set
