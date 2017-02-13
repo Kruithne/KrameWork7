@@ -1,16 +1,19 @@
 <?php
 	namespace KrameWork\Reporting;
 
+	use KrameWork\Caching\IDataCache;
+
 	/**
 	 * Class SQLReportRunner
 	 * Encapsulates executing and caching data from SQL
 	 */
 	abstract class ReportRunner
 	{
-		public function __construct(string $key, int $cacheTTL = 300)
+		public function __construct(IDataCache $cache, string $key, int $cacheTTL = 300)
 		{
 			$this->cacheTTL = $cacheTTL;
 			$this->key = $key;
+			$this->cache = $cache;
 		}
 
 		/**
@@ -24,9 +27,9 @@
 		 */
 		public function Data()
 		{
-			if (!apcu_exists($this->key))
-				apcu_store($this->key, new ReportResults($this->Run()), $this->cacheTTL);
-			return apcu_fetch($this->key);
+			if (!$this->cache->exists($this->key))
+				$this->cache->store($this->key, new ReportResults($this->Run()), time() + $this->cacheTTL);
+			return $this->cache->__get($this->key);
 		}
 
 		/**
@@ -34,7 +37,7 @@
 		 */
 		public function Clear()
 		{
-			apcu_delete($this->key);
+			$this->cache->__unset($this->key);
 		}
 
 		/**
@@ -49,4 +52,5 @@
 
 		protected $cacheTTL;
 		protected $key;
+		protected $cache;
 	}

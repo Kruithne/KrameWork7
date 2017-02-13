@@ -1,5 +1,6 @@
 <?php
 	namespace KrameWork\Reporting;
+	use KrameWork\Caching\IDataCache;
 
 	/**
 	 * Class SQLReportRunner
@@ -7,13 +8,13 @@
 	 */
 	abstract class SQLReport extends Report
 	{
-		public function __construct($db, string $sql, array $param = [], bool $debug = false, int $cacheTTL = 300)
+		public function __construct(IDataCache $cache, $db, string $sql, array $param = [], bool $debug = false, int $cacheTTL = 300)
 		{
 			$this->db = $db;
 			$this->sql = $sql;
 			$this->param = $param;
 			$this->debug = $debug;
-			parent::__construct(sha1(serialize([$db, $sql, $param])), $cacheTTL);
+			parent::__construct($cache, sha1(serialize([$db, $sql, $param])), $cacheTTL);
 		}
 
 		/**
