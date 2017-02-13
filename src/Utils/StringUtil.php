@@ -37,8 +37,8 @@
 		 * Check if a string starts with another string.
 		 *
 		 * @api startsWith
-		 * @param string $haystack
-		 * @param string $needle
+		 * @param string $haystack String to search.
+		 * @param string $needle What the string should start with.
 		 * @return bool
 		 */
 		static function startsWith(string $haystack, string $needle):bool {
@@ -50,8 +50,8 @@
 		 * Adapted from http://stackoverflow.com/a/834355/6997644
 		 *
 		 * @api endsWith
-		 * @param string $haystack
-		 * @param string $needle
+		 * @param string $haystack String to search.
+		 * @param string $needle What the string should end with.
 		 * @return bool
 		 */
 		static function endsWith(string $haystack, string $needle):bool {
@@ -76,7 +76,7 @@
 		 * Get the base class-name from a namespace string.
 		 *
 		 * @api namespaceBase
-		 * @param string $namespace
+		 * @param string $namespace Namespace path.
 		 * @return string
 		 */
 		static function namespaceBase(string $namespace):string {
