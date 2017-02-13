@@ -5,6 +5,7 @@
 * **Overview** - Information about the class.
 * **Examples** - Usage examples.
 * **Functions** - Comprehensive list of all functions in the class.
+
 ___
 ### Overview
 `StringBuilder` is a [fluent API] class that allows object-orientated string concatenation and manipulation. Elements can be appended and prepended in various ways using the functions provided to seamlessly create a string using a combination of different types and methods.
