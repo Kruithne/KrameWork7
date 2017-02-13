@@ -46,7 +46,7 @@
 		/**
 		 * Mail constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 */
 		public function __construct() {
 			$this->headers = [];
@@ -66,7 +66,7 @@
 		 * Set the subject of this e-mail.
 		 * Strict limit of 998 characters, but more than 78 is considered bad.
 		 *
-		 * @api
+		 * @api setSubject
 		 * @param string $subject
 		 * @return Mail
 		 * @throws ExcessiveSubjectLengthException
@@ -82,7 +82,7 @@
 		/**
 		 * Set the sender of this e-mail.
 		 *
-		 * @api
+		 * @api setSender
 		 * @param string $senderEmail E-mail address of the sender.
 		 * @param string $senderName Name of the sender.
 		 * @param bool $generateMessageID Generate a Message-Id header using this sender.
@@ -111,7 +111,7 @@
 		/**
 		 * Add a header to this e-mail.
 		 *
-		 * @api
+		 * @api addHeader
 		 * @param string $name Header name.
 		 * @param string $value Header value.
 		 * @return Mail
@@ -124,7 +124,7 @@
 		/**
 		 * Attach a file to be sent with this mail.
 		 *
-		 * @api
+		 * @api attachFile
 		 * @param string|AttachmentFile $attachment Attachment.
 		 * @param bool $inline Is the attachment an inline embed?
 		 * @return Mail
@@ -149,7 +149,7 @@
 		/**
 		 * Remove an attached file from this mail object.
 		 *
-		 * @api
+		 * @api removeFile
 		 * @param string|AttachmentFile $attachment Attachment to remove.
 		 * @return Mail
 		 */
@@ -168,7 +168,7 @@
 		/**
 		 * Remove all files attached to this mail object.
 		 *
-		 * @api
+		 * @api clearFiles
 		 * @return Mail
 		 */
 		public function clearFiles():Mail {
@@ -179,7 +179,7 @@
 		/**
 		 * Send this mail!
 		 *
-		 * @api
+		 * @api send
 		 * @throws InvalidRecipientException
 		 * @throws MissingSenderException
 		 */
