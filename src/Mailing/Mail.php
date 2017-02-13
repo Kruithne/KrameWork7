@@ -67,7 +67,7 @@
 		 * Strict limit of 998 characters, but more than 78 is considered bad.
 		 *
 		 * @api setSubject
-		 * @param string $subject
+		 * @param string $subject Subject of the e-mail.
 		 * @return Mail
 		 * @throws ExcessiveSubjectLengthException
 		 */
