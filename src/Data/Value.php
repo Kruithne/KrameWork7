@@ -58,7 +58,18 @@
 		 * @return int Sorting index
 		 */
 		public function compare($to) {
-			return strnatcasecmp((string)$this->value, (string)$to);
+			$a = $this->value;
+			if ($to instanceof Value)
+				$b = $to->real();
+			else
+				$b = $to;
+
+			if ($b === null)
+				return $a === null ? 0 : 1;
+			if ($a === null)
+				return -1;
+
+			return strnatcasecmp((string)$a, (string)$b);
 		}
 
 		/**

@@ -45,8 +45,20 @@
 		 * @return int Sorting index
 		 */
 		public function compare($to) {
-			$toValue = ($to instanceof Value) ? $to->Real() : floatval($to);
-			return $this->value - $toValue;
+			$a = $this->value;
+			if ($to instanceof Value)
+				$b = $to->real();
+			else
+				$b = $to;
+
+			if ($b === null)
+				return $a === null ? 0 : 1;
+			else
+				$b = floatval($b);
+			if ($a === null)
+				return -1;
+
+			return $a - $b;
 		}
 
 		/**

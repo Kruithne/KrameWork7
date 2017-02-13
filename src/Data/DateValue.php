@@ -54,8 +54,20 @@
 		 * @return int Sorting index
 		 */
 		public function compare($to) {
-			$toValue = ($to instanceof DateValue) ? $to->Real() : 0;
-			return $this->value - $toValue;
+			$a = $this->value;
+			if ($to instanceof DateValue)
+				$b = $to->real();
+			else
+				$b = $to;
+
+			if ($b === null)
+				return $a === null ? 0 : 1;
+			else if (!is_numeric($b))
+				$b = strtotime($b);
+			if ($a === null)
+				return -1;
+
+			return $a - $b;
 		}
 
 		/**
