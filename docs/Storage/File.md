@@ -1,15 +1,16 @@
-## File
->- **Namespace**: KrameWork\Storage\File
->- **File**: KrameWork7/src/Storage/File.php
+## KrameWork\Storage\File
 
-### Reading
-The `File` class is a simple wrapper for, as you might be able to guess, files. The `__construct` method to create a new `File` instance takes three parameters:
+***Table of Contents***
+* **Overview** - Information about the class.
+* **Examples** - Usage examples.
+* **Functions** - Comprehensive list of all functions in the class.
 
- - `path` - **[Required]** Location of the file (even if it does not exist yet).
- - `autoLoad` - If true, the file will be read during initiation. Can throw `FileNotFoundException` or `FileReadException` **Default = true**
- - `touch` - If true, the file will be touched upon initiation of the instance. **Default = false**
-
-With this, we can load the contents of a file rather simply.
+___
+### Overview
+The `File` class is designed to allow easy handling and management of files. There are various extensions of the class which allow more specific use-cases; check out the directory for other implementations.
+___
+### Examples
+Basic usage:
 ```php
 $file = new File("myFile.txt");
 var_dump($file->getData());
@@ -39,7 +40,7 @@ if ($file->isValid()) {
 	// Fondle data.
 }
 ```
-### Writing/Saving
+##### Writing/Saving
 Writing our own data to the file wrapper is as simply as calling `setData()` on the wrapper. This function takes any kind of object, but will attempt to cast it to a `string` later on, so make sure it's stringable! Once we've set the data, we can persist it to file using `save()`.
 ```php
 $file = new File("myNewFile.txt", false, true);
@@ -59,9 +60,71 @@ $file = new File("existingData.txt", true);
 $file->setData("New data!");
 $file->save("existingData.txt", true); // Overwrite!
 ```
-### Deleting
+##### Deleting
 Deleting a file is as simple as telling it to be deleted! No error will be thrown if the file does not exist; you can check before-hand with `exists()` or `isValid()` if needed.
 ```php
 $file = new File("someFile.txt", false);
 $file->delete();
 ```
+___
+### Functions
+##### > __construct() : `void`
+File constructor.
+
+parameter | type | description
+--- | --- | ---
+`$path` | `string` | Path to the file.
+`$autoLoad` | `bool` | Attempt to load the file contents on instantiation.
+`$touch` | `bool` | Touch the file, creating it if missing.
+
+exception | reason
+--- | ---
+`FileNotFoundException` | Specified file could not be found.
+`FileReadException` | Specified file could not be read (permission error?).
+##### > isValid() : `bool`
+Check if the file exists and is valid.
+##### > delete() : `bool`
+Attempt to delete the file.
+##### > getSize() : `int`
+Get the size of this file in bytes.
+##### > getExtension() : `string`
+Get the extension of this file (without leading period).
+##### > getFileType() : `string`
+Attempts to get the MIME type of a file. Requires php_fileinfo extension to be enabled. Returns 'unknown' on failure.
+##### > read() : `void`
+Attempt to read the data from a file. Read data is not returned, but available through the wrapper.
+
+exception | reason
+--- | ---
+`FileNotFoundException` | Specified file could not be found.
+`FileReadException` | Specified file could not be read (permission error?).
+##### > save() : `void`
+Attempt to save the data in the wrapper to a file. Using an alternative path to save will not change the original path stored by the wrapper.
+
+parameter | type | description
+--- | --- | ---
+`$file` | `string|null` | Path to save the file. If omitted, will use wrapper path.
+`$overwrite` | `bool` | Overwrite the file if it exists.
+
+exception | reason
+--- | ---
+`FileWriteException` | File already exists and overwrite not specified.
+
+##### > getData() : `null|string`
+Get the data contained by the wrapper after a read() or manual set.
+
+parameter | type | description
+--- | --- | ---
+`$forceRead` | `bool` | Call read() if data is missing.
+##### > getBase64Data() : `string`
+Retrieve the raw data of this file encoded as base64.
+
+parameter | type | description
+--- | --- | ---
+`$forceRead` | `bool` | Call read() if data is missing.
+##### > setData() : `void`
+Set the data for this file wrapper. Overwrites existing.
+
+parameter | type | description
+--- | --- | ---
+`$data` | `mixed` | Data to store in the wrapper.
