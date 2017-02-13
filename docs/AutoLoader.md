@@ -66,6 +66,7 @@ $math = new \SnazzyLibrary\Math();
 ___
 ### Constants
 Constants available in the `AutoLoader` class:
+
 constant | value | description
 --- | --- | ---
 `RECURSIVE_SOURCING` | `0x1` | Search recursively in added source locations for class files.
