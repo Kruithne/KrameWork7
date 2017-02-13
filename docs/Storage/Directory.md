@@ -1,10 +1,16 @@
-## Directory
->- **Namespace**: KrameWork\Storage\Directory
->- **File**: KrameWork7/src/Storage/Directory.php
+## KrameWork\Storage\Directory
 
-### Basic Usage
-The `Directory` class extends `DirectoryItem`, the same base class used by `File`; because of this, the functionality for this class is similar to that described in [FileExample](FileExample.md).
+***Table of Contents***
+* **Overview** - Information about the class.
+* **Examples** - Usage examples.
+* **Constants** - Constants exposed from this class.
+* **Functions** - Comprehensive list of all functions in the class.
 
+___
+### Overview
+The `Directory` class is designed to allow easy handling and management of directories. The class extends `DirectoryItem`, the same base class used by `File`; because of this, the functionality for this class is similar to that described in [File](File.md).
+___
+### Examples
 For basic usage, simply create an instance of `DirectoryItem` with the first parameter to the constructor being the directory you wish to work with.
 ```php
 $directory = new Directory("assets/images");
@@ -23,7 +29,7 @@ $directory = new Directory("assets/images");
 if ($directory->isValid())
 	// Fondle directory.
 ```
-### Directory Creation
+##### Directory Creation
 By default, if the directory does not exist when you create a `Directory` instance, it will not be created. You can change this behavior by providing `true` to the second parameter of the constructor.
 ```php
 $directory = new Directory("assets/images", true);
@@ -43,7 +49,7 @@ $directory = new Directory("assets/images", false);
 if (!$directory->create(false)) // Fails if `assets` directory is missing.
 	// Unable to create directory.
 ```
-### Accessing Directories
+##### Accessing Directories
 A directory is not much use to us if we can't access the items within it; this can be done with a call to `getItems(flags)`. The `flags` parameter is a bit-masked value controlling the behavior of the call, the values of which are stored as constants on the `Directory` class.
 
  - `USE_WRAPPERS` - All returned directory items will be wrapped in `File`/`Directory` classes. Strings will be returned if disabled. **Default: enabled**.
@@ -66,7 +72,7 @@ Two short-cut functions are provided by the `Directory` class for item retrieval
  - `getFiles(flags)` - Forces `INCLUDE_FILES` enabled & `INCLUDE_DIRECTORIES` disabled.
  - `getDirectories(flags)` - Forces `INCLUDE_DIRECTORIES` enabled and `INCLUDE_FILES` disabled.
 
-### Sub-files/directories
+##### Sub-files/directories
 The `Directory` class exposes the following functions for handling sub-files/directories:
 
  - `hasItem(name):bool` - Check if the directory contains a file or directory called `name`.
@@ -77,7 +83,7 @@ The `Directory` class exposes the following functions for handling sub-files/dir
 
 \* *Not intended for recursive creation; slashes cause undefined behavior.*
 
-### Deletion
+##### Deletion
 You've decided you no longer like your directory, so let's delete it! A simple call to `delete()` will do the trick.
 ```php
 $directory = new Directory("assets/images", false);
@@ -90,3 +96,105 @@ $directory = new Directory("assets/images", false);
 if (!$directory->delete(true))
 	// Permission error?
 ```
+___
+### Constants
+Constants available in the `Directory` class:
+
+constant | value | description
+--- | --- | ---
+`USE_WRAPPERS` | `0x1` | Directories/files returned will be in storage wrappers.
+`INCLUDE_FILES` | `0x2` | Include files in the given retrieval call.
+`INCLUDE_DIRECTORIES` | `0x4` | Include directories in the given retrieval call.
+`INCLUDE_HIDDEN` | `0x8` | Include hidden items in the given retrieval call.
+`RETURN_FULL_PATHS` | `0x10` | When using non-wrapper mode, return full paths.
+`INCLUDE_ALL` | `*` | Alias for all `INCLUDE_` flags enabled.
+`DEFAULT_FLAGS` | `*` | Alias for `USE_WRAPPERS`, `INCLUDE_FILES` and `INCLUDE_DIRECTORIES` enabled.
+___
+### Functions
+##### > __construct() : `void`
+Directory constructor.
+
+parameter | type | description
+--- | --- | ---
+`$path` | `string` | Path to the directory.
+`$create` | `bool` | Create directory if missing.
+
+##### > isValid() : `bool`
+Check if the directory exists and is valid.
+##### > create() : `bool`
+Attempt to create the directory.
+
+parameter | type | description
+--- | --- | ---
+`$recursive` | `bool` | Create all directories in the path.
+`$mode` | `int` | File permissions (No effect on Windows).
+
+##### > delete() : `bool`
+Attempt to delete the directory.
+
+parameter | type | description
+--- | --- | ---
+`$recursive` | `bool` | Recursively delete the directory.
+
+##### > getItems() : `string[]|DirectoryItem[]`
+Retrieve a all items contained in the directory.
+
+parameter | type | description
+--- | --- | ---
+`$flags` | `int` | Bit-mask flags to control retrieval.
+
+exception | reason
+--- | ---
+`InvalidDirectoryException` | Directory does not exist or could not be accessed.
+
+##### > getFiles() : `array`
+Retrieve a list of all files in the directory. Alias of getItems() with INCLUDE_FILES and ~INCLUDE_DIRECTORIES.
+
+parameter | type | description
+--- | --- | ---
+`$flags` | `int` | Bit-mask flags to control retrieval.
+##### > getDirectories() : `array`
+Retrieve a list of all directories in the directory. Alias of getItems() with INCLUDE_DIRECTORIES and ~INCLUDE_FILES.
+
+parameter | type | description
+--- | --- | ---
+`$flags` | `int` | Bit-mask flags to control retrieval.
+##### > hasItem() : `bool`
+Check if this directory contains an item with the given name.
+
+parameter | type | description
+--- | --- | ---
+`$name` | `string` | Name to check the directory for.
+##### > hasFile() : `bool`
+Check if this directory contains a file with the given name. Mimics hasItem() with additional file type check.
+
+parameter | type | description
+--- | --- | ---
+`$name` | `string` | Name of the file to check for.
+##### > hasDirectory() : `bool`
+Check if this directory contains a directory with the given name. Mimics hasItem() with additional directory type check.
+
+parameter | type | description
+--- | --- | ---
+`$name` | `string` | Name of the directory to check for.
+##### > createDirectory() : `Directory`
+Create a new directory inside this directory. Directory creation is not guaranteed. Confirm with isValid() check on the returned Directory wrapper object.
+
+parameter | type | description
+--- | --- | ---
+`$name` | `string` | Name of the directory to create.
+`$mode` | `int` | Permissions mode (No effect on Windows).
+
+exception | reason
+--- | ---
+`FileAlreadyExistsException` | Directory already exists.
+##### > createFile() : `File`
+Create a new file inside this directory. File create is not guaranteed, confirm with isValid() check on the returned File wrapper object.
+
+parameter | type | description
+--- | --- | ---
+`$name` | `string` | Name of the file to create.
+
+exception | reason
+--- | ---
+`FileAlreadyExistsException` | File already exists.
