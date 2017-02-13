@@ -12,6 +12,28 @@ ___
 
 Internally, the `StringBuilder` class stores elements by-line in an array stack to speed up processing of various helper functions; this has no effect on the compiled outcome once `__toString()` is invoked.
 ___
+##### Inserting Elements
+Elements can be inserted to a builder instance through various methods, some of which are exampled below. All elements must be a native type or implement `__toString()`. If an element is an array, the array will be recursively iterated and all elements appended; some functions, such as `appendf`, do not accept arrays - check the function reference at the bottom of the page.
+```php
+// Anything passed to the constructor is appended.
+$builder = new StringBuilder('Agent', 47); // > Agent47
+
+// The append() call can take multiple arguments, and we can chain calls using fluent API.
+$builder->append(' look ', 'like')->append('?'); // > Agent47 look like?
+
+// Prepending works the same, but adds elements to the start of the string.
+// Note: Items are prepended one after the other, check the input compared to output below.
+$builder->prepend(' does ', 'What'); // > What does Agent47 look like?
+
+// Insert formatted strings!
+$builder->appendf(' Very %s!', 'scary'); // > What does Agent47 look like? Very scary!
+
+// Insert an element, followed by a line-end.
+// By default, line-endings will be Unix style (\n), however this can be changed using
+// the setLineEnd() call; check the function reference for more details.
+$builder->appendLine(' Very Strong!'); // > What does Agent47 look like? Very scary! Very strong!\n
+```
+___
 ### Functions
 ##### > __construct() : `void`
 StringBuilder constructor.
@@ -95,26 +117,3 @@ parameter | type | description
 `$lineEnd` | `string` | Line-end; check StringBuilder::LE_* constants.
 ##### > __toString() : `string`
 Return the compiled result of the string builder.
-
-___
-##### Inserting Elements
-Elements can be inserted to a builder instance through various methods, some of which are exampled below. All elements must be a native type or implement `__toString()`. If an element is an array, the array will be recursively iterated and all elements appended; some functions, such as `appendf`, do not accept arrays - check the function reference at the bottom of the page.
-```php
-// Anything passed to the constructor is appended.
-$builder = new StringBuilder('Agent', 47); // > Agent47
-
-// The append() call can take multiple arguments, and we can chain calls using fluent API.
-$builder->append(' look ', 'like')->append('?'); // > Agent47 look like?
-
-// Prepending works the same, but adds elements to the start of the string.
-// Note: Items are prepended one after the other, check the input compared to output below.
-$builder->prepend(' does ', 'What'); // > What does Agent47 look like?
-
-// Insert formatted strings!
-$builder->appendf(' Very %s!', 'scary'); // > What does Agent47 look like? Very scary!
-
-// Insert an element, followed by a line-end.
-// By default, line-endings will be Unix style (\n), however this can be changed using
-// the setLineEnd() call; check the function reference for more details.
-$builder->appendLine(' Very Strong!'); // > What does Agent47 look like? Very scary! Very strong!\n
-```
