@@ -36,7 +36,7 @@
 		/**
 		 * Obtain an array containing all files with the given key.
 		 *
-		 * @api
+		 * @api getFiles
 		 * @param string $key Key to lookup files for.
 		 * @param bool $useWrappers Use KrameWork file wrappers.
 		 * @return \ArrayObject[]|Storage\UploadedFile[]
@@ -76,9 +76,9 @@
 		/**
 		 * Check if this request contains an uploaded file with the given key.
 		 *
-		 * @api
+		 * @api hasFile
 		 * @param string $key Key to check for.
-		 * @return bool User uploaded a file with the given key.
+		 * @return bool
 		 */
 		public function hasFile(string $key) {
 			return array_key_exists($key, $_FILES);
@@ -87,8 +87,8 @@
 		/**
 		 * Retrieve the decoded query string for this request.
 		 *
-		 * @api
-		 * @return array Query string converted to key/value pair array.
+		 * @api getQueryData
+		 * @return array
 		 */
 		public function getQueryData() {
 			if ($this->cacheQueryData)
@@ -101,9 +101,9 @@
 		/**
 		 * Retrieve a value from the query string with the given key.
 		 *
-		 * @api
+		 * @api getQueryDataValue
 		 * @param string $key Key contained in the query string.
-		 * @return mixed|null Value of the key, or null if not found.
+		 * @return mixed|null
 		 */
 		public function getQueryDataValue(string $key) {
 			return $this->getQueryData()[$key] ?? null;
@@ -113,8 +113,8 @@
 		 * Retrieve multiple values from the query string.
 		 * Accepts a variable amount of string arguments.
 		 *
-		 * @api
-		 * @return array Values for the given keys.
+		 * @api getQueryDataValues
+		 * @return array
 		 */
 		public function getQueryDataValues():array {
 			$out = [];
@@ -128,8 +128,8 @@
 		 * Check if this request contains form data.
 		 * Occurs when content-type is multipart/form-data or application/x-www-form-urlencoded
 		 *
-		 * @api
-		 * @return bool Request contains form data.
+		 * @api hasFormData
+		 * @return bool
 		 */
 		public function hasFormData():bool {
 			if ($this->hasFormData === null)
@@ -142,8 +142,8 @@
 		 * Check if this request contains multipart form data.
 		 * Occurs when content-type is multipart/form-data
 		 *
-		 * @api
-		 * @return bool Request contains multipart form data.
+		 * @api hasMultipartFormData
+		 * @return bool
 		 */
 		public function hasMultipartFormData():bool {
 			if ($this->hasMultipartFormData === null)
@@ -155,9 +155,9 @@
 		/**
 		 * Retrieve a value from submitted form data with the given key.
 		 *
-		 * @api
+		 * @api getFormDataValue
 		 * @param string $key Key to get value for.
-		 * @return mixed|null Value for the key, or null if not found.
+		 * @return mixed|null
 		 */
 		public function getFormDataValue(string $key) {
 			return $this->getFormData()[$key] ?? null;
@@ -167,8 +167,8 @@
 		 * Retrieve multiple values from submitted form data.
 		 * Accepts variable amount of string arguments.
 		 *
-		 * @api
-		 * @return array Values for the given keys.
+		 * @api getFormDataValues
+		 * @return array
 		 */
 		public function getFormDataValues():array {
 			$out = [];
@@ -183,8 +183,8 @@
 		 * Result is stored in a key/value pair array.
 		 * Array values (foo[]) are returned as arrays.
 		 *
-		 * @api
-		 * @return array Decoded form data.
+		 * @api getFormData
+		 * @return array
 		 */
 		public function getFormData():array {
 			if ($this->cacheFormData)
@@ -206,11 +206,11 @@
 		 * Retrieve the request content as (optionally decoded) JSON.
 		 * Skipping decode and content-type validation: use getRequestContent() instead.
 		 *
-		 * @api
+		 * @api getJSON
 		 * @param bool $decode Parse the string and validate it.
 		 * @param bool $ignoreContentType Skip validation of the content-type.
 		 * @param bool $wrapper Wrap the decoded JSON object in a JSONFile wrapper.
-		 * @return mixed|string Decoded JSON object or raw string, depending on $decode
+		 * @return mixed|string
 		 * @throws InvalidRequestTypeException
 		 */
 		public function getJSON(bool $decode = true, bool $ignoreContentType = false, bool $wrapper = true) {
@@ -241,8 +241,8 @@
 		/**
 		 * Check if this request was made over https protocol.
 		 *
-		 * @api
-		 * @return bool Request was secure.
+		 * @api isSecure
+		 * @return bool
 		 */
 		public function isSecure():bool {
 			// ISAPI IIS returns "off", others do not set.
@@ -253,7 +253,7 @@
 		 * Retrieve the raw content of the request.
 		 * Result is not parsed or validated.
 		 *
-		 * @api
+		 * @api getRequestContent
 		 * @return string
 		 */
 		public function getRequestContent():string {
@@ -263,8 +263,8 @@
 		/**
 		 * Retrieve the length of the raw request content.
 		 *
-		 * @api
-		 * @return int Length of the request content.
+		 * @api getContentLength
+		 * @return int
 		 */
 		public function getContentLength():int {
 			return intval($_SERVER['CONTENT_LENGTH'] ?? 0);
@@ -272,9 +272,10 @@
 
 		/**
 		 * Retrieve the user-agent string for the current request.
+		 * Returns 'Unknown' if not available.
 		 *
-		 * @api
-		 * @return string User-agent or "Unknown" if not available.
+		 * @api getUserAgent
+		 * @return string
 		 */
 		public function getUserAgent():string {
 			return $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
@@ -282,9 +283,10 @@
 
 		/**
 		 * Retrieve the referer URL for this request.
+		 * Returns an empty string if not available.
 		 *
-		 * @api
-		 * @return string Referer URL, or empty string if not available.
+		 * @api getReferer
+		 * @return string
 		 */
 		public function getReferer():string {
 			return $_SERVER['HTTP_REFERER'] ?? '';
@@ -292,10 +294,11 @@
 
 		/**
 		 * Retrieve the content-type of this request.
+		 * Returns 'text/plain' if not available.
 		 *
-		 * @api
+		 * @api getContentType
 		 * @param bool $parameters Include content-type parameters.
-		 * @return string Content-type, defaults to "text/plain" if not available.
+		 * @return string
 		 */
 		public function getContentType(bool $parameters = true):string {
 			$type = $_SERVER['CONTENT_TYPE'] ?? 'text/plain';
@@ -309,9 +312,10 @@
 
 		/**
 		 * Retrieve the remote address for this request.
+		 * Returns an empty string if not available.
 		 *
-		 * @api
-		 * @return string Remote address, or empty string if not available.
+		 * @api getRemoteAddress
+		 * @return string
 		 */
 		public function getRemoteAddress():string {
 			return $_SERVER['REMOTE_ADDR'] ?? '';
@@ -319,9 +323,10 @@
 
 		/**
 		 * Retrieve the URI of this request (includes query string).
+		 * Returns an empty string if not available.
 		 *
-		 * @api
-		 * @return string Request URI, or empty string if not available.
+		 * @api getRequestURI
+		 * @return string
 		 */
 		public function getRequestURI():string {
 			return $_SERVER['REQUEST_URI'] ?? '';
@@ -329,9 +334,10 @@
 
 		/**
 		 * Retrieve the query string used in this request.
+		 * Returns an empty string if not available.
 		 *
-		 * @api
-		 * @return string Query string, or empty string if not available.
+		 * @api getQueryString
+		 * @return string
 		 */
 		public function getQueryString():string {
 			return $_SERVER['QUERY_STRING'] ?? '';
@@ -339,8 +345,9 @@
 
 		/**
 		 * Retrieve the method of this request.
+		 * Defaults to 'GET' if not available.
 		 *
-		 * @api
+		 * @api getRequestMethod
 		 * @return string Request method. Defaults to "GET" if not available.
 		 */
 		public function getRequestMethod():string {
@@ -414,7 +421,7 @@
 
 		/**
 		 * Internal cache for parsed query data.
-		 * @var
+		 * @var array
 		 */
 		private $cacheQueryData;
 	}
