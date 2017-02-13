@@ -24,6 +24,8 @@
 
 	namespace KrameWork\Reporting;
 
+	require_once(__DIR__.'/ReportResults.php');
+
 	use KrameWork\Caching\IDataCache;
 
 	/**
@@ -45,8 +47,9 @@
 		}
 
 		/**
-		 * Executes the report, storing the results in cache.
+		 * Executes the report, return the data to be processed and stored in cache.
 		 * Override this to implement your report.
+		 * @return array
 		 */
 		protected abstract function run();
 
@@ -56,7 +59,7 @@
 		 */
 		public function data() {
 			if (!$this->cache->exists($this->key))
-				$this->cache->store($this->key, new ReportResults($this->run()), time() + $this->cacheTTL);
+				$this->cache->store($this->key, new ReportResults($this->postProcess($this->run())), $this->cacheTTL);
 			return $this->cache->__get($this->key);
 		}
 
