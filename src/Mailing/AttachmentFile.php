@@ -40,7 +40,7 @@
 		 * Set if this attachment should be embedded inline.
 		 *
 		 * @api setInline
-		 * @param bool $inline
+		 * @param bool $inline Embed attachment inline.
 		 */
 		public function setInline(bool $inline) {
 			$this->isInline = $inline;
@@ -60,7 +60,7 @@
 		 * Set the content ID of this attachment.
 		 *
 		 * @api setContentID
-		 * @param string $id
+		 * @param string $id CID for this attachment.
 		 */
 		public function setContentID(string $id) {
 			$this->contentID = $id;
