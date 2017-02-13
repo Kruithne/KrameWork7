@@ -40,7 +40,7 @@
 		/**
 		 * EncodedContent constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param string $encoding Content encoding.
 		 */
 		public function __construct(string $encoding = self::E_7BIT) {
@@ -50,8 +50,8 @@
 		/**
 		 * Set the content of this container.
 		 *
-		 * @api
-		 * @param string $content Content to be encoded.
+		 * @api setContent
+		 * @param string $content Content data.
 		 */
 		public function setContent($content) {
 			$this->content = $content;
@@ -60,7 +60,7 @@
 		/**
 		 * Check if this container has content.
 		 *
-		 * @api
+		 * @api hasContent
 		 * @return bool
 		 */
 		public function hasContent():bool {
@@ -70,8 +70,8 @@
 		/**
 		 * Set the encoding of this content.
 		 *
-		 * @api
-		 * @param string $encoding
+		 * @api setEncoding
+		 * @param string $encoding Encoding to use for this content.
 		 */
 		public function setEncoding(string $encoding) {
 			$this->encoding = $encoding;
@@ -80,7 +80,7 @@
 		/**
 		 * Get the encoding of this content.
 		 *
-		 * @api
+		 * @api getEncoding
 		 * @return string
 		 */
 		public function getEncoding() {
@@ -90,6 +90,7 @@
 		/**
 		 * Encode and return the content.
 		 *
+		 * @api __toString
 		 * @return string
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
