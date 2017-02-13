@@ -58,8 +58,7 @@
 		 * @param string $key Key used to store the value.
 		 * @return bool True if the key exists in the cache.
 		 */
-		public function exists(string $key): bool
-		{
+		public function exists(string $key): bool {
 			$this->cache->get($key);
 			return $this->cache->getResultCode() != \Memcached::RES_NOTFOUND;
 		}
