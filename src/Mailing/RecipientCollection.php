@@ -35,6 +35,11 @@
 	 */
 	class RecipientCollection
 	{
+		/**
+		 * RecipientCollection constructor.
+		 *
+		 * @api __construct
+		 */
 		public function __construct() {
 			$this->recipients = [];
 		}
