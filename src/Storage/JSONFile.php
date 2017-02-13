@@ -40,7 +40,7 @@
 		/**
 		 * JSONFile constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param string $file Path to the file.
 		 * @param bool $useContainer Loaded/inserted data will be contained using an ArrayObject.
 		 * @param bool $autoLoad Attempt to read data from the file on instantiation.
@@ -57,6 +57,7 @@
 		/**
 		 * Obtain a value from the JSON container.
 		 *
+		 * @api __get
 		 * @param string $key Key to lookup.
 		 * @return mixed|null Value, or null if not found.
 		 * @throws JSONException
@@ -69,6 +70,7 @@
 		/**
 		 * Set the value of a specific key in the JSON container.
 		 *
+		 * @api __set
 		 * @param string $key Key to store the value for.
 		 * @param mixed $value Value to store at the given key.
 		 * @throws JSONException
@@ -81,6 +83,7 @@
 		/**
 		 * Remove a value from the JSON container with the given key.
 		 *
+		 * @api __unset
 		 * @param string $key Key to remove from the container.
 		 */
 		public function __unset(string $key) {
@@ -92,7 +95,7 @@
 		 * Attempt to read and decode JSON data from the file.
 		 * Read data is not returned, but made available through the wrapper.
 		 *
-		 * @api
+		 * @api read
 		 * @throws JSONException
 		 */
 		public function read() {
@@ -110,7 +113,7 @@
 		 * Using an alternative path to save will not change the original
 		 * path stored by the wrapper.
 		 *
-		 * @api
+		 * @api save
 		 * @param string|null $file Path to save the file. If omitted, uses original file path.
 		 * @param bool $overwrite Overwrite file if it exists.
 		 * @throws JSONException
@@ -149,7 +152,7 @@
 		 * Get the JSON container inside this wrapper.
 		 * Returns a string if not using containers (see constructor).
 		 *
-		 * @api
+		 * @api getData
 		 * @param bool $forceRead Call read() if no data.
 		 * @return \ArrayObject|null|string
 		 */
@@ -164,8 +167,8 @@
 		 * Set the data contained by this wrapper.
 		 * Not recommended unless not using containers (see constructor).
 		 *
-		 * @api
-		 * @param $data
+		 * @api setData
+		 * @param mixed $data JSON object.
 		 */
 		public function setData($data) {
 			$this->jsonData = $data;
@@ -174,8 +177,8 @@
 		/**
 		 * Get the raw data string for this wrapper.
 		 *
-		 * @api
-		 * @return string|null Raw data, or null if not read/set.
+		 * @api getRawData
+		 * @return string|null
 		 */
 		public function getRawData() {
 			return $this->data;
@@ -184,8 +187,8 @@
 		/**
 		 * Set the raw data string for this file.
 		 *
-		 * @api
-		 * @param string $data
+		 * @api setRawData
+		 * @param string $data Raw data.
 		 */
 		public function setRawData(string $data) {
 			$this->data = $data;
@@ -195,8 +198,8 @@
 		 * Set the recursion depth for file reading.
 		 * Defaults to 512 if not set.
 		 *
-		 * @api
-		 * @param int $depth
+		 * @api setRecursionDepth
+		 * @param int $depth Recursion depth.
 		 */
 		public function setRecursionDepth(int $depth) {
 			$this->depth = $depth;
@@ -206,8 +209,8 @@
 		 * Set if this file should read objects as associative arrays.
 		 * Defaults to false if not set.
 		 *
-		 * @api
-		 * @param bool $assoc
+		 * @api setAssociative
+		 * @param bool $assoc Associative state.
 		 */
 		public function setAssociative(bool $assoc) {
 			$this->assoc = $assoc;
@@ -216,8 +219,8 @@
 		/**
 		 * Set the JSON options bit-mask.
 		 *
-		 * @api
-		 * @param int $mask
+		 * @api setOptions
+		 * @param int $mask Bit-mask options flag.
 		 */
 		public function setOptions(int $mask) {
 			$this->options = $mask;
