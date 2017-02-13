@@ -42,7 +42,7 @@
 		/**
 		 * File constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param string $path Path to the file.
 		 * @param bool $autoLoad Attempt to load the file contents on instantiation.
 		 * @param bool $touch Touch the file, creating it if missing.
@@ -61,8 +61,8 @@
 		/**
 		 * Check if the file exists and is valid.
 		 *
-		 * @api
-		 * @return bool File exists and is valid.
+		 * @api isValid
+		 * @return bool
 		 */
 		public function isValid():bool {
 			return $this->exists() && is_file($this->path);
@@ -71,8 +71,8 @@
 		/**
 		 * Attempt to delete the file.
 		 *
-		 * @api
-		 * @return bool File deleted successfully.
+		 * @api delete
+		 * @return bool
 		 */
 		public function delete():bool {
 			return @unlink($this->path);
@@ -81,8 +81,8 @@
 		/**
 		 * Get the size of this file in bytes.
 		 *
-		 * @api
-		 * @return int Size of the file.
+		 * @api getSize
+		 * @return int
 		 */
 		public function getSize():int {
 			$size = @filesize($this->path);
@@ -92,8 +92,8 @@
 		/**
 		 * Get the extension of this file (without leading period).
 		 *
-		 * @api
-		 * @return string File extension, or empty string if missing.
+		 * @api getExtension
+		 * @return string
 		 */
 		public function getExtension():string {
 			$parts = explode(".", $this->name);
@@ -104,9 +104,10 @@
 		/**
 		 * Attempts to get the MIME type of a file.
 		 * Requires php_fileinfo extension to be enabled.
+		 * Returns 'unknown' on failure.
 		 *
-		 * @api
-		 * @return string MIME type, or "unknown" on failure.
+		 * @api getFileType
+		 * @return string
 		 */
 		public function getFileType():string {
 			if (function_exists('finfo_file')) {
@@ -123,7 +124,7 @@
 		 * Attempt to read the data from a file.
 		 * Read data is not returned, but available through the wrapper.
 		 *
-		 * @api
+		 * @api read
 		 * @throws FileNotFoundException|FileReadException
 		 */
 		public function read() {
@@ -145,7 +146,7 @@
 		 * Using an alternative path to save will not change the original
 		 * path stored by the wrapper.
 		 *
-		 * @api
+		 * @api save
 		 * @param string|null $file Path to save the file. If omitted, will use wrapper path.
 		 * @param bool $overwrite Overwrite the file if it exists.
 		 * @throws FileWriteException
@@ -162,7 +163,7 @@
 		/**
 		 * Get the data contained by the wrapper after a read() or manual set.
 		 *
-		 * @api
+		 * @api getData
 		 * @param bool $forceRead Call read() if data is missing.
 		 * @return null|string
 		 */
@@ -175,6 +176,8 @@
 
 		/**
 		 * Retrieve the raw data of this file encoded as base64.
+		 *
+		 * @api getBase64Data
 		 * @param bool $forceRead Call read() if data is missing.
 		 * @return string
 		 */
@@ -185,7 +188,7 @@
 		/**
 		 * Set the data for this file wrapper. Overwrites existing.
 		 *
-		 * @api
+		 * @api setData
 		 * @param mixed $data Data to store in the wrapper.
 		 */
 		public function setData($data) {
