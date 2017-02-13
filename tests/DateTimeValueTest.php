@@ -17,8 +17,8 @@
 		 * Verify that a value can be a string
 		 */
 		public function testStringValue() {
-			$value = new DateTimeValue("1980-12-19 8:42");
-			$this->assertEquals(strtotime("1980-12-19 8:42"), $value->real());
+			$value = new DateTimeValue('1980-12-19 8:42');
+			$this->assertEquals(strtotime('1980-12-19 8:42'), $value->real());
 		}
 
 		/**
@@ -34,7 +34,7 @@
 		 */
 		public function testValueToJSON() {
 			$value = new DateTimeValue('1980-01-01');
-			$this->assertEquals(date('c',$value->real()), $value->JSON());
+			$this->assertEquals('1980-01-01T00:00:00+00:00', $value->JSON());
 		}
 
 		/**
