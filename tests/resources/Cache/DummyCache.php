@@ -16,7 +16,7 @@
 			$this->ttl[$key] = $expire;
 		}
 
-		public function exists(string $key): \bool {
+		public function exists(string $key): bool {
 			return isset($this->data[$key]);
 		}
 
