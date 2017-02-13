@@ -18,7 +18,7 @@
 		/**
 		 * @return mixed The encapsulated value
 		 */
-		public function Real() {
+		public function real() {
 			return $this->value;
 		}
 
@@ -34,7 +34,7 @@
 		 * @param $to Value|mixed A value to compare against
 		 * @return int Sorting index
 		 */
-		public function Compare($to) {
+		public function compare($to) {
 			return strnatcasecmp((string)$this->value, (string)$to);
 		}
 

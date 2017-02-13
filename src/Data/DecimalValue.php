@@ -20,7 +20,7 @@
 		 * @param $to Value|mixed A value to compare against
 		 * @return int Sorting index
 		 */
-		public function Compare($to) {
+		public function compare($to) {
 			$toValue = ($to instanceof Value) ? $to->Real() : floatval($to);
 			return $this->value - $toValue;
 		}

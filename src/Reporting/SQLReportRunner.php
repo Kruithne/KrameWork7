@@ -29,8 +29,8 @@
 		/**
 		 * Executes the report, storing the results in APC
 		 */
-		protected function Run() {
-			return $this->PostProcess($this->db->query($this->sql, $this->param, DB_RESULT_SET, $this->debug));
+		protected function run() {
+			return $this->postProcess($this->db->query($this->sql, $this->param, DB_RESULT_SET, $this->debug));
 		}
 
 		/**

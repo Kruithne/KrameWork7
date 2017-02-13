@@ -29,7 +29,7 @@
 		 * @param $to Value|mixed A value to compare against
 		 * @return int Sorting index
 		 */
-		public function Compare($to) {
+		public function compare($to) {
 			$toValue = ($to instanceof DateValue) ? $to->Real() : 0;
 			return $this->value - $toValue;
 		}

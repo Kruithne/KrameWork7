@@ -44,7 +44,7 @@
 		public $label;
 		public $type;
 
-		public function JsonSerialize() {
+		public function jsonSerialize() {
 			return ['Label' => $this->label, 'Type' => $this->type];
 		}
 	}

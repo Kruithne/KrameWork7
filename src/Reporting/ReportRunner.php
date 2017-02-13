@@ -25,22 +25,22 @@
 		 * Executes the report, storing the results in cache.
 		 * Override this to implement your report.
 		 */
-		protected abstract function Run();
+		protected abstract function run();
 
 		/**
 		 * Executes the report if necessary and returns the cached result set.
 		 * @return ReportResults The data set returned by the SQL
 		 */
-		public function Data() {
+		public function data() {
 			if (!$this->cache->exists($this->key))
-				$this->cache->store($this->key, new ReportResults($this->Run()), time() + $this->cacheTTL);
+				$this->cache->store($this->key, new ReportResults($this->run()), time() + $this->cacheTTL);
 			return $this->cache->__get($this->key);
 		}
 
 		/**
 		 * Flushes cached data, forcing a fresh run of the report
 		 */
-		public function Clear() {
+		public function clear() {
 			$this->cache->__unset($this->key);
 		}
 
@@ -49,7 +49,7 @@
 		 * @param array $data
 		 * @return array
 		 */
-		protected function PostProcess(array $data) {
+		protected function postProcess(array $data) {
 			return $data;
 		}
 

@@ -10,21 +10,21 @@
 		/**
 		 * @return ReportColumn[]
 		 */
-		public abstract function Columns();
+		public abstract function columns();
 
 		/**
 		 * @return \Closure[] Filters in the format function(&$row)
 		 */
-		protected function GetFilters() {
+		protected function getFilters() {
 			$filters = [];
-			foreach ($this->Columns() as $key => $col) {
+			foreach ($this->columns() as $key => $col) {
 				switch ($col->type) {
 					case ReportColumn::COL_DECIMAL:
 					case ReportColumn::COL_CURRENCY:
 					case ReportColumn::COL_INTEGER:
 					case ReportColumn::COL_DATETIME:
 					case ReportColumn::COL_DATE:
-						$filters[] = self::MakeFilter($key, $col->type . 'Value');
+						$filters[] = self::makeFilter($key, $col->type . 'Value');
 						break;
 				}
 			}
@@ -36,7 +36,7 @@
 		 * @param string $class Column container class
 		 * @return \Closure
 		 */
-		protected function MakeFilter(string $key, string $class) {
+		protected function makeFilter(string $key, string $class) {
 			return function (&$row) use ($key, $class) {
 				if (!isset($row[$key]) || $row[$key] == null)
 					return;
@@ -49,8 +49,8 @@
 		 * @param array $data
 		 * @return ReportRow[]
 		 */
-		protected function PostProcess(array $data) {
-			$filters = $this->GetFilters();
+		protected function postProcess(array $data) {
+			$filters = $this->getFilters();
 			$output = [];
 			foreach ($data as $row) {
 				foreach ($filters as $filter)
