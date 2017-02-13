@@ -38,7 +38,7 @@ Get the elapsed time of this timer.
 Return the elapsed time as a string.
 
 ___
-##### Usage
+### Usage
 Below are some basic examples of how to use the timer class.
 ```php
 $timer = new Timer(Timer::FORMAT_SECONDS); // Use seconds, which is default anyway.
