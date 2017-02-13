@@ -166,7 +166,8 @@
 		 * @param string $className Class name of the component to create.
 		 * @param bool $add Attempt to add the class to the injector if missing.
 		 * @return object
-		 * @throws ClassResolutionException|ClassInstantiationException
+		 * @throws ClassResolutionException
+		 * @throws ClassInstantiationException
 		 */
 		public function getComponent(string $className, bool $add = false) {
 			$resolve = $this->resolveClassName($className);
