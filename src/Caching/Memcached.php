@@ -46,7 +46,7 @@
 		 * @api
 		 * @param string $key Key to store the value under.
 		 * @param mixed $value Value to store in the cache.
-		 * @param int $expire Expiry time as Unix timestamp, 0 = never.
+		 * @param int $expire 60*60*24*30 >= Unix Timestamp, otherwise seconds. 0 = Never.
 		 */
 		public function store(string $key, $value, int $expire = 0): void {
 			$this->cache->set($key, $value, $expire);
