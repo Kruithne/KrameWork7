@@ -15,7 +15,7 @@
 		/**
 		 * Memcached constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param string $server Memcached server address.
 		 * @param int $port Memcached server port.
 		 */
@@ -27,7 +27,7 @@
 		/**
 		 * Obtain a value from the cache.
 		 *
-		 * @api
+		 * @api __get
 		 * @param string $key Key of the value.
 		 * @return mixed|null Value, or null if not found.
 		 */
@@ -43,7 +43,7 @@
 		 * Store a value in the cache.
 		 * Value will not expire. Use store() if needed.
 		 *
-		 * @api
+		 * @api store
 		 * @param string $key Key to store the value under.
 		 * @param mixed $value Value to store in the cache.
 		 * @param int $expire 60*60*24*30 >= Unix Timestamp, otherwise seconds. 0 = Never.
@@ -55,7 +55,7 @@
 		/**
 		 * Store a value in the cache.
 		 *
-		 * @api
+		 * @api __set
 		 * @param string $key Key to store the value under.
 		 * @param mixed $value Value to store in the cache.
 		 */
@@ -66,7 +66,7 @@
 		/**
 		 * Remove an item stored in the cache.
 		 *
-		 * @api
+		 * @api __unset
 		 * @param string $key Key of the item to remove.
 		 */
 		public function __unset(string $key): void {
@@ -76,7 +76,7 @@
 		/**
 		 * Flush the cache, removing all stored data.
 		 *
-		 * @api
+		 * @api flush
 		 */
 		public function flush(): void {
 			$this->cache->flush();
@@ -85,6 +85,7 @@
 		/**
 		 * Increase a numeric value in the cache.
 		 *
+		 * @api
 		 * @param string $key Key of the value.
 		 * @param int $weight How much to increment the value.
 		 */
@@ -95,6 +96,7 @@
 		/**
 		 * Decrease a numeric value in the cache.
 		 *
+		 * @api
 		 * @param string $key Key of the value.
 		 * @param int $weight How much to decrement the value.
 		 */
