@@ -26,7 +26,9 @@ $mail->setSender("no-reply@bar.net");
 // Blank e-mail, subject: "No Subject", to foo@bar.net from no-reply@bar.net
 ```
 > **Note**: Failure to add at least one recipient will throw an `InvalidRecipientException` upon `send()`.
+
 > **Note**: Failure to set the sender for a mail object will throw a `MissingSenderException` upon `send()`.
+
 ### Adding Recipients
 As shown in the original example, adding a recipient can be done by calling `$mail->to->add()` which has two overloads, the most common of which takes three parameters as follows.
 
@@ -84,7 +86,9 @@ $mail = new Mail();
 $mail->addHeader('Reply-To', 'foo@bar.net');
 ```
 > **Note**: By default, `MIME-Version` is set to `1.0`. It's not recommended to change this unless you know what you're doing as internals of the `Mail` object rely on it.
+
 > **Note**: When calling `send()`, the headers `Content-Type`, `Content-Transfer-Encoding` and `Content-Disposition` may be over-written by the mailer depending on content type/attachments.
+
 ### Adding Attachments
 Attachments can be added to a mail object by simply calling `attachFile(file)`, where `file` is either a path to a file (string) or an instance of the `AttachmentFile`, an extension of the KW7 `File` class; some examples of these different cases can be seen below.
 ```php
@@ -106,6 +110,7 @@ $mail->attachFile($file);
 // > Attaches text file containing 'hunter10' as 'secrets.txt'.
 ```
 > **Note**: Attachments are indexed by their basename, thus two files with the same basename cannot be added. Attempting to do this will throw a `DuplicateAttachmentException`.
+
 ### Removing Attachments
 To remove an attachment, simply call `removeFile(file)`, where `file` is either the name of the file, the full path, or a `AttachmentFile` object.
 ```php
