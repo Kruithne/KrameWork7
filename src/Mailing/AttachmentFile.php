@@ -37,9 +37,9 @@
 	class AttachmentFile extends File
 	{
 		/**
-		 * Set if this attachment should be provided inline.
+		 * Set if this attachment should be embedded inline.
 		 *
-		 * @api
+		 * @api setInline
 		 * @param bool $inline
 		 */
 		public function setInline(bool $inline) {
@@ -49,7 +49,7 @@
 		/**
 		 * Check if this attachment should be inline.
 		 *
-		 * @api
+		 * @api isInline
 		 * @return bool
 		 */
 		public function isInline():bool {
@@ -59,7 +59,7 @@
 		/**
 		 * Set the content ID of this attachment.
 		 *
-		 * @api
+		 * @api setContentID
 		 * @param string $id
 		 */
 		public function setContentID(string $id) {
@@ -69,7 +69,7 @@
 		/**
 		 * Get the content ID of this attachment.
 		 *
-		 * @api
+		 * @api getContentID
 		 * @return string
 		 */
 		public function getContentID():string {
