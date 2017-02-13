@@ -23,6 +23,7 @@
 	 */
 
 	namespace KrameWork\Data;
+	require_once (__DIR__.'/DecimalValue.php');
 
 	/**
 	 * Class CurrencyValue
