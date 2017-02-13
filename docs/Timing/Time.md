@@ -10,6 +10,7 @@ The `Time` class provides static data values for common time operations. Some ot
 ___
 ### Constants
 The constants provided with the `Time` class; all values are in seconds.
+
 constant | value | description
 --- | --- | ---
 `MICROSECOND` | `0.00001` | Value of a microsecond.

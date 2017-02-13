@@ -12,6 +12,7 @@ The timer class is very straight-forward and allows basic timing functionality, 
 ___
 ### Constants
 The constants provided with the `Timer` class can be provided to the constructor to control the timing format used by the `Timer` instance.
+
 constant | value | description
 --- | --- | ---
 `FORMAT_SECONDS` | `0x1` | Format the timer in seconds.
