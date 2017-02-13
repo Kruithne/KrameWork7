@@ -1,8 +1,24 @@
-## Mail
->- **Namespace**: KrameWork\Mailing\Mail
->- **File**: KrameWork7/src/Mailing/Mail.php
+[fluent api]: https://en.wikipedia.org/wiki/Fluent_interface
+## KrameWork\Mailing\Mail
 
-The `Mail` class, also known as **Micheal**, is an instance-based mail sending object with a fluent API. Below is the bare-bones example of how to send an e-mail using this class.
+***Table of Contents***
+* **Overview** - Information about the class.
+* **Examples** - Usage examples.
+* **Functions** - Comprehensive list of all functions in the class.
+
+___
+### Overview
+> **Note**: Usage of this class requires your PHP has a working mail agent set-up and configured, such as sendmail, in order to function properly (or at all, really).
+
+`Mail` is a [fluent API] class that allows object-orientated e-mail construction and sending. When using this class, knowledge of these other classes that are used will be useful:
+* `EncodedContent` - Both `$plainContent` and `$htmlContent` are an instance of this.
+* `RecipientCollection` - Contains recipients; `$to`, `$cc` and `$bcc` are instances of this.
+* `AttachmentFile` - Useful wrapper for more advanced file attaching (CID, embedded attachments, etc).
+
+All of these classes should have a relevant documentation file detailing their methods and usage. You'll also find some of the examples below use these classes, too, since they are strongly relied on by the `Mail` class.
+___
+### Examples
+Sending mail can be as simple as the following example:
 ```php
 $mail = new Mail();
 $mail->to->add("foo@bar.net");
@@ -11,8 +27,7 @@ $mail->setSender("no-reply@bar.net");
 ```
 > **Note**: Failure to add at least one recipient will throw an `InvalidRecipientException` upon `send()`.
 > **Note**: Failure to set the sender for a mail object will throw a `MissingSenderException` upon `send()`.
-### Mail Recipients
-#### Adding
+### Adding Recipients
 As shown in the original example, adding a recipient can be done by calling `$mail->to->add()` which has two overloads, the most common of which takes three parameters as follows.
 
  - `email (string)` - RFC 822 compliant e-mail address.
@@ -32,7 +47,7 @@ $mail->to->add([
 ```
 If needed with the second overload, you can disable the base64 encoding of recipient names the same way you would with the first overload, using the third parameter (omit second as `null`).
 
-#### Removing
+### Removing Recipients
 To remove a recipient from the mail object, simply call `$mail->to->remove()` with the e-mail address of the recipient.
 ```php
 $mail = new Mail();
@@ -50,7 +65,7 @@ $mail->to->add('foo@bar.net'); // Primary Recipient.
 $mail->cc->add('bar@foo.net'); // Cc
 $mail->bcc->add('net@foo.bar'); // Bcc
 ```
-## Body
+### Body
 There are two bodies for an e-mail, a plain-text version which can be controlled using the `plainContent` property, and the HTML version which can be controlled using the `htmlContent` property. It's highly recommended that you always provide a plain-text version, even when providing a HTML version, for clients that do not support HTML. While both versions will be sent, only the most relevant version will be rendered by the client.
 ```php
 $mail = new Mail();
@@ -62,7 +77,7 @@ By default, the encoding for the plain content will be `7bit` and the encoding f
 $mail->htmlContent->setEncoding('base64');
 ```
 Content provided to the mail object will be automatically converted depending on the encoding you set, for example if you set the encoding to `base64` as shown in the example above, the content you set will be encoded to `base64` before being provided to the e-mail agent.
-## Custom Headers
+### Custom Headers
 For various reasons, you may find yourself wanting to add custom headers to the mail object. This can be done with a call to `addHeader(name, value)`, with both `name` and `value` being strings.
 ```php
 $mail = new Mail();
@@ -70,8 +85,7 @@ $mail->addHeader('Reply-To', 'foo@bar.net');
 ```
 > **Note**: By default, `MIME-Version` is set to `1.0`. It's not recommended to change this unless you know what you're doing as internals of the `Mail` object rely on it.
 > **Note**: When calling `send()`, the headers `Content-Type`, `Content-Transfer-Encoding` and `Content-Disposition` may be over-written by the mailer depending on content type/attachments.
-## Attachments
-### Adding
+### Adding Attachments
 Attachments can be added to a mail object by simply calling `attachFile(file)`, where `file` is either a path to a file (string) or an instance of the `AttachmentFile`, an extension of the KW7 `File` class; some examples of these different cases can be seen below.
 ```php
 // Example: Using a file path (string).
@@ -92,7 +106,7 @@ $mail->attachFile($file);
 // > Attaches text file containing 'hunter10' as 'secrets.txt'.
 ```
 > **Note**: Attachments are indexed by their basename, thus two files with the same basename cannot be added. Attempting to do this will throw a `DuplicateAttachmentException`.
-### Removing
+### Removing Attachments
 To remove an attachment, simply call `removeFile(file)`, where `file` is either the name of the file, the full path, or a `AttachmentFile` object.
 ```php
 $mail = new Mail();
@@ -102,7 +116,7 @@ $mail->removeFile('horses.jpg'); // Also valid.
 // > 'attachments/ducks.jpg' will be the only attachment left.
 ```
 If you wish to remove *all* attachments on the mail object, a call to `clearFiles()` would be simpler and cleaner!
-### Inline
+### Inline Attachments
 By default, attachments are attached as attachments.. which sounds obvious, but there is another option! Attachments can also have their disposition set to `inline`, which means they are available for embedding within content. This can be achieved by providing `true` to the second parameter of `attachFile()`.
 ```php
 $mail = new Mail();
@@ -121,3 +135,59 @@ $mail->attachFile($file, true);
 When everything is configured as you like, make a call to `send()` and, providing your server/environment mailing is set up correctly, your e-mail will be flying off through the internets for honor and glory.
 
 E-mails are sent as `multipart/mixed` with a sub-boundary of `multipart/alternative` for the content, which can contain both plain-text and HTML versions of the same message based on your input. Mail subjects, attachments, recipient names (by default) and HTML content are encoded in `base64`, while everything else uses `7bit` encoding. The `UTF-8` charset is used for everything in the mail instance.
+___
+### Functions
+##### > __construct() : `void`
+Mail constructor.
+##### > setSubject() : `Mail`
+Set the subject of this e-mail. Strict limit of 998 characters, but more than 78 is considered bad.
+
+parameter | type | description
+--- | --- | ---
+`$subject` | `string` | Subject of the e-mail.
+
+exception | reason
+--- | ---
+`ExcessiveSubjectLengthException` | Length of subject exceeded 998 (What are you even doing?)
+##### > setSender() : `Mail`
+Set the sender of this e-mail.
+
+parameter | type | description
+--- | --- | ---
+`$senderEmail` | `string` | E-mail address of the sender.
+`$senderName` | `string` | Name of the sender.
+`$generateMessageID` | `bool` | Generate a Message-Id header using this sender.
+##### > addHeader() : `Mail`
+Add a header to this e-mail.
+
+parameter | type | description
+--- | --- | ---
+`$name` | `string` | Header name.
+`$value` | `string` | Header value.
+##### > attachFile() : `Mail`
+Attach a file to be sent with this mail.
+
+parameter | type | description
+--- | --- | ---
+`$attachment` | `string|AttachmentFile` | Attachment.
+`$inline` | `bool` | Is the attachment an inline embed?
+
+exception | reason
+--- | ---
+`AttachmentNotFoundException` | Attachment given could not be resolved.
+`DuplicateAttachmentException` | File with same basename already attached.
+##### > removeFile() : `Mail`
+Remove an attached file from this mail object.
+
+parameter | type | description
+--- | --- | ---
+`$attachment` | `string|AttachmentFile` | Attachment to remove.
+##### > clearFiles() : `Mail`
+Remove all files attached to this mail object.
+##### > send() : `void`
+Send this mail!
+
+exception | reason
+--- | ---
+`InvalidRecipientException` | Mail has not recipients defined.
+`MissingSenderException` | Mail has no sender defined.
