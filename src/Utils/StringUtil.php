@@ -24,10 +24,19 @@
 
 	namespace Kramework\Utils;
 
+	/**
+	 * Class StringUtil
+	 * String manipulation utilities.
+	 *
+	 * @package Kramework\Utils
+	 * @author Kruithne (kruithne@gmail.com)
+	 */
 	class StringUtil
 	{
 		/**
 		 * Check if a string starts with another string.
+		 *
+		 * @api startsWith
 		 * @param string $haystack
 		 * @param string $needle
 		 * @return bool
@@ -39,6 +48,8 @@
 		/**
 		 * Check if a string ends with another string.
 		 * Adapted from http://stackoverflow.com/a/834355/6997644
+		 *
+		 * @api endsWith
 		 * @param string $haystack
 		 * @param string $needle
 		 * @return bool
@@ -50,6 +61,8 @@
 
 		/**
 		 * Convert all slashes in a string to match the environment directory separator.
+		 *
+		 * @api formatDirectorySlashes
 		 * @param string $path Path to clean.
 		 * @param bool $trimTrail If true, trailing spaces/slashes will be trimmed.
 		 * @return string
@@ -61,6 +74,8 @@
 
 		/**
 		 * Get the base class-name from a namespace string.
+		 *
+		 * @api namespaceBase
 		 * @param string $namespace
 		 * @return string
 		 */
