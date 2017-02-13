@@ -69,7 +69,7 @@
 		 * @param string $key Key used to store the value.
 		 * @return bool True if the key exists in the cache.
 		 */
-		public function exists(string $key):bool;
+		public function exists(string $key):\bool;
 
 		/**
 		 * Remove an item stored in the cache.
