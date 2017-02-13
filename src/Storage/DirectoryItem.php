@@ -38,40 +38,40 @@
 		/**
 		 * Return the name of this directory item.
 		 *
-		 * @api
-		 * @return string Name of the directory item.
+		 * @api getName
+		 * @return string
 		 */
 		public function getName():string;
 
 		/**
-		 * Return the path of this directory item.
+		 * Return the full path of this directory item.
 		 *
-		 * @api
-		 * @return string Full path of the directory item.
+		 * @api getPath
+		 * @return string
 		 */
 		public function getPath():string;
 
 		/**
 		 * Check if this directory item exists.
 		 *
-		 * @api
-		 * @return bool Directory item exists.
+		 * @api exists
+		 * @return bool
 		 */
 		public function exists():bool;
 
 		/**
 		 * Check if the directory item is valid.
 		 *
-		 * @api
-		 * @return bool Directory item exists and is valid.
+		 * @api isValid
+		 * @return bool
 		 */
 		public function isValid():bool;
 
 		/**
 		 * Attempt to delete the directory item.
 		 *
-		 * @api
-		 * @return bool Deletion success.
+		 * @api delete
+		 * @return bool
 		 */
 		public function delete():bool;
 	}
@@ -88,7 +88,7 @@
 		/**
 		 * DirectoryItem constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param string $path Path to the directory item.
 		 */
 		public function __construct($path) {
@@ -99,8 +99,8 @@
 		/**
 		 * Check if this directory item exists.
 		 *
-		 * @api
-		 * @return bool Directory item exists.
+		 * @api exists
+		 * @return bool
 		 */
 		public function exists():bool {
 			return file_exists($this->path);
@@ -109,18 +109,18 @@
 		/**
 		 * Return the name of this directory item.
 		 *
-		 * @api
-		 * @return string Name of this directory item.
+		 * @api getName
+		 * @return string
 		 */
 		public function getName():string {
 			return $this->name;
 		}
 
 		/**
-		 * Return the path of this directory item.
+		 * Return the full path of this directory item.
 		 *
-		 * @api
-		 * @return string Full path of this directory item.
+		 * @api getPath
+		 * @return string
 		 */
 		public function getPath():string {
 			return $this->path;
