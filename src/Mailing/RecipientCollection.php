@@ -48,7 +48,7 @@
 		 * Add a recipient (or multiple) to this collection.
 		 * Arrays must be in an email=>name format (name can be null).
 		 *
-		 * @api
+		 * @api add
 		 * @param string|array $email RFC 822 compliant e-mail address(es).
 		 * @param null|string $name Name of the e-mail recipient.
 		 * @param bool $encode Encode the e-mail recipient name.
@@ -81,7 +81,7 @@
 		/**
 		 * Remove a recipient (or multiple) from this collection.
 		 *
-		 * @api
+		 * @api remove
 		 * @param string|array $email E-mail address(es) to remove.
 		 * @return RecipientCollection
 		 */
@@ -104,7 +104,7 @@
 		/**
 		 * Clear all recipients from this collection.
 		 *
-		 * @api
+		 * @api clear
 		 * @return RecipientCollection
 		 */
 		public function clear():RecipientCollection {
@@ -113,9 +113,9 @@
 		}
 
 		/**
-		 * Check if this collection contains any recipients.
+		 * Check if this collection contains no recipients.
 		 *
-		 * @api
+		 * @api isEmpty
 		 * @return bool
 		 */
 		public function isEmpty():bool {
@@ -125,7 +125,7 @@
 		/**
 		 * Compile the recipients into a comma-separated string.
 		 *
-		 * @api
+		 * @api __toString
 		 * @return string
 		 */
 		public function __toString() {
