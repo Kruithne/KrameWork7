@@ -113,7 +113,7 @@
 		/**
 		 * Retrieve a all items contained in the directory.
 		 *
-		 * @api getITems
+		 * @api getItems
 		 * @param int $flags Bit-mask flags to control retrieval.
 		 * @return string[]|DirectoryItem[]
 		 * @throws InvalidDirectoryException
