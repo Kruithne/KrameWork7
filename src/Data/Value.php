@@ -45,5 +45,8 @@
 			return (string)$this->value;
 		}
 
+		/**
+		 * @var mixed The encapsulated value
+		 */
 		protected $value;
 	}

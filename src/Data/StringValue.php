@@ -3,6 +3,7 @@
 
 	/**
 	 * Class StringValue
+	 * A String value
 	 */
 	class StringValue extends Value
 	{

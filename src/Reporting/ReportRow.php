@@ -9,17 +9,14 @@
 	 */
 	class ReportRow implements \JsonSerializable
 	{
+		/**
+		 * ReportRow constructor.
+		 * @param $data array|Value[] The underlying result row
+		 */
 		public function __construct($data) {
 			$this->data = $data;
 		}
 
-		/**
-		 * Specify data which should be serialized to JSON
-		 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-		 * @return mixed data which can be serialized by <b>json_encode</b>,
-		 * which is a value of any type other than a resource.
-		 * @since 5.4.0
-		 */
 		function jsonSerialize() {
 			$serialize = [];
 			foreach ($this->data as $field => $data)
@@ -31,5 +28,8 @@
 			return $serialize;
 		}
 
+		/**
+		 * @var array|Value[] The data contained in the row
+		 */
 		private $data;
 	}

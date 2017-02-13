@@ -15,6 +15,11 @@
 			parent::__construct($value === null ? null : intval($value));
 		}
 
+		/**
+		 * Utility function for sorting a list of values
+		 * @param $to Value|mixed A value to compare against
+		 * @return int Sorting index
+		 */
 		public function Compare($to) {
 			$toValue = ($to instanceof Value) ? $to->Real() : intval($to);
 			return $this->value - $toValue;

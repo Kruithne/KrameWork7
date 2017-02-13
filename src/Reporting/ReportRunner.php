@@ -9,6 +9,12 @@
 	 */
 	abstract class ReportRunner
 	{
+		/**
+		 * ReportRunner constructor.
+		 * @param IDataCache $cache The cache location for the report data
+		 * @param string $key The key to access the cached report data
+		 * @param int $cacheTTL The number of seconds the report should remain cached
+		 */
 		public function __construct(IDataCache $cache, string $key, int $cacheTTL = 300) {
 			$this->cacheTTL = $cacheTTL;
 			$this->key = $key;
@@ -16,7 +22,8 @@
 		}
 
 		/**
-		 * Executes the report, storing the results in APC
+		 * Executes the report, storing the results in cache.
+		 * Override this to implement your report.
 		 */
 		protected abstract function Run();
 
@@ -46,7 +53,18 @@
 			return $data;
 		}
 
+		/**
+		 * @var int Cache Time To Live
+		 */
 		protected $cacheTTL;
+
+		/**
+		 * @var string Cache storage key
+		 */
 		protected $key;
+
+		/**
+		 * @var IDataCache Cache engine
+		 */
 		protected $cache;
 	}
