@@ -24,6 +24,13 @@
 
 	namespace KrameWork\Reporting;
 
+	require_once(__DIR__.'/../Data/CurrencyValue.php');
+	require_once(__DIR__.'/../Data/IntegerValue.php');
+	require_once(__DIR__.'/../Data/DateTimeValue.php');
+	require_once(__DIR__.'/../Data/DateValue.php');
+	require_once(__DIR__.'/../Data/DecimalValue.php');
+	require_once(__DIR__.'/../Data/StringValue.php');
+
 	/**
 	 * Class SQLReport
 	 * Encapsulates a formatted SQL report, adding column definitions with data types
@@ -47,7 +54,7 @@
 					case ReportColumn::COL_INTEGER:
 					case ReportColumn::COL_DATETIME:
 					case ReportColumn::COL_DATE:
-						$filters[] = self::makeFilter($key, $col->type . 'Value');
+						$filters[] = self::makeFilter($key, 'KrameWork\\Data\\'. $col->type . 'Value');
 						break;
 				}
 			}
