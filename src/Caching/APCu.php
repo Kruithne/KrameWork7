@@ -56,7 +56,7 @@
 		 * @param mixed $value Value to store in the cache.
 		 * @param int $expire 60*60*24*30 >= Unix Timestamp, otherwise seconds. 0 = Never.
 		 */
-		public function store(string $key, $value, int $expire = 0): void {
+		public function store(string $key, $value, int $expire = 0) {
 			if ($expire > 60*60*24*30)
 				$expire = time() - $expire;
 
@@ -81,7 +81,7 @@
 		 * @param string $key Key to store the value under.
 		 * @param mixed $value Value to store in the cache.
 		 */
-		public function __set(string $key, $value): void {
+		public function __set(string $key, $value){
 			$this->store($key, $value);
 		}
 
@@ -111,7 +111,7 @@
 		 * @param string $key Key of the value.
 		 * @param int $weight How much to increment the value.
 		 */
-		public function increment(string $key, int $weight): void {
+		public function increment(string $key, int $weight) {
 			apcu_inc($key, $weight);
 		}
 
