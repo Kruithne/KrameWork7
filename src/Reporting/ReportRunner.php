@@ -25,6 +25,13 @@
 	namespace KrameWork\Reporting;
 
 	require_once(__DIR__.'/ReportResults.php');
+	require_once(__DIR__.'/ReportColumn.php');
+	require_once(__DIR__.'/../Data/CurrencyValue.php');
+	require_once(__DIR__.'/../Data/IntegerValue.php');
+	require_once(__DIR__.'/../Data/DateTimeValue.php');
+	require_once(__DIR__.'/../Data/DateValue.php');
+	require_once(__DIR__.'/../Data/DecimalValue.php');
+	require_once(__DIR__.'/../Data/StringValue.php');
 
 	use KrameWork\Caching\IDataCache;
 
@@ -71,12 +78,56 @@
 		}
 
 		/**
-		 * Override this method to do post-processing of the data returned by the SQL
+		 * @return ReportColumn[]
+		 */
+		public abstract function columns();
+
+		/**
+		 * @return \Closure[] Filters in the format function(&$row)
+		 */
+		protected function getFilters() {
+			$filters = [];
+			foreach ($this->columns() as $key => $col) {
+				switch ($col->type) {
+					case ReportColumn::COL_DECIMAL:
+					case ReportColumn::COL_CURRENCY:
+					case ReportColumn::COL_INTEGER:
+					case ReportColumn::COL_DATETIME:
+					case ReportColumn::COL_DATE:
+						$filters[] = self::makeFilter($key, 'KrameWork\\Data\\'. $col->type . 'Value');
+						break;
+				}
+			}
+			return $filters;
+		}
+
+		/**
+		 * @param string $key Column name
+		 * @param string $class Column container class
+		 * @return \Closure
+		 */
+		protected function makeFilter(string $key, string $class) {
+			return function (&$row) use ($key, $class) {
+				if (!isset($row[$key]) || $row[$key] == null)
+					return;
+				$row[$key] = new $class($row[$key]);
+			};
+		}
+
+		/**
+		 * Format data values for presentation based on column type
 		 * @param array $data
-		 * @return array
+		 * @return ReportRow[]
 		 */
 		protected function postProcess(array $data) {
-			return $data;
+			$filters = $this->getFilters();
+			$output = [];
+			foreach ($data as $row) {
+				foreach ($filters as $filter)
+					$filter($row);
+				$output[] = new ReportRow($row);
+			}
+			return $output;
 		}
 
 		/**

@@ -30,18 +30,18 @@
 	 * Class SQLReportRunner
 	 * Encapsulates executing and caching data from SQL
 	 */
-	abstract class SQLReport extends Report
+	abstract class SQLReport extends ReportRunner
 	{
 		/**
 		 * SQLReport constructor.
 		 * @param IDataCache $cache
-		 * @param mixed $db Database Access Layer, needs a query() method FIXME Missing API in KW7
+		 * @param object $db Database Access Layer, needs a query() method FIXME Missing API in KW7
 		 * @param string $sql An SQL Query
 		 * @param array $param Query parameters
 		 * @param bool $debug Enable or disable debugging information from the DBMS
 		 * @param int $cacheTTL Number of seconds to store the results in cache.
 		 */
-		public function __construct(IDataCache $cache, $db, string $sql, array $param = [], bool $debug = false, int $cacheTTL = 300) {
+		public function __construct(IDataCache $cache, object $db, string $sql, array $param = [], bool $debug = false, int $cacheTTL = 300) {
 			$this->db = $db;
 			$this->sql = $sql;
 			$this->param = $param;
@@ -53,6 +53,7 @@
 		 * Executes the report, storing the results in APC
 		 */
 		protected function run() {
+			// FIXME We need a database component in KW7 before this can be actually implemented.
 			return $this->postProcess($this->db->query($this->sql, $this->param, DB_RESULT_SET, $this->debug));
 		}
 

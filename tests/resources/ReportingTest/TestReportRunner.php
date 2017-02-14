@@ -1,11 +1,13 @@
 <?php
+	use KrameWork\Caching\IDataCache;
+	use KrameWork\Reporting\ReportColumn;
+
 	require_once(__DIR__ . '/../../../src/Reporting/ReportRunner.php');
 
 	class TestReportRunner extends \KrameWork\Reporting\ReportRunner
 	{
-		public function __construct(\KrameWork\Caching\IDataCache $cache, $key, $cacheTTL = 300, $data) {
+		public function __construct(IDataCache $cache, $key, $cacheTTL = 300) {
 			parent::__construct($cache, $key, $cacheTTL);
-			$this->data = $data;
 		}
 
 		/**
@@ -19,14 +21,24 @@
 
 		protected function postProcess(array $data) {
 			$this->postProcessCalled = true;
-			return $data;
+			return parent::postProcess($data);
 		}
 
 		public $runCalled;
 		public $postProcessCalled;
 
 		/**
+		 * @return ReportColumn[]
+		 */
+		public function columns() {
+			return $this->columns;
+		}
+
+		/** @var ReportColumn[] */
+		public $columns = [];
+
+		/**
 		 * @var mixed
 		 */
-		public $data;
+		public $data = [];
 	}
