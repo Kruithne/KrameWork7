@@ -30,14 +30,14 @@
 	 */
 	final class ReportColumn implements \JsonSerializable
 	{
-		public const COL_NONE = '';
-		public const COL_STRING = 'String';
-		public const COL_DECIMAL = 'Decimal';
-		public const COL_INTEGER = 'Integer';
-		public const COL_DATETIME = 'Datetime';
-		public const COL_DATE = 'Date';
-		public const COL_CUSTOM = 'Custom';
-		public const COL_CURRENCY = 'Currency';
+		const COL_NONE = '';
+		const COL_STRING = 'String';
+		const COL_DECIMAL = 'Decimal';
+		const COL_INTEGER = 'Integer';
+		const COL_DATETIME = 'Datetime';
+		const COL_DATE = 'Date';
+		const COL_CUSTOM = 'Custom';
+		const COL_CURRENCY = 'Currency';
 
 		/**
 		 * SQLReportColumn constructor.
