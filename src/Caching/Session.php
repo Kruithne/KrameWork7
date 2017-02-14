@@ -33,7 +33,7 @@
 	 * @package KrameWork
 	 * @author Kruithne (kruithne@gmail.com)
 	 */
-	class Session
+	class Session implements IDataCache
 	{
 		/**
 		 * Session constructor.
@@ -112,7 +112,7 @@
 		 * @return mixed
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
-		function __get($name) {
+		function __get(string $name) {
 			return $_SESSION[$name] ?? null;
 		}
 
@@ -125,7 +125,7 @@
 		 * @return void
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
-		function __set($name, $value) {
+		function __set(string $name, $value) {
 			$_SESSION[$name] = $value;
 		}
 
@@ -137,8 +137,52 @@
 		 * @return void
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
-		function __unset($name) {
+		function __unset(string $name) {
 			unset($_SESSION[$name]);
+		}
+
+		/**
+		 * Store a value in the cache.
+		 *
+		 * @api store
+		 * @param string $key Key to store the value under.
+		 * @param mixed $value Value to store in the cache.
+		 * @param int $expire No effect for this implementation.
+		 */
+		public function store(string $key, $value, int $expire = 0) {
+			$_SESSION[$key] = $value;
+		}
+
+		/**
+		 * Check if a value exists in the cache.
+		 *
+		 * @param string $key Key used to store the value.
+		 * @return bool True if the key exists in the cache.
+		 */
+		public function exists(string $key): bool {
+			return isset($_SESSION[$key]);
+		}
+
+		/**
+		 * Increase a numeric value in the cache.
+		 *
+		 * @api increment
+		 * @param string $key Key of the value.
+		 * @param int $weight How much to increment the value.
+		 */
+		public function increment(string $key, int $weight = 1) {
+			$this->store($key, ($this->$key ?? 0) + $weight);
+		}
+
+		/**
+		 * Decrease a numeric value in the cache.
+		 *
+		 * @api decrement
+		 * @param string $key Key of the value.
+		 * @param int $weight How much to decrement the value.
+		 */
+		public function decrement(string $key, int $weight = 1) {
+			$this->store($key, ($this->$key ?? 0) - $weight);
 		}
 
 		/**
