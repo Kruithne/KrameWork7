@@ -4,9 +4,6 @@ php:
   - 7.0
   - 7.1
 
-services:
-  - memcached
-
 before_install:
   - yes '' | pecl install apcu;
 
