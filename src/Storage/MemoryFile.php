@@ -44,6 +44,7 @@
 		public function __construct($name, string $content, string $contentType = "text/plain") {
 			$this->contentType = $contentType;
 			$this->valid = true;
+			$this->data = $content;
 
 			parent::__construct($name, false, false);
 		}
