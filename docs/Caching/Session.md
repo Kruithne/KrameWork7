@@ -6,7 +6,7 @@
 
 ___
 ### Overview
-The `Session` class provies an `IDataCache` compatible interface to the request session.
+The `Session` class provides an `IDataCache` compatible interface to the request session.
 ___
 ### Functions
 ##### > __construct() : `void`
