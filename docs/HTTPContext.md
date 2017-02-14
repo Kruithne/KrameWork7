@@ -1,7 +1,6 @@
 ## KrameWork\HTTPContext
 
 ***Table of Contents***
-* **Overview** - Information about the class.
 * **Examples** - Usage examples.
 * **Constants** - Constants exposed by this class.
 * **Functions** - Comprehensive list of all functions in the class.
