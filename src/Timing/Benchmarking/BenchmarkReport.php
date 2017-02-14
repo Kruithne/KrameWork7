@@ -78,11 +78,13 @@
 		 * Add a benchmark to this report.
 		 *
 		 * @api add
-		 * @param Benchmark $benchmark Benchmark to add to the report.
+		 * @param Benchmark[] ...$benchmarks Benchmark to add to the report.
 		 * @return BenchmarkReport
 		 */
-		public function add(Benchmark $benchmark):BenchmarkReport {
-			$this->benchmarks[] = $benchmark;
+		public function add(Benchmark ...$benchmarks):BenchmarkReport {
+			foreach ($benchmarks as $benchmark)
+				$this->benchmarks[] = $benchmark;
+
 			return $this;
 		}
 
