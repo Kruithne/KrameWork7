@@ -198,7 +198,7 @@
 		}
 
 		/**
-		 * Copy the state of one file, to another.
+		 * Copy the state of one file, to this one.
 		 *
 		 * @api marshalFrom
 		 * @param File $file
