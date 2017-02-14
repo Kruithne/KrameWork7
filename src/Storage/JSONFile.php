@@ -59,7 +59,7 @@
 		 *
 		 * @api __get
 		 * @param string $key Key to lookup.
-		 * @return mixed|null Value, or null if not found.
+		 * @return mixed|null
 		 * @throws JSONException
 		 */
 		public function __get(string $key) {
