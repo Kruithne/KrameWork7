@@ -113,7 +113,7 @@
 		 *
 		 * @api flush
 		 */
-		public function flush(): void {
+		public function flush() {
 			$this->cache->flush();
 		}
 
@@ -124,7 +124,7 @@
 		 * @param string $key Key of the value.
 		 * @param int $weight How much to increment the value.
 		 */
-		public function increment(string $key, int $weight) {
+		public function increment(string $key, int $weight = 1) {
 			$this->cache->increment($key, $weight);
 		}
 
@@ -135,7 +135,7 @@
 		 * @param string $key Key of the value.
 		 * @param int $weight How much to decrement the value.
 		 */
-		public function decrement(string $key, int $weight) {
+		public function decrement(string $key, int $weight = 1) {
 			$this->cache->decrement($key, $weight);
 		}
 

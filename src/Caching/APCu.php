@@ -100,7 +100,7 @@
 		 *
 		 * @api flush
 		 */
-		public function flush(): void {
+		public function flush() {
 			apcu_clear_cache();
 		}
 
@@ -111,7 +111,7 @@
 		 * @param string $key Key of the value.
 		 * @param int $weight How much to increment the value.
 		 */
-		public function increment(string $key, int $weight) {
+		public function increment(string $key, int $weight = 1) {
 			apcu_inc($key, $weight);
 		}
 
@@ -122,7 +122,7 @@
 		 * @param string $key Key of the value.
 		 * @param int $weight How much to decrement the value.
 		 */
-		public function decrement(string $key, int $weight) {
+		public function decrement(string $key, int $weight = 1) {
 			apcu_dec($key, $weight);
 		}
 	}

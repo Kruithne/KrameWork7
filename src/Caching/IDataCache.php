@@ -84,7 +84,7 @@
 		 *
 		 * @api flush
 		 */
-		public function flush():void;
+		public function flush();
 
 		/**
 		 * Increase a numeric value in the cache.
@@ -93,7 +93,7 @@
 		 * @param string $key Key of the value.
 		 * @param int $weight How much to increment the value.
 		 */
-		public function increment(string $key, int $weight);
+		public function increment(string $key, int $weight = 1);
 
 		/**
 		 * Decrease a numeric value in the cache.
@@ -102,5 +102,5 @@
 		 * @param string $key Key of the value.
 		 * @param int $weight How much to decrement the value.
 		 */
-		public function decrement(string $key, int $weight);
+		public function decrement(string $key, int $weight = 1);
 	}
