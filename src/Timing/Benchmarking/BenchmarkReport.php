@@ -49,7 +49,7 @@
 		/**
 		 * BenchmarkReport constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param int $format Formatter to use, defaults to FORMAT_HTML.
 		 */
 		public function __construct(int $format = self::FORMAT_HTML) {
@@ -77,8 +77,8 @@
 		/**
 		 * Add a benchmark to this report.
 		 *
-		 * @api
-		 * @param Benchmark $benchmark
+		 * @api add
+		 * @param Benchmark $benchmark Benchmark to add to the report.
 		 * @return BenchmarkReport
 		 */
 		public function add(Benchmark $benchmark):BenchmarkReport {
@@ -89,8 +89,8 @@
 		/**
 		 * Remove a benchmark from the report.
 		 *
-		 * @api
-		 * @param Benchmark $benchmark
+		 * @api remove
+		 * @param Benchmark $benchmark Benchmark to remove from the report.
 		 * @return BenchmarkReport
 		 */
 		public function remove(Benchmark $benchmark):BenchmarkReport {
@@ -103,7 +103,7 @@
 		/**
 		 * Clear all benchmarks from the report.
 		 *
-		 * @api
+		 * @api clear
 		 * @return BenchmarkReport
 		 */
 		public function clear():BenchmarkReport {
@@ -114,7 +114,7 @@
 		/**
 		 * Run all tests contained in the report and return a formatted output.
 		 *
-		 * @api
+		 * @api run
 		 * @return string
 		 */
 		public function run():string {
@@ -145,6 +145,7 @@
 		/**
 		 * Runs all of the tests and returns the output.
 		 *
+		 * @api __toString
 		 * @return string
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
