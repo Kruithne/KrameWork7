@@ -75,10 +75,10 @@
 		}
 
 		/**
-		 * Add a benchmark to this report.
+		 * Add one or more benchmarks to this report.
 		 *
 		 * @api add
-		 * @param Benchmark[] ...$benchmarks Benchmark to add to the report.
+		 * @param Benchmark[] ...$benchmarks Variable amount of benchmarks to add.
 		 * @return BenchmarkReport
 		 */
 		public function add(Benchmark ...$benchmarks):BenchmarkReport {
