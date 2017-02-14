@@ -43,12 +43,14 @@
 		function jsonSerialize() {
 			$serialize = [];
 			foreach ($this->data as $data) {
+				$row = [];
 				foreach ($data as $field => $value) {
 					if ($value instanceof Value)
-						$serialize[$field] = $value->json();
+						$row[$field] = $value->json();
 					else
-						$serialize[$field] = $value;
+						$row[$field] = $value;
 				}
+				$serialize[] = $row;
 			}
 			return $serialize;
 		}
