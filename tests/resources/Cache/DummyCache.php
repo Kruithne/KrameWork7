@@ -7,11 +7,11 @@
 			return isset($this->data[$key]) ? $this->data[$key] : null;
 		}
 
-		public function __set(string $key, $value): void {
+		public function __set(string $key, $value) {
 			$this->data[$key] = $value;
 		}
 
-		public function store(string $key, $value, int $expire = 0): void {
+		public function store(string $key, $value, int $expire = 0) {
 			$this->data[$key] = $value;
 			$this->ttl[$key] = $expire;
 		}
@@ -20,7 +20,7 @@
 			return isset($this->data[$key]);
 		}
 
-		public function __unset(string $key): void {
+		public function __unset(string $key) {
 			unset($this->data[$key]);
 		}
 
@@ -28,11 +28,11 @@
 			$this->data = [];
 		}
 
-		public function increment(string $key, int $weight): void {
+		public function increment(string $key, int $weight = 1) {
 			$this->data[$key]++;
 		}
 
-		public function decrement(string $key, int $weight) {
+		public function decrement(string $key, int $weight = 1) {
 			$this->data[$key]--;
 		}
 
