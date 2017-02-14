@@ -134,10 +134,8 @@
 		public function marshalFrom(File $file) {
 			parent::marshalFrom($file);
 
-			if ($file instanceof MemoryFile) {
-				$this->contentType = $file->contentType;
-				$this->valid = $file->valid;
-			}
+			$this->contentType = $file->getFileType();
+			$this->valid = $file->isValid();
 		}
 
 		/**
