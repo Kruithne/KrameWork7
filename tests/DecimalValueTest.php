@@ -34,7 +34,7 @@
 		 */
 		public function testValueToJSON() {
 			$value = new DecimalValue(4.2);
-			$this->assertEquals(4.2, $value->JSON());
+			$this->assertEquals(4.2, $value->json());
 		}
 
 		/**

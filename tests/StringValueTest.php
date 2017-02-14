@@ -34,7 +34,7 @@
 		 */
 		public function testValueToJSON() {
 			$value = new StringValue("test");
-			$this->assertEquals("test", $value->JSON());
+			$this->assertEquals("test", $value->json());
 		}
 
 		/**

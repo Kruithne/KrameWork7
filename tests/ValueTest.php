@@ -50,7 +50,7 @@
 		 */
 		public function testValueToJSON() {
 			$value = new Value(42);
-			$this->assertEquals(42, $value->JSON());
+			$this->assertEquals(42, $value->json());
 		}
 
 		/**

@@ -43,9 +43,9 @@
 		 * Convert the timestamp into a format suitable for exporting in JSON
 		 * @return null|string The timestamp formatted according to ISO 8601, or null
 		 */
-		public function JSON() {
+		public function json() {
 			// Use ISO 8601 format to support moment.js client side
-			return $this->value ? date('c', $this->value) : null;
+			return $this->value === null ? null : date('c', $this->value);
 		}
 
 		/**

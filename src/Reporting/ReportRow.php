@@ -42,12 +42,14 @@
 
 		function jsonSerialize() {
 			$serialize = [];
-			foreach ($this->data as $field => $data)
-				if ($data instanceof Value)
-					$serialize[$field] = $data->JSON();
-				else
-					$serialize[$field] = $data;
-
+			foreach ($this->data as $data) {
+				foreach ($data as $field => $value) {
+					if ($value instanceof Value)
+						$serialize[$field] = $value->json();
+					else
+						$serialize[$field] = $value;
+				}
+			}
 			return $serialize;
 		}
 

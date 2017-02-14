@@ -34,7 +34,7 @@
 		 */
 		public function testValueToJSON() {
 			$value = new DateTimeValue('1980-01-01');
-			$this->assertEquals('1980-01-01T00:00:00+00:00', $value->JSON());
+			$this->assertEquals('1980-01-01T00:00:00+00:00', $value->json());
 		}
 
 		/**

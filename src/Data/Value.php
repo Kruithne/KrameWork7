@@ -48,7 +48,7 @@
 		/**
 		 * @return mixed The value to be encoded into JSON
 		 */
-		public function JSON() {
+		public function json() {
 			return $this->value;
 		}
 
