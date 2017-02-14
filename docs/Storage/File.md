@@ -128,3 +128,10 @@ Set the data for this file wrapper. Overwrites existing.
 parameter | type | description
 --- | --- | ---
 `$data` | `mixed` | Data to store in the wrapper.
+
+##### > marshalFrom() : `void`
+Copy the state of another File instance to this instance.
+
+parameter | type | description
+--- | --- | ---
+`$file` | `File` | `File` instance to copy from.
