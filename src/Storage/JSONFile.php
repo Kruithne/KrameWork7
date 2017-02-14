@@ -41,17 +41,17 @@
 		 * JSONFile constructor.
 		 *
 		 * @api __construct
-		 * @param string $file Path to the file.
+		 * @param string|File $source Path to the file.
 		 * @param bool $useContainer Loaded/inserted data will be contained using an ArrayObject.
 		 * @param bool $autoLoad Attempt to read data from the file on instantiation.
 		 * @throws JSONException
 		 */
-		public function __construct(string $file, bool $useContainer = true, bool $autoLoad = true) {
+		public function __construct($source, bool $useContainer = true, bool $autoLoad = true) {
 			$this->useContainer = $useContainer;
 			if ($useContainer)
 				$this->jsonData = new \ArrayObject([], \ArrayObject::ARRAY_AS_PROPS);
 
-			parent::__construct($file, $autoLoad);
+			parent::__construct($source, $autoLoad);
 		}
 
 		/**

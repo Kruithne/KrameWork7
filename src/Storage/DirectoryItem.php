@@ -89,11 +89,11 @@
 		 * DirectoryItem constructor.
 		 *
 		 * @api __construct
-		 * @param string $path Path to the directory item.
+		 * @param string $source Path to the directory item.
 		 */
-		public function __construct($path) {
-			$this->path = StringUtil::formatDirectorySlashes($path, true);
-			$this->name = basename($path);
+		public function __construct($source) {
+			$this->path = StringUtil::formatDirectorySlashes($source, true);
+			$this->name = basename($source);
 		}
 
 		/**

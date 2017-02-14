@@ -39,14 +39,15 @@
 		 * UploadedFile constructor.
 		 *
 		 * @api __construct
-		 * @param string $path Temporary location.
+		 * @param string $source|File Temporary location, or another File instance.
 		 * @param string $name Uploaded name.
 		 * @param int $errorCode Upload error code.
 		 */
-		public function __construct(string $path, string $name, int $errorCode) {
-			parent::__construct($path, false, false);
+		public function __construct($source, string $name, int $errorCode) {
 			$this->name = $name;
 			$this->errorCode = $errorCode;
+
+			parent::__construct($source, false, false);
 		}
 
 		/**

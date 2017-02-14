@@ -21,11 +21,11 @@ $file = new MemoryFile('exmp.json', $data, 'application/json');
 ___
 ### Functions
 ##### > __construct() : `void`
-MemoryFile constructor.
+MemoryFile constructor. If an instance of File is provided as $source, the state of the provided instance will be cloned to this one. Both $autoLoad and $touch will be ignored in that scenario.
 
 parameter | type | description
 --- | --- | ---
-`$name` | `string` | File name.
+`$source` | `string||File` | Path to the file, or another File instance to clone.
 `$content` | `string` | Data for the file.
 `$contentType` | `string` | Data content-type.
 ##### > isValid() : `bool`

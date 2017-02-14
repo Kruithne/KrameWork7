@@ -9,11 +9,11 @@ The `UploadedFile` class is a bare-bones extension of the `File` class which rep
 ___
 ### Functions
 ##### > __construct() : `void`
-UploadedFile constructor.
+UploadedFile constructor. If an instance of File is provided as $source, the state of the provided instance will be cloned to this one. Both $autoLoad and $touch will be ignored in that scenario.
 
 parameter | type | description
 --- | --- | ---
-`$path` | `string` | Temporary location.
+`$source` | `string||File` | Temporary file path, or another File instance to clone.
 `$name` | `string` | Uploaded name.
 `$errorCode` | `int` | Upload error code.
 ##### > isValid() : `bool`

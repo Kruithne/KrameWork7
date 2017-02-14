@@ -37,14 +37,15 @@
 		 * MemoryFile constructor.
 		 *
 		 * @api __construct
-		 * @param string $name File name.
+		 * @param string|File $name File name, or another File instance to marshal.
 		 * @param string $content Data for the file.
 		 * @param string $contentType Data content-type.
 		 */
-		public function __construct(string $name, string $content, string $contentType = "text/plain") {
-			parent::__construct($name, false, false);
+		public function __construct($name, string $content, string $contentType = "text/plain") {
 			$this->contentType = $contentType;
 			$this->valid = true;
+
+			parent::__construct($name, false, false);
 		}
 
 		/**

@@ -69,11 +69,11 @@ $file->delete();
 ___
 ### Functions
 ##### > __construct() : `void`
-File constructor.
+File constructor. If an instance of File is provided as $source, the state of the provided instance will be cloned to this one. Both $autoLoad and $touch will be ignored in that scenario.
 
 parameter | type | description
 --- | --- | ---
-`$path` | `string` | Path to the file.
+`$source` | `string||File` | Path to the file, or another File instance to clone.
 `$autoLoad` | `bool` | Attempt to load the file contents on instantiation.
 `$touch` | `bool` | Touch the file, creating it if missing.
 

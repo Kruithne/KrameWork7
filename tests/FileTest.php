@@ -228,4 +228,17 @@
 
 			unset($orig, $new);
 		}
+
+		/**
+		 * Test instance marshalling from the constructor.
+		 */
+		public function testConstructorMarshal() {
+			$orig = new File('tests/resources/test_text_file.txt', true);
+			$new = new File($orig);
+
+			$this->assertEquals($orig->getPath(), $new->getPath());
+			$this->assertEquals($orig->getData(), $new->getData());
+
+			unset($orig, $new);
+		}
 	}

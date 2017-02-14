@@ -50,11 +50,11 @@
 		 * Directory constructor.
 		 *
 		 * @api __construct
-		 * @param string $path Path to the directory.
+		 * @param string $source Path to the directory.
 		 * @param bool $create Create directory if missing.
 		 */
-		public function __construct($path, bool $create = false) {
-			parent::__construct($path);
+		public function __construct($source, bool $create = false) {
+			parent::__construct($source);
 
 			if (!$this->exists() && $create)
 				$this->create();

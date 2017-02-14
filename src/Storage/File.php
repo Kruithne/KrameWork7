@@ -41,22 +41,29 @@
 	{
 		/**
 		 * File constructor.
+		 * If an instance of File is provided as $source, the state of the provided
+		 * instance will be cloned to this one. Both $autoLoad and $touch will be
+		 * ignored in that scenario.
 		 *
 		 * @api __construct
-		 * @param string $path Path to the file.
+		 * @param string|File $source Path to the file, or another File instance to clone.
 		 * @param bool $autoLoad Attempt to load the file contents on instantiation.
 		 * @param bool $touch Touch the file, creating it if missing.
 		 * @throws FileNotFoundException
 		 * @throws FileReadException
 		 */
-		public function __construct(string $path, bool $autoLoad = true, bool $touch = false) {
-			parent::__construct($path);
+		public function __construct($source, bool $autoLoad = true, bool $touch = false) {
+			if ($source instanceof File) {
+				$this->marshalFrom($source);
+			} else {
+				parent::__construct($source);
 
-			if ($touch && !$this->exists())
-				file_put_contents($this->path, '');
+				if ($touch && !$this->exists())
+					file_put_contents($this->path, '');
 
-			if ($autoLoad)
-				$this->read();
+				if ($autoLoad)
+					$this->read();
+			}
 		}
 
 		/**

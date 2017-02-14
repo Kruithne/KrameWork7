@@ -55,11 +55,11 @@ $bigNumStr = $json->myBigNumber; // string
 ___
 ### Functions
 ##### > __construct() : `void`
-JSONFile constructor.
+JSONFile constructor. If an instance of File is provided as $source, the state of the provided instance will be cloned to this one. Both $autoLoad and $touch will be ignored in that scenario.
 
 parameter | type | description
 --- | --- | ---
-`$file` | `string` | Path to the file.
+`$source` | `string||File` | Path to the file, or another File instance to clone.
 `$useContainer` | `bool` | Loaded/inserted data will be contained using an ArrayObject.
 `$autoLoad` | `bool` | Attempt to read data from the file on instantiation.
 
