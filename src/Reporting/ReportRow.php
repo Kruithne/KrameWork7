@@ -30,7 +30,7 @@
 	 * Class ResultRow
 	 * Encapsulates a result row of formatted data, with support for JSON serialization
 	 */
-	class ReportRow implements \JsonSerializable
+	class ReportRow implements \JsonSerializable, \Iterator, \ArrayAccess
 	{
 		/**
 		 * ReportRow constructor.
@@ -42,21 +42,86 @@
 
 		function jsonSerialize() {
 			$serialize = [];
-			foreach ($this->data as $data) {
-				$row = [];
-				foreach ($data as $field => $value) {
-					if ($value instanceof Value)
-						$row[$field] = $value->json();
-					else
-						$row[$field] = $value;
-				}
-				$serialize[] = $row;
+			foreach ($this->data as $field => $value) {
+				if ($value instanceof Value)
+					$serialize[$field] = $value->json();
+				else
+					$serialize[$field] = $value;
 			}
 			return $serialize;
 		}
 
 		/**
+		 * @link http://php.net/manual/en/iterator.current.php
+		 */
+		public function current() {
+			return $this->data[$this->position];
+		}
+
+		/**
+		 * @link http://php.net/manual/en/iterator.next.php
+		 */
+		public function next() {
+			$this->position++;
+		}
+
+		/**
+		 * @link http://php.net/manual/en/iterator.key.php
+		 */
+		public function key() {
+			return $this->position;
+		}
+
+		/**
+		 * @link http://php.net/manual/en/iterator.valid.php
+		 */
+		public function valid() {
+			return $this->data && count($this->data) > $this->position;
+		}
+
+		/**
+		 * @link http://php.net/manual/en/iterator.rewind.php
+		 */
+		public function rewind() {
+			$this->position = 0;
+		}
+
+		/**
+		 * @link http://php.net/manual/en/arrayaccess.offsetexists.php
+		 */
+		public function offsetExists($offset) {
+			return $this->data && isset($this->data[$offset]);
+		}
+
+		/**
+		 * @link http://php.net/manual/en/arrayaccess.offsetget.php
+		 */
+		public function offsetGet($offset) {
+			return $this->data[$offset];
+		}
+
+		/**
+		 * @link http://php.net/manual/en/arrayaccess.offsetset.php
+		 */
+		public function offsetSet($offset, $value) {
+			$this->data[$offset] = $value;
+		}
+
+		/**
+		 * @link http://php.net/manual/en/arrayaccess.offsetunset.php
+		 */
+		public function offsetUnset($offset) {
+			unset($this->data[$offset]);
+		}
+
+
+		/**
 		 * @var array|Value[] The data contained in the row
 		 */
 		private $data;
+
+		/**
+		 * @var int
+		 */
+		private $position = 0;
 	}
