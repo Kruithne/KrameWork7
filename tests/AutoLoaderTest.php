@@ -3,7 +3,7 @@
 
 	use KrameWork\AutoLoader;
 
-	class AutoLoaderTest extends \PHPUnit_Framework_TestCase
+	class AutoLoaderTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Test loading of a basic global class (forward slashes).

@@ -4,7 +4,7 @@
 
 	use KrameWork\Storage\File;
 
-	class FileTest extends \PHPUnit_Framework_TestCase
+	class FileTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Test reading functionality.

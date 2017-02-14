@@ -5,7 +5,7 @@
 	require_once(__DIR__ . "/../src/Timing/Timer.php");
 	require_once(__DIR__ . "/../src/Timing/Time.php");
 
-	class TimerTest extends \PHPUnit_Framework_TestCase
+	class TimerTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Test the results of a non-initiated timer.

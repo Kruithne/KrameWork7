@@ -2,7 +2,7 @@
 	use KrameWork\HTTPContext;
 	require_once(__DIR__ . "/../src/HTTPContext.php");
 
-	class HTTPContextTest extends \PHPUnit_Framework_TestCase
+	class HTTPContextTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Test HTTPContext->getContentLength().

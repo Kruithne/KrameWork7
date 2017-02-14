@@ -5,7 +5,7 @@
 	use KrameWork\Storage\Directory;
 	use KrameWork\Utils\StringUtil;
 
-	class DirectoryTest extends \PHPUnit_Framework_TestCase
+	class DirectoryTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Test the basic functionality of the Directory class.

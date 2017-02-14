@@ -69,7 +69,7 @@
 		public $test;
 	}
 
-	class DependencyInjectorTest extends \PHPUnit_Framework_TestCase
+	class DependencyInjectorTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Test that a class name (string) resolves to itself.

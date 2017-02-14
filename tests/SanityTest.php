@@ -1,5 +1,5 @@
 <?php
-	class SanityTest extends \PHPUnit_Framework_TestCase
+	class SanityTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Check if the boolean value of true, is equal to itself.

@@ -3,7 +3,7 @@
 
 	use KrameWork\Storage\JSONFile;
 
-	class JSONFileTest extends \PHPUnit_Framework_TestCase
+	class JSONFileTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Test raw data storage.

@@ -3,7 +3,7 @@
 
 	require_once(__DIR__ . "/../src/Utils/StringBuilder.php");
 
-	class StringBuilderTest extends \PHPUnit_Framework_TestCase
+	class StringBuilderTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Test the default internal string of the builder.

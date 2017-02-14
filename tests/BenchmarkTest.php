@@ -3,7 +3,7 @@
 
 	use Kramework\Timing\Benchmarking\Benchmark;
 
-	class BenchmarkTest extends \PHPUnit_Framework_TestCase
+	class BenchmarkTest extends PHPUnit\Framework\TestCase
 	{
 		public function testBenchmark() {
 			$benchmark = new class (20, 100) extends Benchmark {

@@ -3,7 +3,7 @@
 
 	use Kramework\Utils\StringUtil;
 
-	class StringUtilTest extends \PHPUnit_Framework_TestCase
+	class StringUtilTest extends PHPUnit\Framework\TestCase
 	{
 		/**
 		 * Test StringUtil::startsWith() function.
