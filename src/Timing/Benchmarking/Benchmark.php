@@ -62,6 +62,8 @@
 	{
 		/**
 		 * Benchmark constructor.
+		 *
+		 * @api __construct
 		 * @param int $sets How many execution cycles?
 		 * @param int $executionsPerCycle How many executions per cycle?
 		 * @param string $name A name to identify this benchmark.
@@ -74,6 +76,9 @@
 
 		/**
 		 * Called just before the test is run.
+		 * Overwrite to obtain functionality.
+		 *
+		 * @api onStart
 		 */
 		public function onStart() {
 			// Overwrite to obtain functionality.
@@ -81,6 +86,9 @@
 
 		/**
 		 * Called just after the test is run.
+		 * Overwrite to obtain functionality.
+		 *
+		 * @api onEnd
 		 */
 		public function onEnd() {
 			// Overwrite to obtain functionality.
@@ -88,6 +96,8 @@
 
 		/**
 		 * Initiate the test.
+		 *
+		 * @api runTest
 		 * @return BenchmarkResult
 		 */
 		public function runTest():BenchmarkResult {
