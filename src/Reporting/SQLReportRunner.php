@@ -29,6 +29,7 @@
 	/**
 	 * Class SQLReportRunner
 	 * Encapsulates executing and caching data from SQL
+	 * @author docpify <morten@runsafe.no>
 	 */
 	abstract class SQLReport extends ReportRunner
 	{

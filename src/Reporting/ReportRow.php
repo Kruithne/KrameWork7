@@ -29,6 +29,7 @@
 	/**
 	 * Class ResultRow
 	 * Encapsulates a result row of formatted data, with support for JSON serialization
+	 * @author docpify <morten@runsafe.no>
 	 */
 	class ReportRow implements \JsonSerializable, \Iterator, \ArrayAccess
 	{

@@ -29,6 +29,7 @@
 	/**
 	 * Class StringValue
 	 * A String value
+	 * @author docpify <morten@runsafe.no>
 	 */
 	class StringValue extends Value
 	{

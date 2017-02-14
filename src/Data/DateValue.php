@@ -28,6 +28,7 @@
 	/**
 	 * Class DateValue
 	 * A date value
+	 * @author docpify <morten@runsafe.no>
 	 */
 	class DateValue extends Value
 	{

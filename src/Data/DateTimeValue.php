@@ -28,6 +28,7 @@
 	/**
 	 * Class DateTimeValue
 	 * A date and time value
+	 * @author docpify <morten@runsafe.no>
 	 */
 	class DateTimeValue extends DateValue
 	{

@@ -28,6 +28,7 @@
 	/**
 	 * Class DecimalValue
 	 * A decimal value
+	 * @author docpify <morten@runsafe.no>
 	 */
 	class DecimalValue extends Value
 	{

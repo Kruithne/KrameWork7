@@ -28,6 +28,7 @@
 	/**
 	 * Class IntegerValue
 	 * An integer value
+	 * @author docpify <morten@runsafe.no>
 	 */
 	class IntegerValue extends Value
 	{

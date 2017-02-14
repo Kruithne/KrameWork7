@@ -27,6 +27,7 @@
 	/**
 	 * Class Value
 	 * A generic value
+	 * @author docpify <morten@runsafe.no>
 	 */
 	class Value
 	{
