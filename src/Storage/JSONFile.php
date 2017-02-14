@@ -227,6 +227,25 @@
 		}
 
 		/**
+		 * Copy the state of one file, to another.
+		 *
+		 * @api marshalFrom
+		 * @param File $file
+		 */
+		public function marshalFrom(File $file) {
+			parent::marshalFrom($file);
+
+			if ($file instanceof JSONFile) {
+				$this->jsonData = $file->jsonData;
+				$this->useContainer = $file->useContainer;
+				$this->depth = $file->depth;
+				$this->assoc = $file->assoc;
+				$this->options = $file->options;
+			}
+		}
+
+
+		/**
 		 * @var \ArrayObject|string
 		 */
 		protected $jsonData;

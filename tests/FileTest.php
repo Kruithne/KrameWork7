@@ -214,4 +214,18 @@
 
 			unset($file);
 		}
+
+		/**
+		 * Test class marshal works as expected.
+		 */
+		public function testFileMarshal() {
+			$orig = new File('tests/resources/test_text_file.txt', true);
+			$new = new File('', false);
+			$new->marshalFrom($orig);
+
+			$this->assertEquals($orig->getPath(), $new->getPath());
+			$this->assertEquals($orig->getData(), $new->getData());
+
+			unset($orig, $new);
+		}
 	}

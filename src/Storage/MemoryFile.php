@@ -125,6 +125,22 @@
 		}
 
 		/**
+		 * Copy the state of one file, to another.
+		 *
+		 * @api marshalFrom
+		 * @param File $file
+		 */
+		public function marshalFrom(File $file) {
+			parent::marshalFrom($file);
+
+			if ($file instanceof MemoryFile) {
+				$this->content = $file->content;
+				$this->contentType = $file->contentType;
+				$this->valid = $file->valid;
+			}
+		}
+
+		/**
 		 * @var string
 		 */
 		protected $content;

@@ -198,6 +198,18 @@
 		}
 
 		/**
+		 * Copy the state of one file, to another.
+		 *
+		 * @api marshalFrom
+		 * @param File $file
+		 */
+		public function marshalFrom(File $file) {
+			$this->name = $file->name;
+			$this->path = $file->path;
+			$this->data = $file->data;
+		}
+
+		/**
 		 * Data loaded from the file.
 		 * @var string|null
 		 */
