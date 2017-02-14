@@ -38,7 +38,7 @@
 		/**
 		 * Session constructor.
 		 *
-		 * @api
+		 * @api __construct
 		 * @param bool $autoStart Start session on instantiation.
 		 * @param bool $secure Prevent session theft.
 		 */
@@ -52,7 +52,7 @@
 		/**
 		 * Attempt to start a session.
 		 *
-		 * @api
+		 * @api start
 		 */
 		public function start() {
 			// Check if session is already started.
@@ -80,7 +80,7 @@
 		 * Delete all existing data in the session and start a
 		 * newly generated one.
 		 *
-		 * @api
+		 * @api flush
 		 */
 		public function flush() {
 			$_SESSION = [];
@@ -93,7 +93,7 @@
 		/**
 		 * Check if a session is currently active.
 		 *
-		 * @api
+		 * @api isActive
 		 * @return bool
 		 */
 		public function isActive() {
@@ -107,7 +107,8 @@
 		/**
 		 * Retrieve a session value.
 		 *
-		 * @param $name string
+		 * @api __get
+		 * @param $name string Key to retrieve from the session.
 		 * @return mixed
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
@@ -118,8 +119,9 @@
 		/**
 		 * Set a session value.
 		 *
-		 * @param $name string
-		 * @param $value mixed
+		 * @api __set
+		 * @param $name string Key to set the value with.
+		 * @param $value mixed Value to store in the session.
 		 * @return void
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
@@ -130,7 +132,8 @@
 		/**
 		 * Unset a session value.
 		 *
-		 * @param $name string
+		 * @api __unset
+		 * @param $name string Key to remove from the session.
 		 * @return void
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
