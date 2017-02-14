@@ -124,7 +124,7 @@
 		}
 
 		/**
-		 * Copy the state of one file, to this one.
+		 * Copy the state of another File instance to this instance.
 		 *
 		 * @api marshalFrom
 		 * @param File $file
