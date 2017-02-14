@@ -43,7 +43,6 @@
 		 */
 		public function __construct(string $name, string $content, string $contentType = "text/plain") {
 			parent::__construct($name, false, false);
-			$this->content = $content;
 			$this->contentType = $contentType;
 			$this->valid = true;
 		}
@@ -66,7 +65,7 @@
 		 * @return int
 		 */
 		public function getSize(): int {
-			return strlen($this->content);
+			return strlen($this->data);
 		}
 
 		/**
@@ -87,7 +86,7 @@
 		 * @return null|string
 		 */
 		public function getData(bool $forceRead = false) {
-			return $this->content;
+			return $this->data;
 		}
 
 		/**
@@ -97,7 +96,7 @@
 		 * @param mixed $data Data to store in the wrapper.
 		 */
 		public function setData($data) {
-			$this->content = $data;
+			$this->data = $data;
 		}
 
 		/**
@@ -109,7 +108,7 @@
 		 */
 		public function delete(): bool {
 			$this->valid = false;
-			$this->content = null;
+			$this->data = null;
 			return true;
 		}
 
@@ -121,7 +120,7 @@
 		 * @return string
 		 */
 		public function getBase64Data(bool $forceRead = false): string {
-			return base64_encode($this->content);
+			return base64_encode($this->data);
 		}
 
 		/**
@@ -134,16 +133,10 @@
 			parent::marshalFrom($file);
 
 			if ($file instanceof MemoryFile) {
-				$this->content = $file->content;
 				$this->contentType = $file->contentType;
 				$this->valid = $file->valid;
 			}
 		}
-
-		/**
-		 * @var string
-		 */
-		protected $content;
 
 		/**
 		 * @var string
