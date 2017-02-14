@@ -1,5 +1,10 @@
 language: php
+
 php:
   - 7.0
   - 7.1
+
+before_install:
+  - pecl install apcu;
+
 script: phpunit --verbose --debug --stderr --config phpunit.xml tests
