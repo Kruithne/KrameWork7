@@ -43,7 +43,7 @@
 		 * @param int $port Memcached server port.
 		 */
 		public function __construct(string $server = "127.0.0.1", int $port = 11211) {
-			$this->cache = new \Memcache;
+			$this->cache = new \Memcached;
 			$this->cache->addServer($server, $port);
 		}
 
