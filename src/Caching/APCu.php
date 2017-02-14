@@ -91,7 +91,7 @@
 		 * @api __unset
 		 * @param string $key Key of the item to remove.
 		 */
-		public function __unset(string $key): void {
+		public function __unset(string $key) {
 			apcu_delete($key);
 		}
 
