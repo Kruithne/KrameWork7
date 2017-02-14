@@ -24,6 +24,8 @@
 
 	namespace KrameWork\Mailing;
 
+	use KrameWork\Storage\File;
+
 	require_once(__DIR__ . '/AttachmentFile.php');
 	require_once(__DIR__ . '/MailMultipart.php');
 	require_once(__DIR__ . '/RecipientCollection.php');
@@ -125,7 +127,7 @@
 		 * Attach a file to be sent with this mail.
 		 *
 		 * @api attachFile
-		 * @param string|AttachmentFile $attachment Attachment.
+		 * @param string|File $attachment Attachment.
 		 * @param bool $inline Is the attachment an inline embed?
 		 * @return Mail
 		 * @throws AttachmentNotFoundException
