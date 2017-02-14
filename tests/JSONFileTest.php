@@ -87,6 +87,7 @@
 				$this->fail("JSONFile did not throw expected exception when invoking __set on non-initiated container.");
 			} catch (\KrameWork\Storage\JSONException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 				unset($container);
 			}
 		}
@@ -102,6 +103,7 @@
 				$this->fail("JSONFile did not throw expected exception when invoking __get on non-initiated container.");
 			} catch (\KrameWork\Storage\JSONException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 				unset($container);
 			}
 		}
@@ -117,6 +119,7 @@
 				$this->fail("JSONFile did not throw exception when invoking __unset on a non-initiated container.");
 			} catch (\KrameWork\Storage\JSONException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 				unset($container);
 			}
 		}
@@ -160,6 +163,7 @@
 				$this->fail("Expected exception was not thrown when exceeding recursion depth.");
 			} catch (\KrameWork\Storage\JSONException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 				unset($container);
 			}
 		}
