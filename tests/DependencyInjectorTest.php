@@ -145,6 +145,7 @@
 				$this->fail("Injector did not throw exception on invalid class resolution.");
 			} catch (\KrameWork\ClassResolutionException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 			unset($injector);
 		}
@@ -201,6 +202,7 @@
 				$this->fail("Missing class did not throw exception from injector.");
 			} catch (\KrameWork\ClassResolutionException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 
 			unset($injector);
@@ -314,6 +316,7 @@
 				$this->fail("Injector did not throw exception when trying to construct object with missing dependencies.");
 			} catch (\KrameWork\ClassResolutionException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 
 			unset($injector);
@@ -331,6 +334,7 @@
 				$this->fail("Injector did not throw cyclic dependency exception when expected.");
 			} catch (\KrameWork\ClassInstantiationException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 
 			unset($injector);
@@ -348,6 +352,7 @@
 				$this->fail("Injector did not throw exception when constructing broken class.");
 			} catch (\KrameWork\ClassInstantiationException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 
 			unset($injector);
@@ -364,6 +369,7 @@
 				$this->fail("Injector did not throw exception when binding to invalid type.");
 			} catch (\KrameWork\InterfaceBindingException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 
 			unset($injector);
@@ -381,6 +387,7 @@
 				$this->fail("Injector did not throw instantiation exception when constructing abstract class.");
 			} catch (\KrameWork\ClassInstantiationException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 
 			unset($injector);
@@ -398,6 +405,7 @@
 				$this->fail("Injector did not throw exception when retrieving duplicate components with getComponent()");
 			} catch (\KrameWork\DuplicateClassException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 
 			unset($injector);
@@ -436,6 +444,7 @@
 				$this->fail("Injector did not throw exception when recalling interface with multiple instances bound.");
 			} catch (\KrameWork\ClassResolutionException $e) {
 				// Expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 
 			unset($injector);

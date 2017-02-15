@@ -53,6 +53,7 @@
 				$this->fail("Auto-loader did not throw InvalidSourcePathException with invalid source path.");
 			} catch (\KrameWork\InvalidSourcePathException $e) {
 				// expected.
+				$this->assertTrue(true, "World error, restart universe");
 			}
 		}
 
