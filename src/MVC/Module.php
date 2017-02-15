@@ -47,14 +47,6 @@
 		 * @api render
 		 */
 		public function render();
-
-		/**
-		 * Add another module to this module.
-		 *
-		 * @api addModule
-		 * @param IModule $module Module to add.
-		 */
-		public function addModule(IModule $module);
 	}
 
 	/**
@@ -67,42 +59,12 @@
 	abstract class Module implements IModule
 	{
 		/**
-		 * Module constructor.
-		 *
-		 * @api __construct
-		 */
-		public function __construct() {
-			$this->modules = [];
-		}
-
-		/**
 		 * Compile this module into a string.
 		 *
 		 * @api __toString
 		 * @return string
 		 */
 		public function __toString(): string {
-			$out = '';
-
-			foreach ($this->modules as $module)
-				$out .= $module->render();
-
-			$out .= $this->render();
-			return $out;
+			return $this->render();
 		}
-
-		/**
-		 * Add another module to this module.
-		 *
-		 * @api addModule
-		 * @param IModule $module Module to add.
-		 */
-		public function addModule(IModule $module) {
-			$this->modules[] = $module;
-		}
-
-		/**
-		 * @var IModule[]
-		 */
-		private $modules;
 	}
