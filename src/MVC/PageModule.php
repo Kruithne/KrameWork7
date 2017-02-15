@@ -24,17 +24,16 @@
 
 	namespace KrameWork\MVC;
 
-	require_once(__DIR__ . '/Module.php');
 	require_once(__DIR__ . '/Template.php');
 
 	/**
 	 * Class PageModule
-	 * Basic single-page implementation of the Module class.
+	 * Basic module implementation with a single contained template.
 	 *
 	 * @package KrameWork\MVC
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	class PageModule extends Module
+	class PageModule
 	{
 		/**
 		 * PageModule constructor.
@@ -48,13 +47,37 @@
 		}
 
 		/**
-		 * Render this module.
-		 * Called when module is requested as a string.
+		 * Get a value from the underlying template.
 		 *
-		 * @api render
-		 * @return string
+		 * @api __get
+		 * @param string $name
+		 * @return mixed
+		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
-		public function render(): string {
+		function __get(string $name) {
+			return $this->template->$name;
+		}
+
+		/**
+		 * Set a value on the underlying template.
+		 *
+		 * @api __set
+		 * @param string $name Name to store the value with.
+		 * @param mixed $value Value to store in the template.
+		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
+		 */
+		function __set(string $name, $value) {
+			$this->template->$name = $value;
+		}
+
+		/**
+		 * Render this module and return the content as a string.
+		 *
+		 * @api __toString
+		 * @return string
+		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
+		 */
+		function __toString():string {
 			return $this->template;
 		}
 
