@@ -1,4 +1,4 @@
-## KrameWork\Caching\Memcached : IDataStore
+## KrameWork\Caching\Memcached : IDataCache
 
 ***Table of Contents***
 * **Overview** - Information about the class.
