@@ -45,8 +45,9 @@
 		 * Called when module is requested as a string.
 		 *
 		 * @api render
+		 * @return string
 		 */
-		public function render();
+		public function render():string;
 	}
 
 	/**
@@ -64,7 +65,7 @@
 		 * @api __toString
 		 * @return string
 		 */
-		public function __toString(): string {
+		public function __toString():string {
 			return $this->render();
 		}
 	}
