@@ -129,3 +129,17 @@ Decrease the indentation level for future input.
 parameter | type | description
 --- | --- | ---
 `$value` | `int` | How many levels to decrease indentation by.
+##### > appendArray() : `StringBuilder`
+Append an array to the string builder with a given separator.
+
+parameter | type | description
+--- | --- | ---
+`$arr` | `array` | Array to append.
+`$sep` | `string` | Separator to use between the elements.
+##### > prependArray() : `StringBuilder`
+Prepend an array to the string builder with a given separator.
+
+parameter | type | description
+--- | --- | ---
+`$arr` | `array` | Array to prepend.
+`$sep` | `string` | Separator to use between the elements.

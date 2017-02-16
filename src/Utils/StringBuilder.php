@@ -117,6 +117,19 @@
 		}
 
 		/**
+		 * Append an array to the string builder with the given separator.
+		 *
+		 * @api appendArray
+		 * @param array $arr Array to append.
+		 * @param string $sep Separator for array items.
+		 * @return StringBuilder
+		 */
+		public function appendArray(array $arr, string $sep = ''):StringBuilder {
+			$this->append(implode($sep, $arr));
+			return $this;
+		}
+
+		/**
 		 * Prepend one or more element to the builder.
 		 * Arrays will be recursively iterated with all elements prepended.
 		 *
@@ -181,6 +194,19 @@
 		public function prependf(string $format, ...$args):StringBuilder {
 			array_unshift($args, $format); // Push the format string onto the args.
 			return $this->prepend(\call_user_func_array('sprintf', $args));
+		}
+
+		/**
+		 * Prepend an array to the string builder with the given separator.
+		 *
+		 * @api appendArray
+		 * @param array $arr Array to append.
+		 * @param string $sep Separator for array items.
+		 * @return StringBuilder
+		 */
+		public function prependArray(array $arr, string $sep = ''):StringBuilder {
+			$this->prepend(implode($sep, $arr));
+			return $this;
 		}
 
 		/**
