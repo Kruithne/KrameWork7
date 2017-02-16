@@ -48,6 +48,9 @@
 
 		/**
 		 * Render this template and return it as a string.
+		 *
+		 * @api __toString
+		 * @return string
 		 */
 		public function __toString():string {
 			ob_start();
