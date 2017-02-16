@@ -69,6 +69,10 @@
 					if ($this->separator !== null && \strlen($line) > 0)
 						$line .= $this->separator;
 
+					// Indent if needed.
+					if ($this->indent > 0)
+						$line .= str_repeat("\t", $this->indent);
+
 					// Append new data to the line and update in the stack.
 					$this->data[$index] = $line . $arg;
 				}
@@ -131,6 +135,10 @@
 					// Append separator to the new data.
 					if ($this->separator !== null && \strlen($line) > 0)
 						$arg .= $this->separator;
+
+					// Indent if needed.
+					if ($this->indent > 0)
+						$arg .= str_repeat("\t", $this->indent);
 
 					// Prepend new data to the line and update in the stack.
 					$this->data[0] = $arg . $line;
@@ -297,6 +305,35 @@
 		private function getLineIndex() {
 			return count($this->data) - 1;
 		}
+
+		/**
+		 * Apply one level of indentation to input.
+		 *
+		 * @api indent
+		 * @param int $value How many levels to indent.
+		 * @return StringBuilder
+		 */
+		public function indent(int $value = 1):StringBuilder {
+			$this->indent += $value;
+			return $this;
+		}
+
+		/**
+		 * Remove one level of indentation from input.
+		 *
+		 * @api outdent
+		 * @param int $value How many levels to outdent.
+		 * @return StringBuilder
+		 */
+		public function outdent(int $value = 1):StringBuilder {
+			$this->indent = max(0, $this->indent - $value);
+			return $this;
+		}
+
+		/**
+		 * @var int
+		 */
+		private $indent;
 
 		/**
 		 * @var array

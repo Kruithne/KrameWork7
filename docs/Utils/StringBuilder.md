@@ -117,3 +117,15 @@ parameter | type | description
 `$lineEnd` | `string` | Line-end; check StringBuilder::LE_* constants.
 ##### > __toString() : `string`
 Return the compiled result of the string builder.
+##### > indent() : `StringBuilder`
+Increase the indentation level for future input.
+
+parameter | type | description
+--- | --- | ---
+`$value` | `int` | How many levels to increase indentation by.
+##### > outdent() : `StringBuilder`
+Decrease the indentation level for future input.
+
+parameter | type | description
+--- | --- | ---
+`$value` | `int` | How many levels to decrease indentation by.

@@ -225,4 +225,29 @@
 			$this->assertEquals("\n\nHelloWorld", $builder->__toString());
 			unset($builder);
 		}
+
+		/**
+		 * Test indentation functionality.
+		 */
+		public function testIndent() {
+			$builder = new StringBuilder();
+			$builder->indent(2);
+			$builder->append('Hello');
+
+			$this->assertEquals("\t\tHello", $builder->__toString());
+			unset($builder);
+		}
+
+		/**
+		 * Test outdent functionality.
+		 */
+		public function testOutdent() {
+			$builder = new StringBuilder();
+			$builder->indent(2);
+			$builder->outdent(1);
+			$builder->append('Hello');
+
+			$this->assertEquals("\tHello", $builder->__toString());
+			unset($builder);
+		}
 	}
