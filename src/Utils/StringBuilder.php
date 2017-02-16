@@ -64,13 +64,14 @@
 				} else {
 					$index = $this->getLineIndex(); // Bottom-most line index.
 					$line = $this->data[$index]; // Line data itself.
+					$lineSize = \strlen($line);
 
 					// Append a separator first if needed.
-					if ($this->separator !== null && \strlen($line) > 0)
+					if ($this->separator !== null && $lineSize > 0)
 						$line .= $this->separator;
 
 					// Indent if needed.
-					if ($this->indent > 0)
+					if ($this->indent > 0 && $lineSize == 0)
 						$line .= str_repeat("\t", $this->indent);
 
 					// Append new data to the line and update in the stack.
@@ -144,13 +145,14 @@
 						$this->prepend($subArg);
 				} else {
 					$line = $this->data[0]; // Top-most line.
+					$lineSize = \strlen($line);
 
 					// Append separator to the new data.
-					if ($this->separator !== null && \strlen($line) > 0)
+					if ($this->separator !== null && $lineSize > 0)
 						$arg .= $this->separator;
 
 					// Indent if needed.
-					if ($this->indent > 0)
+					if ($this->indent > 0 && $lineSize == 0)
 						$arg .= str_repeat("\t", $this->indent);
 
 					// Prepend new data to the line and update in the stack.
