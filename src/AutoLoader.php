@@ -79,7 +79,7 @@
 			}
 
 			if ($flags & self::INCLUDE_KRAMEWORK_DIRECTORY)
-				$this->sources['KrameWork'] = dirname(__FILE__);
+				$this->sources[] = ['KrameWork', dirname(__FILE__)];
 
 			if ($flags & self::INCLUDE_WORKING_DIRECTORY)
 				$this->sources[] = getcwd();
@@ -109,6 +109,7 @@
 
 			while ($i < $queueSize) {
 				$class = $className;
+
 				$directory = $queue[$i++];
 
 				if (is_array($directory)) {
