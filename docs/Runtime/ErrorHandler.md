@@ -30,6 +30,7 @@ The dispatcher is responsible for taking the generated report and sending it som
 | class | description | halts script |
 | ----- | ----------- | ----------------------- |
 | `BufferDispatch` | Clears the PHP output buffer and dumps the report there. | `true` |
+| `FileDispatcher` | Creates a flat-file for each error report. | `false` |
 ___
 ### Functions
 ##### > __construct() : `void`

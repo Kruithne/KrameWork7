@@ -118,6 +118,16 @@
 		}
 
 		/**
+		 * Get the extension to use when this report is stored to a file.
+		 *
+		 * @api getExtension
+		 * @return string
+		 */
+		public function getExtension(): string {
+			return $this->wrapPreTags ? '.html' : '.log';
+		}
+
+		/**
 		 * Compile the report into a string.
 		 *
 		 * @api __toString

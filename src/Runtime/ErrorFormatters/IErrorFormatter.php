@@ -77,6 +77,14 @@
 		public function getContentType():string;
 
 		/**
+		 * Get the extension to use when this report is stored to a file.
+		 *
+		 * @api getExtension
+		 * @return string
+		 */
+		public function getExtension():string;
+
+		/**
 		 * Compile the report into a string.
 		 *
 		 * @api __toString
