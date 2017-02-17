@@ -16,7 +16,7 @@ ___
 ##### Creating an error handler
 Creating and setting up an error handler is very simple, simply craft an instance of it and pass in both a report formatter and a dispatcher.
 ```php
-new ErrorHandler(new PlainTextErrorFormatter(), new BufferDispatch());
+new ErrorHandler(new PlainTextErrorFormatter(), new BufferDispatcher());
 ```
 The above configuration will clear all output buffers and produce a plain-text report of an error that occurs. Naturally, this is a terrible mess, so spend some time and check out the different formatters and dispatchers KW7 provides, shown below.
 ##### Formatters
@@ -29,7 +29,7 @@ The formatter is responsible for taking the raw data of errors that occur and pr
 The dispatcher is responsible for taking the generated report and sending it somewhere. Some dispatchers have unique behavior which can be controlled, check out the individual documentation for each dispatcher for more information.
 | class | description | halts script |
 | ----- | ----------- | ----------------------- |
-| `BufferDispatch` | Clears the PHP output buffer and dumps the report there. | `true` |
+| `BufferDispatcher` | Clears the PHP output buffer and dumps the report there. | `true` |
 | `FileDispatcher` | Creates a flat-file for each error report. | `false` |
 ___
 ### Functions

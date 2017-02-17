@@ -29,14 +29,14 @@
 	require_once(__DIR__ . '/IErrorDispatcher.php');
 
 	/**
-	 * Class BufferDispatch
+	 * Class BufferDispatcher
 	 * Outputs errors directly as PHP output.
 	 * Intended for use during debugging only.
 	 *
 	 * @package KrameWork\Runtime\ErrorDispatchers
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	class BufferDispatch implements IErrorDispatcher
+	class BufferDispatcher implements IErrorDispatcher
 	{
 		/**
 		 * Dispatch an error report.
