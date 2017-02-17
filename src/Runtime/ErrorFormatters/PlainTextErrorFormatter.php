@@ -108,6 +108,16 @@
 		}
 
 		/**
+		 * Get the content-type of this error report.
+		 *
+		 * @api getContentType
+		 * @return string
+		 */
+		public function getContentType(): string {
+			return 'text/plain; encoding=UTF-8';
+		}
+
+		/**
 		 * Compile the report into a string.
 		 *
 		 * @api __toString

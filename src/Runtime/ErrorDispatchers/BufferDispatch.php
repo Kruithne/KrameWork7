@@ -24,6 +24,8 @@
 
 	namespace KrameWork\Runtime\ErrorDispatchers;
 
+	use KrameWork\Runtime\ErrorFormatters\IErrorFormatter;
+
 	require_once(__DIR__ . '/IErrorDispatcher.php');
 
 	/**
@@ -36,18 +38,23 @@
 	 */
 	class BufferDispatch implements IErrorDispatcher
 	{
-
 		/**
 		 * Dispatch an error report.
 		 *
 		 * @api dispatch
-		 * @param string $report Report to dispatch.
+		 * @param IErrorFormatter|string $report Report to dispatch.
 		 */
-		public function dispatch(string $report) {
+		public function dispatch($report) {
 			// Clear all output already sent.
 			while (ob_get_level())
 				ob_end_clean();
 
+			if (!headers_sent()) {
+				header('HTTP/1.0 500 Server error');
+
+				if ($report instanceof IErrorFormatter)
+					header('Content-Type: ' . $report->getContentType());
+			}
 
 			echo $report;
 			die(); // Death to the living.

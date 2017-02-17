@@ -69,6 +69,14 @@
 		public function reportString(string $name, string $str);
 
 		/**
+		 * Get the content-type of this error report.
+		 *
+		 * @api getContentType
+		 * @return string
+		 */
+		public function getContentType():string;
+
+		/**
 		 * Compile the report into a string.
 		 *
 		 * @api __toString
