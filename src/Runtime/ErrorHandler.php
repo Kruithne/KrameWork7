@@ -151,7 +151,6 @@
 
 			// Add server/request data.
 			$this->report->reportArray('$_SERVER', $_SERVER); // Server data.
-			$this->report->reportArray('$GLOBALS', $GLOBALS); // Global data.
 			$this->report->reportArray('$_POST', $_POST); // POST data.
 			$this->report->reportArray('$_GET', $_GET); // GET data.
 			$this->report->reportArray('$_COOKIE', $_COOKIE); // Delicious cookies.
