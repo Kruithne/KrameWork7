@@ -60,7 +60,7 @@
 		public function dispatch($report) {
 			$file = $this->name;
 			if (is_array($file)) // Execute callback.
-				$file = call_user_func($file);
+				$file = call_user_func(count($file) == 1 ? $file[0] : $file);
 
 			$ext = $report->getExtension();
 			$full = $file . $ext;
