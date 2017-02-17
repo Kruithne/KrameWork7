@@ -72,18 +72,39 @@
 				}
 
 				private $str;
+
+				/**
+				 * Get the content-type of this error report.
+				 *
+				 * @api getContentType
+				 * @return string
+				 */
+				public function getContentType(): string {
+					return 'text/plain; charset=utf-8';
+				}
+
+				/**
+				 * Get the extension to use when this report is stored to a file.
+				 *
+				 * @api getExtension
+				 * @return string
+				 */
+				public function getExtension(): string {
+					return '.tmp';
+				}
 			};
 
 			// Custom built dispatcher for the purpose of this unit test.
 			$this->dispatcher = new class implements IErrorDispatcher
 			{
+
 				/**
 				 * Dispatch an error report.
 				 *
 				 * @api dispatch
-				 * @param string $report Report to dispatch.
+				 * @param IErrorFormatter|string $report Report to dispatch.
 				 */
-				public function dispatch(string $report) {
+				public function dispatch($report) {
 					$GLOBALS['__dispatchedError'] = $report;
 				}
 			};
