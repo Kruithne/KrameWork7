@@ -28,7 +28,7 @@
 	use KrameWork\Utils\StringBuilder;
 
 	require_once(__DIR__ . '/../../Utils/StringBuilder.php');
-	require_once(__DIR__ . '/IErrorReport.php');
+	require_once(__DIR__ . '/IErrorFormatter.php');
 
 	/**
 	 * Class PlainTextErrorFormatter
