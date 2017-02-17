@@ -114,7 +114,7 @@
 		 * @return string
 		 */
 		public function getContentType(): string {
-			return 'text/plain; encoding=UTF-8';
+			return ($this->wrapPreTags ? 'text/html' : 'text/plain') . '; charset=utf-8';
 		}
 
 		/**
