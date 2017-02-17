@@ -5,7 +5,7 @@
 	use KrameWork\Runtime\ErrorTypes\IError;
 
 	require_once(__DIR__ . '/../src/Runtime/ErrorHandler.php');
-	require_once(__DIR__ . '/../src/Runtime/ErrorFormatters/IErrorReport.php');
+	require_once(__DIR__ . '/../src/Runtime/ErrorFormatters/IErrorFormatter.php');
 	require_once(__DIR__ . '/../src/Runtime/ErrorDispatchers/IErrorDispatcher.php');
 
 	class ErrorHandlerTestException extends \Exception {}
