@@ -10,6 +10,8 @@ ___
 The `ErrorHandler` is a meaty class that intercepts all exceptions and errors that occur during runtime and produces a report for each, and dispatches said report. The method of report generation and the method of dispatch are controlled by the instances you provide to the error handler, either using ready-made ones provided by KW7, or your own home-cooked ones.
 
 Upon creation, the error handler will take over the current **error handler**, **exception handler** and set the **error level** to `E_ALL`. Disabling the error handler using `deactivate()` will restore these three things back to **before** the error handler was constructed.
+
+In the default configuration, the error handler will terminate script execution after `10` errors have occurred. This value can be changed using the `setMaxErrors()` function, however it is important to note that some dispatchers will halt the script after a single error is dispatched regardless of this value; check the 'Dispatchers' list below to see which ones do.
 ___
 ##### Creating an error handler
 Creating and setting up an error handler is very simple, simply craft an instance of it and pass in both a report formatter and a dispatcher.
@@ -37,6 +39,13 @@ parameter | type | description
 --- | --- | ---
 `$report` | `IErrorFormatter` | Report class used to format error reports.
 `$dispatch` | `IErrorDispatcher` | Dispatch used to output errors.
+
+##### > setMaxErrors(): `void`
+Set the maximum amount of errors that can occur before the error handler will terminate the script.
+
+parameter | type | description
+--- | --- | ---
+`$max` | `int` | Maximum error threshold.
 
 ##### > deactivate() : `void`
 Disable this error handler, restoring handlers/levels to their state when this error handler was created.

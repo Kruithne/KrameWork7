@@ -27,6 +27,7 @@
 	use Kramework\Runtime\ErrorDispatchers\IErrorDispatcher;
 	use KrameWork\Runtime\ErrorFormatters\IErrorFormatter;
 	use KrameWork\Runtime\ErrorTypes\ExceptionError;
+	use KrameWork\Runtime\ErrorTypes\IError;
 	use KrameWork\Runtime\ErrorTypes\RuntimeError;
 
 	require_once(__DIR__ . '/ErrorTypes/ExceptionError.php');
@@ -58,42 +59,21 @@
 			$this->previousErrorHandler = set_error_handler([$this, 'catchRuntimeError']);
 			$this->previousExceptionHandler = set_exception_handler([$this, 'catchException']);
 
+			$this->errorCount = 0;
+			$this->maxErrors = 10;
+
 			$this->active = true;
 		}
 
 		/**
-		 * Catches a normal error thrown during runtime.
+		 * Set the maximum amount of errors to occur before the error
+		 * handler will terminate the script.
 		 *
-		 * @internal
-		 * @param int $type Type of error that occurred.
-		 * @param string $message Message describing the error.
-		 * @param string $file File which the error occurred in.
-		 * @param int $line Line of code the error occurred on.
+		 * @api setMaxErrors
+		 * @param int $max Maximum error threshold.
 		 */
-		public function catchRuntimeError($type, $message, $file, $line) {
-			if (!$this->active)
-				return;
-
-			$this->report->beginReport();
-			$this->report->reportError(new RuntimeError($type, $message, $file, $line));
-			$this->packReport();
-			$this->dispatcher->dispatch($this->report);
-		}
-
-		/**
-		 * Catches an exception thrown during runtime.
-		 *
-		 * @internal
-		 * @param \Exception $exception The exception which occurred.
-		 */
-		public function catchException(\Exception $exception) {
-			if (!$this->active)
-				return;
-
-			$this->report->beginReport();
-			$this->report->reportError(new ExceptionError($exception));
-			$this->packReport();
-			$this->dispatcher->dispatch($this->report);
+		public function setMaxErrors(int $max) {
+			$this->maxErrors = $max;
 		}
 
 		/**
@@ -108,6 +88,53 @@
 			set_exception_handler($this->previousExceptionHandler);
 			error_reporting($this->previousErrorLevel);
 			unset($this->report, $this->dispatcher);
+		}
+
+		/**
+		 * Catches a normal error thrown during runtime.
+		 *
+		 * @internal
+		 * @param int $type Type of error that occurred.
+		 * @param string $message Message describing the error.
+		 * @param string $file File which the error occurred in.
+		 * @param int $line Line of code the error occurred on.
+		 */
+		public function catchRuntimeError($type, $message, $file, $line) {
+			$this->catch(new RuntimeError($type, $message, $file, $line));
+		}
+
+		/**
+		 * Catches an exception thrown during runtime.
+		 *
+		 * @internal
+		 * @param \Exception $exception The exception which occurred.
+		 */
+		public function catchException(\Exception $exception) {
+			$this->catch(new ExceptionError($exception));
+		}
+
+		/**
+		 * Catch, format and dispatch an error.
+		 *
+		 * @internal
+		 * @param IError $error
+		 */
+		private function catch(IError $error) {
+			if (!$this->active)
+				return;
+
+			// Terminate script execution if threshold is reached.
+			if ($this->errorCount++ > $this->maxErrors) {
+				if (!headers_sent())
+					header('HTTP/1.0 500 Internal Error');
+
+				die();
+			}
+
+			$this->report->beginReport();
+			$this->report->reportError($error);
+			$this->packReport();
+			$this->dispatcher->dispatch($this->report);
 		}
 
 		/**
@@ -161,4 +188,14 @@
 		 * @var int
 		 */
 		protected $previousErrorLevel;
+
+		/**
+		 * @var int
+		 */
+		protected $maxErrors;
+
+		/**
+		 * @var int
+		 */
+		protected $errorCount;
 	}
