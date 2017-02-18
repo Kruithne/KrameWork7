@@ -24,6 +24,7 @@
 
 	namespace KrameWork\Runtime\ErrorFormatters;
 
+	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
 
 	/**
@@ -69,26 +70,10 @@
 		public function reportString(string $name, string $str);
 
 		/**
-		 * Get the content-type of this error report.
+		 * Generate a report.
 		 *
-		 * @api getContentType
-		 * @return string
+		 * @api generate
+		 * @return IErrorReport
 		 */
-		public function getContentType():string;
-
-		/**
-		 * Get the extension to use when this report is stored to a file.
-		 *
-		 * @api getExtension
-		 * @return string
-		 */
-		public function getExtension():string;
-
-		/**
-		 * Compile the report into a string.
-		 *
-		 * @api __toString
-		 * @return string
-		 */
-		public function __toString():string;
+		public function generate():IErrorReport;
 	}

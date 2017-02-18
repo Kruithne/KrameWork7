@@ -24,10 +24,13 @@
 
 	namespace KrameWork\Runtime\ErrorFormatters;
 
+	use KrameWork\Runtime\ErrorReports\ErrorReport;
+	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
 	use KrameWork\Utils\StringBuilder;
 
 	require_once(__DIR__ . '/../../Utils/StringBuilder.php');
+	require_once(__DIR__ . '/../ErrorReports/ErrorReport.php');
 	require_once(__DIR__ . '/IErrorFormatter.php');
 
 	/**
@@ -100,6 +103,7 @@
 		 * @param IError $error Error which occurred.
 		 */
 		public function reportError(IError $error) {
+			$this->error = $error;
 			$this->report->appendLine($error->getPrefix() . ' : ' . $error->getName())->indent();
 			$this->report->appendLine('> Message: ' . $error->getMessage());
 			$this->report->appendf('> Occurred: %s (%s)', date(DATE_RFC2822), time())->newLine();
@@ -141,6 +145,25 @@
 				$this->report->prepend('<pre>')->append('</pre>');
 
 			return $this->report;
+		}
+
+		/**
+		 * Generate a report.
+		 *
+		 * @api generate
+		 * @return IErrorReport
+		 */
+		public function generate():IErrorReport {
+			$this->report->outdent()->newLine();
+			$this->report->appendf('Report generated automatically on %s (%s).', date(DATE_RFC822), time());
+
+			if ($this->wrapPreTags)
+				$this->report->prepend('<pre>')->append('</pre>');
+
+			$contentType = ($this->wrapPreTags ? 'text/html' : 'text/plain') . '; charset=utf-8';
+			$extension = $this->wrapPreTags ? '.html' : '.log';
+
+			return new ErrorReport($this->error, $contentType, $extension, $this->report);
 		}
 
 		/**
@@ -193,6 +216,11 @@
 
 			return "({$type}) {$var}";
 		}
+
+		/**
+		 * @var IError
+		 */
+		protected $error;
 
 		/**
 		 * @var StringBuilder

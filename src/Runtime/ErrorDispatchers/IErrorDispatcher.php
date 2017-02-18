@@ -23,7 +23,7 @@
 	 */
 
 	namespace Kramework\Runtime\ErrorDispatchers;
-	use KrameWork\Runtime\ErrorFormatters\IErrorFormatter;
+	use KrameWork\Runtime\ErrorReports\IErrorReport;
 
 	/**
 	 * Interface IErrorDispatcher
@@ -38,7 +38,7 @@
 		 * Dispatch an error report.
 		 *
 		 * @api dispatch
-		 * @param IErrorFormatter|string $report Report to dispatch.
+		 * @param IErrorReport|string $report Report to dispatch.
 		 */
 		public function dispatch($report);
 	}

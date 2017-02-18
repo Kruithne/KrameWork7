@@ -24,7 +24,7 @@
 
 	namespace KrameWork\Runtime\ErrorDispatchers;
 
-	use KrameWork\Runtime\ErrorFormatters\IErrorFormatter;
+	use KrameWork\Runtime\ErrorReports\IErrorReport;
 
 	/**
 	 * Class FileDispatcher
@@ -55,14 +55,14 @@
 		 * Dispatch an error report.
 		 *
 		 * @api dispatch
-		 * @param IErrorFormatter|string $report Report to dispatch.
+		 * @param IErrorReport|string $report Report to dispatch.
 		 */
 		public function dispatch($report) {
 			$file = $this->name;
 			if (is_array($file)) // Execute callback.
 				$file = call_user_func(count($file) == 1 ? $file[0] : $file);
 
-			$ext = $report->getExtension();
+			$ext = ($report instanceof IErrorReport) ? $report->getExtension() : '.txt';
 			$full = $file . $ext;
 
 			// Obtain unique file name.

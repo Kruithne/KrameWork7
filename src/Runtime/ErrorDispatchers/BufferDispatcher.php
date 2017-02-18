@@ -24,7 +24,7 @@
 
 	namespace KrameWork\Runtime\ErrorDispatchers;
 
-	use KrameWork\Runtime\ErrorFormatters\IErrorFormatter;
+	use KrameWork\Runtime\ErrorReports\IErrorReport;
 
 	require_once(__DIR__ . '/IErrorDispatcher.php');
 
@@ -42,7 +42,7 @@
 		 * Dispatch an error report.
 		 *
 		 * @api dispatch
-		 * @param IErrorFormatter|string $report Report to dispatch.
+		 * @param IErrorReport|string $report Report to dispatch.
 		 */
 		public function dispatch($report) {
 			// Clear all output already sent.
@@ -52,7 +52,7 @@
 			if (!headers_sent()) {
 				header('HTTP/1.0 500 Server error');
 
-				if ($report instanceof IErrorFormatter)
+				if ($report instanceof IErrorReport)
 					header('Content-Type: ' . $report->getContentType());
 			}
 

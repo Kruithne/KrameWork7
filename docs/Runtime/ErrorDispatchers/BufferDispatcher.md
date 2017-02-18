@@ -17,4 +17,4 @@ Dispatch an error report.
 
 parameter | type | description
 --- | --- | ---
-`$report` | `string` | Report to dispatch.
+`$report` | `string|IErrorReport` | Report to dispatch.

@@ -25,7 +25,7 @@
 	namespace KrameWork\Runtime\ErrorDispatchers;
 
 	use KrameWork\Mailing\Mail;
-	use KrameWork\Runtime\ErrorFormatters\IErrorFormatter;
+	use KrameWork\Runtime\ErrorReports\IErrorReport;
 
 	require_once(__DIR__ . '/../../Mailing/Mail.php');
 
@@ -62,11 +62,14 @@
 		 * Dispatch an error report.
 		 *
 		 * @api dispatch
-		 * @param IErrorFormatter|string $report Report to dispatch.
+		 * @param IErrorReport|string $report Report to dispatch.
 		 */
 		public function dispatch($report) {
 			if ($this->subjectGen) {
 				$subject = call_user_func(count($this->subjectGen) == 1 ? $this->subjectGen[0] : $this->subjectGen);
+				if ($report instanceof IErrorReport)
+					$subject = $report->getError()->getPrefix() . ' ' . $subject;
+
 				$this->mail->setSubject($subject);
 			}
 

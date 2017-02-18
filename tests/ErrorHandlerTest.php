@@ -2,6 +2,8 @@
 	use KrameWork\Runtime\ErrorFormatters\IErrorFormatter;
 	use KrameWork\Runtime\ErrorDispatchers\IErrorDispatcher;
 	use KrameWork\Runtime\ErrorHandler;
+	use KrameWork\Runtime\ErrorReports\ErrorReport;
+	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
 
 	require_once(__DIR__ . '/../src/Runtime/ErrorHandler.php');
@@ -35,6 +37,7 @@
 				 * @param IError $error Error which occurred.
 				 */
 				public function reportError(IError $error) {
+					$this->error = $error;
 					$parts = [$error->getPrefix(), $error->getName(), $error->getLine(), $error->getMessage(), $error->getFile()];
 					$this->str = implode(" ", $parts);
 				}
@@ -67,31 +70,22 @@
 				 * @api __toString
 				 * @return string
 				 */
-				public function __toString(): string {
+				public function __toString():string {
 					return $this->str;
 				}
 
+				/**
+				 * Generate a report.
+				 *
+				 * @api generate
+				 * @return IErrorReport
+				 */
+				public function generate():IErrorReport {
+					return new ErrorReport($this->error, 'text/plain; charset=utf-8', '.tmp', $this->str);
+				}
+
 				private $str;
-
-				/**
-				 * Get the content-type of this error report.
-				 *
-				 * @api getContentType
-				 * @return string
-				 */
-				public function getContentType(): string {
-					return 'text/plain; charset=utf-8';
-				}
-
-				/**
-				 * Get the extension to use when this report is stored to a file.
-				 *
-				 * @api getExtension
-				 * @return string
-				 */
-				public function getExtension(): string {
-					return '.tmp';
-				}
+				private $error;
 			};
 
 			// Custom built dispatcher for the purpose of this unit test.
