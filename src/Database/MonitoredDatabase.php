@@ -39,8 +39,8 @@
 		/**
 		 * MonitoredDatabase constructor.
 		 * @api __construct
-		 * @param ConnectionString $connection
-		 * @param int $driver
+		 * @param ConnectionString $connection A connection string
+		 * @param int $driver A Database::DB_DRIVER_ constant
 		 * @param int $threshold Trigger a warning if execution takes longer than $threshold seconds
 		 */
 		function __construct(ConnectionString $connection, int $driver, int $threshold = 2) {
@@ -50,6 +50,13 @@
 			$this->threshold = $threshold;
 		}
 
+		/**
+		 * Execute a query and return an array of ArrayObjects
+		 * @api getAll
+		 * @param string $sql An SQL query statement
+		 * @param array $param An array of values to inject in the statement
+		 * @return \ArrayObject[]
+		 */
 		function getAll(string $sql, array $param): array {
 			$this->timer->start();
 			$result = parent::getAll($sql, $param);
@@ -57,6 +64,13 @@
 			return $result;
 		}
 
+		/**
+		 * Execute a query and return the first column of each row
+		 * @api getColumn
+		 * @param string $sql An SQL query statement
+		 * @param array $param An array of values to inject in the statement
+		 * @return array
+		 */
 		function getColumn(string $sql, array $param): array {
 			$this->timer->start();
 			$result = parent::getColumn($sql, $param);
@@ -64,6 +78,13 @@
 			return $result;
 		}
 
+		/**
+		 * Execute a query and return the first row as an ArrayObject
+		 * @api getRow
+		 * @param string $sql An SQL query statement
+		 * @param array $param An array of values to inject in the statement
+		 * @return \ArrayObject
+		 */
 		function getRow(string $sql, array $param): \ArrayObject {
 			$this->timer->start();
 			$result = parent::getRow($sql, $param);
@@ -71,6 +92,13 @@
 			return $result;
 		}
 
+		/**
+		 * Execute a query and return the first value of the first row
+		 * @api getValue
+		 * @param string $sql An SQL query statement
+		 * @param array $param An array of values to inject in the statement
+		 * @return mixed
+		 */
 		function getValue(string $sql, array $param) {
 			$this->timer->start();
 			$result = parent::getValue($sql, $param);
@@ -78,6 +106,13 @@
 			return $result;
 		}
 
+		/**
+		 * Execute a statement and return the number of affected rows
+		 * @api execute
+		 * @param string $sql An SQL statement
+		 * @param array $param An array of values to inject in the statement
+		 * @return int
+		 */
 		function execute(string $sql, array $param): int {
 			$this->timer->start();
 			$result = parent::execute($sql, $param);
