@@ -1,4 +1,4 @@
-## KrameWork\Database
+## KrameWork\Database\MonitoredDatabase
 
 ***Table of Contents***
 * **Overview** - Information about the class.

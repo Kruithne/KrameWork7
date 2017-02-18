@@ -1,4 +1,4 @@
-## KrameWork\Database
+## KrameWork\Database\ConnectionString
 
 ***Table of Contents***
 * **Overview** - Information about the class.
