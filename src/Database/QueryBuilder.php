@@ -28,13 +28,13 @@
 	{
 		/**
 		 * QueryBuilder constructor.
-		 * @param IDatabaseConnection $db The connection we want to run our query against
+		 * @param Database $db The connection we want to run our query against
 		 * @param string $column The name of the column we are searching
 		 * @param QueryBuilder $anchor The previous step in the chain
 		 * @param IDatabaseTable $table The table we are querying
 		 * @param int $level The nth column in the where statement
 		 */
-		public function __construct(IDatabaseConnection $db, string $column, QueryBuilder $anchor, IDatabaseTable $table, int $level = 1)
+		public function __construct(Database $db, string $column, QueryBuilder $anchor, IDatabaseTable $table, int $level = 1)
 		{
 			$this->db = $db;
 			$this->column = $column;

@@ -22,42 +22,21 @@
 	 * SOFTWARE.
 	 */
 
-	namespace KrameWork\Database;
+	namespace KrameWork\Database\Driver;
 
-	require_once(__DIR__ . '/Driver/Generic.php');
-	require_once(__DIR__ . '/ConnectionString.php');
+	use KrameWork\Database\ConnectionString;
 
-	class UnknownDriverException extends \Exception {}
-
-	class Database implements Driver\Generic
+	class PDO implements Generic
 	{
-		/**
-		 * Connect using the PDO driver
-		 */
-		const DB_DRIVER_PDO = 1;
-
-		/**
-		 * Database constructor.
-		 * @api __construct
-		 * @param ConnectionString $connection Connection string specifying how to connect
-		 * @param int $driver One of the Database::DB_DRIVER_ constants
-		 * @throws UnknownDriverException
-		 */
-		public function __construct(ConnectionString $connection, int $driver) {
-			switch ($driver) {
-				case self::DB_DRIVER_PDO:
-					require_once(__DIR__ . '/Driver/PDO.php');
-					$this->driver = new Driver\PDO($connection);
-					break;
-				default:
-					throw new UnknownDriverException('Unsupported driver type '.$driver);
-			}
+		public function __construct(ConnectionString $connection) {
+			$this->connection = new \PDO($connection->__toString());
+			$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		}
 
 		/**
-		 * @var Driver\Generic The database driver we are using to run queries
+		 * @var \PDO
 		 */
-		private $driver;
+		private $connection;
 
 		/**
 		 * Execute a query and return an array of ArrayObjects
@@ -67,7 +46,9 @@
 		 * @return \ArrayObject[]
 		 */
 		function getAll(string $sql, array $param): array {
-			return $this->driver->getAll($sql, $param);
+			$query = $this->connection->prepare($sql);
+			$this->bind($query, $param);
+			return $query->fetchAll(\PDO::FETCH_OBJ);
 		}
 
 		/**
@@ -78,7 +59,9 @@
 		 * @return \ArrayObject
 		 */
 		function getRow(string $sql, array $param): \ArrayObject {
-			return $this->driver->getRow($sql, $param);
+			$query = $this->connection->prepare($sql);
+			$this->bind($query, $param);
+			return $query->fetchObject();
 		}
 
 		/**
@@ -89,7 +72,12 @@
 		 * @return array
 		 */
 		function getColumn(string $sql, array $param): array {
-			return $this->driver->getColumn($sql, $param);
+			$query = $this->connection->prepare($sql);
+			$this->bind($query, $param);
+			$result[] = [];
+			while($row = $query->fetchColumn())
+				$result[] = $row;
+			return $result;
 		}
 
 		/**
@@ -100,7 +88,9 @@
 		 * @return mixed
 		 */
 		function getValue(string $sql, array $param) {
-			return $this->driver->getValue($sql, $param);
+			$query = $this->connection->prepare($sql);
+			$this->bind($query, $param);
+			return $query->fetchColumn();
 		}
 
 		/**
@@ -111,6 +101,35 @@
 		 * @return int
 		 */
 		function execute(string $sql, array $param): int {
-			return $this->driver->execute($sql, $param);
+			$query = $this->connection->prepare($sql);
+			$this->bind($query, $param);
+			$query->execute();
+			return $query->rowCount();
+		}
+
+		private function bind(\PDOStatement $query, array $param)
+		{
+			if(!$param || count($param) == 0)
+				return;
+			$syntax = null;
+			foreach($param as $k => $v) {
+				$type = \PDO::PARAM_STR;
+				if(is_int($v))
+					$type = \PDO::PARAM_INT;
+				if(is_bool($v))
+					$type = \PDO::PARAM_BOOL;
+
+				if(is_int($k)) {
+					if($syntax !== null && $syntax != 1)
+						throw new \Exception("Mixed parameter type in parameter list");
+					$syntax = 1;
+					$query->bindValue($k + 1, $v, $type);
+				} else {
+					if($syntax !== null && $syntax != 2)
+						throw new \Exception("Mixed parameter type in parameter list");
+					$syntax = 2;
+					$query->bindValue(':' . $k, $v, $type);
+				}
+			}
 		}
 	}
