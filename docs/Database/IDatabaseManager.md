@@ -17,6 +17,6 @@ parameter | type | description
 `$name` | `string` | 
 `$table` | `IManagedTable` | 
 
-##### > updateSchema() : `array Managed table names as keys with status for each as values`
+##### > updateSchema() : `array`
 Update the database schema according to managed tables
 
