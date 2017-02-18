@@ -31,7 +31,7 @@ parameter | type | description
 
 exception | reason
 --- | ---
-`UnknownDriverException` | ???
+`UnknownDriverException` | The specified driver is unknown to the system
 
 ##### > getAll() : `\ArrayObject[]`
 Execute a query and return an array of ArrayObjects
