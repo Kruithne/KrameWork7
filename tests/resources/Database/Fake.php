@@ -22,51 +22,14 @@
 	 * SOFTWARE.
 	 */
 
-	namespace KrameWork\Database;
+	namespace KrameWork\Database\Driver;
 
-	require_once(__DIR__ . '/Driver/Generic.php');
-	require_once(__DIR__ . '/ConnectionString.php');
+	use KrameWork\Database\ConnectionString;
 
-	class UnknownDriverException extends \Exception {}
-
-	/**
-	 * Base class for a database connection
-	 * @author docpify <morten@runsafe.no>
-	 * @package KrameWork\Database
-	 */
-	class Database implements Driver\Generic
+	class Fake implements Generic
 	{
-		/**
-		 * Connect using the PDO driver
-		 */
-		const DB_DRIVER_FAKE = 0; // For unit tests
-		const DB_DRIVER_PDO = 1;
-
-		/**
-		 * Database constructor.
-		 * @api __construct
-		 * @param ConnectionString $connection Connection string specifying how to connect
-		 * @param int $driver One of the Database::DB_DRIVER_ constants
-		 * @throws UnknownDriverException
-		 */
-		public function __construct(ConnectionString $connection, int $driver) {
-			switch ($driver) {
-				case self::DB_DRIVER_FAKE:
-					$this->driver = new Driver\Fake($connection);
-					break;
-				case self::DB_DRIVER_PDO:
-					require_once(__DIR__ . '/Driver/PDO.php');
-					$this->driver = new Driver\PDO($connection);
-					break;
-				default:
-					throw new UnknownDriverException('Unsupported driver type '.$driver);
-			}
+		public function __construct(ConnectionString $connection) {
 		}
-
-		/**
-		 * @var Driver\Generic The database driver we are using to run queries
-		 */
-		private $driver;
 
 		/**
 		 * Execute a query and return an array of ArrayObjects
@@ -76,7 +39,7 @@
 		 * @return \ArrayObject[]
 		 */
 		function getAll(string $sql, array $param): array {
-			return $this->driver->getAll($sql, $param);
+			return [new \ArrayObject(['sql' => $sql, 'param' => $param])];
 		}
 
 		/**
@@ -87,7 +50,7 @@
 		 * @return \ArrayObject
 		 */
 		function getRow(string $sql, array $param): \ArrayObject {
-			return $this->driver->getRow($sql, $param);
+			return new \ArrayObject(['sql' => $sql, 'param' => $param]);
 		}
 
 		/**
@@ -98,7 +61,7 @@
 		 * @return array
 		 */
 		function getColumn(string $sql, array $param): array {
-			return $this->driver->getColumn($sql, $param);
+			return [$sql, $param];
 		}
 
 		/**
@@ -109,7 +72,7 @@
 		 * @return mixed
 		 */
 		function getValue(string $sql, array $param) {
-			return $this->driver->getValue($sql, $param);
+			return $sql;
 		}
 
 		/**
@@ -120,6 +83,6 @@
 		 * @return int
 		 */
 		function execute(string $sql, array $param): int {
-			return $this->driver->execute($sql, $param);
+			return count($param);
 		}
 	}

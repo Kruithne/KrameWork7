@@ -4,8 +4,11 @@
 	use KrameWork\Database\Database;
 	use KrameWork\Database\EncryptedConnection;
 
-	require_once(__DIR__.'/../src/Database/Database.php');
-	require_once(__DIR__.'/../src/Database/EncryptedConnection.php');
+	require_once(__DIR__ . '/../src/Database/Database.php');
+	require_once(__DIR__ . '/../src/Database/DatabaseCache.php');
+	require_once(__DIR__ . '/../src/Database/EncryptedConnection.php');
+	require_once(__DIR__ . '/resources/Database/Fake.php');
+	require_once(__DIR__ . '/resources/Cache/DummyCache.php');
 
 	class DatabaseTest extends \PHPUnit\Framework\TestCase
 	{
@@ -28,7 +31,27 @@
 			try {
 				new Database($connection, Database::DB_DRIVER_PDO);
 			} catch (Exception $e) {
-				$this->assertEquals('invalid data source name', $e->getMessage());
+				$this->assertEquals('could not find driver', $e->getMessage());
 			}
+		}
+
+		public function testConnectionString() {
+			$connection = new ConnectionString('test:dsn', 'user', 'password');
+			$this->assertEquals('test:dsn', $connection->__toString());
+			$this->assertEquals('user', $connection->getUsername());
+			$this->assertEquals('password', $connection->getPassword());
+		}
+
+		public function testCachedQuery() {
+			$cache = new DummyCache();
+			$connection = new ConnectionString('test:dsn', 'user', 'password');
+			$database = new Database($connection, Database::DB_DRIVER_FAKE);
+			$cached = new \KrameWork\Database\DatabaseCache($cache, $database);
+			$data = $cached->getAll('TESTING', [1], 10);
+			$key = key($cache->data);
+			$this->assertEquals($cache->data[$key], $data);
+			$cache->data[$key] = ['testvalue'];
+			$data = $cached->getAll('TESTING', [1], 10);
+			$this->assertEquals(['testvalue'], $data);
 		}
 	}
