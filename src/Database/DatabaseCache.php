@@ -23,6 +23,7 @@
 	 */
 
 	namespace KrameWork\Database;
+
 	use KrameWork\Caching\IDataCache;
 
 	/**
@@ -46,8 +47,8 @@
 		 * @return array|\ArrayObject[]
 		 */
 		function getAll(string $sql, array $param, int $ttl): array {
-			$key = 'all_'.$this->getKey($sql, $param);
-			if($this->cache->exists($key) && $ttl > 0)
+			$key = 'all_' . $this->getKey($sql, $param);
+			if ($this->cache->exists($key) && $ttl > 0)
 				return $this->cache->__get($key);
 
 			$data = $this->database->getAll($sql, $param);
@@ -64,8 +65,8 @@
 		 * @return \ArrayObject
 		 */
 		function getRow(string $sql, array $param, int $ttl): \ArrayObject {
-			$key = 'row_'.$this->getKey($sql, $param);
-			if($this->cache->exists($key) && $ttl > 0)
+			$key = 'row_' . $this->getKey($sql, $param);
+			if ($this->cache->exists($key) && $ttl > 0)
 				return $this->cache->__get($key);
 
 			$data = $this->database->getRow($sql, $param);
@@ -82,8 +83,8 @@
 		 * @return array
 		 */
 		function getColumn(string $sql, array $param, int $ttl): array {
-			$key = 'col_'.$this->getKey($sql, $param);
-			if($this->cache->exists($key) && $ttl > 0)
+			$key = 'col_' . $this->getKey($sql, $param);
+			if ($this->cache->exists($key) && $ttl > 0)
 				return $this->cache->__get($key);
 
 			$data = $this->database->getColumn($sql, $param);
@@ -100,8 +101,8 @@
 		 * @return mixed
 		 */
 		function getValue(string $sql, array $param, int $ttl) {
-			$key = 'val_'.$this->getKey($sql, $param);
-			if($this->cache->exists($key) && $ttl > 0)
+			$key = 'val_' . $this->getKey($sql, $param);
+			if ($this->cache->exists($key) && $ttl > 0)
 				return $this->cache->__get($key);
 
 			$data = $this->database->getValue($sql, $param);
