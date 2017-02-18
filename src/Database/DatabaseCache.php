@@ -24,7 +24,6 @@
 
 	namespace KrameWork\Database;
 	use KrameWork\Caching\IDataCache;
-	use KrameWork\Database\Driver\Generic;
 
 	/**
 	 * Wrapper class to automatically cache query results
@@ -43,7 +42,7 @@
 		 * @api getAll
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @param int $ttl Seconds to cache result, 0 to force refresh
+		 * @param int $ttl Number of seconds to cache the results, 0 forces refresh
 		 * @return array|\ArrayObject[]
 		 */
 		function getAll(string $sql, array $param, int $ttl): array {
@@ -61,6 +60,7 @@
 		 * @api getRow
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
+		 * @param int $ttl Number of seconds to cache the results, 0 forces refresh
 		 * @return \ArrayObject
 		 */
 		function getRow(string $sql, array $param, int $ttl): \ArrayObject {
@@ -78,6 +78,7 @@
 		 * @api getColumn
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
+		 * @param int $ttl Number of seconds to cache the results, 0 forces refresh
 		 * @return array
 		 */
 		function getColumn(string $sql, array $param, int $ttl): array {
@@ -95,6 +96,7 @@
 		 * @api getValue
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
+		 * @param int $ttl Number of seconds to cache the results, 0 forces refresh
 		 * @return mixed
 		 */
 		function getValue(string $sql, array $param, int $ttl) {
