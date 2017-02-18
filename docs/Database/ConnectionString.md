@@ -4,6 +4,7 @@
 * **Overview** - Information about the class.
 * **Examples** - Usage examples.
 * **Functions** - Comprehensive list of all functions in the class.
+
 ___
 ### Overview
 Class holding connection details for the database connection

@@ -4,9 +4,11 @@
 * **Overview** - Information about the class.
 * **Examples** - Usage examples.
 * **Functions** - Comprehensive list of all functions in the class.
+
 ___
 ### Overview
 This class connects a `Database` instance to an `IDataCache` instance, automatically caching the data returned from queries.
+
 ___
 ### Examples
 ```php

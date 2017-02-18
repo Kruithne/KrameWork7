@@ -3,6 +3,7 @@
 ***Table of Contents***
 * **Overview** - Information about the class.
 * **Functions** - Comprehensive list of all functions in the class.
+
 ___
 ### Overview
 This class provides the ability to hide connection strings in plain text, by using a static key to encrypt and decrypt a connection string.

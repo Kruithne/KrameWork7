@@ -3,6 +3,7 @@
 ***Table of Contents***
 * **Overview** - Information about the class.
 * **Functions** - Comprehensive list of all functions in the class.
+
 ___
 ### Overview
 This class provides timing information for queries.
