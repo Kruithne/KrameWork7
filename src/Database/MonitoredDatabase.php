@@ -26,8 +26,8 @@
 
 	use KrameWork\Timing\Timer;
 
-	require_once(__DIR__.'/Database.php');
-	require_once(__DIR__.'/../Timing/Timer.php');
+	require_once(__DIR__ . '/Database.php');
+	require_once(__DIR__ . '/../Timing/Timer.php');
 
 	/**
 	 * Database connection with build in performance monitoring
@@ -84,13 +84,12 @@
 			return $result;
 		}
 
-		private function log($sql, $param)
-		{
+		private function log($sql, $param) {
 			$time = $this->timer->stop();
-			if($time > $this->threshold)
+			if ($time > $this->threshold)
 				trigger_error($this->formatWarning($sql, $param, $time), E_USER_WARNING);
-			$key = json_encode([$sql,$param]);
-			if(!isset($this->statistics[$key]))
+			$key = json_encode([$sql, $param]);
+			if (!isset($this->statistics[$key]))
 				$this->statistics[$key] = [];
 			$this->statistics[$key][] = $time;
 		}
