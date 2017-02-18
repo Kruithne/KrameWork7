@@ -45,6 +45,7 @@
 		}
 
 		/**
+		 * Returns the connection string used to connect to the database
 		 * @api __toString
 		 * @return string The connection string
 		 */
@@ -53,6 +54,8 @@
 		}
 
 		/**
+		 * Return the password used to connect to the database
+		 * @api getUsername
 		 * @return string
 		 */
 		public function getUsername(): string {
@@ -60,6 +63,8 @@
 		}
 
 		/**
+		 * Return the password used to connect to the database
+		 * @api getPassword
 		 * @return string
 		 */
 		public function getPassword(): string {

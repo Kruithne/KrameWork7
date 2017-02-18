@@ -32,12 +32,14 @@
 	interface IManagedTable
 	{
 		/**
+		 * @api drop
 		 * Delete the table from the database
 		 * @return bool Success
 		 */
 		public function drop();
 
 		/**
+		 * @api create
 		 * Create the table in the database
 		 * @return bool Success
 		 */

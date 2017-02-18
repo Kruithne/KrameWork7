@@ -38,6 +38,7 @@
 	{
 		/**
 		 * MonitoredDatabase constructor.
+		 * @api __construct
 		 * @param ConnectionString $connection
 		 * @param int $driver
 		 * @param int $threshold Trigger a warning if execution takes longer than $threshold seconds
@@ -99,6 +100,8 @@
 		}
 
 		/**
+		 * Returns statistics data collected over the lifetime of the object
+		 * @api getStatistics
 		 * @return array
 		 */
 		public function getStatistics(): array {

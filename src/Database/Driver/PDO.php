@@ -26,8 +26,18 @@
 
 	use KrameWork\Database\ConnectionString;
 
+	/**
+	 * This driver wraps a PDO connection, supporting a wide range of database engines.
+	 * @author docpify <morten@runsafe.no>
+	 * @package KrameWork\Database\Driver
+	 */
 	class PDO implements Generic
 	{
+		/**
+		 * PDO constructor.
+		 * @api __construct
+		 * @param ConnectionString $connection
+		 */
 		public function __construct(ConnectionString $connection) {
 			$this->connection = new \PDO($connection->__toString());
 			$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);

@@ -33,6 +33,7 @@
 	{
 		/**
 		 * QueryBuilder constructor.
+		 * @api __construct
 		 * @param Database $db The connection we want to run our query against
 		 * @param string $column The name of the column we are searching
 		 * @param QueryBuilder $anchor The previous step in the chain
@@ -50,6 +51,7 @@
 
 		/**
 		 * Builds the SQL statement
+		 * @api build
 		 * @param bool $glue Whether or not more columns will be added later
 		 * @return string An SQL fragment
 		 */
@@ -109,6 +111,7 @@
 
 		/**
 		 * Binds the parameters of the prepared statement to the values supplied by the user
+		 * @api bind
 		 */
 		public function bind($statement)
 		{
@@ -133,6 +136,11 @@
 				$this->anchor->bind($statement);
 		}
 
+		/**
+		 * @api andColumn
+		 * @param $column
+		 * @return QueryBuilder
+		 */
 		public function andColumn($column)
 		{
 			$this->glue = 'AND';

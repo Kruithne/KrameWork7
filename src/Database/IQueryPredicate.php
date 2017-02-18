@@ -33,6 +33,7 @@
 	{
 		/**
 		 * Apply an offset to the result set
+		 * @api offsset
 		 * @param int $offset
 		 * @return IQueryPredicate
 		 */
@@ -40,6 +41,7 @@
 
 		/**
 		 * Limit the number of rows matched
+		 * @api limit
 		 * @param int $limit
 		 * @return IQueryPredicate
 		 */
@@ -47,6 +49,7 @@
 
 		/**
 		 * Sort the result set by a column in ascending order
+		 * @api orderBy
 		 * @param string $column Column name
 		 * @return IQueryPredicate
 		 */
@@ -54,6 +57,7 @@
 
 		/**
 		 * Sort the result set by a column in descending order
+		 * @api orderByDesc
 		 * @param string $column Column name
 		 * @return IQueryPredicate
 		 */
@@ -61,11 +65,13 @@
 
 		/**
 		 * Execute a select statement and return the data set
+		 * @api select
 		 * @return array array of arrays of key/value pairs
 		 */
 		public function select(): array;
 
 		/**
+		 * @api update
 		 * @param array $updateSpec Array of key/value pairs to persist to the database
 		 * @return bool Success
 		 */
@@ -73,6 +79,7 @@
 
 		/**
 		 * Delete the matched rows
+		 * @api delete
 		 * @return bool Success
 		 */
 		public function delete(): bool;
