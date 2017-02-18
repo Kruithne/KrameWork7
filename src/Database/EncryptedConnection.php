@@ -24,6 +24,11 @@
 
 	namespace KrameWork\Database;
 
+	/**
+	 * Class for a encrypted database connection string
+	 * @author docpify <morten@runsafe.no>
+	 * @package KrameWork\Database
+	 */
 	class EncryptedConnection extends ConnectionString
 	{
 		/**

@@ -24,6 +24,11 @@
 
 	namespace KrameWork\Database;
 
+	/**
+	 * Base class for a database connection string
+	 * @author docpify <morten@runsafe.no>
+	 * @package KrameWork\Database
+	 */
 	class ConnectionString
 	{
 		/**

@@ -107,6 +107,12 @@
 			return $query->rowCount();
 		}
 
+		/**
+		 * Bind the parameters to the prepared statement, guessing at parameter types.
+		 * @param \PDOStatement $query A prepared statement
+		 * @param array $param Parameters to bind
+		 * @throws \Exception If a mixed usage of numeric and string indices are detected
+		 */
 		private function bind(\PDOStatement $query, array $param)
 		{
 			if(!$param || count($param) == 0)

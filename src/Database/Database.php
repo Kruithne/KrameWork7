@@ -29,6 +29,11 @@
 
 	class UnknownDriverException extends \Exception {}
 
+	/**
+	 * Base class for a database connection
+	 * @author docpify <morten@runsafe.no>
+	 * @package KrameWork\Database
+	 */
 	class Database implements Driver\Generic
 	{
 		/**

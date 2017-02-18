@@ -24,6 +24,11 @@
 
 	namespace KrameWork\Database;
 
+	/**
+	 * Class for building SQL queries - Subject to change
+	 * @author docpify <morten@runsafe.no>
+	 * @package KrameWork\Database
+	 */
 	class QueryBuilder
 	{
 		/**
