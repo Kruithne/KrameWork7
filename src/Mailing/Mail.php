@@ -28,6 +28,7 @@
 
 	require_once(__DIR__ . '/AttachmentFile.php');
 	require_once(__DIR__ . '/MailMultipart.php');
+	require_once(__DIR__ . '/MailMultipartContent.php');
 	require_once(__DIR__ . '/RecipientCollection.php');
 	require_once(__DIR__ . '/EncodedContent.php');
 
