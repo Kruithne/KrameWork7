@@ -98,11 +98,11 @@
 			$content = $this->content;
 
 			if ($this->encoding == self::E_BASE64)
-				$content = base64_encode($content);
+				$content = chunk_split(base64_encode($content), 70, "\r\n");
 			else if ($this->encoding == self::E_QUOTED_PRINTABLE)
 				$content = quoted_printable_encode($content);
 
-			return chunk_split($content, 70, "\r\n");
+			return $content;
 		}
 
 
