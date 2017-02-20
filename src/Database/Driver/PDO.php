@@ -60,8 +60,8 @@
 			$this->bind($query, $param);
 			$query->execute();
 			$result = [];
-			while($row = $query->fetchObject('\ArrayObject'))
-				$result[] = $row;
+			foreach($query->fetchAll(\PDO::FETCH_OBJ) as $row)
+				$result[] = new \ArrayObject($row);
 			return $result;
 		}
 
@@ -70,13 +70,14 @@
 		 * @api getRow
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @return \ArrayObject
+		 * @return \ArrayObject|null
 		 */
-		function getRow(string $sql, array $param): \ArrayObject {
+		function getRow(string $sql, array $param) {
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
-			return new \ArrayObject($query->fetchObject());
+			$row = $query->fetchObject();
+			return $row ? new \ArrayObject($row) : null;
 		}
 
 		/**
@@ -90,7 +91,7 @@
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
-			$result[] = [];
+			$result = [];
 			while($row = $query->fetchColumn())
 				$result[] = $row;
 			return $result;
