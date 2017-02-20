@@ -56,18 +56,18 @@
 		/**
 		 * Return the password used to connect to the database
 		 * @api getUsername
-		 * @return string
+		 * @return string|null
 		 */
-		public function getUsername(): string {
+		public function getUsername() {
 			return $this->username;
 		}
 
 		/**
 		 * Return the password used to connect to the database
 		 * @api getPassword
-		 * @return string
+		 * @return string|null
 		 */
-		public function getPassword(): string {
+		public function getPassword() {
 			return $this->password;
 		}
 
