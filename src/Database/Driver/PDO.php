@@ -90,7 +90,7 @@
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
-			$result[] = [];
+			$result = [];
 			while($row = $query->fetchColumn())
 				$result[] = $row;
 			return $result;
