@@ -57,5 +57,7 @@ Stop the timer and return the current elapsed time.
 Restart the timer and return the current elapsed time.
 ##### > getElapsed() : `float|int`
 Get the elapsed time of this timer.
+##### > getStartTimestamp() : `float|int`
+Returns the timestamp of when this timer started. If the timer is not started, will return 0.
 ##### > __toString() : `string`
 Return the elapsed time as a string.
