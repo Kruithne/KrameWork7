@@ -25,6 +25,7 @@ The formatter is responsible for taking the raw data of errors that occur and pr
 | class | description |
 | ----- | ----------- |
 | `PlainTextErrorFormatter` | Produces a plain-text report with `\n` line-endings (by default). |
+| `HTMLErrorFormatter` | HTML formatted report (uses provided template). |
 | `JSONErrorFormatter` | Produces a raw JSON formatted dump. |
 ##### Dispatchers
 The dispatcher is responsible for taking the generated report and sending it somewhere. Some dispatchers have unique behavior which can be controlled, check out the individual documentation for each dispatcher for more information.
