@@ -171,7 +171,7 @@
 			$this->report->beginReport();
 			$this->report->reportError($error);
 			$this->packReport();
-			$dispatchTerminate = $this->dispatcher->dispatch($this->report);
+			$dispatchTerminate = $this->dispatcher->dispatch($this->report->generate());
 
 			// Terminate script execution if needed.
 			if ($terminate || $dispatchTerminate || $this->errorCount++ >= $this->maxErrors) {
