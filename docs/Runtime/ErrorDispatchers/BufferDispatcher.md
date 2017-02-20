@@ -12,7 +12,7 @@ The `BufferDispatcher` class is an implementation of `IErrorDispatcher` for use 
 
 ___
 ### Functions
-##### > dispatch() : `void`
+##### > dispatch() : `bool`
 Dispatch an error report.
 
 parameter | type | description

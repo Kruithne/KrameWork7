@@ -39,7 +39,7 @@ parameter | type | description
 `$senderName` | `string` | Name of the e-mail sender, defaults to `$sender`.
 `$subject` | `string|array` | Subject/report name string or generator.
 
-##### > dispatch() : `void`
+##### > dispatch() : `bool`
 Dispatch an error report.
 
 parameter | type | description

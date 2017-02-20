@@ -34,7 +34,7 @@ parameter | type | description
 `$directory` | `string` | Directory which report files will be stored in.
 `$name` | `string|array` | File-name or callable naming function.
 
-##### > dispatch() : `void`
+##### > dispatch() : `bool`
 Dispatch an error report.
 
 parameter | type | description

@@ -63,8 +63,9 @@
 		 *
 		 * @api dispatch
 		 * @param IErrorReport|string $report Report to dispatch.
+		 * @return bool
 		 */
-		public function dispatch($report) {
+		public function dispatch($report):bool {
 			if ($this->subjectGen) {
 				$subject = call_user_func(count($this->subjectGen) == 1 ? $this->subjectGen[0] : $this->subjectGen);
 				if ($report instanceof IErrorReport)
@@ -75,6 +76,7 @@
 
 			$this->mail->htmlContent->setContent($report);
 			$this->mail->send();
+			return false;
 		}
 
 		/**

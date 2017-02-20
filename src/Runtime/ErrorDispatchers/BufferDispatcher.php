@@ -43,8 +43,9 @@
 		 *
 		 * @api dispatch
 		 * @param IErrorReport|string $report Report to dispatch.
+		 * @return bool
 		 */
-		public function dispatch($report) {
+		public function dispatch($report):bool {
 			// Clear all output already sent.
 			while (ob_get_level())
 				ob_end_clean();
@@ -57,6 +58,6 @@
 			}
 
 			echo $report;
-			die(); // Death to the living.
+			return true;
 		}
 	}

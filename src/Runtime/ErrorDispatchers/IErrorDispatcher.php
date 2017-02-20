@@ -39,6 +39,7 @@
 		 *
 		 * @api dispatch
 		 * @param IErrorReport|string $report Report to dispatch.
+		 * @return bool Terminate script.
 		 */
-		public function dispatch($report);
+		public function dispatch($report):bool;
 	}

@@ -97,9 +97,11 @@
 				 *
 				 * @api dispatch
 				 * @param IErrorFormatter|string $report Report to dispatch.
+				 * @return bool
 				 */
-				public function dispatch($report) {
+				public function dispatch($report):bool {
 					$GLOBALS['__dispatchedError'] = $report;
+					return false;
 				}
 			};
 		}

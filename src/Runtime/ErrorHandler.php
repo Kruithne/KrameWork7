@@ -100,7 +100,7 @@
 		 * @param int $line Line of code the error occurred on.
 		 */
 		public function catchRuntimeError($type, $message, $file, $line) {
-			$this->catch(new RuntimeError($type, $message, $file, $line));
+			$this->catch(new RuntimeError($type, $message, $file, $line), false);
 		}
 
 		/**
@@ -110,7 +110,51 @@
 		 * @param \Exception $exception The exception which occurred.
 		 */
 		public function catchException(\Exception $exception) {
-			$this->catch(new ExceptionError($exception));
+			$this->catch(new ExceptionError($exception), false);
+		}
+
+		/**
+		 * Catches PHP core errors.
+		 * To enable usage, check the Runtime\ErrorHandler.md document.
+		 *
+		 * @api catchCoreError
+		 * @param string $buffer PHP output buffer.
+		 * @return string
+		 */
+		public function catchCoreError(string $buffer) {
+			if (!$this->active)
+				return $buffer;
+
+			if (preg_match('/<!--\[INTERNAL_ERROR\](.*)-->/Us', $buffer, $parts)) {
+				$this->handleCoreError($parts);
+				die();
+			}
+
+			return $buffer;
+		}
+
+		/**
+		 * Handles a PHP core error.
+		 *
+		 * @internal
+		 * @param $data array
+		 */
+		private function handleCoreError($data) {
+			$error = $data[1]; // Error message.
+			$errorObj = null;
+
+			preg_match('/(.*) error: (.*) in (.*) on line (.*)/', $data, $parts); // Error details.
+
+			$nParts = count($parts);
+			if ($nParts == 5) {
+				$error = $parts[1] . ' - ' . $error;
+				$errorObj = new RuntimeError(E_CORE_ERROR, $error, $parts[3], $parts[4]);
+			} else {
+				$error = 'Internal Error (' . $nParts . ') : ' . $error;
+				$errorObj = new RuntimeError(E_CORE_ERROR, $error, __FILE__, __LINE__);
+			}
+
+			$this->catch($errorObj, true);
 		}
 
 		/**
@@ -118,23 +162,24 @@
 		 *
 		 * @internal
 		 * @param IError $error
+		 * @param bool $terminate Terminate script after error is dispatched.
 		 */
-		private function catch(IError $error) {
+		private function catch(IError $error, bool $terminate) {
 			if (!$this->active)
 				return;
 
-			// Terminate script execution if threshold is reached.
-			if ($this->errorCount++ > $this->maxErrors) {
+			$this->report->beginReport();
+			$this->report->reportError($error);
+			$this->packReport();
+			$dispatchTerminate = $this->dispatcher->dispatch($this->report);
+
+			// Terminate script execution if needed.
+			if ($terminate || $dispatchTerminate || $this->errorCount++ >= $this->maxErrors) {
 				if (!headers_sent())
 					header('HTTP/1.0 500 Internal Error');
 
 				die();
 			}
-
-			$this->report->beginReport();
-			$this->report->reportError($error);
-			$this->packReport();
-			$this->dispatcher->dispatch($this->report);
 		}
 
 		/**

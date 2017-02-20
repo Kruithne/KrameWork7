@@ -56,8 +56,9 @@
 		 *
 		 * @api dispatch
 		 * @param IErrorReport|string $report Report to dispatch.
+		 * @return bool
 		 */
-		public function dispatch($report) {
+		public function dispatch($report):bool {
 			$file = $this->name;
 			if (is_array($file)) // Execute callback.
 				$file = call_user_func(count($file) == 1 ? $file[0] : $file);
@@ -73,6 +74,7 @@
 			}
 
 			file_put_contents($this->path . DIRECTORY_SEPARATOR . $full, $report);
+			return false;
 		}
 
 		/**
