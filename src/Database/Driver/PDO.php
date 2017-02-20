@@ -60,8 +60,8 @@
 			$this->bind($query, $param);
 			$query->execute();
 			$result = [];
-			while($row = $query->fetchObject('\ArrayObject'))
-				$result[] = $row;
+			foreach($query->fetchAll(\PDO::FETCH_OBJ) as $row)
+				$result[] = new \ArrayObject($row);
 			return $result;
 		}
 
