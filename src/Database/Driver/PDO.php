@@ -39,7 +39,7 @@
 		 * @param ConnectionString $connection
 		 */
 		public function __construct(ConnectionString $connection) {
-			$this->connection = new \PDO($connection->__toString());
+			$this->connection = new \PDO($connection->__toString(), $connection->getUsername(), $connection->getPassword());
 			$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 		}
 
