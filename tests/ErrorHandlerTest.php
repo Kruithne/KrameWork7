@@ -9,6 +9,7 @@
 	require_once(__DIR__ . '/../src/Runtime/ErrorHandler.php');
 	require_once(__DIR__ . '/../src/Runtime/ErrorFormatters/IErrorFormatter.php');
 	require_once(__DIR__ . '/../src/Runtime/ErrorDispatchers/IErrorDispatcher.php');
+	require_once(__DIR__ . '/../src/Runtime/ErrorReports/ErrorReport.php');
 
 	class ErrorHandlerTestException extends \Exception {}
 
