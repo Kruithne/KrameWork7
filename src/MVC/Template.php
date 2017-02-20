@@ -58,9 +58,19 @@
 			// Sandbox template execution.
 			new class ($this->file, $this->data) {
 				public function __construct($file, $data) {
-					extract($data);
-					require($file);
+					$this->file = $file;
+					$this->data = $data;
+
+					$this->run();
 				}
+
+				private function run() {
+					extract($this->data);
+					require($this->file);
+				}
+
+				private $file;
+				private $data;
 			};
 
 			return ob_get_clean();
