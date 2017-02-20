@@ -143,7 +143,7 @@
 			$error = $data[1]; // Error message.
 			$errorObj = null;
 
-			preg_match('/(.*) error: (.*) in (.*) on line (.*)/', $data, $parts); // Error details.
+			preg_match('/(.*) error: (.*) in (.*) on line (.*)/', $error, $parts); // Error details.
 
 			$nParts = count($parts);
 			if ($nParts == 5) {
