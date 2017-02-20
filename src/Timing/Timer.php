@@ -94,6 +94,17 @@
 		}
 
 		/**
+		 * Returns the timestamp of when this timer started.
+		 * If the timer is not started, will return 0.
+		 *
+		 * @api getStartTimestamp
+		 * @return float|int
+		 */
+		public function getStartTimestamp() {
+			return $this->startTime ?? 0;
+		}
+
+		/**
 		 * Return the elapsed time as a string.
 		 *
 		 * @api __toString
