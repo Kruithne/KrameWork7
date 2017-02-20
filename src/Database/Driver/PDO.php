@@ -59,7 +59,10 @@
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
-			return $query->fetchAll(\PDO::FETCH_OBJ);
+			$result = [];
+			while($row = $query->fetchObject('\ArrayObject'))
+				$result[] = $row;
+			return $result;
 		}
 
 		/**
@@ -73,7 +76,7 @@
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
-			return $query->fetchObject();
+			return new \ArrayObject($query->fetchObject());
 		}
 
 		/**
