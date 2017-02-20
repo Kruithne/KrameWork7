@@ -28,6 +28,7 @@
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 
 	require_once(__DIR__ . '/../../Mailing/Mail.php');
+	require_once(__DIR__ . '/IErrorDispatcher.php');
 
 	/**
 	 * Class MailDispatcher

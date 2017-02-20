@@ -26,6 +26,8 @@
 
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 
+	require_once(__DIR__ . '/IErrorDispatcher.php');
+
 	/**
 	 * Class FileDispatcher
 	 * Dispatches errors into flat-files.
