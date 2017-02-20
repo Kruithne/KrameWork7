@@ -58,6 +58,7 @@
 		function getAll(string $sql, array $param): array {
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
+			$query->execute();
 			return $query->fetchAll(\PDO::FETCH_OBJ);
 		}
 
@@ -71,6 +72,7 @@
 		function getRow(string $sql, array $param): \ArrayObject {
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
+			$query->execute();
 			return $query->fetchObject();
 		}
 
@@ -84,6 +86,7 @@
 		function getColumn(string $sql, array $param): array {
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
+			$query->execute();
 			$result[] = [];
 			while($row = $query->fetchColumn())
 				$result[] = $row;
@@ -100,6 +103,7 @@
 		function getValue(string $sql, array $param) {
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
+			$query->execute();
 			return $query->fetchColumn();
 		}
 
