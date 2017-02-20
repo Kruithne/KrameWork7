@@ -49,7 +49,7 @@
 		 * @param string $lineEnd Line-endings to use.
 		 * @param bool $wrapPreTags Wrap the report in HTML <pre/> tags.
 		 */
-		public function __construct(string $lineEnd = StringBuilder::LE_UNIX, bool $wrapPreTags  = false) {
+		public function __construct(string $lineEnd = StringBuilder::LE_UNIX, bool $wrapPreTags = false) {
 			$this->wrapPreTags = $wrapPreTags;
 			$this->lineEnd = $lineEnd;
 		}
