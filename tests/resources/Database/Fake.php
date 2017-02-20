@@ -47,9 +47,9 @@
 		 * @api getRow
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @return \ArrayObject
+		 * @return \ArrayObject|null
 		 */
-		function getRow(string $sql, array $param): \ArrayObject {
+		function getRow(string $sql, array $param) {
 			return new \ArrayObject(['sql' => $sql, 'param' => $param]);
 		}
 
