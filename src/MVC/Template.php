@@ -54,9 +54,14 @@
 		 */
 		public function __toString():string {
 			ob_start();
-			extract($this->data);
 
-			require($this->file);
+			// Sandbox template execution.
+			new class ($this->file, $this->data) {
+				public function __construct($file, $data) {
+					extract($data);
+					require($file);
+				}
+			};
 
 			return ob_get_clean();
 		}

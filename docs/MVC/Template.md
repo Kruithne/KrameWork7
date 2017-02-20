@@ -16,7 +16,7 @@ This is a basic use-case example of the `Template` class; actual implementations
 echo new MyPage('Lucy');
 
 // template.php
-<b>Hey <?php echo $this->user; ?>, I remember your name.</b>
+<b>Hey <?=$user;?>, I remember your name.</b>
 
 // MyPage.php
 class MyPage {

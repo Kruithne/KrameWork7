@@ -1,1 +1,1 @@
-<b><?php echo $this->content; ?></b>
+<b><?php echo $content; ?></b>
