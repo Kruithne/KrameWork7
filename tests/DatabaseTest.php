@@ -46,7 +46,7 @@
 			$cache = new DummyCache();
 			$connection = new ConnectionString('test:dsn', 'user', 'password');
 			$database = new Database($connection, Database::DB_DRIVER_FAKE);
-			$cached = new \KrameWork\Database\DatabaseCache($cache, $database);
+			$cached = new \KrameWork\Database\DatabaseCache($cache, $database, 10);
 			$data = $cached->getAll('TESTING', [1], 10);
 			$key = key($cache->data);
 			$this->assertEquals($cache->data[$key], $data);
