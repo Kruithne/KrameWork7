@@ -4,6 +4,7 @@
 * **Examples** - Usage examples.
 * **Constants** - Constants exposed by this class.
 * **Functions** - Comprehensive list of all functions in the class.
+
 ___
 ### Examples
 ##### General Usage
