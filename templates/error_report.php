@@ -20,7 +20,6 @@
 		background-color: #92bde0;
 	}
 </style>
-<!--ERROR_HEADER-->
 <table class="error-report-table">
 	<thead>
 		<tr>
@@ -42,7 +41,6 @@
 		</tr>
 	</tbody>
 </table>
-<!--/ERROR_HEADER-->
 <table class="error-report-table">
 	<thead>
 		<tr>
