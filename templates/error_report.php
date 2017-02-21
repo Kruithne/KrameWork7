@@ -23,7 +23,7 @@
 <table class="error-report-table">
 	<thead>
 		<tr>
-			<td colspan="2"><!--PREFIX--> : <!--NAME--></td>
+			<th colspan="2"><!--PREFIX--> : <!--NAME--></th>
 		</tr>
 	</thead>
 	<tbody>
