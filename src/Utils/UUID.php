@@ -28,13 +28,37 @@
 	 * Class UUID
 	 * UUID generation functions.
 	 *
-	 * Some functions in this class contain modified code originally by Andrew Moore.
-	 *
 	 * @package KrameWork\Utils
-	 * @author Kruithne <kruithne@gmail.com>
+	 * @author Kruithne <kruithne@gmail.com> (KW7 implementation)
+	 * @author Andrew Moore (v3, v4, v5 base)
+	 * @author Ben Ramsey <ben@benramsey.com> (class constants)
 	 */
 	class UUID
 	{
+		/**
+		 * When this namespace is specified, the name string is a fully-qualified domain name.
+		 * @link http://tools.ietf.org/html/rfc4122#appendix-C
+		 */
+		const NAMESPACE_DNS = '6ba7b810-9dad-11d1-80b4-00c04fd430c8';
+
+		/**
+		 * When this namespace is specified, the name string is a URL.
+		 * @link http://tools.ietf.org/html/rfc4122#appendix-C
+		 */
+		const NAMESPACE_URL = '6ba7b811-9dad-11d1-80b4-00c04fd430c8';
+
+		/**
+		 * When this namespace is specified, the name string is an ISO OID.
+		 * @link http://tools.ietf.org/html/rfc4122#appendix-C
+		 */
+		const NAMESPACE_OID = '6ba7b812-9dad-11d1-80b4-00c04fd430c8';
+
+		/**
+		 * When this namespace is specified, the name string is an X.500 DN in DER or a text output format.
+		 * @link http://tools.ietf.org/html/rfc4122#appendix-C
+		 */
+		const NAMESPACE_X500 = '6ba7b814-9dad-11d1-80b4-00c04fd430c8';
+
 		/**
 		 * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.
 		 * @link http://tools.ietf.org/html/rfc4122#section-4.1.7
