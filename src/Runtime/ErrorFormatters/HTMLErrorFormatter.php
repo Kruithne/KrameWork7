@@ -26,7 +26,7 @@
 		 * @api beginReport
 		 */
 		public function beginReport() {
-			$this->data = ['data' => []];
+			$this->data = [];
 			$this->basicData = [];
 		}
 
@@ -58,7 +58,7 @@
 		 * @param array $arr Array of data.
 		 */
 		public function reportArray(string $name, array $arr) {
-			$this->data['data'][$name] = $arr;
+			$this->data[$name] = $arr;
 		}
 
 		/**
@@ -69,7 +69,7 @@
 		 * @param string $str Data string.
 		 */
 		public function reportString(string $name, string $str) {
-			$this->data['data'][$name] = $str;
+			$this->data[$name] = $str;
 		}
 
 		/**
@@ -85,11 +85,9 @@
 			foreach ($this->basicData as $key => $value)
 				$report->$key = $value;
 
-			foreach ($this->data as $key => $value) {
-				if ($key == 'data')
-					continue;
-
-				$report->$key = $value;
+			// Inject data frames.
+			foreach ($this->data as $name => $data) {
+				// ToDo: Implement.
 			}
 
 			return new ErrorReport($this->error, 'text/html; charset=utf-8', '.html', $report);
