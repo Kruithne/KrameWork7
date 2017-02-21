@@ -73,9 +73,3 @@ parameter | type | description
 
 ##### > deactivate() : `void`
 Disable this error handler, restoring handlers/levels to their state when this error handler was created.
-##### > catchCoreError() : `string`
-Catches PHP core errors. To enable usage, check the Runtime\ErrorHandler.md document.
-
-parameter | type | description
---- | --- | ---
-`$buffer` | `string` | PHP output buffer.
