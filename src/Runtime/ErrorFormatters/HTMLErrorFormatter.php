@@ -81,13 +81,30 @@
 		public function generate():IErrorReport {
 			$report = new HTMLReportTemplate($this->getTemplate());
 
-			// Inject basic data values into the template.
+			// Handle basic data.
 			foreach ($this->basicData as $key => $value)
 				$report->$key = $value;
 
-			// Inject data frames.
+			// Handle data sections.
+			$stringSection = $report->getSection('DATA_SET_STRING');
+			$arraySection = $report->getSection('DATA_SET_ARRAY');
+
 			foreach ($this->data as $name => $data) {
-				// ToDo: Implement.
+				if (is_array($data)) {
+					$frame = $arraySection->createFrame();
+					$frame->name = $name;
+
+					$frameSection = $report->getSection('DATA_SET_FRAME');
+					foreach ($data as $nodeKey => $nodeValue) {
+						$nodeFrame = $frameSection->createFrame();
+						$nodeFrame->name = $nodeKey;
+						$nodeValue->data = $this->getVariableString($nodeValue);
+					}
+				} else {
+					$frame = $stringSection->createFrame();
+					$frame->name = $name;
+					$frame->data = $this->getVariableString($data);
+				}
 			}
 
 			return new ErrorReport($this->error, 'text/html; charset=utf-8', '.html', $report);
