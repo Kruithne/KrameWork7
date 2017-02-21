@@ -1,20 +1,3 @@
-<!--
-	* prefix - Error prefix, such as 'EXCEPTION'.
-	* name - Name of the error (exception name, runtime error type, etc).
-	* message - Description of the error.
-	* timestamp - UNIX timestamp for when the error occurred.
-	* occurred - RFC822 date/time of when the error occurred.
-	* file - Path to the file which encountered the error.
-	* line - Line of code within the file where the error occurred.
-	* data - Key/value array containing data sets for this report (values are string or array).
-	* trace - Stacktrace of the error (array)
-		* file - Path to the file for this stack frame.
-		* line - Line of the file for this stack frame.
-		* class - Class name for this stack frame.
-		* type - Operator type, such as :: for static.
-		* function - Name of the function for this stack frame.
-		* args - Key/value array of arguments for this frame.
--->
 <style type="text/css">
 	.error-report-table {
 		font-family: "Courier New", Courier, monospace;
@@ -40,21 +23,21 @@
 <table class="error-report-table">
 	<thead>
 		<tr>
-			<th colspan="2"><?= $prefix; ?> : <?= $name; ?></th>
+			<td colspan="2"><!--PREFIX--> : <!--NAME--></td>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
 			<th>Message:</th>
-			<td><?= $message; ?></td>
+			<td><!--MESSAGE--></td>
 		</tr>
 		<tr>
 			<th>File:</th>
-			<td><?= $file; ?> (Line <?=$line; ?>)</td>
+			<td><!--FILE--> (Line <!--LINE-->)</td>
 		</tr>
 		<tr>
 			<th>Occurred:</th>
-			<td><?= $occurred; ?> (<?=$timestamp; ?>)</td>
+			<td><!--OCCURRED--> (<!--TIMESTAMP-->)</td>
 		</tr>
 	</tbody>
 </table>
@@ -65,64 +48,42 @@
 		</tr>
 	</thead>
 	<tbody>
-	<?php
-		$index = 0;
-		foreach ($trace as $frame) {
-			$args = [];
-			foreach ($frame['args'] ?? [] as $key => $arg)
-				$args[$key] = $this->getVariableString($arg);
-
-				$frameFile = $frame['file'] ?? 'interpreter';
-				$frameLine = $frame['line'] ?? '?';
-				$frameClass = $frame['class'] ?? '';
-				$frameType = $frame['type'] ?? '';
-				$frameFunction = $frame['function'] ?? '';
-			?>
-			<tr>
-				<th>#<?= $index++; ?></th>
-				<td><?= sprintf('%s:%s - %s%s%s(%s)', $frameFile, $frameLine, $frameClass, $frameType, $frameFunction, implode(', ', $args)); ?></td>
-			</tr>
-			<?php
-		}
-	?>
+	<!--TRACE_FRAME-->
+	<tr>
+		<th><!--INDEX--></th>
+		<td><!--FILE-->:<!--LINE--> - <!--CLASS--><!--TYPE--><!--FUNCTION-->(<!--ARGS-->)</td>
+	</tr>
+	<!--/TRACE_FRAME-->
 	</tbody>
 </table>
-<?php
-	foreach ($data as $setName => $set) {
-	?>
-	<table class="error-report-table">
-		<thead>
+<!--DATA_SET_STRING-->
+<table class="error-report-table">
+	<thead>
+		<tr>
+			<th colspan="2"><!--NAME--></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="2"><!--DATA--></td>
+		</tr>
+	</tbody>
+</table>
+<!--/DATA_SET_STRING-->
+<!--DATA_SET_ARRAY-->
+<table class="error-report-table">
+	<thead>
+	<tr>
+		<th colspan="2"><!--NAME--></th>
+	</tr>
+	</thead>
+	<tbody>
+		<!--DATA_SET_FRAME-->
 			<tr>
-				<th colspan="2"><?= $setName; ?></th>
+				<th><!--NAME--></th>
+				<td><!--DATA--></td>
 			</tr>
-		</thead>
-		<tbody>
-		<?php
-			if (is_array($set)) {
-				if (count($set)) {
-					foreach ($set as $nodeKey => $nodeValue) {
-						?>
-						<tr>
-							<th><?= $nodeKey; ?></th>
-							<td><?= $this->getVariableString($nodeValue); ?></td>
-						</tr>
-						<?php
-					}
-				} else {
-					?>
-					<tr>
-						<td colspan="2">No data to display.</td>
-					</tr>
-					<?php
-				}
-			} else {
-				?>
-				<td colspan="2"><?= $this->getVariableString($set); ?></td>
-				<?php
-			}
-		?>
-		</tbody>
-	</table>
-	<?php
-	}
-?>
+		<!--/DATA_SET_FRAME-->
+	</tbody>
+</table>
+<!--/DATA_SET_ARRAY-->
