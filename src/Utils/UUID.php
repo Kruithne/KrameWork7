@@ -66,12 +66,12 @@
 		const NIL = '00000000-0000-0000-0000-000000000000';
 
 		/**
-		 * Generate an RFC 4122 compliant v3 UUID.
+		 * Generate an RFC 4122 compliant v3 (namespace based) UUID.
 		 * Returns false when given an invalid namespace.
 		 *
 		 * @api generate_v3
-		 * @param $namespace
-		 * @param $name
+		 * @param string $namespace UUID namespace.
+		 * @param string $name UUID name.
 		 * @return string
 		 */
 		public static function generate_v3(string $namespace, string $name):string {
@@ -79,7 +79,7 @@
 		}
 
 		/**
-		 * Generate an RFC 4122 compliant v4 UUID.
+		 * Generate an RFC 4122 compliant v4 (pseudo-random) UUID.
 		 *
 		 * @api generate_v4
 		 * @return string
@@ -95,7 +95,7 @@
 		}
 
 		/**
-		 * Generate an RFC 4122 compliant v5 UUID.
+		 * Generate an RFC 4122 compliant v5 (namespace based) UUID.
 		 * Returns false when given an invalid namespace.
 		 *
 		 * @api generate_v5
