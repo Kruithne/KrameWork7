@@ -36,7 +36,7 @@
 	class UUID
 	{
 		/**
-		 * Generate an RFC 4211 compliant v3 UUID.
+		 * Generate an RFC 4122 compliant v3 UUID.
 		 * Returns false when given an invalid namespace.
 		 *
 		 * @api generate_v3
@@ -49,7 +49,7 @@
 		}
 
 		/**
-		 * Generate an RFC 4211 compliant v4 UUID.
+		 * Generate an RFC 4122 compliant v4 UUID.
 		 *
 		 * @api generate_v4
 		 * @return string
@@ -65,7 +65,7 @@
 		}
 
 		/**
-		 * Generate an RFC 4211 compliant v5 UUID.
+		 * Generate an RFC 4122 compliant v5 UUID.
 		 * Returns false when given an invalid namespace.
 		 *
 		 * @api generate_v5
@@ -78,12 +78,12 @@
 		}
 
 		/**
-		 * Generate an RFC 4211 compliant namespace UUID.
+		 * Generate an RFC 4122 compliant namespace UUID.
 		 * Currently supports v3 and v5.
 		 * Returns false when given an invalid namespace or version.
 		 *
 		 * @internal
-		 * @param string $namespace RFC 4211 compliant namespace UUID.
+		 * @param string $namespace RFC 4122 compliant namespace UUID.
 		 * @param string $name Name for generation.
 		 * @param int $version UUID version.
 		 * @return string|bool
@@ -117,7 +117,7 @@
 		}
 
 		/**
-		 * Check if the given UUID is RFC 4211 compliant.
+		 * Check if the given UUID is RFC 4122 compliant.
 		 *
 		 * @api isValid
 		 * @param string $uuid
