@@ -99,8 +99,8 @@
 		 * Returns false when given an invalid namespace.
 		 *
 		 * @api generate_v5
-		 * @param string $namespace
-		 * @param string $name
+		 * @param string $namespace UUID namespace.
+		 * @param string $name UUID name.
 		 * @return string
 		 */
 		public static function generate_v5(string $namespace, string $name):string {
