@@ -85,7 +85,8 @@
 		 * @return IErrorReport
 		 */
 		public function generate():IErrorReport {
-			ob_start();
+			if (!ob_get_status())
+				ob_start();
 
 			// Sandbox template execution.
 			new class ($this->template, $this->data) {
