@@ -89,6 +89,22 @@ $injector->addComponent("MyClassA");
 $injector->addComponent("MyClassB");
 $injector->bind("INotReal", "MyClassA");
 ```
+##### Cached dependency graph
+To make your IoC-powered application run faster, you can combine the DependencyInjector with an IDataCache.
+Just make sure your cache key is unique for the entire server!
+You should also add some kind of version number to the key, so you can make sure you get the correct graph if the application is changed.
+```php
+$cache = new APCu();
+if(!$cache->exists('__my_app_kernel')) {
+	$kernel = new DependencyInjector();
+	$kernel->addComponent('SomeFancyService');
+	$kernel->addComponent('SomeWeirdLogicLayer');
+	$kernel->addComponent('YourTheManNowDawg');
+	$cache->__my_app_kernel = $kernel;
+} else {
+	$kernel = $cache->__my_app_kernel;
+}
+```
 ___
 ### Constants
 Constants available in the `DependencyInjector` class:
