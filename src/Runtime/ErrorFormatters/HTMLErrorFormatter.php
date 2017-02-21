@@ -43,7 +43,7 @@
 				'name' => $error->getName(),
 				'file' => $error->getFile(),
 				'line' => $error->getLine(),
-				'trace' => $error->getTrace(),
+				//'trace' => $error->getTrace(),
 				'occurred' => date(DATE_RFC822),
 				'prefix' => $error->getPrefix(),
 				'message' => $error->getMessage()
@@ -98,7 +98,7 @@
 					foreach ($data as $nodeKey => $nodeValue) {
 						$nodeFrame = $frameSection->createFrame();
 						$nodeFrame->name = $nodeKey;
-						$nodeValue->data = $this->getVariableString($nodeValue);
+						$nodeFrame->data = $this->getVariableString($nodeValue);
 					}
 				} else {
 					$frame = $stringSection->createFrame();
