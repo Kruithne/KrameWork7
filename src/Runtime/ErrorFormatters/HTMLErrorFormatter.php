@@ -8,28 +8,16 @@
 
 	require_once(__DIR__ . '/../../Reporting/HTMLReport/HTMLReportTemplate.php');
 
-	class InvalidTemplateFileException extends \Exception {}
-
 	class HTMLErrorFormatter implements IErrorFormatter
 	{
 		/**
 		 * HTMLErrorFormatter constructor.
 		 *
 		 * @api __construct
-		 * @param string|null $template Template file to use.
-		 * @throws InvalidTemplateFileException
+		 * @param string|null $templatePath Path to HTML template.
 		 */
-		public function __construct($template = null) {
-			if ($template === null)
-				$template = __DIR__ . '/../../../templates/error_report.php';
-
-			if (!file_exists($template))
-				throw new InvalidTemplateFileException('Cannot resolve template file.');
-
-			if (!is_file($template))
-				throw new InvalidTemplateFileException('Invalid template file given.');
-
-			$this->template = $template;
+		public function __construct($templatePath = null) {
+			$this->templatePath = $templatePath;
 		}
 
 		/**
@@ -88,8 +76,7 @@
 		 * @return IErrorReport
 		 */
 		public function generate():IErrorReport {
-			$template = file_get_contents($this->template);
-			$report = new HTMLReportTemplate($template);
+			$report = new HTMLReportTemplate($this->getTemplate());
 
 			foreach ($this->data as $key => $value) {
 				if ($key == 'data')
@@ -119,6 +106,43 @@
 		}
 
 		/**
+		 * Get the template for this report.
+		 *
+		 * @internal
+		 * @return string
+		 */
+		private function getTemplate():string {
+			if ($this->template !== null)
+				return $this->template;
+
+			if ($this->templatePath !== null && $this->loadTemplateFile($this->templatePath))
+				return $this->template;
+
+			if ($this->loadTemplateFile(__DIR__ . '/../../../templates/error_report.php'))
+				return $this->template;
+
+			return '';
+		}
+
+		/**
+		 * Attempt to load template data from a file.
+		 *
+		 * @internal
+		 * @param string $file File to load the template from.
+		 * @return bool
+		 */
+		private function loadTemplateFile(string $file):bool {
+			if (file_exists($file) && is_file($file)) {
+				$data = file_get_contents($file);
+				if ($data !== false) {
+					$this->template = $data;
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/**
 		 * @var IError
 		 */
 		protected $error;
@@ -132,4 +156,9 @@
 		 * @var string
 		 */
 		protected $template;
+
+		/**
+		 * @var string
+		 */
+		protected $templatePath;
 	}
