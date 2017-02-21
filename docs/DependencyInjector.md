@@ -93,6 +93,9 @@ $injector->bind("INotReal", "MyClassA");
 To make your IoC-powered application run faster, you can combine the DependencyInjector with an IDataCache.
 Just make sure your cache key is unique for the entire server!
 You should also add some kind of version number to the key, so you can make sure you get the correct graph if the application is changed.
+Objects added to the kernel before caching it, will be cached in their entirety, enabling further savings on objects that are costly to construct.
+Any objects constructed by the kernel before saving the kernel to cache, will also be cached.
+Be mindful of this behaviour if this is not what you want for a given class.
 ```php
 $cache = new APCu();
 if(!$cache->exists('__my_app_kernel')) {
@@ -100,6 +103,7 @@ if(!$cache->exists('__my_app_kernel')) {
 	$kernel->addComponent('SomeFancyService');
 	$kernel->addComponent('SomeWeirdLogicLayer');
 	$kernel->addComponent('YourTheManNowDawg');
+	$kernel->addComponent(new ExpensiveClass());
 	$cache->__my_app_kernel = $kernel;
 } else {
 	$kernel = $cache->__my_app_kernel;
