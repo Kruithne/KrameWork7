@@ -174,7 +174,7 @@
 			if ($this->templatePath !== null && $this->loadTemplateFile($this->templatePath))
 				return $this->template;
 
-			if ($this->loadTemplateFile(__DIR__ . '/../../../templates/error_report.php'))
+			if ($this->loadTemplateFile(__DIR__ . '/../../../templates/error_report.html'))
 				return $this->template;
 
 			return '';
