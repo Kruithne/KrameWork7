@@ -13,14 +13,9 @@
 		 */
 		public function __construct(string $tag, string $content) {
 			$this->frames = [];
-			preg_match('/<!--' . $tag . '-->(.*?)<!--\/' . $tag . '-->/si', $content, $matches, PREG_OFFSET_CAPTURE);
+			$this->pattern = '/<!--' . $tag . '-->(.*?)<!--\/' . $tag . '-->/si';
 
-			if (count($matches) == 2) {
-				$this->isValid = true;
-				$this->sectionStart = $matches[0][1];
-				$this->sectionLength = \strlen($matches[0][0]);
-				$this->content = $matches[1][0];
-			}
+			$this->validate($content);
 		}
 
 		/**
@@ -67,6 +62,26 @@
 		}
 
 		/**
+		 * Validate the content/position of this section in the given chunk.
+		 *
+		 * @api validate
+		 * @param string $content Content that contains the section.
+		 * @return bool
+		 */
+		public function validate(string $content):bool {
+			preg_match($this->pattern, $content, $matches, PREG_OFFSET_CAPTURE);
+
+			if (count($matches) == 2) {
+				$this->isValid = true;
+				$this->sectionStart = $matches[0][1];
+				$this->sectionLength = \strlen($matches[0][0]);
+				$this->content = $matches[1][0];
+				return true;
+			}
+			return false;
+		}
+
+		/**
 		 * Compile this section and return the result.
 		 *
 		 * @return string
@@ -79,6 +94,11 @@
 
 			return $result;
 		}
+
+		/**
+		 * @var string
+		 */
+		protected $pattern;
 
 		/**
 		 * @var bool

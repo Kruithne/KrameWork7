@@ -56,7 +56,7 @@
 
 			// Section frame replacements.
 			foreach ($this->sections as $section) {
-				//var_dump($section);
+				$section->validate($content);
 				$contentStart = substr($content, 0, $section->getSectionStart());
 				$contentEnd = substr($content, $section->getSectionStart() + $section->getSectionLength());
 
