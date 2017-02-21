@@ -53,7 +53,7 @@ $errHandler = new ErrorHandler($errFormatter, $errDispatcher);
 
 ob_start([$errHandler, 'catchCoreError']); // Allows ErrorHandler to catch core errors.
 ```
-With the example above, if a core/internal error occurrs, the error will be dispatched (in this instance to a file named `error.log`) and the script will be terminated. It is highly recommended that you configure your web server to dispatch an error document when server-response `500` is sent.
+With the example above, if a core/internal error occurs, the error will be dispatched (in this instance to a file named `error.log`) and the script will be terminated. It is highly recommended that you configure your web server to dispatch an error document when server-response `500` is sent.
 ___
 ### Functions
 ##### > __construct() : `void`
@@ -73,9 +73,3 @@ parameter | type | description
 
 ##### > deactivate() : `void`
 Disable this error handler, restoring handlers/levels to their state when this error handler was created.
-##### > catchCoreError() : `string`
-Catches PHP core errors. To enable usage, check the Runtime\ErrorHandler.md document.
-
-parameter | type | description
---- | --- | ---
-`$buffer` | `string` | PHP output buffer.

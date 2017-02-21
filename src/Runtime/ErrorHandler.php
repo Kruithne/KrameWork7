@@ -117,7 +117,7 @@
 		 * Catches PHP core errors.
 		 * To enable usage, check the Runtime\ErrorHandler.md document.
 		 *
-		 * @api catchCoreError
+		 * @internal
 		 * @param string $buffer PHP output buffer.
 		 * @return string
 		 */
