@@ -88,21 +88,23 @@
 
 			// Handle stacktrace.
 			$traceSection = $report->getSection('TRACE_FRAME');
-			$index = 0;
+			if ($traceSection->isValid()) {
+				$index = 0;
 
-			foreach ($this->trace as $traceFrame) {
-				$args = [];
-				foreach ($traceFrame['args'] ?? [] as $key => $arg)
-					$args[$key] = $this->getVariableString($arg);
+				foreach ($this->trace as $traceFrame) {
+					$args = [];
+					foreach ($traceFrame['args'] ?? [] as $key => $arg)
+						$args[$key] = $this->getVariableString($arg);
 
-				$frame = $traceSection->createFrame();
-				$frame->index = $index++;
-				$frame->file = $traceFrame['file'] ?? 'interpreter';
-				$frame->line = $traceFrame['line'] ?? '?';
-				$frame->class = $traceFrame['class'] ?? '';
-				$frame->type = $traceFrame['type'] ?? '';
-				$frame->function = $traceFrame['function'] ?? '';
-				$frame->args = implode(', ', $args);
+					$frame = $traceSection->createFrame();
+					$frame->index = $index++;
+					$frame->file = $traceFrame['file'] ?? 'interpreter';
+					$frame->line = $traceFrame['line'] ?? '?';
+					$frame->class = $traceFrame['class'] ?? '';
+					$frame->type = $traceFrame['type'] ?? '';
+					$frame->function = $traceFrame['function'] ?? '';
+					$frame->args = implode(', ', $args);
+				}
 			}
 
 			// Handle data sections.
@@ -111,6 +113,9 @@
 
 			foreach ($this->data as $name => $data) {
 				if (is_array($data)) {
+					if (!$arraySection->isValid())
+						continue;
+
 					$frame = $arraySection->createFrame();
 					$frame->name = $name;
 
@@ -127,6 +132,9 @@
 						$nodeFrame->data = 'No data to display.';
 					}
 				} else {
+					if (!$stringSection->isValid())
+						continue;
+
 					$frame = $stringSection->createFrame();
 					$frame->name = $name;
 					$frame->data = $this->getVariableString($data);
