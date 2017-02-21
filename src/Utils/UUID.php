@@ -150,7 +150,7 @@
 		 * Check if the given UUID is RFC 4122 compliant.
 		 *
 		 * @api isValid
-		 * @param string $uuid
+		 * @param string $uuid UUID to validate.
 		 * @return bool
 		 */
 		public static function isValid(string $uuid):bool {
