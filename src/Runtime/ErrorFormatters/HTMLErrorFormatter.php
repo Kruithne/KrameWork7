@@ -1,9 +1,12 @@
 <?php
 	namespace KrameWork\Runtime\ErrorFormatters;
 
+	use KrameWork\Reporting\HTMLReport\HTMLReportTemplate;
 	use KrameWork\Runtime\ErrorReports\ErrorReport;
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
+
+	require_once(__DIR__ . '/../../Reporting/HTMLReport/HTMLReportTemplate.php');
 
 	class InvalidTemplateFileException extends \Exception {}
 
@@ -85,45 +88,34 @@
 		 * @return IErrorReport
 		 */
 		public function generate():IErrorReport {
-			if (!ob_get_status())
-				ob_start();
+			$template = file_get_contents($this->template);
+			$report = new HTMLReportTemplate($template);
 
-			// Sandbox template execution.
-			new class ($this->template, $this->data) {
-				public function __construct($file, $data) {
-					$this->file = $file;
-					$this->data = $data;
+			foreach ($this->data as $key => $value) {
+				if ($key == 'data')
+					continue;
 
-					$this->run();
-				}
+				$report->$key = $value;
+			}
 
-				private function getVariableString($var):string {
-					$type = gettype($var);
-					if ($type == 'object') {
-						$type = get_class($var);
-						if (!method_exists($var, '__toString'))
-							$var = $type . ' instance';
+			return new ErrorReport($this->error, 'text/html; charset=utf-8', '.html', $report);
+		}
 
-					} elseif ($type == 'string') {
-						$length = \strlen($var);
-						$var = "({$length}) \"{$var}\"";
-					} elseif ($type == 'array') {
-						$var = count($var) . ' items';
-					}
+		private function getVariableString($var):string {
+			$type = gettype($var);
+			if ($type == 'object') {
+				$type = get_class($var);
+				if (!method_exists($var, '__toString'))
+					$var = $type . ' instance';
 
-					return "({$type}) {$var}";
-				}
+			} elseif ($type == 'string') {
+				$length = \strlen($var);
+				$var = "({$length}) \"{$var}\"";
+			} elseif ($type == 'array') {
+				$var = count($var) . ' items';
+			}
 
-				private function run() {
-					extract($this->data);
-					require($this->file);
-				}
-
-				private $file;
-				private $data;
-			};
-
-			return new ErrorReport($this->error, 'text/html; charset=utf-8', '.html', ob_get_clean());
+			return "({$type}) {$var}";
 		}
 
 		/**
