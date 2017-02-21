@@ -28,6 +28,7 @@
 		public function beginReport() {
 			$this->data = [];
 			$this->basicData = [];
+			$this->trace = [];
 		}
 
 		/**
@@ -38,12 +39,12 @@
 		 */
 		public function reportError(IError $error) {
 			$this->error = $error;
+			$this->trace = $error->getTrace();
 			$this->basicData = [
 				'timestamp' => time(),
 				'name' => $error->getName(),
 				'file' => $error->getFile(),
 				'line' => $error->getLine(),
-				//'trace' => $error->getTrace(),
 				'occurred' => date(DATE_RFC822),
 				'prefix' => $error->getPrefix(),
 				'message' => $error->getMessage()
@@ -84,6 +85,25 @@
 			// Handle basic data.
 			foreach ($this->basicData as $key => $value)
 				$report->$key = $value;
+
+			// Handle stacktrace.
+			$traceSection = $report->getSection('TRACE_FRAME');
+			$index = 0;
+
+			foreach ($this->trace as $traceFrame) {
+				$args = [];
+				foreach ($traceFrame['args'] ?? [] as $key => $arg)
+					$args[$key] = $this->getVariableString($arg);
+
+				$frame = $traceSection->createFrame();
+				$frame->index = $index++;
+				$frame->file = $traceFrame['file'] ?? 'interpreter';
+				$frame->line = $traceFrame['line'] ?? '?';
+				$frame->class = $traceFrame['class'] ?? '';
+				$frame->type = $traceFrame['type'] ?? '';
+				$frame->function = $traceFrame['function'] ?? '';
+				$frame->args = implode(', ', $args);
+			}
 
 			// Handle data sections.
 			$stringSection = $report->getSection('DATA_SET_STRING');
@@ -184,6 +204,11 @@
 		 * @var array
 		 */
 		protected $basicData;
+
+		/**
+		 * @var array
+		 */
+		protected $trace;
 
 		/**
 		 * @var string
