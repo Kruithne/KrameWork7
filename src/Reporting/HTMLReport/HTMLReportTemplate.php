@@ -26,6 +26,13 @@
 
 	require_once(__DIR__ . '/HTMLReportSection.php');
 
+	/**
+	 * Class HTMLReportTemplate
+	 * Represents a chunk of HTML for templating.
+	 *
+	 * @package KrameWork\Reporting\HTMLReport
+	 * @author Kruithne <kruithne@gmail.com>
+	 */
 	class HTMLReportTemplate
 	{
 		/**

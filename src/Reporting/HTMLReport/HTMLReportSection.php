@@ -24,6 +24,13 @@
 
 	namespace KrameWork\Reporting\HTMLReport;
 
+	/**
+	 * Class HTMLReportSection
+	 * Represents a specific section in a HTML template.
+	 *
+	 * @package KrameWork\Reporting\HTMLReport
+	 * @author Kruithne <kruithne@gmail.com>
+	 */
 	class HTMLReportSection
 	{
 		/**
