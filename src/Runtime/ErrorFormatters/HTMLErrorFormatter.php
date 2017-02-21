@@ -15,9 +15,11 @@
 		 *
 		 * @api __construct
 		 * @param string|null $templatePath Path to HTML template.
+		 * @param string|null $cssPath CSS file to be prepended to the report.
 		 */
-		public function __construct($templatePath = null) {
+		public function __construct($templatePath = null, $cssPath = null) {
 			$this->templatePath = $templatePath;
+			$this->cssPath = $cssPath;
 		}
 
 		/**
@@ -171,13 +173,27 @@
 			if ($this->template !== null)
 				return $this->template;
 
-			if ($this->templatePath !== null && $this->loadTemplateFile($this->templatePath))
-				return $this->template;
+			$template = '';
 
-			if ($this->loadTemplateFile(__DIR__ . '/../../../templates/error_report.html'))
-				return $this->template;
+			// Prepend CSS file.
+			if ($this->cssPath !== null) {
+				$css = $this->loadTemplateFile($this->cssPath);
+				if ($css !== null)
+					$template .= '<style type="text/css">' . $css . '</style>';
+			}
 
-			return '';
+			// Attempt to load user-provided template.
+			if ($this->templatePath !== null) {
+				$data = $this->loadTemplateFile($this->templatePath);
+				if ($data !== null) {
+					$template .= $data;
+					return $template;
+				}
+			}
+
+			// Fallback to KW7 built-in template if possible.
+			$template .= $this->loadTemplateFile(__DIR__ . '/../../../templates/error_report.html') ?? '';
+			return $template;
 		}
 
 		/**
@@ -185,17 +201,16 @@
 		 *
 		 * @internal
 		 * @param string $file File to load the template from.
-		 * @return bool
+		 * @return string|null
 		 */
-		private function loadTemplateFile(string $file):bool {
+		private function loadTemplateFile(string $file) {
 			if (file_exists($file) && is_file($file)) {
 				$data = file_get_contents($file);
 				if ($data !== false) {
-					$this->template = $data;
-					return true;
+					return $data;
 				}
 			}
-			return false;
+			return null;
 		}
 
 		/**
@@ -219,12 +234,17 @@
 		protected $trace;
 
 		/**
-		 * @var string
+		 * @var string|null
 		 */
 		protected $template;
 
 		/**
-		 * @var string
+		 * @var string|null
 		 */
 		protected $templatePath;
+
+		/**
+		 * @var string|null
+		 */
+		protected $cssPath;
 	}

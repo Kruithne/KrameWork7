@@ -14,7 +14,8 @@ HTMLErrorFormatter constructor.
 
 parameter | type | description
 --- | --- | ---
-`$template` | `string|null` | Template file to use.
+`$templatePath` | `string|null` | Path to a HTML template to use.
+`$cssPath` | `string|null` | Path to a CSS file to prepend.
 
 exception | reason
 --- | ---
