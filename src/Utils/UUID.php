@@ -36,15 +36,21 @@
 	class UUID
 	{
 		/**
+		 * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.
+		 * @link http://tools.ietf.org/html/rfc4122#section-4.1.7
+		 */
+		const NIL = '00000000-0000-0000-0000-000000000000';
+
+		/**
 		 * Generate an RFC 4122 compliant v3 UUID.
 		 * Returns false when given an invalid namespace.
 		 *
 		 * @api generate_v3
 		 * @param $namespace
 		 * @param $name
-		 * @return bool|string
+		 * @return string
 		 */
-		public static function generate_v3(string $namespace, string $name) {
+		public static function generate_v3(string $namespace, string $name):string {
 			return self::generateNamespaceUUID($namespace, $name, 3);
 		}
 
@@ -71,9 +77,9 @@
 		 * @api generate_v5
 		 * @param string $namespace
 		 * @param string $name
-		 * @return bool|string
+		 * @return string
 		 */
-		public static function generate_v5(string $namespace, string $name) {
+		public static function generate_v5(string $namespace, string $name):string {
 			return self::generateNamespaceUUID($namespace, $name, 5);
 		}
 
@@ -86,16 +92,16 @@
 		 * @param string $namespace RFC 4122 compliant namespace UUID.
 		 * @param string $name Name for generation.
 		 * @param int $version UUID version.
-		 * @return string|bool
+		 * @return string
 		 */
-		private static function generateNamespaceUUID(string $namespace, string $name, int $version) {
+		private static function generateNamespaceUUID(string $namespace, string $name, int $version):string {
 			// Supports v3 or v5 namespace UUID generation.
 			if ($version != 3 && $version != 5)
-				return false;
+				return self::NIL;
 
 			// Ensure valid namespace UUID.
 			if (!self::isValid($namespace))
-				return false;
+				return self::NIL;
 
 			$hex = str_replace(['-', '{', '}'], '', $namespace); // Hex components.
 			$bin = ''; // Binary value.
