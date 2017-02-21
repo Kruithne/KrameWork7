@@ -28,6 +28,8 @@
 	 * Class UUID
 	 * UUID generation functions.
 	 *
+	 * Some functions in this class contain modified code originally by Andrew Moore.
+	 *
 	 * @package KrameWork\Utils
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
