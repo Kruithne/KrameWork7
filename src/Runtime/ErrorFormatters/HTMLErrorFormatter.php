@@ -94,11 +94,17 @@
 					$frame = $arraySection->createFrame();
 					$frame->name = $name;
 
-					$frameSection = $report->getSection('DATA_SET_FRAME');
-					foreach ($data as $nodeKey => $nodeValue) {
+					$frameSection = $frame->getSection('DATA_SET_FRAME');
+					if (count($data)) {
+						foreach ($data as $nodeKey => $nodeValue) {
+							$nodeFrame = $frameSection->createFrame();
+							$nodeFrame->name = $nodeKey;
+							$nodeFrame->data = $this->getVariableString($nodeValue);
+						}
+					} else {
 						$nodeFrame = $frameSection->createFrame();
-						$nodeFrame->name = $nodeKey;
-						$nodeFrame->data = $this->getVariableString($nodeValue);
+						$nodeFrame->name = '';
+						$nodeFrame->data = 'No data to display.';
 					}
 				} else {
 					$frame = $stringSection->createFrame();
