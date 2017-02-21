@@ -27,6 +27,7 @@
 		 */
 		public function beginReport() {
 			$this->data = ['data' => []];
+			$this->basicData = [];
 		}
 
 		/**
@@ -37,14 +38,16 @@
 		 */
 		public function reportError(IError $error) {
 			$this->error = $error;
-			$this->data['prefix'] = $error->getPrefix();
-			$this->data['name'] = $error->getName();
-			$this->data['message'] = $error->getMessage();
-			$this->data['timestamp'] = time();
-			$this->data['occurred'] = date(DATE_RFC822);
-			$this->data['file'] = $error->getFile();
-			$this->data['line'] = $error->getLine();
-			$this->data['trace'] = $error->getTrace();
+			$this->basicData = [
+				'timestamp' => time(),
+				'name' => $error->getName(),
+				'file' => $error->getFile(),
+				'line' => $error->getLine(),
+				'trace' => $error->getTrace(),
+				'occurred' => date(DATE_RFC822),
+				'prefix' => $error->getPrefix(),
+				'message' => $error->getMessage()
+			];
 		}
 
 		/**
@@ -77,6 +80,10 @@
 		 */
 		public function generate():IErrorReport {
 			$report = new HTMLReportTemplate($this->getTemplate());
+
+			// Inject basic data values into the template.
+			foreach ($this->basicData as $key => $value)
+				$report->$key = $value;
 
 			foreach ($this->data as $key => $value) {
 				if ($key == 'data')
@@ -151,6 +158,11 @@
 		 * @var array
 		 */
 		protected $data;
+
+		/**
+		 * @var array
+		 */
+		protected $basicData;
 
 		/**
 		 * @var string
