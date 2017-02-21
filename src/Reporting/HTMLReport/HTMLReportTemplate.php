@@ -1,6 +1,8 @@
 <?php
 	namespace KrameWork\Reporting\HTMLReport;
 
+	require_once(__DIR__ . '/HTMLReportSection.php');
+
 	class HTMLReportTemplate
 	{
 		/**
@@ -12,7 +14,22 @@
 		 */
 		public function __construct(string $content) {
 			$this->replacements = [];
+			$this->sections = [];
 			$this->content = $content;
+		}
+
+		/**
+		 * Get a section of this template.
+		 * Returned section will be retained by this template for compilation.
+		 *
+		 * @api getSection
+		 * @param string $tag Enclosing tags for the section.
+		 * @return HTMLReportSection
+		 */
+		public function getSection(string $tag):HTMLReportSection {
+			$section = new HTMLReportSection($tag, $this->content);
+			$this->sections[] = $section;
+			return $section;
 		}
 
 		/**
@@ -37,6 +54,15 @@
 		function __toString():string {
 			$content = $this->content;
 
+			// Section frame replacements.
+			foreach ($this->sections as $section) {
+				//var_dump($section);
+				$contentStart = substr($content, 0, $section->getSectionStart());
+				$contentEnd = substr($content, $section->getSectionStart() + $section->getSectionLength());
+
+				$content = $contentStart . $section . $contentEnd;
+			}
+
 			// Compile basic replacements.
 			$patterns = [];
 			$replacements = [];
@@ -49,6 +75,11 @@
 			$content = preg_replace($patterns, $replacements, $content);
 			return $content;
 		}
+
+		/**
+		 * @var HTMLReportSection[]
+		 */
+		protected $sections;
 
 		/**
 		 * @var string
