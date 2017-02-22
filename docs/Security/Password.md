@@ -45,5 +45,8 @@ parameter | type | description
 --- | --- | ---
 `$char` | `string` | Mask character (Defaults to *).
 
+##### > length() : `int`
+Get the length of this password.
+
 ##### > __toString() : `string`
 Get the plain-text password contained by this object.

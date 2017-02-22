@@ -62,7 +62,17 @@
 		 * @return string
 		 */
 		public function asMask(string $char = '*'): string {
-			return str_repeat($char, \strlen($this->value));
+			return str_repeat($char, $this->length());
+		}
+
+		/**
+		 * Get the length of this password.
+		 *
+		 * @api length
+		 * @return int
+		 */
+		public function length():int {
+			return \strlen($this->value);
 		}
 
 		/**
