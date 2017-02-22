@@ -122,7 +122,7 @@
 
 		private function log($sql, $param) {
 			$time = $this->timer->stop();
-			$start = $this->timer->getStartTimestamp();
+			$start = (string)$this->timer->getStartTimestamp();
 			if ($time > $this->threshold)
 				trigger_error($this->formatWarning($sql, $param, $time), E_USER_WARNING);
 
