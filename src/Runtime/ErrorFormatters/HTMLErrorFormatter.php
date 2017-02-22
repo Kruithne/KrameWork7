@@ -95,11 +95,22 @@
 			$traceSection = $report->getSection('TRACE_FRAME');
 			if ($traceSection->isValid()) {
 				$index = 0;
+				$beginTrace = false;
 
 				foreach ($this->trace as $traceFrame) {
+					if (!$beginTrace) {
+						if ($traceFrame['class'] == 'KrameWork\Runtime\ErrorHandler') {
+							$func = $traceFrame['function'];
+							if ($func == 'catchRuntimeError' || $func == 'catchException' || $func == 'catchCoreError')
+								$beginTrace = true;
+						}
+
+						continue;
+					}
+
 					$args = [];
 					foreach ($traceFrame['args'] ?? [] as $key => $arg)
-						$args[] = StringUtil::variableAsString($arg);
+						$args[] = htmlentities(StringUtil::variableAsString($arg));
 
 					$frame = $traceSection->createFrame();
 					$frame->index = $index++;
