@@ -45,6 +45,20 @@ parameter | type | description
 --- | --- | ---
 `$char` | `string` | Mask character (Defaults to *).
 
+##### > asHash() : `string`
+Get a one-way hash for this password.
+
+parameter | type | description
+--- | --- | ---
+`$algorithm` | `string` | Algorithm to hash with.
+
+##### > verify() : `bool`
+Verify this password against a given hash.
+
+parameter | type | description
+--- | --- | ---
+`$hash` | `string` | Hash to check against.
+
 ##### > length() : `int`
 Get the length of this password.
 

@@ -66,6 +66,28 @@
 		}
 
 		/**
+		 * Get a one-way hash for this password.
+		 *
+		 * @api asHash
+		 * @param int $algorithm Algorithm to hash with.
+		 * @return string
+		 */
+		public function asHash(int $algorithm = PASSWORD_DEFAULT):string {
+			return password_hash($this->value, $algorithm);
+		}
+
+		/**
+		 * Verify this password matches a given hash.
+		 *
+		 * @api verify
+		 * @param string $hash
+		 * @return bool
+		 */
+		public function verify(string $hash):bool {
+			return password_verify($this->value, $hash);
+		}
+
+		/**
 		 * Get the length of this password.
 		 *
 		 * @api length
