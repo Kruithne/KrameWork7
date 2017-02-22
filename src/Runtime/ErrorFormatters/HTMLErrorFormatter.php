@@ -99,7 +99,7 @@
 				foreach ($this->trace as $traceFrame) {
 					$args = [];
 					foreach ($traceFrame['args'] ?? [] as $key => $arg)
-						$args[] = StringUtil::variableAsString(htmlentities($arg));
+						$args[] = htmlentities(StringUtil::variableAsString($arg));
 
 					$frame = $traceSection->createFrame();
 					$frame->index = $index++;
