@@ -105,7 +105,6 @@
 					if (!method_exists($var, '__toString'))
 						$var = 'object';
 				}
-
 			} elseif ($type == 'string') {
 				$length = \strlen($var);
 				$var = "({$length}) \"{$var}\"";
