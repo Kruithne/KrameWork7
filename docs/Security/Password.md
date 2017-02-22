@@ -1,4 +1,4 @@
-## KrameWork\Security\Password
+## KrameWork\Security\Password : IMaskable
 
 ***Table of Contents***
 * **Overview** - Information about the class.
@@ -20,6 +20,9 @@ print($pass->asMD5Hash()); // > ebb071e0e0440fd3fd1b2522279fde09
 // Get a mask of this password.
 print($pass->asMask()); // > ********
 
+// Get a mask of this password using a custom character.
+print($pass->asMask('#'); // > ########
+
 // Get the plaintext password.
 print($pass); // > hunter10
 ```
@@ -37,6 +40,10 @@ Return the password as an MD5 hash. Note: MD5 hashes are just that, hashes, not 
 
 ##### > asMask() : `string`
 Return a mask of this password.
+
+parameter | type | description
+--- | --- | ---
+`$char` | `string` | Mask character (Defaults to *).
 
 ##### > __toString() : `string`
 Get the plain-text password contained by this object.
