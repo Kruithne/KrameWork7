@@ -122,12 +122,15 @@
 
 		private function log($sql, $param) {
 			$time = $this->timer->stop();
+			$start = $this->timer->getStartTimestamp();
 			if ($time > $this->threshold)
 				trigger_error($this->formatWarning($sql, $param, $time), E_USER_WARNING);
-			$key = json_encode([$sql, $param]);
-			if (!isset($this->statistics[$key]))
-				$this->statistics[$key] = [];
-			$this->statistics[$key][] = $time;
+
+			// It is highly unlikely two queries would have the same timestamp;
+			// But just to be safe, we pack this into an array.
+			if (!isset($this->statistics[$start]))
+				$this->statistics[$start] = [];
+			$this->statistics[$start][] = [$sql, $param, $time];
 		}
 
 		private function formatWarning(string $sql, array $param, float $time) {
