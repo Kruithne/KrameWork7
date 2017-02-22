@@ -46,9 +46,14 @@
 		 * ErrorHandler constructor.
 		 *
 		 * @api __construct
+		 * @param IErrorDispatcher|null $dispatcher Dispatcher to use.
+		 * @param IErrorFormatter|null $formatter Formatter for the dispatcher.
 		 */
-		public function __construct() {
+		public function __construct($dispatcher = null, $formatter = null) {
 			$this->dispatch = [];
+
+			if ($dispatcher instanceof IErrorDispatcher && $formatter instanceof IErrorFormatter)
+				$this->addDispatch($dispatcher, $formatter);
 
 			$this->previousErrorLevel = error_reporting();
 			error_reporting(E_ALL);

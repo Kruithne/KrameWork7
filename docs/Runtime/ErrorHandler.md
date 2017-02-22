@@ -19,6 +19,10 @@ Creating and setting up an error handler is very simple, simply craft an instanc
 $handler = new ErrorHandler();
 $handler->addDispatch(new BufferDispatcher(), new PlainTextErrorFormatter());
 ```
+Using `addDispatch()`, multiple dispatchers and formatters can be paired together, allowing different methods of simultaneous reporting for errors. If you plan to only use one pair, you can provide them with the constructor as follows.
+```php
+$handler = new ErrorHandler(new BufferDispatcher(), new PlainTextErrorFormatter());
+```
 The above configuration will clear all output buffers and produce a plain-text report of an error that occurs. Naturally, this is a terrible mess, so spend some time and check out the different formatters and dispatchers KW7 provides, shown below.
 ##### Formatters
 The formatter is responsible for taking the raw data of errors that occur and producing a report with it. Some formatters have unique behavior which can be controlled, check out the individual documentation for each formatter for more information.
@@ -63,8 +67,8 @@ ErrorHandler constructor.
 
 parameter | type | description
 --- | --- | ---
-`$report` | `IErrorFormatter` | Report class used to format error reports.
 `$dispatch` | `IErrorDispatcher` | Dispatch used to output errors.
+`$report` | `IErrorFormatter` | Report class used to format error reports.
 
 ##### > addDispatch() : `void`
 Add a dispatcher to this error handler, with a linked formatter.
