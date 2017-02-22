@@ -107,9 +107,9 @@
 		 * Catches an exception thrown during runtime.
 		 *
 		 * @internal
-		 * @param \Exception $exception The exception which occurred.
+		 * @param \Throwable $exception The exception which occurred.
 		 */
-		public function catchException(\Exception $exception) {
+		public function catchException(\Throwable $exception) {
 			$this->catch(new ExceptionError($exception), false);
 		}
 
