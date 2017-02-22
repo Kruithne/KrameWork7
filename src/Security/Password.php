@@ -45,7 +45,7 @@
 
 		/**
 		 * Return the password as an MD5 hash.
-		 * Note: MD5 hashes are just that, hashes, not encryption.
+		 * Note: MD5 hashes are not secure for password storage.
 		 *
 		 * @api asMD5Hash
 		 * @return string
