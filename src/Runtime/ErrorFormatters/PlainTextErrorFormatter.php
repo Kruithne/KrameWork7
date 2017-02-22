@@ -206,7 +206,7 @@
 			if ($type == 'object') {
 				$type = get_class($var);
 				if (!method_exists($var, '__toString'))
-					$var = $type . ' instance';
+					$var = 'object';
 
 			} elseif ($type == 'string') {
 				$length = \strlen($var);
