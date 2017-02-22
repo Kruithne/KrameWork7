@@ -97,7 +97,7 @@
 				foreach ($this->trace as $traceFrame) {
 					$args = [];
 					foreach ($traceFrame['args'] ?? [] as $key => $arg)
-						$args[$key] = $this->getVariableString($arg);
+						$args[] = $this->getVariableString($arg);
 
 					$frame = $traceSection->createFrame();
 					$frame->index = $index++;
@@ -159,6 +159,8 @@
 				$var = "({$length}) \"{$var}\"";
 			} elseif ($type == 'array') {
 				$var = count($var) . ' items';
+			} elseif (is_bool($var)) {
+				$var = $var ? 'true' : 'false';
 			}
 
 			return "({$type}) {$var}";

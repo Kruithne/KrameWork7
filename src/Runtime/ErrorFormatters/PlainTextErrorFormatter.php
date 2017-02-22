@@ -213,6 +213,8 @@
 				$var = "({$length}) \"{$var}\"";
 			} elseif ($type == 'array') {
 				$var = count($var) . ' items';
+			} elseif (is_bool($var)) {
+				$var = $var ? 'true' : 'false';
 			}
 
 			return "({$type}) {$var}";
