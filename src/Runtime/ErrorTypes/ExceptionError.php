@@ -39,9 +39,9 @@
 		 * ExceptionError constructor.
 		 *
 		 * @api __construct
-		 * @param \Exception $ex
+		 * @param \Throwable $ex
 		 */
-		public function __construct(\Exception $ex) {
+		public function __construct(\Throwable $ex) {
 			$this->type = get_class($ex);
 			$this->message = $ex->getMessage();
 			$this->file = $ex->getFile();

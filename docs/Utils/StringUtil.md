@@ -36,3 +36,9 @@ Get the base class-name from a namespace string.
 parameter | type | description
 --- | --- | ---
 `$namespace` | `string` | Namespace path.
+##### > variableAsString() : `string`
+Represent a variable as a pretty string.
+
+parameter | type | description
+--- | --- | ---
+`$var` | `mixed` | Variable to represent.

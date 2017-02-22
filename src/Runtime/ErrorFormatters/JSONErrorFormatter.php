@@ -58,6 +58,7 @@
 			$this->error = $error;
 			$this->node['prefix'] = $error->getPrefix();
 			$this->node['name'] = $error->getName();
+			$this->node['server'] = php_uname();
 			$this->node['message'] = $error->getMessage();
 			$this->node['timestamp'] = time();
 			$this->node['occurred'] = date(DATE_RFC822);

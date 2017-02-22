@@ -28,8 +28,10 @@
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
 	use KrameWork\Utils\StringBuilder;
+	use Kramework\Utils\StringUtil;
 
 	require_once(__DIR__ . '/../../Utils/StringBuilder.php');
+	require_once(__DIR__ . '/../../Utils/StringUtil.php');
 	require_once(__DIR__ . '/../ErrorReports/ErrorReport.php');
 	require_once(__DIR__ . '/IErrorFormatter.php');
 
@@ -105,6 +107,7 @@
 		public function reportError(IError $error) {
 			$this->error = $error;
 			$this->report->appendLine($error->getPrefix() . ' : ' . $error->getName())->indent();
+			$this->report->appendLine('> Server: ' . php_uname());
 			$this->report->appendLine('> Message: ' . $error->getMessage());
 			$this->report->appendf('> Occurred: %s (%s)', date(DATE_RFC2822), time())->newLine();
 			$this->report->appendf('> Script: %s (Line %s)', $error->getFile(), $error->getLine());
@@ -178,7 +181,7 @@
 			foreach($trace as $node) {
 				$args = [];
 				foreach ($node['args'] ?? [] as $key => $arg)
-					$args[$key] = $this->getVariableString($arg);
+					$args[$key] = StringUtil::variableAsString($arg);
 
 				$this->report->appendf(
 					'%s:%s - %s%s%s(%s)',
@@ -191,30 +194,6 @@
 				)->newLine();
 			}
 			$this->report->outdent()->newline();
-		}
-
-		/**
-		 * Get a pretty representation of a variable.
-		 *
-		 * @internal
-		 * @param mixed $var Variable to represent.
-		 * @return string
-		 */
-		private function getVariableString($var):string {
-			$type = gettype($var);
-			if ($type == 'object') {
-				$type = get_class($var);
-				if (!method_exists($var, '__toString'))
-					$var = $type . ' instance';
-
-			} elseif ($type == 'string') {
-				$length = \strlen($var);
-				$var = "({$length}) \"{$var}\"";
-			} elseif ($type == 'array') {
-				$var = count($var) . ' items';
-			}
-
-			return "({$type}) {$var}";
 		}
 
 		/**
