@@ -23,6 +23,7 @@
 	 */
 
 	namespace Kramework\Utils;
+	use KrameWork\Security\Password;
 
 	/**
 	 * Class StringUtil
@@ -94,9 +95,14 @@
 		static function variableAsString($var):string {
 			$type = gettype($var);
 			if ($type == 'object') {
-				$type = get_class($var);
-				if (!method_exists($var, '__toString'))
-					$var = 'object';
+				if ($var instanceof Password) {
+					$type = 'password';
+					$var = $var->asMask();
+				} else {
+					$type = get_class($var);
+					if (!method_exists($var, '__toString'))
+						$var = 'object';
+				}
 
 			} elseif ($type == 'string') {
 				$length = \strlen($var);
