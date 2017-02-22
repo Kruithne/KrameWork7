@@ -25,6 +25,8 @@
 	namespace Kramework\Utils;
 	use KrameWork\Security\IMaskable;
 
+	require_once(__DIR__ . '/../Security/IMaskable.php');
+
 	/**
 	 * Class StringUtil
 	 * String manipulation utilities.
