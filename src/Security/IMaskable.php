@@ -37,7 +37,8 @@
 		 * Get the masked value of this object.
 		 *
 		 * @api asMask
+		 * @param string $char Mask character.
 		 * @return string
 		 */
-		public function asMask():string;
+		public function asMask(string $char = '*'):string;
 	}

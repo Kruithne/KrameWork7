@@ -58,10 +58,11 @@
 		 * Get the masked value of this password.
 		 *
 		 * @api asMask
+		 * @param string $char Mask character.
 		 * @return string
 		 */
-		public function asMask(): string {
-			return str_repeat('*', \strlen($this->value));
+		public function asMask(string $char = '*'): string {
+			return str_repeat($char, \strlen($this->value));
 		}
 
 		/**
