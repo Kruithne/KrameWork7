@@ -5,8 +5,10 @@
 	use KrameWork\Runtime\ErrorReports\ErrorReport;
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
+	use Kramework\Utils\StringUtil;
 
 	require_once(__DIR__ . '/../../Reporting/HTMLReport/HTMLReportTemplate.php');
+	require_once(__DIR__ . '/../../Utils/StringUtil.php');
 
 	class HTMLErrorFormatter implements IErrorFormatter
 	{
@@ -97,7 +99,7 @@
 				foreach ($this->trace as $traceFrame) {
 					$args = [];
 					foreach ($traceFrame['args'] ?? [] as $key => $arg)
-						$args[] = $this->getVariableString($arg);
+						$args[] = StringUtil::variableAsString($arg);
 
 					$frame = $traceSection->createFrame();
 					$frame->index = $index++;
@@ -127,7 +129,7 @@
 						foreach ($data as $nodeKey => $nodeValue) {
 							$nodeFrame = $frameSection->createFrame();
 							$nodeFrame->name = $nodeKey;
-							$nodeFrame->data = $this->getVariableString($nodeValue);
+							$nodeFrame->data = StringUtil::variableAsString($nodeValue);
 						}
 					} else {
 						$nodeFrame = $frameSection->createFrame();
@@ -140,30 +142,11 @@
 
 					$frame = $stringSection->createFrame();
 					$frame->name = $name;
-					$frame->data = $this->getVariableString($data);
+					$frame->data = StringUtil::variableAsString($data);
 				}
 			}
 
 			return new ErrorReport($this->error, 'text/html; charset=utf-8', '.html', $report);
-		}
-
-		private function getVariableString($var):string {
-			$type = gettype($var);
-			if ($type == 'object') {
-				$type = get_class($var);
-				if (!method_exists($var, '__toString'))
-					$var = 'object';
-
-			} elseif ($type == 'string') {
-				$length = \strlen($var);
-				$var = "({$length}) \"{$var}\"";
-			} elseif ($type == 'array') {
-				$var = count($var) . ' items';
-			} elseif (is_bool($var)) {
-				$var = $var ? 'true' : 'false';
-			}
-
-			return "({$type}) {$var}";
 		}
 
 		/**

@@ -83,4 +83,30 @@
 			$parts = explode('\\', $namespace);
 			return $parts[count($parts) - 1];
 		}
+
+		/**
+		 * Represent a variable as a pretty string.
+		 *
+		 * @api variableAsString
+		 * @param mixed $var Variable to represent.
+		 * @return string
+		 */
+		static function variableAsString($var):string {
+			$type = gettype($var);
+			if ($type == 'object') {
+				$type = get_class($var);
+				if (!method_exists($var, '__toString'))
+					$var = 'object';
+
+			} elseif ($type == 'string') {
+				$length = \strlen($var);
+				$var = "({$length}) \"{$var}\"";
+			} elseif ($type == 'array') {
+				$var = count($var) . ' items';
+			} elseif (is_bool($var)) {
+				$var = $var ? 'true' : 'false';
+			}
+
+			return "({$type}) {$var}";
+		}
 	}
