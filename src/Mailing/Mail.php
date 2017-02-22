@@ -218,7 +218,7 @@
 				$cHeaders[] = 'Cc: ' . $this->cc;
 
 			// Compile subject.
-			$cSubject = '=?UTF-8?B?' . base64_encode($this->subkect ?? 'No Subject') . '?=';
+			$cSubject = '=?UTF-8?B?' . base64_encode($this->subject ?? 'No Subject') . '?=';
 
 			mail($this->to, $cSubject, $bParent->compile(),  implode("\n", $cHeaders), '-f ' . $this->sender);
 		}
