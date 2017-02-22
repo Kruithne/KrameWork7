@@ -16,7 +16,8 @@ ___
 ##### Creating an error handler
 Creating and setting up an error handler is very simple, simply craft an instance of it and pass in both a report formatter and a dispatcher.
 ```php
-new ErrorHandler(new PlainTextErrorFormatter(), new BufferDispatcher());
+$handler = new ErrorHandler();
+$handler->addDispatch(new BufferDispatcher(), new PlainTextErrorFormatter());
 ```
 The above configuration will clear all output buffers and produce a plain-text report of an error that occurs. Naturally, this is a terrible mess, so spend some time and check out the different formatters and dispatchers KW7 provides, shown below.
 ##### Formatters
@@ -49,7 +50,8 @@ In addition to these changes to your runtime configuration, you'll also need to 
 // * Specify auto-loader or import needed ErrorHandler classes from KW7 here.
 $errFormatter = new PlainTextErrorFormatter();
 $errDispatcher = new FileDispatcher();
-$errHandler = new ErrorHandler($errFormatter, $errDispatcher);
+$errHandler = new ErrorHandler();
+$errHandler->addDispatch($errDispatcher, $errFormatter);
 
 ob_start([$errHandler, 'catchCoreError']); // Allows ErrorHandler to catch core errors.
 ```
@@ -63,6 +65,14 @@ parameter | type | description
 --- | --- | ---
 `$report` | `IErrorFormatter` | Report class used to format error reports.
 `$dispatch` | `IErrorDispatcher` | Dispatch used to output errors.
+
+##### > addDispatch() : `void`
+Add a dispatcher to this error handler, with a linked formatter.
+
+parameter | type | description
+--- | --- | ---
+`$dispatcher` | `IErrorDispatcher` | Dispatcher to send reports.
+`$formatter` | `IErrorFormatter` | Formatter for dispatcher to use.
 
 ##### > setMaxErrors(): `void`
 Set the maximum amount of errors that can occur before the error handler will terminate the script.

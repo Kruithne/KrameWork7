@@ -46,12 +46,9 @@
 		 * ErrorHandler constructor.
 		 *
 		 * @api __construct
-		 * @param IErrorFormatter $report Report class used to format error reports.
-		 * @param IErrorDispatcher $dispatch Dispatch used to output errors.
 		 */
-		public function __construct(IErrorFormatter $report, IErrorDispatcher $dispatch) {
-			$this->report = $report;
-			$this->dispatcher = $dispatch;
+		public function __construct() {
+			$this->dispatch = [];
 
 			$this->previousErrorLevel = error_reporting();
 			error_reporting(E_ALL);
@@ -63,6 +60,17 @@
 			$this->maxErrors = 10;
 
 			$this->active = true;
+		}
+
+		/**
+		 * Add a dispatcher to this error handler, with a linked formatter.
+		 *
+		 * @api addDispatch
+		 * @param IErrorDispatcher $dispatcher Dispatcher to send reports.
+		 * @param IErrorFormatter $formatter Formatter for dispatcher to use.
+		 */
+		public function addDispatch(IErrorDispatcher $dispatcher, IErrorFormatter $formatter) {
+			$this->dispatch[] = [$dispatcher, $formatter];
 		}
 
 		/**
@@ -168,13 +176,24 @@
 			if (!$this->active)
 				return;
 
-			$this->report->beginReport();
-			$this->report->reportError($error);
-			$this->packReport();
-			$dispatchTerminate = $this->dispatcher->dispatch($this->report->generate());
+			foreach ($this->dispatch as $dispatch) {
+				/**
+				 * @var IErrorDispatcher $dispatcher
+				 * @var IErrorFormatter $formatter
+				 */
+				list($dispatcher, $formatter) = $dispatch;
+
+				$formatter->beginReport();
+				$formatter->reportError($error);
+				$this->packReport($formatter);
+
+				$dispatchTerminate = $dispatcher->dispatch($formatter->generate());
+				if ($dispatchTerminate)
+					$terminate = true;
+			}
 
 			// Terminate script execution if needed.
-			if ($terminate || $dispatchTerminate || $this->errorCount++ >= $this->maxErrors) {
+			if ($terminate || $this->errorCount++ >= $this->maxErrors) {
 				if (!headers_sent())
 					header('HTTP/1.0 500 Internal Error');
 
@@ -186,21 +205,22 @@
 		 * Pack the report with data useful for debugging.
 		 *
 		 * @internal
+		 * @param IErrorFormatter $report Report to pack.
 		 */
-		private function packReport() {
+		private function packReport(IErrorFormatter $report) {
 			// CLI arguments, if available.
 			if (php_sapi_name() == 'cli') {
 				global $argv;
-				$this->report->reportArray('CLI Arguments', $argv);
+				$report->reportArray('CLI Arguments', $argv);
 			}
 
 			// Add server/request data.
-			$this->report->reportArray('$_SERVER', $_SERVER); // Server data.
-			$this->report->reportArray('$_POST', $_POST); // POST data.
-			$this->report->reportArray('$_GET', $_GET); // GET data.
-			$this->report->reportArray('$_COOKIE', $_COOKIE); // Delicious cookies.
-			$this->report->reportArray('$_FILES', $_FILES); // Files
-			$this->report->reportString('Raw Request Content', file_get_contents('php://input')); // Raw request content.
+			$report->reportArray('$_SERVER', $_SERVER); // Server data.
+			$report->reportArray('$_POST', $_POST); // POST data.
+			$report->reportArray('$_GET', $_GET); // GET data.
+			$report->reportArray('$_COOKIE', $_COOKIE); // Delicious cookies.
+			$report->reportArray('$_FILES', $_FILES); // Files
+			$report->reportString('Raw Request Content', file_get_contents('php://input')); // Raw request content.
 		}
 
 		/**
@@ -209,14 +229,9 @@
 		protected $active;
 
 		/**
-		 * @var IErrorFormatter
+		 * @var array
 		 */
-		protected $report;
-
-		/**
-		 * @var IErrorDispatcher
-		 */
-		protected $dispatcher;
+		protected $dispatch;
 
 		/**
 		 * @var string

@@ -120,7 +120,8 @@
 			restore_error_handler();
 			restore_exception_handler();
 
-			$handler = new ErrorHandler($this->formatter, $this->dispatcher);
+			$handler = new ErrorHandler();
+			$handler->addDispatch($this->dispatcher, $this->formatter);
 			$this->assertEquals(E_ALL, error_reporting()); // Ensure error state changed to what we expected.
 			$handler->deactivate(); // Deactivate the error handler.
 
@@ -144,7 +145,8 @@
 		 */
 		public function testErrorCatching() {
 			unset($GLOBALS['__dispatchedError']);
-			$handler = new ErrorHandler($this->formatter, $this->dispatcher);
+			$handler = new ErrorHandler();
+			$handler->addDispatch($this->dispatcher, $this->formatter);
 
 			user_error('Unit testing error.', E_USER_ERROR);
 			$expected = sprintf('RUNTIME ERROR USER ERROR %s Unit testing error. %s', __LINE__ - 1, __FILE__);
@@ -159,7 +161,8 @@
 		 */
 		public function testExceptionCatching() {
 			unset($GLOBALS['__dispatchedError']);
-			$handler = new ErrorHandler($this->formatter, $this->dispatcher);
+			$handler = new ErrorHandler();
+			$handler->addDispatch($this->dispatcher, $this->formatter);
 
 			$this->expectException('ErrorHandlerTestException');
 			throw new ErrorHandlerTestException('Unit testing exception.');
