@@ -43,6 +43,7 @@
 			$this->error = $error;
 			$this->trace = $error->getTrace();
 			$this->basicData = [
+				'server' => php_uname(),
 				'timestamp' => time(),
 				'name' => $error->getName(),
 				'file' => $error->getFile(),

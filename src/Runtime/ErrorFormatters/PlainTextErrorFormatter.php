@@ -105,6 +105,7 @@
 		public function reportError(IError $error) {
 			$this->error = $error;
 			$this->report->appendLine($error->getPrefix() . ' : ' . $error->getName())->indent();
+			$this->report->appendLine('> Server: ' . php_uname());
 			$this->report->appendLine('> Message: ' . $error->getMessage());
 			$this->report->appendf('> Occurred: %s (%s)', date(DATE_RFC2822), time())->newLine();
 			$this->report->appendf('> Script: %s (Line %s)', $error->getFile(), $error->getLine());
