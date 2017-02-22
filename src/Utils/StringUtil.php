@@ -23,7 +23,7 @@
 	 */
 
 	namespace Kramework\Utils;
-	use KrameWork\Security\Password;
+	use KrameWork\Security\IMaskable;
 
 	/**
 	 * Class StringUtil
@@ -95,8 +95,8 @@
 		static function variableAsString($var):string {
 			$type = gettype($var);
 			if ($type == 'object') {
-				if ($var instanceof Password) {
-					$type = 'password';
+				if ($var instanceof IMaskable) {
+					$type = 'masked';
 					$var = $var->asMask();
 				} else {
 					$type = get_class($var);

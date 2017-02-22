@@ -21,62 +21,23 @@
 	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	 * SOFTWARE.
 	 */
+
 	namespace KrameWork\Security;
-	require_once(__DIR__ . '/IMaskable.php');
 
 	/**
-	 * Class Password
-	 * Represents a password.
+	 * Interface IMaskable
+	 * Object that can be represented as a masked string.
 	 *
 	 * @package KrameWork\Security
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	class Password implements IMaskable
+	interface IMaskable
 	{
 		/**
-		 * Password constructor.
-		 *
-		 * @api __construct
-		 * @param string $value Plaintext password.
-		 */
-		public function __construct(string $value) {
-			$this->value = $value;
-		}
-
-		/**
-		 * Return the password as an MD5 hash.
-		 * Note: MD5 hashes are just that, hashes, not encryption.
-		 *
-		 * @api asMD5Hash
-		 * @return string
-		 */
-		public function asMD5Hash():string {
-			return md5($this->value);
-		}
-
-		/**
-		 * Get the masked value of this password.
+		 * Get the masked value of this object.
 		 *
 		 * @api asMask
 		 * @return string
 		 */
-		public function asMask(): string {
-			return str_repeat('*', \strlen($this->value));
-		}
-
-		/**
-		 * Get the plain-text password contained by this object.
-		 *
-		 * @api __toString
-		 * @return string
-		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
-		 */
-		function __toString():string {
-			return $this->value;
-		}
-
-		/**
-		 * @var string
-		 */
-		private $value;
+		public function asMask():string;
 	}
