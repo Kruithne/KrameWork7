@@ -64,6 +64,8 @@
 			$file = $this->name;
 			if (is_array($file)) // Execute callback.
 				$file = call_user_func(count($file) == 1 ? $file[0] : $file, $report);
+			elseif (is_callable($file))
+				$file = $file($report);
 
 			$ext = ($report instanceof IErrorReport) ? $report->getExtension() : '.txt';
 			$full = $file . $ext;
