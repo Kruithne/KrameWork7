@@ -74,7 +74,7 @@
 		 * @param string $str Data string.
 		 */
 		public function reportString(string $name, string $str) {
-			$this->report->appendf('> %s => %s', $name, $this->getVariableString($str));
+			$this->report->appendf('> %s => %s', $name, StringUtil::variableAsString($str));
 			$this->report->newLine()->newLine();
 		}
 
@@ -89,7 +89,7 @@
 			if (count($arr)) {
 				$this->report->appendf('> %s [%s items]', $name, count($arr))->newLine()->indent();
 				foreach ($arr as $key => $value)
-					$this->report->appendf('%s => %s', $key, $this->getVariableString($value))->newLine();
+					$this->report->appendf('%s => %s', $key, StringUtil::variableAsString($value))->newLine();
 			} else {
 				$this->report->appendf('> %s [empty]', $name)->newLine();
 				$this->report->indent()->appendLine('No data to display');
