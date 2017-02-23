@@ -17,12 +17,12 @@ ___
 ### Example
 This is a use-case example for this dispatcher, using a naming callback instead of a static string.
 ```php
-function createLogName($report):string {
+$generator = function($report) {
     // Report is of type string|IErrorReport, depending on what is being dispatched.
     return md5(time() + mt_rand());
-}
+};
 
-$dispatcher = new FileDispatcher(__DIR__, ['createLogName']);
+$dispatcher = new FileDispatcher(__DIR__, $generator);
 // Provide $dispatcher to an instance of ErrorHandler.
 ```
 ___
@@ -33,7 +33,7 @@ FileDispatcher constructor.
 parameter | type | description
 --- | --- |---
 `$directory` | `string` | Directory which report files will be stored in.
-`$name` | `string|array` | File-name or callable naming function.
+`$name` | `string|array|callable` | File-name or callable naming function.
 
 ##### > dispatch() : `bool`
 Dispatch an error report.
