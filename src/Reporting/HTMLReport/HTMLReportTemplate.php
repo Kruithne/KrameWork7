@@ -87,10 +87,12 @@
 			// Section frame replacements.
 			foreach ($this->sections as $section) {
 				$section->validate($content);
-				$contentStart = substr($content, 0, $section->getSectionStart());
-				$contentEnd = substr($content, $section->getSectionStart() + $section->getSectionLength());
+				if ($section->isValid()) {
+					$contentStart = substr($content, 0, $section->getSectionStart());
+					$contentEnd = substr($content, $section->getSectionStart() + $section->getSectionLength());
 
-				$content = $contentStart . $section . $contentEnd;
+					$content = $contentStart . $section . $contentEnd;
+				}
 			}
 
 			// Compile basic replacements.
