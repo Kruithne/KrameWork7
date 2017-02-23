@@ -99,8 +99,8 @@
 
 				foreach ($this->trace as $traceFrame) {
 					if (!$beginTrace) {
-						if ($traceFrame['class'] == 'KrameWork\Runtime\ErrorHandler') {
-							$func = $traceFrame['function'];
+						if ($traceFrame['class'] ?? '' == 'KrameWork\Runtime\ErrorHandler') {
+							$func = $traceFrame['function'] ?? '';
 							if ($func == 'catchRuntimeError' || $func == 'catchException' || $func == 'catchCoreError')
 								$beginTrace = true;
 						}
