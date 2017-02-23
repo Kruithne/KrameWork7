@@ -66,6 +66,16 @@
 				}
 
 				/**
+				 * Format a stacktrace and add it to the report.
+				 *
+				 * @api reportStacktrace
+				 * @param array $trace Stacktrace.
+				 */
+				public function reportStacktrace(array $trace) {
+					// Dummy
+				}
+
+				/**
 				 * Compile the report into a string.
 				 *
 				 * @api __toString
