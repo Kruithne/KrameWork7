@@ -9,7 +9,7 @@ ___
 ### Overview
 The `ErrorHandler` is a meaty class that intercepts all exceptions and errors that occur during runtime and produces a report for each, and dispatches said report. The method of report generation and the method of dispatch are controlled by the instances you provide to the error handler, either using ready-made ones provided by KW7, or your own home-cooked ones.
 
-Upon creation, the error handler will take over the current **error handler**, **exception handler** and set the **error level** to `E_ALL`. Disabling the error handler using `deactivate()` will restore these three things back to **before** the error handler was constructed.
+Upon creation, the error handler will take over the current **error handler**, **exception handler** and set the **error level** to `E_ALL`. Disabling the error handler using `deactivate()` will restore these three things back to **before** the error handler was constructed. While the error level is set to `E_ALL`, the handler reserve the level of reporting set before it took over and only dispatch errors of that level. If you wish to change the reporting level after the handler has been created, you can do so with a call to `setErrorLevel()`.
 
 In the default configuration, the error handler will terminate script execution after `10` errors have occurred. This value can be changed using the `setMaxErrors()` function, however it is important to note that some dispatchers will halt the script after a single error is dispatched regardless of this value; check the 'Dispatchers' list below to see which ones do.
 ___
@@ -77,6 +77,13 @@ parameter | type | description
 --- | --- | ---
 `$dispatcher` | `IErrorDispatcher` | Dispatcher to send reports.
 `$formatter` | `IErrorFormatter` | Formatter for dispatcher to use.
+
+##### > setErrorLevel(): `void`
+Set the error reporting level for this handler.
+
+parameter | type | description
+--- | --- | ---
+`$level` | `int` | Error level to set for this handler.
 
 ##### > setMaxErrors(): `void`
 Set the maximum amount of errors that can occur before the error handler will terminate the script.

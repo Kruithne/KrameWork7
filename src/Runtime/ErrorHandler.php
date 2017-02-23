@@ -56,6 +56,7 @@
 				$this->addDispatch($dispatcher, $formatter);
 
 			$this->previousErrorLevel = error_reporting();
+			$this->level = $this->previousErrorLevel;
 			error_reporting(E_ALL);
 
 			$this->previousErrorHandler = set_error_handler([$this, 'catchRuntimeError']);
@@ -65,6 +66,16 @@
 			$this->maxErrors = 10;
 
 			$this->active = true;
+		}
+
+		/**
+		 * Set the error reporting level for this handler.
+		 *
+		 * @api setErrorLevel
+		 * @param int $level Error level.
+		 */
+		public function setErrorLevel(int $level) {
+			$this->level = $level;
 		}
 
 		/**
@@ -113,7 +124,9 @@
 		 * @param int $line Line of code the error occurred on.
 		 */
 		public function catchRuntimeError($type, $message, $file, $line) {
-			$this->catch(new RuntimeError($type, $message, $file, $line), false);
+			if (($type & $this->level)) {
+				$this->catch(new RuntimeError($type, $message, $file, $line), false);
+			}
 		}
 
 		/**
@@ -227,6 +240,11 @@
 			$report->reportArray('$_FILES', $_FILES); // Files
 			$report->reportString('Raw Request Content', file_get_contents('php://input')); // Raw request content.
 		}
+
+		/**
+		 * @var int
+		 */
+		protected $level;
 
 		/**
 		 * @var bool
