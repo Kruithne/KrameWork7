@@ -44,6 +44,14 @@
 		public function beginReport();
 
 		/**
+		 * Format a stacktrace and add it to the report.
+		 *
+		 * @api reportStacktrace
+		 * @param array $trace Stacktrace.
+		 */
+		public function reportStacktrace(array $trace);
+
+		/**
 		 * Format an error and add it to the report.
 		 *
 		 * @api handleError

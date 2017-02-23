@@ -68,10 +68,7 @@
 		 */
 		public function dispatch($report):bool {
 			if ($this->subjectGen) {
-				$subject = call_user_func(count($this->subjectGen) == 1 ? $this->subjectGen[0] : $this->subjectGen);
-				if ($report instanceof IErrorReport)
-					$subject = $report->getError()->getPrefix() . ' ' . $subject;
-
+				$subject = call_user_func(count($this->subjectGen) == 1 ? $this->subjectGen[0] : $this->subjectGen, $report);
 				$this->mail->setSubject($subject);
 			}
 

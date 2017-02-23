@@ -64,7 +64,6 @@
 			$this->node['occurred'] = date(DATE_RFC822);
 			$this->node['file'] = $error->getFile();
 			$this->node['line'] = $error->getLine();
-			$this->node['trace'] = $error->getTrace();
 		}
 
 		/**
@@ -87,6 +86,16 @@
 		 */
 		public function reportString(string $name, string $str) {
 			$this->node['data'][$name] = $str;
+		}
+
+		/**
+		 * Format a stacktrace and add it to the report.
+		 *
+		 * @api reportStacktrace
+		 * @param array $trace Stacktrace.
+		 */
+		public function reportStacktrace(array $trace) {
+			$this->node['trace'] = $trace;
 		}
 
 		/**

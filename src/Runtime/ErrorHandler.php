@@ -29,9 +29,11 @@
 	use KrameWork\Runtime\ErrorTypes\ExceptionError;
 	use KrameWork\Runtime\ErrorTypes\IError;
 	use KrameWork\Runtime\ErrorTypes\RuntimeError;
+	use Kramework\Utils\StringUtil;
 
 	require_once(__DIR__ . '/ErrorTypes/ExceptionError.php');
 	require_once(__DIR__ . '/ErrorTypes/RuntimeError.php');
+	require_once(__DIR__ . '/../Utils/StringUtil.php');
 
 	/**
 	 * Class ErrorHandler
@@ -194,6 +196,8 @@
 			if (!$this->active)
 				return;
 
+			$trace = $this->filterStacktrace($error->getTrace());
+
 			foreach ($this->dispatch as $dispatch) {
 				/**
 				 * @var IErrorDispatcher $dispatcher
@@ -203,6 +207,7 @@
 
 				$formatter->beginReport();
 				$formatter->reportError($error);
+				$formatter->reportStacktrace($trace);
 				$this->packReport($formatter);
 
 				$dispatchTerminate = $dispatcher->dispatch($formatter->generate());
@@ -217,6 +222,26 @@
 
 				die();
 			}
+		}
+
+		/**
+		 * Filter error handling out of a stacktrace.
+		 *
+		 * @internal
+		 * @param array $trace Trace to filter.
+		 * @return array
+		 */
+		private function filterStacktrace(array $trace):array {
+			$startIndex = 0;
+
+			foreach ($trace as $frame) {
+				$startIndex++;
+				$class = $frame['class'] ?? '';
+				if ($class == null || !StringUtil::startsWith($class, 'KrameWork\Runtime'))
+					break;
+			}
+
+			return array_slice($trace, $startIndex);
 		}
 
 		/**

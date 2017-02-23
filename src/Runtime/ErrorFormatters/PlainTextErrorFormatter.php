@@ -27,6 +27,7 @@
 	use KrameWork\Runtime\ErrorReports\ErrorReport;
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
+	use KrameWork\Timing\Timer;
 	use KrameWork\Utils\StringBuilder;
 	use Kramework\Utils\StringUtil;
 
@@ -34,6 +35,7 @@
 	require_once(__DIR__ . '/../../Utils/StringUtil.php');
 	require_once(__DIR__ . '/../ErrorReports/ErrorReport.php');
 	require_once(__DIR__ . '/IErrorFormatter.php');
+	require_once(__DIR__ . '/../../Timing/Timer.php');
 
 	/**
 	 * Class PlainTextErrorFormatter
@@ -52,6 +54,7 @@
 		 * @param bool $wrapPreTags Wrap the report in HTML <pre/> tags.
 		 */
 		public function __construct(string $lineEnd = StringBuilder::LE_UNIX, bool $wrapPreTags = false) {
+			$this->timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
 			$this->wrapPreTags = $wrapPreTags;
 			$this->lineEnd = $lineEnd;
 		}
@@ -64,6 +67,7 @@
 		public function beginReport() {
 			$this->report = new StringBuilder();
 			$this->report->setLineEnd($this->lineEnd);
+			$this->timer->start();
 		}
 
 		/**
@@ -74,7 +78,7 @@
 		 * @param string $str Data string.
 		 */
 		public function reportString(string $name, string $str) {
-			$this->report->appendf('> %s => %s', $name, $this->getVariableString($str));
+			$this->report->appendf('> %s => %s', $name, StringUtil::variableAsString($str));
 			$this->report->newLine()->newLine();
 		}
 
@@ -89,7 +93,7 @@
 			if (count($arr)) {
 				$this->report->appendf('> %s [%s items]', $name, count($arr))->newLine()->indent();
 				foreach ($arr as $key => $value)
-					$this->report->appendf('%s => %s', $key, $this->getVariableString($value))->newLine();
+					$this->report->appendf('%s => %s', $key, StringUtil::variableAsString($value))->newLine();
 			} else {
 				$this->report->appendf('> %s [empty]', $name)->newLine();
 				$this->report->indent()->appendLine('No data to display');
@@ -111,7 +115,33 @@
 			$this->report->appendLine('> Message: ' . $error->getMessage());
 			$this->report->appendf('> Occurred: %s (%s)', date(DATE_RFC2822), time())->newLine();
 			$this->report->appendf('> Script: %s (Line %s)', $error->getFile(), $error->getLine());
-			$this->formatStacktrace($error->getTrace());
+		}
+
+		/**
+		 * Format a stacktrace and add it to the report.
+		 *
+		 * @api reportStacktrace
+		 * @param array $trace Stacktrace.
+		 */
+		public function reportStacktrace(array $trace) {
+			$this->report->newLine()->newLine();
+			$this->report->appendf('> Stack trace [%s steps]:', count($trace))->indent()->newLine();
+			foreach($trace as $node) {
+				$args = [];
+				foreach ($node['args'] ?? [] as $key => $arg)
+					$args[$key] = StringUtil::variableAsString($arg);
+
+				$this->report->appendf(
+					'%s:%s - %s%s%s(%s)',
+					$node['file'] ?? 'interpreter',
+					$node['line'] ?? '?',
+					$node['class'] ?? '',
+					$node['type'] ?? '',
+					$node['function'] ?? '',
+					implode(', ', $args)
+				)->newLine();
+			}
+			$this->report->outdent()->newline();
 		}
 
 		/**
@@ -166,35 +196,16 @@
 			$contentType = ($this->wrapPreTags ? 'text/html' : 'text/plain') . '; charset=utf-8';
 			$extension = $this->wrapPreTags ? '.html' : '.log';
 
-			return new ErrorReport($this->error, $contentType, $extension, $this->report);
+			$this->timer->stop();
+			$report = $this->report . $this->timer->format($this->lineEnd . 'Generated in %.4fs.');
+
+			return new ErrorReport($this->error, $contentType, $extension, $report);
 		}
 
 		/**
-		 * Format the given stacktrace for the report.
-		 *
-		 * @internal
-		 * @param array $trace Stacktrace to format.
+		 * @var Timer
 		 */
-		private function formatStacktrace($trace) {
-			$this->report->newLine()->newLine();
-			$this->report->appendf('> Stack trace [%s steps]:', count($trace))->indent()->newLine();
-			foreach($trace as $node) {
-				$args = [];
-				foreach ($node['args'] ?? [] as $key => $arg)
-					$args[$key] = StringUtil::variableAsString($arg);
-
-				$this->report->appendf(
-					'%s:%s - %s%s%s(%s)',
-					$node['file'] ?? 'interpreter',
-					$node['line'] ?? '?',
-					$node['class'] ?? '',
-					$node['type'] ?? '',
-					$node['function'] ?? '',
-					implode(', ', $args)
-				)->newLine();
-			}
-			$this->report->outdent()->newline();
-		}
+		protected $timer;
 
 		/**
 		 * @var IError

@@ -17,7 +17,8 @@ ___
 ### Example
 This is a use-case example for this dispatcher, using a naming callback instead of a static string.
 ```php
-function createLogName():string {
+function createLogName($report):string {
+    // Report is of type string|IErrorReport, depending on what is being dispatched.
     return md5(time() + mt_rand());
 }
 

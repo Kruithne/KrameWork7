@@ -5,10 +5,12 @@
 	use KrameWork\Runtime\ErrorReports\ErrorReport;
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
+	use KrameWork\Timing\Timer;
 	use Kramework\Utils\StringUtil;
 
 	require_once(__DIR__ . '/../../Reporting/HTMLReport/HTMLReportTemplate.php');
 	require_once(__DIR__ . '/../../Utils/StringUtil.php');
+	require_once(__DIR__ . '/../../Timing/Timer.php');
 
 	class HTMLErrorFormatter implements IErrorFormatter
 	{
@@ -20,6 +22,7 @@
 		 * @param string|null $cssPath CSS file to be prepended to the report.
 		 */
 		public function __construct($templatePath = null, $cssPath = null) {
+			$this->timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
 			$this->templatePath = $templatePath;
 			$this->cssPath = $cssPath;
 		}
@@ -30,6 +33,7 @@
 		 * @api beginReport
 		 */
 		public function beginReport() {
+			$this->timer->start();
 			$this->data = [];
 			$this->basicData = [];
 			$this->trace = [];
@@ -43,7 +47,6 @@
 		 */
 		public function reportError(IError $error) {
 			$this->error = $error;
-			$this->trace = $error->getTrace();
 			$this->basicData = [
 				'server' => php_uname(),
 				'timestamp' => time(),
@@ -79,6 +82,16 @@
 		}
 
 		/**
+		 * Format a stacktrace and add it to the report.
+		 *
+		 * @api reportStacktrace
+		 * @param array $trace Stacktrace.
+		 */
+		public function reportStacktrace(array $trace) {
+			$this->trace = $trace;
+		}
+
+		/**
 		 * Generate a report.
 		 *
 		 * @api generate
@@ -95,19 +108,8 @@
 			$traceSection = $report->getSection('TRACE_FRAME');
 			if ($traceSection->isValid()) {
 				$index = 0;
-				$beginTrace = false;
 
 				foreach ($this->trace as $traceFrame) {
-					if (!$beginTrace) {
-						if ($traceFrame['class'] ?? '' == 'KrameWork\Runtime\ErrorHandler') {
-							$func = $traceFrame['function'] ?? '';
-							if ($func == 'catchRuntimeError' || $func == 'catchException' || $func == 'catchCoreError')
-								$beginTrace = true;
-						}
-
-						continue;
-					}
-
 					$args = [];
 					foreach ($traceFrame['args'] ?? [] as $key => $arg)
 						$args[] = htmlentities(StringUtil::variableAsString($arg));
@@ -156,6 +158,9 @@
 					$frame->data = StringUtil::variableAsString($data);
 				}
 			}
+
+			$this->timer->stop();
+			$report .= $this->timer->format('<p>Report generated in %.4fs</p>');
 
 			return new ErrorReport($this->error, 'text/html; charset=utf-8', '.html', $report);
 		}
@@ -209,6 +214,11 @@
 			}
 			return null;
 		}
+
+		/**
+		 * @var Timer
+		 */
+		protected $timer;
 
 		/**
 		 * @var IError
