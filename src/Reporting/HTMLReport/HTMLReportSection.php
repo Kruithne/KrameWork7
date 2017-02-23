@@ -45,6 +45,7 @@
 			$this->frames = [];
 			$this->pattern = '/<!--' . $tag . '-->(.*?)<!--\/' . $tag . '-->/si';
 
+			$this->isValid = false;
 			$this->validate($content);
 		}
 
