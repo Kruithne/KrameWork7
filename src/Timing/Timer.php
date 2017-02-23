@@ -112,7 +112,7 @@
 		 * @return string
 		 */
 		public function format(string $format):string {
-			return sprintf($format, $this);
+			return sprintf($format, $this->getElapsed());
 		}
 
 		/**
