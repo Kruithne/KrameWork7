@@ -25,41 +25,42 @@
 	namespace KrameWork\Reporting;
 
 	use KrameWork\Caching\IDataCache;
+	use KrameWork\Database\Driver\Generic;
 
 	/**
 	 * Class SQLReportRunner
 	 * Encapsulates executing and caching data from SQL
 	 * @author docpify <morten@runsafe.no>
+	 * @package KrameWork\Reporting
 	 */
 	abstract class SQLReport extends ReportRunner
 	{
 		/**
 		 * SQLReport constructor.
-		 * @param IDataCache $cache
-		 * @param object $db Database Access Layer, needs a query() method FIXME Missing API in KW7
+		 * @api __construct
+		 * @param IDataCache $cache A cache to hold report data
+		 * @param Generic $db A database access object ie. Database
 		 * @param string $sql An SQL Query
 		 * @param array $param Query parameters
-		 * @param bool $debug Enable or disable debugging information from the DBMS
 		 * @param int $cacheTTL Number of seconds to store the results in cache.
 		 */
-		public function __construct(IDataCache $cache, object $db, string $sql, array $param = [], bool $debug = false, int $cacheTTL = 300) {
+		public function __construct(IDataCache $cache, Generic $db, string $sql, array $param = [], int $cacheTTL = 300) {
 			$this->db = $db;
 			$this->sql = $sql;
 			$this->param = $param;
-			$this->debug = $debug;
 			parent::__construct($cache, sha1(serialize([$db, $sql, $param])), $cacheTTL);
 		}
 
 		/**
 		 * Executes the report, storing the results in APC
+		 * @api run
 		 */
 		protected function run() {
-			// FIXME We need a database component in KW7 before this can be actually implemented.
-			return $this->postProcess($this->db->query($this->sql, $this->param, DB_RESULT_SET, $this->debug));
+			return $this->postProcess($this->db->getAll($this->sql, $this->param));
 		}
 
 		/**
-		 * @var mixed Database engine
+		 * @var Generic Database engine
 		 */
 		private $db;
 
@@ -72,9 +73,4 @@
 		 * @var array SQL Parameters
 		 */
 		private $param;
-
-		/**
-		 * @var bool Debugging enabled
-		 */
-		private $debug;
 	}
