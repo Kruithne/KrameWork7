@@ -105,6 +105,17 @@
 		}
 
 		/**
+		 * Get the formatted result of this timer.
+		 *
+		 * @api format
+		 * @param string $format Format string.
+		 * @return string
+		 */
+		public function format(string $format):string {
+			return sprintf($format, $this);
+		}
+
+		/**
 		 * Return the elapsed time as a string.
 		 *
 		 * @api __toString
