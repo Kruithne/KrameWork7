@@ -105,13 +105,24 @@
 		}
 
 		/**
+		 * Get the formatted result of this timer.
+		 *
+		 * @api format
+		 * @param string $format Format string.
+		 * @return string
+		 */
+		public function format(string $format):string {
+			return sprintf($format, $this);
+		}
+
+		/**
 		 * Return the elapsed time as a string.
 		 *
 		 * @api __toString
 		 * @return string
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
-		function __toString():string {
+		public function __toString():string {
 			return (string) $this->getElapsed();
 		}
 
