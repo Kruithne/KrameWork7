@@ -111,7 +111,33 @@
 			$this->report->appendLine('> Message: ' . $error->getMessage());
 			$this->report->appendf('> Occurred: %s (%s)', date(DATE_RFC2822), time())->newLine();
 			$this->report->appendf('> Script: %s (Line %s)', $error->getFile(), $error->getLine());
-			$this->formatStacktrace($error->getTrace());
+		}
+
+		/**
+		 * Format a stacktrace and add it to the report.
+		 *
+		 * @api reportStacktrace
+		 * @param array $trace Stacktrace.
+		 */
+		public function reportStacktrace(array $trace) {
+			$this->report->newLine()->newLine();
+			$this->report->appendf('> Stack trace [%s steps]:', count($trace))->indent()->newLine();
+			foreach($trace as $node) {
+				$args = [];
+				foreach ($node['args'] ?? [] as $key => $arg)
+					$args[$key] = StringUtil::variableAsString($arg);
+
+				$this->report->appendf(
+					'%s:%s - %s%s%s(%s)',
+					$node['file'] ?? 'interpreter',
+					$node['line'] ?? '?',
+					$node['class'] ?? '',
+					$node['type'] ?? '',
+					$node['function'] ?? '',
+					implode(', ', $args)
+				)->newLine();
+			}
+			$this->report->outdent()->newline();
 		}
 
 		/**
@@ -167,33 +193,6 @@
 			$extension = $this->wrapPreTags ? '.html' : '.log';
 
 			return new ErrorReport($this->error, $contentType, $extension, $this->report);
-		}
-
-		/**
-		 * Format the given stacktrace for the report.
-		 *
-		 * @internal
-		 * @param array $trace Stacktrace to format.
-		 */
-		private function formatStacktrace($trace) {
-			$this->report->newLine()->newLine();
-			$this->report->appendf('> Stack trace [%s steps]:', count($trace))->indent()->newLine();
-			foreach($trace as $node) {
-				$args = [];
-				foreach ($node['args'] ?? [] as $key => $arg)
-					$args[$key] = StringUtil::variableAsString($arg);
-
-				$this->report->appendf(
-					'%s:%s - %s%s%s(%s)',
-					$node['file'] ?? 'interpreter',
-					$node['line'] ?? '?',
-					$node['class'] ?? '',
-					$node['type'] ?? '',
-					$node['function'] ?? '',
-					implode(', ', $args)
-				)->newLine();
-			}
-			$this->report->outdent()->newline();
 		}
 
 		/**

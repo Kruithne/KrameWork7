@@ -43,7 +43,6 @@
 		 */
 		public function reportError(IError $error) {
 			$this->error = $error;
-			$this->trace = $error->getTrace();
 			$this->basicData = [
 				'server' => php_uname(),
 				'timestamp' => time(),
@@ -79,6 +78,16 @@
 		}
 
 		/**
+		 * Format a stacktrace and add it to the report.
+		 *
+		 * @api reportStacktrace
+		 * @param array $trace Stacktrace.
+		 */
+		public function reportStacktrace(array $trace) {
+			$this->trace = $trace;
+		}
+
+		/**
 		 * Generate a report.
 		 *
 		 * @api generate
@@ -95,19 +104,8 @@
 			$traceSection = $report->getSection('TRACE_FRAME');
 			if ($traceSection->isValid()) {
 				$index = 0;
-				$beginTrace = false;
 
 				foreach ($this->trace as $traceFrame) {
-					if (!$beginTrace) {
-						if ($traceFrame['class'] ?? '' == 'KrameWork\Runtime\ErrorHandler') {
-							$func = $traceFrame['function'] ?? '';
-							if ($func == 'catchRuntimeError' || $func == 'catchException' || $func == 'catchCoreError')
-								$beginTrace = true;
-						}
-
-						continue;
-					}
-
 					$args = [];
 					foreach ($traceFrame['args'] ?? [] as $key => $arg)
 						$args[] = htmlentities(StringUtil::variableAsString($arg));
