@@ -5,10 +5,12 @@
 	use KrameWork\Runtime\ErrorReports\ErrorReport;
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
+	use KrameWork\Timing\Timer;
 	use Kramework\Utils\StringUtil;
 
 	require_once(__DIR__ . '/../../Reporting/HTMLReport/HTMLReportTemplate.php');
 	require_once(__DIR__ . '/../../Utils/StringUtil.php');
+	require_once(__DIR__ . '/../../Timing/Timer.php');
 
 	class HTMLErrorFormatter implements IErrorFormatter
 	{
@@ -20,6 +22,7 @@
 		 * @param string|null $cssPath CSS file to be prepended to the report.
 		 */
 		public function __construct($templatePath = null, $cssPath = null) {
+			$this->timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
 			$this->templatePath = $templatePath;
 			$this->cssPath = $cssPath;
 		}
@@ -30,6 +33,7 @@
 		 * @api beginReport
 		 */
 		public function beginReport() {
+			$this->timer->start();
 			$this->data = [];
 			$this->basicData = [];
 			$this->trace = [];
@@ -155,6 +159,9 @@
 				}
 			}
 
+			$this->timer->stop();
+			$report .= $this->timer->format('<p>Report generated in %.4fs</p>');
+
 			return new ErrorReport($this->error, 'text/html; charset=utf-8', '.html', $report);
 		}
 
@@ -207,6 +214,11 @@
 			}
 			return null;
 		}
+
+		/**
+		 * @var Timer
+		 */
+		protected $timer;
 
 		/**
 		 * @var IError

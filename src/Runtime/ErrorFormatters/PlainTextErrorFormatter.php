@@ -27,6 +27,7 @@
 	use KrameWork\Runtime\ErrorReports\ErrorReport;
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 	use KrameWork\Runtime\ErrorTypes\IError;
+	use KrameWork\Timing\Timer;
 	use KrameWork\Utils\StringBuilder;
 	use Kramework\Utils\StringUtil;
 
@@ -34,6 +35,7 @@
 	require_once(__DIR__ . '/../../Utils/StringUtil.php');
 	require_once(__DIR__ . '/../ErrorReports/ErrorReport.php');
 	require_once(__DIR__ . '/IErrorFormatter.php');
+	require_once(__DIR__ . '/../../Timing/Timer.php');
 
 	/**
 	 * Class PlainTextErrorFormatter
@@ -52,6 +54,7 @@
 		 * @param bool $wrapPreTags Wrap the report in HTML <pre/> tags.
 		 */
 		public function __construct(string $lineEnd = StringBuilder::LE_UNIX, bool $wrapPreTags = false) {
+			$this->timer = new Timer(Timer::FORMAT_MICROSECONDS, false);
 			$this->wrapPreTags = $wrapPreTags;
 			$this->lineEnd = $lineEnd;
 		}
@@ -64,6 +67,7 @@
 		public function beginReport() {
 			$this->report = new StringBuilder();
 			$this->report->setLineEnd($this->lineEnd);
+			$this->timer->start();
 		}
 
 		/**
@@ -192,8 +196,16 @@
 			$contentType = ($this->wrapPreTags ? 'text/html' : 'text/plain') . '; charset=utf-8';
 			$extension = $this->wrapPreTags ? '.html' : '.log';
 
-			return new ErrorReport($this->error, $contentType, $extension, $this->report);
+			$this->timer->stop();
+			$report = $this->report . $this->timer->format($this->lineEnd . 'Generated in %.4fs.');
+
+			return new ErrorReport($this->error, $contentType, $extension, $report);
 		}
+
+		/**
+		 * @var Timer
+		 */
+		protected $timer;
 
 		/**
 		 * @var IError
