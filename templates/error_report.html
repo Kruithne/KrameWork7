@@ -1,93 +1,71 @@
-<style type="text/css">
-	.error-report-table {
-		font-family: "Courier New", Courier, monospace;
-		border-collapse: collapse;
-		margin-bottom: 10px;
-	}
-
-	.error-report-table th, .error-report-table td {
-		border: 2px solid gray;
-		padding: 4px;
-	}
-
-	.error-report-table thead th {
-		text-align: left;
-		background-color: #798de0;
-	}
-
-	.error-report-table tbody th {
-		text-align: right;
-		background-color: #92bde0;
-	}
-</style>
-<table class="error-report-table">
+<table class="error-report-table" style="font-family: 'Courier New', Courier, monospace;border-collapse: collapse;margin-bottom: 10px;">
 	<thead>
-		<tr>
-			<th colspan="2"><!--PREFIX--> : <!--NAME--></th>
-		</tr>
+	<tr>
+		<th colspan="2" style="border: 2px solid gray;padding: 4px;text-align: left;background-color: #798de0;"><!--PREFIX--> : <!--NAME--></th>
+	</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<th>Message:</th>
-			<td><!--MESSAGE--></td>
-		</tr>
-		<tr>
-			<th>File:</th>
-			<td><!--FILE--> (Line <!--LINE-->)</td>
-		</tr>
-		<tr>
-			<th>Occurred:</th>
-			<td><!--OCCURRED--> (<!--TIMESTAMP-->)</td>
-		</tr>
-		<tr>
-			<th>Server:</th>
-			<td><!--SERVER--></td>
-		</tr>
+	<tr>
+		<th style="border: 2px solid gray;padding: 4px;text-align: right;background-color: #92bde0;">Message:</th>
+		<td style="border: 2px solid gray;padding: 4px;"><!--MESSAGE--></td>
+	</tr>
+	<tr>
+		<th style="border: 2px solid gray;padding: 4px;text-align: right;background-color: #92bde0;">File:</th>
+		<td style="border: 2px solid gray;padding: 4px;"><!--FILE--> (Line <!--LINE-->)</td>
+	</tr>
+	<tr>
+		<th style="border: 2px solid gray;padding: 4px;text-align: right;background-color: #92bde0;">Occurred:</th>
+		<td style="border: 2px solid gray;padding: 4px;"><!--OCCURRED--> (<!--TIMESTAMP-->)</td>
+	</tr>
+	<tr>
+		<th style="border: 2px solid gray;padding: 4px;text-align: right;background-color: #92bde0;">Server:</th>
+		<td style="border: 2px solid gray;padding: 4px;"><!--SERVER--></td>
+	</tr>
 	</tbody>
 </table>
-<table class="error-report-table">
+<table class="error-report-table" style="font-family: 'Courier New', Courier, monospace;border-collapse: collapse;margin-bottom: 10px;">
 	<thead>
-		<tr>
-			<th colspan="2">Stacktrace</th>
-		</tr>
+	<tr>
+		<th colspan="2" style="border: 2px solid gray;padding: 4px;text-align: left;background-color: #798de0;">Stacktrace</th>
+	</tr>
 	</thead>
 	<tbody>
 	<!--TRACE_FRAME-->
 	<tr>
-		<th><!--INDEX--></th>
-		<td><!--FILE-->:<!--LINE--> - <!--CLASS--><!--TYPE--><!--FUNCTION-->(<!--ARGS-->)</td>
+		<th style="border: 2px solid gray;padding: 4px;text-align: right;background-color: #92bde0;"><!--INDEX--></th>
+		<td style="border: 2px solid gray;padding: 4px;"><!--FILE-->:<!--LINE--> - <!--CLASS--><!--TYPE--><!--FUNCTION-->(<!--ARGS-->)</td>
 	</tr>
 	<!--/TRACE_FRAME-->
 	</tbody>
 </table>
 <!--DATA_SET_STRING-->
-<table class="error-report-table">
+<table class="error-report-table" style="font-family: 'Courier New', Courier, monospace;border-collapse: collapse;margin-bottom: 10px;">
 	<thead>
-		<tr>
-			<th colspan="2"><!--NAME--></th>
-		</tr>
+	<tr>
+		<th colspan="2" style="border: 2px solid gray;padding: 4px;text-align: left;background-color: #798de0;"><!--NAME--></th>
+	</tr>
 	</thead>
 	<tbody>
-		<tr>
-			<td colspan="2"><!--DATA--></td>
-		</tr>
+	<tr>
+		<td colspan="2" style="border: 2px solid gray;padding: 4px;"><!--DATA--></td>
+	</tr>
 	</tbody>
 </table>
 <!--/DATA_SET_STRING-->
 <!--DATA_SET_ARRAY-->
-<table class="error-report-table">
+<table class="error-report-table" style="font-family: 'Courier New', Courier, monospace;border-collapse: collapse;margin-bottom: 10px;">
 	<thead>
 	<tr>
-		<th colspan="2"><!--NAME--></th>
+		<th colspan="2" style="border: 2px solid gray;padding: 4px;text-align: left;background-color: #798de0;"><!--NAME--></th>
 	</tr>
 	</thead>
 	<tbody>
-		<!--DATA_SET_FRAME-->
-			<tr>
-				<th><!--NAME--></th>
-				<td><!--DATA--></td>
-			</tr>
-		<!--/DATA_SET_FRAME-->
+	<!--DATA_SET_FRAME-->
+	<tr>
+		<th style="border: 2px solid gray;padding: 4px;text-align: right;background-color: #92bde0;"><!--NAME--></th>
+		<td style="border: 2px solid gray;padding: 4px;"><!--DATA--></td>
+	</tr>
+	<!--/DATA_SET_FRAME-->
 	</tbody>
 </table>
 <!--/DATA_SET_ARRAY-->
