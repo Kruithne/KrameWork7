@@ -60,8 +60,30 @@
 			foreach ($extensions ?? ['php'] as $ext)
 				$this->extensions[] = ltrim($ext, ".");
 
-			// Pre-compute source paths/maps.
-			foreach ($sources ?? [] as $sourceName => $sourcePath) {
+			$this->addSources($sources); // Pre-compute source paths/maps.
+
+			if ($flags & self::INCLUDE_KRAMEWORK_DIRECTORY)
+				$this->sources[] = ['KrameWork', dirname(__FILE__)];
+
+			if ($flags & self::INCLUDE_WORKING_DIRECTORY)
+				$this->sources[] = getcwd();
+
+			// Register this auto-loader instance with PHP.
+			spl_autoload_register([$this, 'loadClass']);
+
+			$this->flags = $flags;
+			$this->enabled = true;
+		}
+
+		/**
+		 * Add sources to this auto-loader.
+		 *
+		 * @api addSources
+		 * @param array $sources Namespace => Path mapping.
+		 * @throws InvalidSourcePathException
+		 */
+		public function addSources(array $sources) {
+			foreach ($sources as $sourceName => $sourcePath) {
 				// Verify source path.
 				$real = realpath(StringUtil::formatDirectorySlashes($sourcePath));
 				if ($real === false)
@@ -77,18 +99,6 @@
 					$this->sources[] = $real;
 				}
 			}
-
-			if ($flags & self::INCLUDE_KRAMEWORK_DIRECTORY)
-				$this->sources[] = ['KrameWork', dirname(__FILE__)];
-
-			if ($flags & self::INCLUDE_WORKING_DIRECTORY)
-				$this->sources[] = getcwd();
-
-			// Register this auto-loader instance with PHP.
-			spl_autoload_register([$this, 'loadClass']);
-
-			$this->flags = $flags;
-			$this->enabled = true;
 		}
 
 		/**
