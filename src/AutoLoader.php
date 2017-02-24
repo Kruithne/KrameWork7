@@ -52,12 +52,12 @@
 		 * @param int $flags Flags to control auto-loading.
 		 * @throws InvalidSourcePathException
 		 */
-		public function __construct(array $sources = [], array $extensions = ['php'], int $flags = self::DEFAULT_FLAGS) {
+		public function __construct(array $sources = null, array $extensions = null, int $flags = self::DEFAULT_FLAGS) {
 			$this->sources = [];
 			$this->extensions = [];
 
-			$this->setExtensions($extensions); // Set extensions.
-			$this->addSources($sources); // Pre-compute source paths/maps.
+			$this->setExtensions($extensions ?? ['php']); // Set extensions.
+			$this->addSources($sources ?? []); // Pre-compute source paths/maps.
 
 			if ($flags & self::INCLUDE_KRAMEWORK_DIRECTORY)
 				$this->sources[] = ['KrameWork', dirname(__FILE__)];
