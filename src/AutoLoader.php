@@ -52,12 +52,12 @@
 		 * @param int $flags Flags to control auto-loading.
 		 * @throws InvalidSourcePathException
 		 */
-		public function __construct(array $sources = null, array $extensions = null, int $flags = self::DEFAULT_FLAGS) {
+		public function __construct(array $sources = [], array $extensions = ['php'], int $flags = self::DEFAULT_FLAGS) {
 			$this->sources = [];
 			$this->extensions = [];
 
 			// Remove any leading periods from extensions.
-			foreach ($extensions ?? ['php'] as $ext)
+			foreach ($extensions as $ext)
 				$this->extensions[] = ltrim($ext, ".");
 
 			$this->addSources($sources); // Pre-compute source paths/maps.
