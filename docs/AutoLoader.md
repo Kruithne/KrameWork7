@@ -87,6 +87,22 @@ parameter | type | description
 exception | reason
 --- | ---
 `InvalidSourcePathException` | Path could not be resolved.
+##### > setExtensions() : `void`
+Set the extensions to be loaded by this auto loader.
+
+parameter | type | description
+--- | --- | ---
+`$extensions` | `string[]` | Allowed extensions.
+##### > addSources() : `void`
+Add sources to this auto-loader.
+
+parameter | type | description
+--- | --- | ---
+`$sources` | `array` | List of sources (strings) or namespace/source key-value array.
+
+exception | reason
+--- | ---
+`InvalidSourcePathException` | Path could not be resolved.
 ##### > loadClass() : `void`
 Attempt to load a given class.
 
