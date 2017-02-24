@@ -56,10 +56,7 @@
 			$this->sources = [];
 			$this->extensions = [];
 
-			// Remove any leading periods from extensions.
-			foreach ($extensions as $ext)
-				$this->extensions[] = ltrim($ext, ".");
-
+			$this->setExtensions($extensions); // Set extensions.
 			$this->addSources($sources); // Pre-compute source paths/maps.
 
 			if ($flags & self::INCLUDE_KRAMEWORK_DIRECTORY)
@@ -73,6 +70,18 @@
 
 			$this->flags = $flags;
 			$this->enabled = true;
+		}
+
+		/**
+		 * Set the extensions which can be loaded by this auto loader.
+		 *
+		 * @api setExtensions
+		 * @param array $extensions Extensions to be loaded.
+		 */
+		public function setExtensions(array $extensions) {
+			// Remove any leading periods from extensions.
+			foreach ($extensions as $ext)
+				$this->extensions[] = ltrim($ext, ".");
 		}
 
 		/**
