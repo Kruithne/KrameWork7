@@ -59,10 +59,14 @@
 		 * CSP constructor.
 		 *
 		 * @api __construct
+		 * @param array|null $arr Initial policy input.
 		 */
-		public function __construct() {
+		public function __construct($arr = null) {
 			$this->directives = [];
 			$this->directives[self::DIRECTIVE_DEFAULT] = self::SOURCE_SELF;
+
+			if (is_array($arr))
+				$this->fromArray($arr);
 		}
 
 		/**

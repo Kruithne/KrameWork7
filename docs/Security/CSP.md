@@ -39,6 +39,18 @@ $csp->fromArray([
     CSP::DIRECTIVE_STYLE => [CSP::SOURCE_INLINE, 'https://cdnjs.cloudflare.com/'],
     [CSP::DIRECTIVE_OBJECT, CSP::DIRECTIVE_CHILD] => CSP::SOURCE_NONE
 ]);
+$csp->apply();
+```
+In the scenario of the above snippet, the array can also be passed into the constructor.
+```php
+$csp = new CSP([
+    CSP::DIRECTIVE_DEFAULT => [CSP::SOURCE_HTTPS, CSP::SOURCE_SELF],
+    CSP::DIRECTIVE_SCRIPT => ['https://cdnjs.cloudflare.com', 'https://www.google.com/'],
+    CSP::DIRECTIVE_FONT => 'https://fonts.googleapis.com/',
+    CSP::DIRECTIVE_STYLE => [CSP::SOURCE_INLINE, 'https://cdnjs.cloudflare.com/'],
+    [CSP::DIRECTIVE_OBJECT, CSP::DIRECTIVE_CHILD] => CSP::SOURCE_NONE
+]);
+$csp->apply();
 ```
 ___
 ### Constants
@@ -71,6 +83,10 @@ ___
 ### Functions
 ##### > __construct() : `void`
 CSP constructor.
+
+parameter | type | description
+--- | --- | ---
+`$arr` | `array|null` | Initial policy input.
 
 #### > fromArray(): `void`
 Add a directive/source array to this policy.
