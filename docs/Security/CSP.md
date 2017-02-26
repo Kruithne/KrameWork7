@@ -37,7 +37,8 @@ $csp->fromArray([
     CSP::DIRECTIVE_SCRIPT => ['https://cdnjs.cloudflare.com', 'https://www.google.com/'],
     CSP::DIRECTIVE_FONT => 'https://fonts.googleapis.com/',
     CSP::DIRECTIVE_STYLE => [CSP::SOURCE_INLINE, 'https://cdnjs.cloudflare.com/'],
-    [CSP::DIRECTIVE_OBJECT, CSP::DIRECTIVE_CHILD] => CSP::SOURCE_NONE
+    CSP::DIRECTIVE_OBJECT => CSP::SOURCE_NONE,
+    CSP::DIRECTIVE_CHILD => CSP::SOURCE_NONE
 ]);
 $csp->apply();
 ```
@@ -48,7 +49,8 @@ $csp = new CSP([
     CSP::DIRECTIVE_SCRIPT => ['https://cdnjs.cloudflare.com', 'https://www.google.com/'],
     CSP::DIRECTIVE_FONT => 'https://fonts.googleapis.com/',
     CSP::DIRECTIVE_STYLE => [CSP::SOURCE_INLINE, 'https://cdnjs.cloudflare.com/'],
-    [CSP::DIRECTIVE_OBJECT, CSP::DIRECTIVE_CHILD] => CSP::SOURCE_NONE
+    CSP::DIRECTIVE_OBJECT => CSP::SOURCE_NONE,
+    CSP::DIRECTIVE_CHILD => CSP::SOURCE_NONE
 ]);
 $csp->apply();
 ```
