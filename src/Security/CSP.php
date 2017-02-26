@@ -66,6 +66,17 @@
 		}
 
 		/**
+		 * Add directive/source pairs from an array.
+		 *
+		 * @api fromArray
+		 * @param array $arr Directive/source pair array.
+		 */
+		public function fromArray(array $arr) {
+			foreach ($arr as $directive => $source)
+				$this->add($directive, $source);
+		}
+
+		/**
 		 * Add a directive to this policy.
 		 *
 		 * @api add

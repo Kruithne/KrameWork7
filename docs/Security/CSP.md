@@ -29,6 +29,17 @@ $csp->apply();
 // Upon apply(), the following header is set.
 // > Content-Security-Policy: default-src https: 'self'; script-src https://cdnjs.cloudflare.com https://www.google.com/; font-src https://fonts.googleapis.com/; style-src 'unsafe-inline' https://cdnjs.cloudflare.com/; object-src 'none'; child-src 'none'
 ```
+To make things cleaner, you can pass in the policy values through an array, as shown in the following snippet.
+```php
+$csp = new CSP();
+$csp->fromArray([
+    CSP::DIRECTIVE_DEFAULT => [CSP::SOURCE_HTTPS, CSP::SOURCE_SELF],
+    CSP::DIRECTIVE_SCRIPT => ['https://cdnjs.cloudflare.com', 'https://www.google.com/'],
+    CSP::DIRECTIVE_FONT => 'https://fonts.googleapis.com/',
+    CSP::DIRECTIVE_STYLE => [CSP::SOURCE_INLINE, 'https://cdnjs.cloudflare.com/'],
+    [CSP::DIRECTIVE_OBJECT, CSP::DIRECTIVE_CHILD] => CSP::SOURCE_NONE
+]);
+```
 ___
 ### Constants
 Below is a table containing all constants exposed by the `CSP` class.
@@ -60,6 +71,13 @@ ___
 ### Functions
 ##### > __construct() : `void`
 CSP constructor.
+
+#### > fromArray(): `void`
+Add a directive/source array to this policy.
+
+parameter | type | description
+--- | --- | ---
+`$arr` | `array` | Directive/source pair array.
 
 ##### > add() : `void`
 Add a directive to this policy.
