@@ -21,16 +21,18 @@
 	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	 * SOFTWARE.
 	 */
-	namespace KrameWork\Security;
+	namespace KrameWork\Security\HTTP;
+
+	require_once(__DIR__ . '/HTTPHeader.php');
 
 	/**
-	 * Class CSP
+	 * Class CSPHeader
 	 * Content Security Policy generator.
 	 *
 	 * @package KrameWork\Security
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	class CSP
+	class CSPHeader extends HTTPHeader
 	{
 		const SOURCE_NONE = '\'none\''; // Nothing allowed.
 		const SOURCE_SELF = '\'self\''; // Same-domain only.
@@ -56,7 +58,7 @@
 		const DIRECTIVE_UPGRADE = 'upgrade-insecure-requests'; // Upgrade HTTP to HTTPS
 
 		/**
-		 * CSP constructor.
+		 * CSPHeader constructor.
 		 *
 		 * @api __construct
 		 * @param array|null $arr Initial policy input.
@@ -84,7 +86,7 @@
 		 * Add a directive to this policy.
 		 *
 		 * @api add
-		 * @param array|string $directives Directive (use CSP:: constants).
+		 * @param array|string $directives Directive (use CSPHeader:: constants).
 		 * @param array|string $source Source directive.
 		 */
 		public function add($directives, $source) {
@@ -96,27 +98,31 @@
 		}
 
 		/**
-		 * Set this policy as the Content-Security-Policy header.
+		 * Get the field name for this header.
 		 *
-		 * @api apply
+		 * @api getFieldName
+		 * @return string
 		 */
-		public function apply() {
-			header($this->__toString());
+		public function getFieldName(): string {
+			return 'Content-Security-Policy';
 		}
 
 		/**
-		 * Compile this to a header string.
+		 * Get the field value for this header.
 		 *
+		 * @api getFieldValue
 		 * @return string
-		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
-		function __toString() {
+		public function getFieldValue(): string {
 			$parts = [];
 			foreach ($this->directives as $directive => $source)
 				$parts[] = $directive . ' ' . $source;
 
-			return 'Content-Security-Policy: ' . implode('; ', $parts);
+			return implode('; ', $parts);
 		}
 
+		/**
+		 * @var array
+		 */
 		private $directives;
 	}
