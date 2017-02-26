@@ -21,7 +21,7 @@ Below is an example use-case of this class, which will apply the following rules
 $csp = new CSP();
 $csp->add(CSP::DIRECTIVE_DEFAULT, [CSP::SOURCE_HTTPS, CSP::SOURCE_SELF]);
 $csp->add(CSP::DIRECTIVE_SCRIPT, ['https://cdnjs.cloudflare.com', 'https://www.google.com/']);
-$csp->add(CSP::DIRECTIVE_FONT, ['https://fonts.googleapis.com/']);
+$csp->add(CSP::DIRECTIVE_FONT, 'https://fonts.googleapis.com/');
 $csp->add(CSP::DIRECTIVE_STYLE, [CSP::SOURCE_INLINE, 'https://cdnjs.cloudflare.com/']);
 $csp->add([CSP::DIRECTIVE_OBJECT, CSP::DIRECTIVE_CHILD], CSP::SOURCE_NONE);
 $csp->apply();
