@@ -23,6 +23,13 @@
 	 */
 	namespace KrameWork\Security;
 
+	/**
+	 * Class CSP
+	 * Content Security Policy generator.
+	 *
+	 * @package KrameWork\Security
+	 * @author Kruithne <kruithne@gmail.com>
+	 */
 	class CSP
 	{
 		const SOURCE_NONE = '\'none\''; // Nothing allowed.
