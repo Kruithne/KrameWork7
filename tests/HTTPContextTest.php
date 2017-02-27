@@ -1,6 +1,6 @@
 <?php
-	use KrameWork\HTTPContext;
-	require_once(__DIR__ . "/../src/HTTPContext.php");
+	use KrameWork\HTTP\HTTPContext;
+	require_once(__DIR__ . "/../src/HTTP/HTTPContext.php");
 
 	class HTTPContextTest extends PHPUnit\Framework\TestCase
 	{

@@ -21,17 +21,18 @@
 	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	 * SOFTWARE.
 	 */
-	namespace KrameWork\Security\HTTP;
+	namespace KrameWork\HTTP;
 	require_once(__DIR__ . '/HTTPHeader.php');
 
 	/**
-	 * Class XSSProtectionHeader
-	 * Header to enable legacy X-XSS detection/prevention.
+	 * Class MIMEValidationHeader
+	 * Validate resource content type before loading.
+	 * Basic XSS prevention header for Chrome, Firefox and IE.
 	 *
 	 * @package KrameWork\Security\HTTP
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	class XSSProtectionHeader extends HTTPHeader
+	class MIMEValidationHeader extends HTTPHeader
 	{
 		/**
 		 * Get the field name for this header.
@@ -40,7 +41,7 @@
 		 * @return string
 		 */
 		public function getFieldName(): string {
-			return 'X-XSS-Protection';
+			return 'X-Content-Type-Options';
 		}
 
 		/**
@@ -50,6 +51,6 @@
 		 * @return string
 		 */
 		public function getFieldValue(): string {
-			return '1; mode=block';
+			return 'nosniff';
 		}
 	}

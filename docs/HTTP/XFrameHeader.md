@@ -1,4 +1,4 @@
-## KrameWork\Security\HTTP\XFrameHeader : HTTPHeader
+## KrameWork\HTTP\XFrameHeader : HTTPHeader
 
 ***Table of Contents***
 * **Overview** - Information about the class.
@@ -6,7 +6,7 @@
 
 ___
 ### Overview
-`XFrameHeader` is a class used to generate a header for enabling and controlling the framing directive. The class is intended to be used along-side the `SecurityPolicy` class, however can be used as a standalone if desired.
+`XFrameHeader` is a class used to generate a header for enabling and controlling the framing directive. The class is intended to be used along-side the `HTTPHeaders` class, however can be used as a standalone if desired.
 ___
 ### Functions
 ##### > __construct() : `void`

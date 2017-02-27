@@ -21,20 +21,22 @@
 	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	 * SOFTWARE.
 	 */
-	namespace KrameWork\Security\HTTP;
+	namespace KrameWork\HTTP;
+	use KrameWork\Utils\StringBuilder;
+
 	require_once(__DIR__ . '/HTTPHeader.php');
 
 	/**
-	 * Class SecurityPolicy
-	 * Application security control module.
+	 * Class HTTPHeaders
+	 * HTTP Header Generator/Container.
 	 *
 	 * @package KrameWork\Security
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	class SecurityPolicy
+	class HTTPHeaders
 	{
 		/**
-		 * SecurityPolicy constructor.
+		 * HTTPHeaders constructor.
 		 *
 		 * @api __construct
 		 * @param array|string $input Policy array (header objects) or pre-compiled string.
@@ -98,6 +100,29 @@
 		 */
 		public function __toString():string {
 			return base64_encode(json_encode($this->compiled));
+		}
+
+		/**
+		 * Generate Apache configuration using these headers.
+		 * Will not work with pre-compiled headers. Call compile() first.
+		 *
+		 * @api generateApacheConfig
+		 * @param string|null $file Optional file to write out to.
+		 * @return string
+		 */
+		public function generateApacheConfig($file = null):string {
+			require_once(__DIR__ . '/../Utils/StringBuilder.php');
+			$builder = new StringBuilder();
+
+			foreach ($this->headers as $header) {
+				$builder->append('Header add ', $header->getFieldName(), ' "', $header->getFieldValue() . '"');
+				$builder->newLine();
+			}
+
+			if ($file !== null)
+				file_put_contents($file, $builder, FILE_APPEND);
+
+			return $builder;
 		}
 
 		/**

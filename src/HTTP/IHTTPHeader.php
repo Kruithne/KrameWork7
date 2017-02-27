@@ -21,41 +21,23 @@
 	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	 * SOFTWARE.
 	 */
-	namespace KrameWork\Security\HTTP;
-	require_once(__DIR__ . '/HTTPHeader.php');
+	namespace KrameWork\HTTP;
 
 	/**
-	 * Class XFrameHeader
-	 * X-Framing-Option header, for use with CSP frame-ancestors directive.
+	 * Interface IHTTPHeader
+	 * Represents a HTTP header.
 	 *
-	 * @package KrameWork\Security\HTTP
+	 * @package KrameWork\Security
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	class XFrameHeader extends HTTPHeader
+	interface IHTTPHeader
 	{
-		const DENY = 'DENY';
-		const SAME_ORIGIN = 'SAMEORIGIN';
-
 		/**
-		 * XFrameHeader constructor.
+		 * Apply this header to the current response.
 		 *
-		 * @api __construct
-		 * @param string $option Framing option for this header.
+		 * @api apply
 		 */
-		public function __construct(string $option = self::DENY) {
-			$this->option = $option;
-		}
-
-		/**
-		 * Set the framing option for this header.
-		 * Use the constants provided by the XFrameHeader class.
-		 *
-		 * @api setOption
-		 * @param string $option Directive for this header.
-		 */
-		public function setOption(string $option) {
-			$this->option = $option;
-		}
+		public function apply();
 
 		/**
 		 * Get the field name for this header.
@@ -63,9 +45,7 @@
 		 * @api getFieldName
 		 * @return string
 		 */
-		public function getFieldName(): string {
-			return 'X-Frame-Options';
-		}
+		public function getFieldName():string;
 
 		/**
 		 * Get the field value for this header.
@@ -73,12 +53,14 @@
 		 * @api getFieldValue
 		 * @return string
 		 */
-		public function getFieldValue(): string {
-			return $this->option;
-		}
+		public function getFieldValue():string;
 
 		/**
-		 * @var string
+		 * Get the compiled header string.
+		 *
+		 * @api __toString()
+		 * @return string
+		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
-		protected $option;
+		public function __toString():string;
 	}
