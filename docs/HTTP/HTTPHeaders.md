@@ -1,4 +1,4 @@
-## KrameWork\HTTP\SecurityPolicy
+## KrameWork\HTTP\HTTPHeaders
 
 ***Table of Contents***
 * **Overview** - Information about the class.
@@ -7,12 +7,14 @@
 
 ___
 ### Overview
-The `SecurityPolicy` class is intended to encompass control and generation of commonly used security headers. The object provides a `compile()` function, which should be called before caching the object. Converting the object to a string (`__toString()`) will also return an encoded version after compilation, which can be fed into the constructor to skip the need to compile/provide headers.
+The `HTTPHeaders` class is intended to encompass control and generation of commonly used HTTP headers. The object provides a `compile()` function, which should be called before caching the object. Converting the object to a string (`__toString()`) will also return an encoded version after compilation, which can be fed into the constructor to skip the need to compile/provide headers.
+
+It is recommended to use this class for headers you intend to set often, not one-time/responsive headers.
 ___
 ### Example
 Here is a basic example of how to use this class. It's worth nothing this example doesn't delve deep into methods of caching, since it may differ on your application.
 ```php
-$policy = new SecurityPolicy();
+$policy = new HTTPHeaders();
 $policy->add(new XSSProtectionHeader());
 $policy->add(new MIMEValidationHeader());
 $policy->add(new XFrameHeader(XFrameHeader::DENY));
@@ -34,7 +36,7 @@ $policy->apply(); // Set all HTTP headers with the policy set-up.
 ___
 ### Functions
 ##### > __construct() : `void`
-SecurityPolicy constructor.
+HTTPHeaders constructor.
 
 parameter | type | description
 --- | --- | ---

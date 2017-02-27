@@ -8,7 +8,7 @@
 
 ___
 ### Overview
-`CSPHeader` is a class used to generate a Content Security Policy for use as a HTTP header. The class is intended to be used along-side the `SecurityPolicy` class, however can be used as a standalone if desired.
+`CSPHeader` is a class used to generate a Content Security Policy for use as a HTTP header. The class is intended to be used along-side the `HTTPHeaders` class, however can be used as a standalone if desired.
 ___
 ### Example
 Below is an example use-case of this class, which will apply the following rules.

@@ -25,16 +25,16 @@
 	require_once(__DIR__ . '/HTTPHeader.php');
 
 	/**
-	 * Class SecurityPolicy
-	 * Application security control module.
+	 * Class HTTPHeaders
+	 * HTTP Header Generator/Container.
 	 *
 	 * @package KrameWork\Security
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	class SecurityPolicy
+	class HTTPHeaders
 	{
 		/**
-		 * SecurityPolicy constructor.
+		 * HTTPHeaders constructor.
 		 *
 		 * @api __construct
 		 * @param array|string $input Policy array (header objects) or pre-compiled string.

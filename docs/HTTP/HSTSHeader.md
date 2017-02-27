@@ -6,7 +6,7 @@
 
 ___
 ### Overview
-`HSTSHeader` is a class used to generate a HTTP Strict Transport Security header for use as a HTTP header. The class is intended to be used along-side the `SecurityPolicy` class, however can be used as a standalone if desired.
+`HSTSHeader` is a class used to generate a HTTP Strict Transport Security header for use as a HTTP header. The class is intended to be used along-side the `HTTPHeaders` class, however can be used as a standalone if desired.
 ___
 ### Functions
 ##### > __construct() : `void`
