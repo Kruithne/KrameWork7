@@ -74,7 +74,7 @@
 		 */
 		public function apply() {
 			foreach ($this->compiled as $header)
-				var_dump($header);
+				header($header);
 		}
 
 		/**
