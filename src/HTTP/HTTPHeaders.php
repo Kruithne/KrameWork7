@@ -22,6 +22,8 @@
 	 * SOFTWARE.
 	 */
 	namespace KrameWork\HTTP;
+	use KrameWork\Utils\StringBuilder;
+
 	require_once(__DIR__ . '/HTTPHeader.php');
 
 	/**
@@ -98,6 +100,29 @@
 		 */
 		public function __toString():string {
 			return base64_encode(json_encode($this->compiled));
+		}
+
+		/**
+		 * Generate Apache configuration using these headers.
+		 * Will not work with pre-compiled headers. Call compile() first.
+		 *
+		 * @api generateApacheConfig
+		 * @param string|null $file Optional file to write out to.
+		 * @return string
+		 */
+		public function generateApacheConfig($file = null):string {
+			require_once(__DIR__ . '/../Utils/StringBuilder.php');
+			$builder = new StringBuilder();
+
+			foreach ($this->headers as $header) {
+				$builder->append('Header add ', $header->getFieldName(), ' "', $header->getFieldValue() . '"');
+				$builder->newLine();
+			}
+
+			if ($file !== null)
+				file_put_contents($file, $builder, FILE_APPEND);
+
+			return $builder;
 		}
 
 		/**

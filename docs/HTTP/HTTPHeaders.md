@@ -58,3 +58,9 @@ Compiled all headers in this policy, storing them internally. Call before applyi
 ##### > __toString() : `void`
 Get a serialized representation of this policy. Results may be incorrect if called before compile().
 
+##### > generateApacheConfig() : `string`
+Generate Apache configuration using these headers. Will not work with pre-compiled headers. Call compile() first.
+
+parameter | type | description
+--- | --- | ---
+`$file` | `string|null` | Optional file to write out to.
