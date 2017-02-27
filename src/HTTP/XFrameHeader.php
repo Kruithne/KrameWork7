@@ -21,36 +21,64 @@
 	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	 * SOFTWARE.
 	 */
-	namespace KrameWork\Security\HTTP;
-	require_once(__DIR__ . '/IHTTPHeader.php');
+	namespace KrameWork\HTTP;
+	require_once(__DIR__ . '/HTTPHeader.php');
 
 	/**
-	 * Class HTTPHeader
-	 * Base class for HTTP headers.
+	 * Class XFrameHeader
+	 * X-Framing-Option header, for use with CSP frame-ancestors directive.
 	 *
 	 * @package KrameWork\Security\HTTP
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	abstract class HTTPHeader implements IHTTPHeader
+	class XFrameHeader extends HTTPHeader
 	{
+		const DENY = 'DENY';
+		const SAME_ORIGIN = 'SAMEORIGIN';
+
 		/**
-		 * Apply this header to the current response.
+		 * XFrameHeader constructor.
 		 *
-		 * @api apply
+		 * @api __construct
+		 * @param string $option Framing option for this header.
 		 */
-		public function apply() {
-			header($this->__toString());
+		public function __construct(string $option = self::DENY) {
+			$this->option = $option;
 		}
 
 		/**
-		 * Get the compiled header string.
+		 * Set the framing option for this header.
+		 * Use the constants provided by the XFrameHeader class.
 		 *
-		 * @api __toString
+		 * @api setOption
+		 * @param string $option Directive for this header.
+		 */
+		public function setOption(string $option) {
+			$this->option = $option;
+		}
+
+		/**
+		 * Get the field name for this header.
+		 *
+		 * @api getFieldName
 		 * @return string
-		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
-		public function __toString(): string {
-			return $this->getFieldName() . ': ' . $this->getFieldValue();
+		public function getFieldName(): string {
+			return 'X-Frame-Options';
 		}
 
+		/**
+		 * Get the field value for this header.
+		 *
+		 * @api getFieldValue
+		 * @return string
+		 */
+		public function getFieldValue(): string {
+			return $this->option;
+		}
+
+		/**
+		 * @var string
+		 */
+		protected $option;
 	}

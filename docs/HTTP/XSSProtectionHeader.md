@@ -1,4 +1,4 @@
-## KrameWork\Security\HTTP\MIMEValidationHeader : HTTPHeader
+## KrameWork\HTTP\XSSProtectionHeader : HTTPHeader
 
 ***Table of Contents***
 * **Overview** - Information about the class.
@@ -6,7 +6,7 @@
 
 ___
 ### Overview
-`MIMEValidationHeader` is a class used to generate a header to enable verification of MIME content-type for resources. The class is intended to be used along-side the `SecurityPolicy` class, however can be used as a standalone if desired.
+`XSSProtectionHeader` is a class used to generate a header for enabling legacy XSS prevention methods. The class is intended to be used along-side the `SecurityPolicy` class, however can be used as a standalone if desired.
 ___
 ### Functions
 ##### > getFieldName() : `string`

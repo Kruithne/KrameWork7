@@ -21,46 +21,36 @@
 	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	 * SOFTWARE.
 	 */
-	namespace KrameWork\Security\HTTP;
+	namespace KrameWork\HTTP;
+	require_once(__DIR__ . '/IHTTPHeader.php');
 
 	/**
-	 * Interface IHTTPHeader
-	 * Represents a HTTP header.
+	 * Class HTTPHeader
+	 * Base class for HTTP headers.
 	 *
-	 * @package KrameWork\Security
+	 * @package KrameWork\Security\HTTP
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	interface IHTTPHeader
+	abstract class HTTPHeader implements IHTTPHeader
 	{
 		/**
 		 * Apply this header to the current response.
 		 *
 		 * @api apply
 		 */
-		public function apply();
-
-		/**
-		 * Get the field name for this header.
-		 *
-		 * @api getFieldName
-		 * @return string
-		 */
-		public function getFieldName():string;
-
-		/**
-		 * Get the field value for this header.
-		 *
-		 * @api getFieldValue
-		 * @return string
-		 */
-		public function getFieldValue():string;
+		public function apply() {
+			header($this->__toString());
+		}
 
 		/**
 		 * Get the compiled header string.
 		 *
-		 * @api __toString()
+		 * @api __toString
 		 * @return string
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
-		public function __toString():string;
+		public function __toString(): string {
+			return $this->getFieldName() . ': ' . $this->getFieldValue();
+		}
+
 	}

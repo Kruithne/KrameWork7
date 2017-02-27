@@ -1,4 +1,4 @@
-## KrameWork\Security\HTTP\XFrameHeader : HTTPHeader
+## KrameWork\HTTP\XFrameHeader : HTTPHeader
 
 ***Table of Contents***
 * **Overview** - Information about the class.

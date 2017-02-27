@@ -1,4 +1,4 @@
-## KrameWork\Security\HTTP\CSPHeader : HTTPHeader
+## KrameWork\HTTP\CSPHeader : HTTPHeader
 
 ***Table of Contents***
 * **Overview** - Information about the class.

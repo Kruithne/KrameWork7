@@ -1,4 +1,4 @@
-## KrameWork\Security\HTTP\HSTSHeader : HTTPHeader
+## KrameWork\HTTP\HSTSHeader : HTTPHeader
 
 ***Table of Contents***
 * **Overview** - Information about the class.

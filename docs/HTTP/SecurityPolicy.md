@@ -1,4 +1,4 @@
-## KrameWork\Security\HTTP\SecurityPolicy
+## KrameWork\HTTP\SecurityPolicy
 
 ***Table of Contents***
 * **Overview** - Information about the class.
