@@ -22,7 +22,11 @@
 	 * SOFTWARE.
 	 */
 
-	namespace KrameWork;
+	namespace KrameWork\HTTP;
+
+	use KrameWork\Storage\JSONException;
+	use KrameWork\Storage\JSONFile;
+	use KrameWork\Storage\UploadedFile;
 
 	class InvalidRequestTypeException extends \Exception {}
 
@@ -54,11 +58,11 @@
 				return $files;
 
 			if ($useWrappers)
-				require_once(__DIR__ . '/Storage/UploadedFile.php');
+				require_once(__DIR__ . '/../Storage/UploadedFile.php');
 
 			for ($i = 0; $i < $size; $i++) {
 				if ($useWrappers) {
-					$files[] = new Storage\UploadedFile($node['tmp_name'][$i], $node['name'][$i], $node['error'][$i]);
+					$files[] = new UploadedFile($node['tmp_name'][$i], $node['name'][$i], $node['error'][$i]);
 				} else {
 					$files[] = new \ArrayObject([
 						'name' => $node['name'][$i],
@@ -218,10 +222,10 @@
 				throw new InvalidRequestTypeException('Request content is not declared as application/json.');
 
 			if ($wrapper) {
-				require_once(__DIR__ . '/Storage/JSONFile.php');
+				require_once(__DIR__ . '/../Storage/JSONFile.php');
 				try {
-					return new Storage\JSONFile('php://input', true, true);
-				} catch (Storage\JSONException $e) {
+					return new JSONFile('php://input', true, true);
+				} catch (JSONException $e) {
 					throw new InvalidRequestTypeException('Request content did not contain valid json.');
 				}
 			} else {
