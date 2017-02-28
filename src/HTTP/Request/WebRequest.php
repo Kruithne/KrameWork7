@@ -161,7 +161,7 @@
 
 			$context = stream_context_create([
 				'http' => [
-					'headers' => $this->compileHeaders(),
+					'header' => $this->compileHeaders(),
 					'method' => $this->method,
 					'content' => $content
 				]
