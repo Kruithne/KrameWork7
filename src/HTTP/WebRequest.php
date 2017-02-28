@@ -133,7 +133,7 @@
 		 */
 		public function getResponse():string {
 			if ($this->result == null)
-				throw new RequestNotSentException();
+				throw new RequestNotSentException('Response not available (request failed/not sent)');
 
 			return $this->result;
 		}
@@ -160,7 +160,7 @@
 		 */
 		function __toString():string {
 			if ($this->result == null)
-				throw new RequestNotSentException();
+				throw new RequestNotSentException('Response not available (request failed/not sent)');
 
 			return $this->result;
 		}
