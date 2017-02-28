@@ -125,13 +125,12 @@
 
 		/**
 		 * Get the response from this request.
-		 * Returns null if request has not yet been sent.
 		 *
 		 * @api getResponse
 		 * @return string
 		 * @throws ResponseNotAvailableException
 		 */
-		public function getResponse():string {
+		public function getResponse() {
 			if ($this->result == null)
 				throw new ResponseNotAvailableException('Response not available (request failed/not sent)');
 
@@ -151,7 +150,6 @@
 
 		/**
 		 * Return the response for this request.
-		 * If the request is not available, an empty string is returned.
 		 *
 		 * @api __toString
 		 * @return string
