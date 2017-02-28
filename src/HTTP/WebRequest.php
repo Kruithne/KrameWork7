@@ -155,10 +155,14 @@
 		 *
 		 * @api __toString
 		 * @return string
+		 * @throws RequestNotSentException
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
 		function __toString():string {
-			return $this->result ?? '';
+			if ($this->result == null)
+				throw new RequestNotSentException();
+
+			return $this->result;
 		}
 
 		/**
