@@ -71,17 +71,24 @@ parameter | type | description
 
 exception | reason
 --- | ---
-`InvalidHeaderException` | Header was not a string or array of strings.
+`InvalidHeaderException` | Header was not a string (or array of strings).
 
 ##### > send() : `bool`
 Send the request. Return boolean indicates success.
 
 ##### > getResponse() : `string`
-Get the response from this request. Returns null if request has not yet been sent.
+Get the response from this request.
+
+exception | reason
+--- | ---
+`ResponseNotAvailableException` | Request not sent or failed.
 
 ##### > success() : `bool|null`
 True/false depending on success of request. Returns null if request has not yet been sent.
 
 ##### > __toString() : `string`
-Return the response for this request. If the request is not available, an empty string is returned.
+Return the response for this request.
 
+exception | reason
+--- | ---
+`ResponseNotAvailableException` | Request not sent or failed.
