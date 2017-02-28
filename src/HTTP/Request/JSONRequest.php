@@ -34,6 +34,42 @@
 	class JSONRequest extends WebRequest
 	{
 		/**
+		 * Send the request.
+		 * Return boolean indicates success.
+		 *
+		 * @api postJson
+		 * @param mixed $object The data to encode as JSON and post to the server
+		 * @return bool
+		 */
+		public function postJson(object $object):bool {
+			if($this->method != WebRequest::METHOD_POST)
+				return false;
+
+			$headers = '';
+			foreach ($this->headers as $header)
+				$headers .= $header . "\r\n";
+
+			$url = $this->url . (strpos($this->url, '?') !== false ? '&' : '?');
+			$url .= http_build_query($this->data);
+
+			$context = stream_context_create([
+				'http' => [
+					'header' => $headers,
+					'method' => $this->method,
+					'content' => json_encode($object)
+				]
+			]);
+
+			$result = file_get_contents($url, false, $context);
+			$this->success = $result !== false;
+
+			if ($this->success)
+				$this->result = $result;
+
+			return $this->success;
+		}
+
+		/**
 		 * Get the JSON decoded response from this request.
 		 * Returns null if unable to decode response.
 		 *
