@@ -1,4 +1,4 @@
-## KrameWork\HTTP\JSONRequest : WebRequest
+## KrameWork\HTTP\Request\JSONRequest : WebRequest
 
 ***Table of Contents***
 * **Overview** - Information about the class.

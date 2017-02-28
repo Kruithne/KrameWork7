@@ -1,4 +1,4 @@
-## KrameWork\HTTP\WebRequest
+## KrameWork\HTTP\Request\WebRequest
 
 ***Table of Contents***
 * **Overview** - Information about the class.
