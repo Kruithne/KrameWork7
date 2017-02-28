@@ -58,6 +58,10 @@ parameter | type | description
 --- | --- | ---
 `$object` | `mixed` | Data to json encode and post to the server API.
 
+exception | reason
+--- | ---
+`InvalidMethodException` | Not using METHOD_POST for a JSON-body request.
+
 ##### > getResponse() : `mixed`
 Get the JSON decoded response from this request. Returns null if unable to decode response.
 

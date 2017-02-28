@@ -102,25 +102,44 @@
 		 * @return bool
 		 */
 		public function send():bool {
+			$this->sendRequest($this->url, http_build_query($this->data));
+			return $this->success;
+		}
+
+		/**
+		 * Get the compiled headers for this request.
+		 *
+		 * @internal
+		 * @return string
+		 */
+		protected function compileHeaders():string {
 			$headers = '';
 			foreach ($this->headers as $header)
 				$headers .= $header . "\r\n";
 
+			return $headers;
+		}
+
+		/**
+		 * Send a HTTP request.
+		 *
+		 * @param string $url URL endpoint to request.
+		 * @param string $content Content to send with the request.
+		 */
+		protected function sendRequest(string $url, string $content) {
 			$context = stream_context_create([
 				'http' => [
-					'header' => $headers,
+					'header' => $this->compileHeaders(),
 					'method' => $this->method,
-					'content' => http_build_query($this->data)
+					'content' => $content
 				]
 			]);
 
-			$result = file_get_contents($this->url, false, $context);
+			$result = file_get_contents($url, false, $context);
 			$this->success = $result !== false;
 
 			if ($this->success)
 				$this->result = $result;
-
-			return $this->success;
 		}
 
 		/**
