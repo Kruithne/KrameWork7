@@ -377,31 +377,7 @@
 		 * @return array Decoded key/value pair array.
 		 */
 		private function extractURLEncodedData(string $input):array {
-			$out = [];
-			$components = explode('&', $input);
-			foreach ($components as $component) {
-				$parts = explode('=', $component);
-				if (count($parts) < 2)
-					continue;
-
-				list($key, $value) = $parts;
-				$value = urldecode($value);
-
-				// Skip zero-length values.
-				if (\strlen($value) == 0)
-					continue;
-
-				$keyLen = \strlen($key);
-				if (substr($key, $keyLen - 2) == '[]') {
-					$key = urldecode(substr($key, 0, $keyLen - 2));
-					if (!array_key_exists($key, $out))
-						$out[$key] = [];
-
-					$out[$key][] = $value;
-				} else {
-					$out[urldecode($key)] = $value;
-				}
-			}
+			\mb_parse_str($input, $out);
 			return $out;
 		}
 
