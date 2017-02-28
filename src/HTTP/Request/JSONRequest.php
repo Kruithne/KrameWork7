@@ -22,6 +22,7 @@
 	 * SOFTWARE.
 	 */
 	namespace KrameWork\HTTP\Request;
+	require_once(__DIR__ . '/WebRequest.php');
 
 	/**
 	 * Class JSONRequest
