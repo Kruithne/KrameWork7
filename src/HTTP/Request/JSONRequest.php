@@ -49,7 +49,7 @@
 		 * @return bool
 		 * @throws InvalidMethodException
 		 */
-		public function postJson(object $object):bool {
+		public function postJSON(object $object):bool {
 			if($this->method != WebRequest::METHOD_POST)
 				throw new InvalidMethodException('JSON-body requests require METHOD_POST.');
 
