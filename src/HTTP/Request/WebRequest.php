@@ -144,8 +144,8 @@
 		 */
 		protected function compileHeaders():string {
 			$headers = '';
-			foreach ($this->headers as $header)
-				$headers .= $header . "\r\n";
+			foreach ($this->headers as $fieldName => $fieldValue)
+				$headers .= $fieldName . ': ' . $fieldValue . "\r\n";
 
 			return $headers;
 		}
