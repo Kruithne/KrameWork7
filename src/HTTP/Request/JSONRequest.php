@@ -35,6 +35,11 @@
 	 */
 	class JSONRequest extends WebRequest
 	{
+		public function __construct($url, $method = self::METHOD_GET) {
+			parent::__construct($url, $method);
+			$this->addHeader('Accept', 'application/json');
+		}
+
 		/**
 		 * Send the request.
 		 * Return boolean indicates success.
@@ -47,6 +52,9 @@
 		public function postJson(object $object):bool {
 			if($this->method != WebRequest::METHOD_POST)
 				throw new InvalidMethodException('JSON-body requests require METHOD_POST.');
+
+			if (!$this->hasHeader('Content-type'))
+				$this->addHeader('Content-type', 'application/json');
 
 			$url = $this->url . (strpos($this->url, '?') !== false ? '&' : '?');
 			$url .= http_build_query($this->data);

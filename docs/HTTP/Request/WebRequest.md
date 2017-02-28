@@ -87,6 +87,13 @@ parameter | type | description
 --- | --- | ---
 `$headers` | `array` | Array of headers to add.
 
+##### > hasHeader() : `bool`
+Check if this request has a header set.
+
+parameter | type | description
+--- | --- | ---
+`$checkName` | `string` | Field name to check for.
+
 ##### > send() : `bool`
 Send the request. Return boolean indicates success.
 

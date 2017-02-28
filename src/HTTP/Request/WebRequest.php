@@ -87,6 +87,22 @@
 		}
 
 		/**
+		 * Check if this request has a header set.
+		 *
+		 * @api hasHeader
+		 * @param string $checkName Field name to check for.
+		 * @return bool
+		 */
+		public function hasHeader(string $checkName):bool {
+			$checkName = strtolower($checkName);
+			foreach ($this->headers as $fieldName => $fieldValue)
+				if (strtolower($fieldName) == $checkName)
+					return true;
+
+			return false;
+		}
+
+		/**
 		 * Get a value set for this request.
 		 *
 		 * @param string $name Name of the value.
