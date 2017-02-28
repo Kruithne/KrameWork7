@@ -8,6 +8,15 @@
 ___
 ### Overview
 The `JSONRequest` class is a basic extension of the `WebRequest` class which attempts to automatically decode the response as a JSON object when `getResponse()` is called. It's worth noting that `__toString()` will return the raw response data.
+
+> **Note**: The JSONRequest class can only function when using the `WebRequest::METHOD_POST` method. An expection will be thrown if you attempt to use another.
+
+The following headers are set by default, as well as the `WebRequest` defaults.
+header | value
+--- | ---
+`Content-type` | `application/json`, only set when using `postJSON()`, otherwise uses `WebRequest` default.
+`Accept` | `application/json`
+
 ___
 ### Example
 Sending a request using this class is straight-forward, take a look at the example below for the most basic usage.
@@ -24,7 +33,7 @@ The raw response of the request can be obtained by invoking the `__toString()` m
 Posting some object to the API;
 ```php
 $req = new JsonRequst('https://supersecret.example.com/api/magical', WebRequest::METHOD_POST);
-if ($req->postJson(['something' => 'else']))
+if ($req->postJSON(['something' => 'else']))
     var_dump($req->getResponse());
 ```
 ___
@@ -51,7 +60,7 @@ exception | reason
 ##### > send() : `bool`
 Send the request. Return boolean indicates success.
 
-##### > postJson() : `bool`
+##### > postJSON() : `bool`
 Post an object encoded as json with the request. Return boolean indicates success.
 
 parameter | type | description

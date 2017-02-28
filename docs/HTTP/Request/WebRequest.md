@@ -7,7 +7,24 @@
 
 ___
 ### Overview
-The `WebRequest` class streamlines the ability to send HTTP(s) requests through various protocol methods using custom headers and content.
+The `WebRequest` class streamlines the ability to send HTTP(s) requests through various protocol methods using custom headers and content. Below, the behavior of each request method is out-lined.
+
+##### WebRequest::METHOD_POST
+Content will be encoded and provided as HTTP request-content.
+
+The following headers will be set:
+header | value
+--- | ---
+`Content-Length` | Set to the length of the content after encoding.
+`Content-Type` | Set to `application/x-www-form-urlencoded`
+
+##### WebRequest::METHOD_GET
+Content is encoded and formatted into a query-string, which will be appended to the end of the URL. If the provided URL already has query-string parameters, this will not break and the encoded values will simply be included. No HTTP content is provided with this method.
+
+The following headers will be set:
+header | value
+--- | ---
+`Content-Type` | Set to `application/x-www-form-urlencoded`
 ___
 ### Example
 Sending a request using this class is straight-forward, take a look at the example below for the most basic usage.
@@ -29,17 +46,20 @@ if ($req->send())
 // > {"text":"<p>Art party DIY nisi four dollar toast.  Duis  portland ethical...
 ```
 ##### Headers
-During default operation, no headers are set on the request, however we can set our own using the `addHeader()` function provided by the class. The function accepts a formatted header string, or an array of them.
+Some default headers are set, such as `Content-length`, however you can over-write these and set your own in various different ways.
 ```php
 // Setting a header to use with the request.
-$req->addHeader('Accept-language: en');
+$req->addHeader('Accept-language', 'en');
 
 // Setting multiple headers to use with the request.
-$req->addHeader(['Accept-language: en', 'Cookie: foo=bar']);
+$req->addHeaders([
+    'Accept-language' => 'en',
+    'Cookie' => 'foo=bar'
+]);
 
 // Using KrameWork\HTTP headers.
 // Note: Setting XSSProtectionHeader on a request makes no sense, this is an example, not a guide.
-$req->addHeader(new XSSProtectionHeader());
+$req->addHeaderObject(new XSSProtectionHeader());
 ```
 ##### Content
 What's the point of sending a request if we can't provide any content with it? Luckily, we can. The `WebRequest` object allows data to be set using the `__set()` magic method.
@@ -67,11 +87,29 @@ Add a header to this request.
 
 parameter | type | description
 --- | --- | ---
-`$headers` | `string|array` | Header string, or array of strings.
+`$fieldName` | `string` | Field name of the header.
+`$fieldValue` | `string` | Field value of the header.
 
-exception | reason
---- | ---
-`InvalidHeaderException` | Header was not a string (or array of strings).
+##### > addHeaderObject() : `void`
+Add a HTTP header object to the request.
+
+parameter | type | description
+--- | --- | ---
+`$header` | `HTTPHeader` | Header object to add.
+
+##### > addHeaders() : `void`
+Add multiple headers to the request. Array must be in fieldName => fieldValue format.
+
+parameter | type | description
+--- | --- | ---
+`$headers` | `array` | Array of headers to add.
+
+##### > hasHeader() : `bool`
+Check if this request has a header set.
+
+parameter | type | description
+--- | --- | ---
+`$checkName` | `string` | Field name to check for.
 
 ##### > send() : `bool`
 Send the request. Return boolean indicates success.
@@ -81,7 +119,7 @@ Get the response from this request.
 
 exception | reason
 --- | ---
-`ResponseNotAvailableException` | Request not sent or failed.
+`ResponseNotAvailableException` | ???
 
 ##### > success() : `bool|null`
 True/false depending on success of request. Returns null if request has not yet been sent.
@@ -91,4 +129,4 @@ Return the response for this request.
 
 exception | reason
 --- | ---
-`ResponseNotAvailableException` | Request not sent or failed.
+`ResponseNotAvailableException` | Request not sent (or failed).

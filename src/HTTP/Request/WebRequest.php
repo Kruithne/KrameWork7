@@ -23,7 +23,8 @@
 	 */
 	namespace KrameWork\HTTP\Request;
 
-	class InvalidHeaderException extends \Exception {}
+	use KrameWork\HTTP\HTTPHeader;
+
 	class ResponseNotAvailableException extends \Exception {}
 
 	/**
@@ -48,28 +49,57 @@
 		public function __construct(string $url, string $method = self::METHOD_GET) {
 			$this->url = $url;
 			$this->method = $method;
-			$this->headers = [];
 			$this->data = [];
+			$this->headers = ['Content-type' => 'application/x-www-form-urlencoded'];
 		}
 
 		/**
 		 * Add a header to this request.
 		 *
 		 * @api addHeader
-		 * @param string|array $headers Header string, or array of strings.
-		 * @throws InvalidHeaderException
+		 * @param string $fieldName Field name of the header.
+		 * @param string $fieldValue Field value of the header.
 		 */
-		public function addHeader($headers) {
-			if (is_array($headers)) {
-				foreach ($headers as $header)
-					$this->addHeader($header);
+		public function addHeader(string $fieldName, string $fieldValue) {
+			$this->headers[$fieldName] = $fieldValue;
+		}
 
-				return;
-			} else if (is_string($headers)) {
-				$this->headers[] = $headers;
-			} else {
-				throw new InvalidHeaderException('Header must be a string (or array of strings).');
-			}
+		/**
+		 * Add a HTTP header object to the request.
+		 *
+		 * @api addHeaderObject
+		 * @param HTTPHeader $header Header object to add.
+		 */
+		public function addHeaderObject(HTTPHeader $header) {
+			$this->addHeader($header->getFieldName(), $header->getFieldValue());
+		}
+
+		/**
+		 * Add multiple headers to the request.
+		 * Array must be in fieldName => fieldValue format.
+		 *
+		 * @api addHeaders
+		 * @param array $headers Array of headers to add.
+		 */
+		public function addHeaders(array $headers) {
+			foreach ($headers as $fieldName => $fieldValue)
+				$this->addHeader($fieldName, $fieldValue);
+		}
+
+		/**
+		 * Check if this request has a header set.
+		 *
+		 * @api hasHeader
+		 * @param string $checkName Field name to check for.
+		 * @return bool
+		 */
+		public function hasHeader(string $checkName):bool {
+			$checkName = strtolower($checkName);
+			foreach ($this->headers as $fieldName => $fieldValue)
+				if (strtolower($fieldName) == $checkName)
+					return true;
+
+			return false;
 		}
 
 		/**
@@ -114,8 +144,8 @@
 		 */
 		protected function compileHeaders():string {
 			$headers = '';
-			foreach ($this->headers as $header)
-				$headers .= $header . "\r\n";
+			foreach ($this->headers as $fieldName => $fieldValue)
+				$headers .= $fieldName . ': ' . $fieldValue . "\r\n";
 
 			return $headers;
 		}
@@ -127,15 +157,22 @@
 		 * @param string $content Content to send with the request.
 		 */
 		protected function sendRequest(string $url, string $content) {
-			$context = stream_context_create([
-				'http' => [
-					'header' => $this->compileHeaders(),
-					'method' => $this->method,
-					'content' => $content
-				]
-			]);
+			$params = [
+				'header' => $this->compileHeaders(),
+				'method' => $this->method
+			];
 
-			$result = file_get_contents($url, false, $context);
+			if ($this->method == self::METHOD_GET) {
+				if (\strlen($content)) {
+					$url .= (strpos($url, '?') !== false ? '&' : '?');
+					$url .= $content;
+				}
+			} else if ($this->method == self::METHOD_POST) {
+				$params['content'] = $content;
+				$this->addHeader('Content-length', \strlen($content));
+			}
+
+			$result = file_get_contents($url, false, stream_context_create(['http' => $params]));
 			$this->success = $result !== false;
 
 			if ($this->success)
