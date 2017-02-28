@@ -157,17 +157,22 @@
 		 * @param string $content Content to send with the request.
 		 */
 		protected function sendRequest(string $url, string $content) {
-			$this->addHeader('Content-length', \strlen($content));
+			$params = [
+				'header' => $this->compileHeaders(),
+				'method' => $this->method
+			];
 
-			$context = stream_context_create([
-				'http' => [
-					'header' => $this->compileHeaders(),
-					'method' => $this->method,
-					'content' => $content
-				]
-			]);
+			if ($this->method == self::METHOD_GET) {
+				if (\strlen($content)) {
+					$url .= (strpos($url, '?') !== false ? '&' : '?');
+					$url .= $content;
+				}
+			} else if ($this->method == self::METHOD_POST) {
+				$params['content'] = $content;
+				$this->addHeader('Content-length', \strlen($content));
+			}
 
-			$result = file_get_contents($url, false, $context);
+			$result = file_get_contents($url, false, stream_context_create(['http' => $params]));
 			$this->success = $result !== false;
 
 			if ($this->success)
