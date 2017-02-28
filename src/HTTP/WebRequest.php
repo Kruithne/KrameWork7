@@ -24,6 +24,7 @@
 	namespace KrameWork\HTTP;
 
 	class InvalidHeaderException extends \Exception {}
+	class RequestNotSentException extends \Exception {}
 
 	/**
 	 * Class WebRequest
@@ -128,8 +129,12 @@
 		 *
 		 * @api getResponse
 		 * @return string
+		 * @throws RequestNotSentException
 		 */
-		public function getResponse() {
+		public function getResponse():string {
+			if ($this->result == null)
+				throw new RequestNotSentException();
+
 			return $this->result;
 		}
 
