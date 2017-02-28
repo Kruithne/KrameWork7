@@ -7,7 +7,24 @@
 
 ___
 ### Overview
-The `WebRequest` class streamlines the ability to send HTTP(s) requests through various protocol methods using custom headers and content.
+The `WebRequest` class streamlines the ability to send HTTP(s) requests through various protocol methods using custom headers and content. Below, the behavior of each request method is out-lined.
+
+##### WebRequest::METHOD_POST
+Content will be encoded and provided as HTTP request-content.
+
+The following headers will be set:
+header | value
+--- | ---
+`Content-Length` | Set to the length of the content after encoding.
+`Content-Type` | Set to `application/x-www-form-urlencoded`
+
+##### WebRequest::METHOD_GET
+Content is encoded and formatted into a query-string, which will be appended to the end of the URL. If the provided URL already has query-string parameters, this will not break and the encoded values will simply be included. No HTTP content is provided with this method.
+
+The following headers will be set:
+header | value
+--- | ---
+`Content-Type` | Set to `application/x-www-form-urlencoded`
 ___
 ### Example
 Sending a request using this class is straight-forward, take a look at the example below for the most basic usage.
@@ -29,7 +46,7 @@ if ($req->send())
 // > {"text":"<p>Art party DIY nisi four dollar toast.  Duis  portland ethical...
 ```
 ##### Headers
-During default operation, no headers are set on the request, however we can set our own using the `addHeader()` function provided by the class. Multiple headers can be added at the same time using the `addHeaders()` function, which accepts a key => value array pair.
+Some default headers are set, such as `Content-length`, however you can over-write these and set your own in various different ways.
 ```php
 // Setting a header to use with the request.
 $req->addHeader('Accept-language', 'en');
