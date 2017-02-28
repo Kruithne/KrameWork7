@@ -21,9 +21,10 @@
 	 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	 * SOFTWARE.
 	 */
-	namespace KrameWork\HTTP;
+	namespace KrameWork\HTTP\Request;
 
 	class InvalidHeaderException extends \Exception {}
+	class ResponseNotAvailableException extends \Exception {}
 
 	/**
 	 * Class WebRequest
@@ -124,12 +125,15 @@
 
 		/**
 		 * Get the response from this request.
-		 * Returns null if request has not yet been sent.
 		 *
 		 * @api getResponse
 		 * @return string
+		 * @throws ResponseNotAvailableException
 		 */
 		public function getResponse() {
+			if ($this->result == null)
+				throw new ResponseNotAvailableException('Response not available (request failed/not sent)');
+
 			return $this->result;
 		}
 
@@ -146,16 +150,18 @@
 
 		/**
 		 * Return the response for this request.
-		 * If the request is not available, an empty string is returned.
 		 *
 		 * @api __toString
 		 * @return string
+		 * @throws ResponseNotAvailableException
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
 		function __toString():string {
-			return $this->getResponse() ?? '';
-		}
+			if ($this->result == null)
+				throw new ResponseNotAvailableException('Response not available (request failed/not sent)');
 
+			return $this->result;
+		}
 
 		/**
 		 * @var null|bool
