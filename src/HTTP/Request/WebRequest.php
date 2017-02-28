@@ -23,7 +23,8 @@
 	 */
 	namespace KrameWork\HTTP\Request;
 
-	class InvalidHeaderException extends \Exception {}
+	use KrameWork\HTTP\HTTPHeader;
+
 	class ResponseNotAvailableException extends \Exception {}
 
 	/**
@@ -48,28 +49,41 @@
 		public function __construct(string $url, string $method = self::METHOD_GET) {
 			$this->url = $url;
 			$this->method = $method;
-			$this->headers = [];
 			$this->data = [];
+			$this->headers = ['Content-type' => 'application/x-www-form-urlencoded'];
 		}
 
 		/**
 		 * Add a header to this request.
 		 *
 		 * @api addHeader
-		 * @param string|array $headers Header string, or array of strings.
-		 * @throws InvalidHeaderException
+		 * @param string $fieldName Field name of the header.
+		 * @param string $fieldValue Field value of the header.
 		 */
-		public function addHeader($headers) {
-			if (is_array($headers)) {
-				foreach ($headers as $header)
-					$this->addHeader($header);
+		public function addHeader(string $fieldName, string $fieldValue) {
+			$this->headers[$fieldName] = $fieldValue;
+		}
 
-				return;
-			} else if (is_string($headers)) {
-				$this->headers[] = $headers;
-			} else {
-				throw new InvalidHeaderException('Header must be a string (or array of strings).');
-			}
+		/**
+		 * Add a HTTP header object to the request.
+		 *
+		 * @api addHeaderObject
+		 * @param HTTPHeader $header Header object to add.
+		 */
+		public function addHeaderObject(HTTPHeader $header) {
+			$this->addHeader($header->getFieldName(), $header->getFieldValue());
+		}
+
+		/**
+		 * Add multiple headers to the request.
+		 * Array must be in fieldName => fieldValue format.
+		 *
+		 * @api addHeaders
+		 * @param array $headers Array of headers to add.
+		 */
+		public function addHeaders(array $headers) {
+			foreach ($headers as $fieldName => $fieldValue)
+				$this->addHeader($fieldName, $fieldValue);
 		}
 
 		/**

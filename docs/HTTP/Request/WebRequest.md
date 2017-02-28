@@ -29,17 +29,20 @@ if ($req->send())
 // > {"text":"<p>Art party DIY nisi four dollar toast.  Duis  portland ethical...
 ```
 ##### Headers
-During default operation, no headers are set on the request, however we can set our own using the `addHeader()` function provided by the class. The function accepts a formatted header string, or an array of them.
+During default operation, no headers are set on the request, however we can set our own using the `addHeader()` function provided by the class. Multiple headers can be added at the same time using the `addHeaders()` function, which accepts a key => value array pair.
 ```php
 // Setting a header to use with the request.
-$req->addHeader('Accept-language: en');
+$req->addHeader('Accept-language', 'en');
 
 // Setting multiple headers to use with the request.
-$req->addHeader(['Accept-language: en', 'Cookie: foo=bar']);
+$req->addHeaders([
+    'Accept-language' => 'en',
+    'Cookie' => 'foo=bar'
+]);
 
 // Using KrameWork\HTTP headers.
 // Note: Setting XSSProtectionHeader on a request makes no sense, this is an example, not a guide.
-$req->addHeader(new XSSProtectionHeader());
+$req->addHeaderObject(new XSSProtectionHeader());
 ```
 ##### Content
 What's the point of sending a request if we can't provide any content with it? Luckily, we can. The `WebRequest` object allows data to be set using the `__set()` magic method.
@@ -67,11 +70,22 @@ Add a header to this request.
 
 parameter | type | description
 --- | --- | ---
-`$headers` | `string|array` | Header string, or array of strings.
+`$fieldName` | `string` | Field name of the header.
+`$fieldValue` | `string` | Field value of the header.
 
-exception | reason
---- | ---
-`InvalidHeaderException` | Header was not a string (or array of strings).
+##### > addHeaderObject() : `void`
+Add a HTTP header object to the request.
+
+parameter | type | description
+--- | --- | ---
+`$header` | `HTTPHeader` | Header object to add.
+
+##### > addHeaders() : `void`
+Add multiple headers to the request. Array must be in fieldName => fieldValue format.
+
+parameter | type | description
+--- | --- | ---
+`$headers` | `array` | Array of headers to add.
 
 ##### > send() : `bool`
 Send the request. Return boolean indicates success.
@@ -81,7 +95,7 @@ Get the response from this request.
 
 exception | reason
 --- | ---
-`ResponseNotAvailableException` | Request not sent or failed.
+`ResponseNotAvailableException` | ???
 
 ##### > success() : `bool|null`
 True/false depending on success of request. Returns null if request has not yet been sent.
@@ -91,4 +105,4 @@ Return the response for this request.
 
 exception | reason
 --- | ---
-`ResponseNotAvailableException` | Request not sent or failed.
+`ResponseNotAvailableException` | Request not sent (or failed).
