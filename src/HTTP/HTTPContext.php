@@ -292,7 +292,7 @@
 		 * @api getReferer
 		 * @return string
 		 */
-		public function getReferer():string {
+		public function getReferrer():string {
 			return $_SERVER['HTTP_REFERER'] ?? '';
 		}
 

@@ -101,11 +101,11 @@
 
 			// Testing
 			$http = new HTTPContext();
-			$this->assertEquals($ref, $http->getReferer());
+			$this->assertEquals($ref, $http->getReferrer());
 
 			// Default return value.
 			$_SERVER[$HTTP_REFERER] = null;
-			$this->assertEquals("", $http->getReferer());
+			$this->assertEquals("", $http->getReferrer());
 
 			// Cleanup
 			unset($http);

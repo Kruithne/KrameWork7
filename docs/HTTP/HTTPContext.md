@@ -74,8 +74,8 @@ Retrieve the raw content of the request. Result is not parsed or validated.
 Retrieve the length of the raw request content.
 ##### > getUserAgent() : `string`
 Retrieve the user-agent string for the current request. Returns 'Unknown' if not available.
-##### > getReferer() : `string`
-Retrieve the referer URL for this request. Returns an empty string if not available.
+##### > getReferrer() : `string`
+Retrieve the referrer URL for this request. Returns an empty string if not available.
 ##### > getContentType() : `string`
 Retrieve the content-type of this request. Returns 'text/plain' if not available.
 
