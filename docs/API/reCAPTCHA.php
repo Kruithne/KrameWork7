@@ -4,6 +4,8 @@
 	use KrameWork\HTTP\Request\JSONRequest;
 	use KrameWork\HTTP\Request\WebRequest;
 
+	require_once(__DIR__ . '/../HTTP/Request/JSONRequest.php');
+
 	class reCAPTCHAException extends \Exception {}
 
 	class reCAPTCHA
