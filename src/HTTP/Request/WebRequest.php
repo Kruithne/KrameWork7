@@ -157,6 +157,8 @@
 		 * @param string $content Content to send with the request.
 		 */
 		protected function sendRequest(string $url, string $content) {
+			$this->addHeader('Content-length', \strlen($content));
+
 			$context = stream_context_create([
 				'http' => [
 					'header' => $this->compileHeaders(),
