@@ -111,6 +111,14 @@ parameter | type | description
 --- | --- | ---
 `$checkName` | `string` | Field name to check for.
 
+
+##### > getHeader() : `array|null`
+Get a header set on this request. Returns a two-value array (fieldName, fieldValue) or null.
+
+parameter | type | description
+--- | --- | ---
+`$getName` | `string` | Field name of the header.
+
 ##### > send() : `bool`
 Send the request. Return boolean indicates success.
 

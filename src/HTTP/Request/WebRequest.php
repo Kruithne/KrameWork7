@@ -94,12 +94,24 @@
 		 * @return bool
 		 */
 		public function hasHeader(string $checkName):bool {
-			$checkName = strtolower($checkName);
-			foreach ($this->headers as $fieldName => $fieldValue)
-				if (strtolower($fieldName) == $checkName)
-					return true;
+			return $this->getHeader($checkName) !== null;
+		}
 
-			return false;
+		/**
+		 * Get a header set on this request.
+		 * Returns a two-value array (fieldName, fieldValue) or null.
+		 *
+		 * @api getHeader
+		 * @param string $getName Field name of the header.
+		 * @return array|null
+		 */
+		public function getHeader(string $getName) {
+			$getName = strtolower($getName);
+			foreach ($this->headers as $fieldName => $fieldValue)
+				if (strtolower($fieldName) == $getName)
+					return [$fieldName, $fieldValue];
+
+			return null;
 		}
 
 		/**
