@@ -49,17 +49,17 @@ if ($req->send())
 Some default headers are set, such as `Content-length`, however you can over-write these and set your own in various different ways.
 ```php
 // Setting a header to use with the request.
-$req->addHeader('Accept-language', 'en');
+$req->setHeader('Accept-language', 'en');
 
 // Setting multiple headers to use with the request.
-$req->addHeaders([
+$req->setHeaders([
     'Accept-language' => 'en',
     'Cookie' => 'foo=bar'
 ]);
 
 // Using KrameWork\HTTP headers.
 // Note: Setting XSSProtectionHeader on a request makes no sense, this is an example, not a guide.
-$req->addHeaderObject(new XSSProtectionHeader());
+$req->setHeaderObject(new XSSProtectionHeader());
 ```
 ##### Content
 What's the point of sending a request if we can't provide any content with it? Luckily, we can. The `WebRequest` object allows data to be set using the `__set()` magic method.
@@ -82,7 +82,7 @@ parameter | type | description
 `$url` | `string` | Request endpoint.
 `$method` | `string` | Request method (use class constants).
 
-##### > addHeader() : `void`
+##### > setHeader() : `void`
 Add a header to this request.
 
 parameter | type | description
@@ -90,14 +90,14 @@ parameter | type | description
 `$fieldName` | `string` | Field name of the header.
 `$fieldValue` | `string` | Field value of the header.
 
-##### > addHeaderObject() : `void`
+##### > setHeaderObject() : `void`
 Add a HTTP header object to the request.
 
 parameter | type | description
 --- | --- | ---
 `$header` | `HTTPHeader` | Header object to add.
 
-##### > addHeaders() : `void`
+##### > setHeaders() : `void`
 Add multiple headers to the request. Array must be in fieldName => fieldValue format.
 
 parameter | type | description
