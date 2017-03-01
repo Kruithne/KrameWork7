@@ -70,7 +70,7 @@
 		 * @api addHeaderObject
 		 * @param HTTPHeader $header Header object to add.
 		 */
-		public function addHeaderObject(HTTPHeader $header) {
+		public function setHeaderObject(HTTPHeader $header) {
 			$this->setHeader($header->getFieldName(), $header->getFieldValue());
 		}
 
@@ -81,7 +81,7 @@
 		 * @api addHeaders
 		 * @param array $headers Array of headers to add.
 		 */
-		public function addHeaders(array $headers) {
+		public function setHeaders(array $headers) {
 			foreach ($headers as $fieldName => $fieldValue)
 				$this->setHeader($fieldName, $fieldValue);
 		}
