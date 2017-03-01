@@ -37,7 +37,7 @@
 	{
 		public function __construct($url, $method = self::METHOD_GET) {
 			parent::__construct($url, $method);
-			$this->addHeader('Accept', 'application/json');
+			$this->setHeader('Accept', 'application/json');
 		}
 
 		/**
@@ -54,7 +54,7 @@
 				throw new InvalidMethodException('JSON-body requests require METHOD_POST.');
 
 			if (!$this->hasHeader('Content-type'))
-				$this->addHeader('Content-type', 'application/json');
+				$this->setHeader('Content-type', 'application/json');
 
 			$url = $this->url . (strpos($this->url, '?') !== false ? '&' : '?');
 			$url .= http_build_query($this->data);

@@ -60,7 +60,7 @@
 		 * @param string $fieldName Field name of the header.
 		 * @param string $fieldValue Field value of the header.
 		 */
-		public function addHeader(string $fieldName, string $fieldValue) {
+		public function setHeader(string $fieldName, string $fieldValue) {
 			$this->headers[$fieldName] = $fieldValue;
 		}
 
@@ -70,8 +70,8 @@
 		 * @api addHeaderObject
 		 * @param HTTPHeader $header Header object to add.
 		 */
-		public function addHeaderObject(HTTPHeader $header) {
-			$this->addHeader($header->getFieldName(), $header->getFieldValue());
+		public function setHeaderObject(HTTPHeader $header) {
+			$this->setHeader($header->getFieldName(), $header->getFieldValue());
 		}
 
 		/**
@@ -81,9 +81,9 @@
 		 * @api addHeaders
 		 * @param array $headers Array of headers to add.
 		 */
-		public function addHeaders(array $headers) {
+		public function setHeaders(array $headers) {
 			foreach ($headers as $fieldName => $fieldValue)
-				$this->addHeader($fieldName, $fieldValue);
+				$this->setHeader($fieldName, $fieldValue);
 		}
 
 		/**
@@ -94,12 +94,24 @@
 		 * @return bool
 		 */
 		public function hasHeader(string $checkName):bool {
-			$checkName = strtolower($checkName);
-			foreach ($this->headers as $fieldName => $fieldValue)
-				if (strtolower($fieldName) == $checkName)
-					return true;
+			return $this->getHeader($checkName) !== null;
+		}
 
-			return false;
+		/**
+		 * Get a header set on this request.
+		 * Returns a two-value array (fieldName, fieldValue) or null.
+		 *
+		 * @api getHeader
+		 * @param string $getName Field name of the header.
+		 * @return array|null
+		 */
+		public function getHeader(string $getName) {
+			$getName = strtolower($getName);
+			foreach ($this->headers as $fieldName => $fieldValue)
+				if (strtolower($fieldName) == $getName)
+					return [$fieldName, $fieldValue];
+
+			return null;
 		}
 
 		/**
@@ -121,6 +133,9 @@
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
 		function __set(string $name, $value) {
+			if (is_bool($value))
+				$value = $value ? 'true' : 'false';
+
 			$this->data[$name] = $value;
 		}
 
@@ -157,10 +172,7 @@
 		 * @param string $content Content to send with the request.
 		 */
 		protected function sendRequest(string $url, string $content) {
-			$params = [
-				'header' => $this->compileHeaders(),
-				'method' => $this->method
-			];
+			$params = ['method' => $this->method];
 
 			if ($this->method == self::METHOD_GET) {
 				if (\strlen($content)) {
@@ -169,8 +181,10 @@
 				}
 			} else if ($this->method == self::METHOD_POST) {
 				$params['content'] = $content;
-				$this->addHeader('Content-length', \strlen($content));
+				$this->setHeader('Content-length', \strlen($content));
 			}
+
+			$params['header'] = $this->compileHeaders();
 
 			$result = file_get_contents($url, false, stream_context_create(['http' => $params]));
 			$this->success = $result !== false;
