@@ -121,6 +121,9 @@
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
 		function __set(string $name, $value) {
+			if (is_bool($value))
+				$value = $value ? 'true' : 'false';
+
 			$this->data[$name] = $value;
 		}
 
