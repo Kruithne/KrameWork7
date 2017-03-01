@@ -157,10 +157,7 @@
 		 * @param string $content Content to send with the request.
 		 */
 		protected function sendRequest(string $url, string $content) {
-			$params = [
-				'header' => $this->compileHeaders(),
-				'method' => $this->method
-			];
+			$params = ['method' => $this->method];
 
 			if ($this->method == self::METHOD_GET) {
 				if (\strlen($content)) {
@@ -171,6 +168,8 @@
 				$params['content'] = $content;
 				$this->addHeader('Content-length', \strlen($content));
 			}
+
+			$params['header'] = $this->compileHeaders();
 
 			$result = file_get_contents($url, false, stream_context_create(['http' => $params]));
 			$this->success = $result !== false;
