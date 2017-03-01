@@ -60,7 +60,7 @@
 		 * @param string $fieldName Field name of the header.
 		 * @param string $fieldValue Field value of the header.
 		 */
-		public function addHeader(string $fieldName, string $fieldValue) {
+		public function setHeader(string $fieldName, string $fieldValue) {
 			$this->headers[$fieldName] = $fieldValue;
 		}
 
@@ -71,7 +71,7 @@
 		 * @param HTTPHeader $header Header object to add.
 		 */
 		public function addHeaderObject(HTTPHeader $header) {
-			$this->addHeader($header->getFieldName(), $header->getFieldValue());
+			$this->setHeader($header->getFieldName(), $header->getFieldValue());
 		}
 
 		/**
@@ -83,7 +83,7 @@
 		 */
 		public function addHeaders(array $headers) {
 			foreach ($headers as $fieldName => $fieldValue)
-				$this->addHeader($fieldName, $fieldValue);
+				$this->setHeader($fieldName, $fieldValue);
 		}
 
 		/**
@@ -166,7 +166,7 @@
 				}
 			} else if ($this->method == self::METHOD_POST) {
 				$params['content'] = $content;
-				$this->addHeader('Content-length', \strlen($content));
+				$this->setHeader('Content-length', \strlen($content));
 			}
 
 			$params['header'] = $this->compileHeaders();
