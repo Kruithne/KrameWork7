@@ -36,10 +36,12 @@ The formatter is responsible for taking the raw data of errors that occur and pr
 | `JSONErrorFormatter` | Produces a raw JSON formatted dump. |
 ##### Dispatchers
 The dispatcher is responsible for taking the generated report and sending it somewhere. Some dispatchers have unique behavior which can be controlled, check out the individual documentation for each dispatcher for more information.
+
 | class | description | halts script |
 | ----- | ----------- | ----------------------- |
 | `BufferDispatcher` | Clears the PHP output buffer and dumps the report there. | `true` |
 | `FileDispatcher` | Creates a flat-file for each error report. | `false` |
+
 ___
 ##### Catching Core Errors
 Without additional configuration, the `ErrorHandler` class cannot catch core PHP errors. To enable this functionality, add the following options to your PHP runtime configuration.
@@ -62,6 +64,23 @@ $errHandler->addDispatch($errDispatcher, $errFormatter);
 ob_start([$errHandler, 'catchCoreError']); // Allows ErrorHandler to catch core errors.
 ```
 With the example above, if a core/internal error occurs, the error will be dispatched (in this instance to a file named `error.log`) and the script will be terminated. It is highly recommended that you configure your web server to dispatch an error document when server-response `500` is sent.
+
+##### Reporting a caught exception
+If you are handling exceptions, you might still want to receive reports about them.
+To do this, simply call `logException` on your handler.
+Be mindful of your max errors as set with `setMaxErrors` and what dispatchers you are using if you do this.
+```php
+try {
+  $something->call();
+} catch(SomeException $e) {
+  $errHandler->logException($e);
+  $something->cleanup();
+  return null;
+} catch(Exception $e) {
+  $errHandler->logException($e);
+  return false;
+}
+```
 ___
 ### Functions
 ##### > __construct() : `void`
@@ -96,3 +115,11 @@ parameter | type | description
 
 ##### > deactivate() : `void`
 Disable this error handler, restoring handlers/levels to their state when this error handler was created.
+
+##### > logException() : `void`
+When you catch an exception, you can feed to this method log it.
+You probably do not want to do this if you are using the BufferDispatcher.
+
+parameter | type | description
+--- | --- | ---
+`$exception` | `Throwable` | An exception to report

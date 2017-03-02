@@ -117,6 +117,17 @@
 		}
 
 		/**
+		 * Log an exception that has been handled.
+		 *
+		 * @api logException
+		 * @param \Throwable $exception An exception to report
+		 */
+		public function logException(\Throwable $exception)
+		{
+			$this->catch(new ExceptionError($exception), false);
+		}
+
+		/**
 		 * Catches a normal error thrown during runtime.
 		 *
 		 * @internal
