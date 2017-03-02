@@ -65,10 +65,18 @@
 		 * Executes the report if necessary and returns the cached result set.
 		 * @return ReportResults The data set returned by the SQL
 		 */
-		public function data() {
-			if (!$this->cache->exists($this->key))
-				$this->cache->store($this->key, new ReportResults($this->postProcess($this->run())), $this->cacheTTL);
-			return $this->cache->__get($this->key);
+		public function data(): ReportResults {
+			if ($this->cache->exists($this->key))
+				$data = $this->cache->__get($this->key);
+			else
+				$data = null;
+
+			if($data == null)
+			{
+				$data = new ReportResults($this->postProcess($this->run()));
+				$this->cache->store($this->key, $data, $this->cacheTTL);
+			}
+			return $data;
 		}
 
 		/**
