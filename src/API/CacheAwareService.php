@@ -34,20 +34,6 @@
 	abstract class CacheAwareService
 	{
 		/**
-		 * @return string The origin to allow. *|http://servername.domain.tld|https://servername.domain.tld
-		 */
-		protected function getOrigin(): string {
-			return '*';
-		}
-
-		/**
-		 * @return string List of allowed methods (POST,GET,OPTIONS,DELETE,...)
-		 */
-		protected function getMethod(): string {
-			return 'POST,GET,OPTIONS';
-		}
-
-		/**
 		 * @return string Cache-Control header public|private|...
 		 */
 		protected function getLevel(): string {
@@ -79,10 +65,6 @@
 					$cached = strtotime($req['If-Modified-Since']);
 			}
 
-			header('Access-Control-Allow-Origin: ' . $this->getOrigin());
-			header('Access-Control-Allow-Methods: ' . $this->getMethod());
-			header('Access-Control-Allow-Headers: Content-Type, Cookie');
-			header('Access-Control-Allow-Credentials: true');
 			header('Cache-Control: ' . $this->getLevel());
 
 			// Browser sends a request with the method OPTIONS to get the CORS headers above
