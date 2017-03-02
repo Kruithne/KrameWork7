@@ -13,6 +13,8 @@ Upon creation, the error handler will take over the current **error handler**, *
 
 In the default configuration, the error handler will terminate script execution after `10` errors have occurred. This value can be changed using the `setMaxErrors()` function, however it is important to note that some dispatchers will halt the script after a single error is dispatched regardless of this value; check the 'Dispatchers' list below to see which ones do.
 ___
+### Examples
+
 ##### Creating an error handler
 Creating and setting up an error handler is very simple, simply craft an instance of it and pass in both a report formatter and a dispatcher.
 ```php
