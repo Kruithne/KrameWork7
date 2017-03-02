@@ -67,6 +67,16 @@
 		}
 
 		/**
+		 * Format debug data and add it to the report.
+		 *
+		 * @param $debug array Key/Value pairs
+		 */
+		public function reportDebug(array $debug)
+		{
+			$this->node['debug'] = $debug;
+		}
+
+		/**
 		 * Format an array and add it to the report.
 		 *
 		 * @api formatArray

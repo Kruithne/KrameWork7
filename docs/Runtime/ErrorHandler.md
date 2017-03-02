@@ -113,9 +113,15 @@ parameter | type | description
 --- | --- | ---
 `$max` | `int` | Maximum error threshold.
 
+##### > addHook(): `void`
+Register a debug provider with this error handler, that will be invoked to gather application specific data to add to any error report.
+
+parameter | type | description
+--- | --- | ---
+`$hook` | `IDebugHook` | An application specific debug provider
+
 ##### > deactivate() : `void`
 Disable this error handler, restoring handlers/levels to their state when this error handler was created.
-
 ##### > logException() : `void`
 When you catch an exception, you can feed to this method log it.
 You probably do not want to do this if you are using the BufferDispatcher.

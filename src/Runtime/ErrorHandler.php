@@ -128,6 +128,16 @@
 		}
 
 		/**
+		 * Register a debug provider with this error handler.
+		 *
+		 * @api addHook
+		 * @param IDebugHook $hook An object implementing the IDebugHook interface
+		 */
+		public function addHook(IDebugHook $hook) {
+			$this->hooks[] = $hook;
+		}
+
+		/**
 		 * Catches a normal error thrown during runtime.
 		 *
 		 * @internal
@@ -209,6 +219,8 @@
 
 			$trace = $this->filterStacktrace($error->getTrace());
 
+			$debug = $this->getDebug();
+
 			foreach ($this->dispatch as $dispatch) {
 				/**
 				 * @var IErrorDispatcher $dispatcher
@@ -218,6 +230,7 @@
 
 				$formatter->beginReport();
 				$formatter->reportError($error);
+				$formatter->reportDebug($debug);
 				$formatter->reportStacktrace($trace);
 				$this->packReport($formatter);
 
@@ -256,6 +269,28 @@
 			}
 
 			return $startIndex == 0 ? $trace : array_slice($trace, $startIndex);
+		}
+
+		/**
+		 * Get debug data from registered hooks
+		 *
+		 * @internal
+		 * @return array Key/Value pairs of debug data
+		 */
+		private function getDebug(): array {
+			$debug = [];
+			foreach ($this->hooks as $hook)
+			{
+				try
+				{
+					$debug += $hook->getDebug();
+				}
+				catch(\Throwable $e)
+				{
+					$debug[get_class($hook)] = '['.get_class($e).'::'.$e->getMessage().']';
+				}
+			}
+			return $debug;
 		}
 
 		/**
@@ -319,4 +354,9 @@
 		 * @var int
 		 */
 		protected $errorCount;
+
+		/**
+		 * @var IDebugHook[]
+		 */
+		protected $hooks = [];
 	}
