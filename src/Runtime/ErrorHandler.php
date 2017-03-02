@@ -235,13 +235,16 @@
 			$startIndex = 0;
 
 			foreach ($trace as $frame) {
-				$startIndex++;
 				$class = $frame['class'] ?? '';
-				if ($class == null || !StringUtil::startsWith($class, 'KrameWork\Runtime'))
+				if ($class == '' || !StringUtil::startsWith($class, 'KrameWork\Runtime'))
 					break;
+				// Skip core error catcher callback method
+				if($class == 'KrameWork\Runtime\ErrorHandler' && $frame['function'] == 'catchCoreError'))
+					$startIndex++;
+				$startIndex++;
 			}
 
-			return array_slice($trace, $startIndex);
+			return $startIndex == 0 ? $trace : array_slice($trace, $startIndex);
 		}
 
 		/**
