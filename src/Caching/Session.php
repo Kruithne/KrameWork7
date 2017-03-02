@@ -126,6 +126,11 @@
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
 		function __set(string $name, $value) {
+			if($value === null)
+			{
+				$this->__unset($name);
+				return;
+			}
 			$_SESSION[$name] = $value;
 		}
 
@@ -150,6 +155,11 @@
 		 * @param int $expire No effect for this implementation.
 		 */
 		public function store(string $key, $value, int $expire = 0) {
+			if($value === null)
+			{
+				$this->__unset($key);
+				return;
+			}
 			$_SESSION[$key] = $value;
 		}
 
