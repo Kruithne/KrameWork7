@@ -25,6 +25,109 @@
 	namespace KrameWork\API;
 
 	/**
+	 * Class ServiceResponse
+	 * A service call response to encode as JSON and return to the caller
+	 *
+	 * @package KrameWork\API
+	 * @author docpify <morten@runsafe.no>
+	 */
+	class ServiceResponse implements \JsonSerializable
+	{
+		/**
+		 * ServiceResponse constructor.
+		 *
+		 * @api __construct
+		 * @param bool $success
+		 * @param mixed $data
+		 */
+		public function __construct(bool $success = true, $data = []) {
+			$this->data = ['success' => $success, 'result' => $data];
+		}
+
+		/**
+		 * Flag the request as succeeded
+		 *
+		 * @api success
+		 * @return ServiceResponse
+		 */
+		public function success(): ServiceResponse {
+			$this->data['success'] = true;
+			return $this;
+		}
+
+		/**
+		 * Flag the request as failed
+		 *
+		 * @api failure
+		 * @return ServiceResponse
+		 */
+		public function failure(): ServiceResponse {
+			$this->data['success'] = false;
+			return $this;
+		}
+
+		/**
+		 * Get a property from the result
+		 *
+		 * @api __get
+		 * @param $name
+		 * @return mixed
+		 */
+		public function __get($name) {
+			return $this->data['result'][$name];
+		}
+
+		/**
+		 * Set a property on the result
+		 *
+		 * @api __set
+		 * @param $name
+		 * @param $value
+		 */
+		public function __set($name, $value) {
+			$this->data['result'][$name] = $value;
+		}
+
+		/**
+		 * Specify data which should be serialized to JSON
+		 * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+		 * @return mixed data which can be serialized by <b>json_encode</b>,
+		 * which is a value of any type other than a resource.
+		 * @since 5.4.0
+		 */
+		function jsonSerialize() {
+			return $this->data;
+		}
+
+		/**
+		 * @var array
+		 */
+		private $data;
+	}
+
+	interface IWebService
+	{
+		function process(Request $request): ServiceResponse;
+	}
+
+	interface IAuthorizedService
+	{
+		function getAuthorized(Request $request): bool;
+	}
+
+	interface IAuthenticatedService
+	{
+		function getAuthenticated(Request $request): bool;
+	}
+
+	interface IAuditedService
+	{
+		function onCall(Request $request);
+		function onSuccess(Request $request);
+		function onFailed(Request $request);
+	}
+
+	/**
 	 * Class CacheAwareService
 	 * API module for building cache-aware json API services
 	 *
@@ -110,7 +213,7 @@
 		 * @param $request Request Information about the current API request
 		 * @return \ArrayObject
 		 */
-		public function process(Request $request): \ArrayObject
+		public function process(Request $request): ServiceResponse
 		{
 			$path = $request->getPath();
 			if(count($path) == 0 || !in_array($path[0], $this->exported))
