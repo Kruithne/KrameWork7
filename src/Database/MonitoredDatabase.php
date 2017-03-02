@@ -120,6 +120,12 @@
 			return $result;
 		}
 
+		/**
+		 * Log timing information about a completed database statement.
+		 * @internal
+		 * @param $sql
+		 * @param $param
+		 */
 		private function log($sql, $param) {
 			$time = $this->timer->stop();
 			$start = (string)$this->timer->getStartTimestamp();
@@ -133,6 +139,14 @@
 			$this->statistics[$start][] = [$sql, $param, $time];
 		}
 
+		/**
+		 * Format a warning message when a statement takes longer to execute than the configured threshold.
+		 * @internal
+		 * @param string $sql The SQL statement that was executed.
+		 * @param array $param The parameters it was executed with.
+		 * @param float $time The number of seconds execution took.
+		 * @return string
+		 */
 		private function formatWarning(string $sql, array $param, float $time) {
 			return sprintf('Query completed in %3$.2e seconds: %$1$s {%2$s}', $sql, json_encode($param), $time);
 		}
