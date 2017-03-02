@@ -24,6 +24,13 @@
 
 	namespace KrameWork\API;
 
+	/**
+	 * Class CacheAwareService
+	 * API module for building cache-aware json API services
+	 *
+	 * @package KrameWork\API
+	 * @author docpify <morten@runsafe.no>
+	 */
 	abstract class CacheAwareService
 	{
 		/**
