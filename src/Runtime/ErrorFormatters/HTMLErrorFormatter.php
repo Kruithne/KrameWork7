@@ -60,6 +60,16 @@
 		}
 
 		/**
+		 * Format debug data and add it to the report.
+		 *
+		 * @param $debug array Key/Value pairs
+		 */
+		public function reportDebug(array $debug)
+		{
+			$this->debug = $debug;
+		}
+
+		/**
 		 * Format an array and add it to the report.
 		 *
 		 * @api formatArray
@@ -103,6 +113,20 @@
 			// Handle basic data.
 			foreach ($this->basicData as $key => $value)
 				$report->$key = $value;
+
+			$debugSection = $report->getSection('DATA_SET_DEBUG');
+			if ($debugSection->isValid()) {
+				if (count($this->debug))
+				{
+					$debugSection = $debugSection->createFrame();
+					$debugLine = $debugSection->getSection('DEBUG_FRAME');
+					foreach ($this->debug as $key => $value) {
+						$frame = $debugLine->createFrame();
+						$frame->key = $key;
+						$frame->value = $value;
+					}
+				}
+			}
 
 			// Handle stacktrace.
 			$traceSection = $report->getSection('TRACE_FRAME');
@@ -224,6 +248,11 @@
 		 * @var IError
 		 */
 		protected $error;
+
+		/**
+		 * @var array
+		 */
+		protected $debug;
 
 		/**
 		 * @var array

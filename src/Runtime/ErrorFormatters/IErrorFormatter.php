@@ -60,6 +60,13 @@
 		public function reportError(IError $error);
 
 		/**
+		 * Format debug data and add it to the report.
+		 *
+		 * @param $debug array Key/Value pairs
+		 */
+		public function reportDebug(array $debug);
+
+		/**
 		 * Format an array and add it to the report.
 		 *
 		 * @api formatArray
