@@ -250,7 +250,7 @@
 				if ($class == '' || !StringUtil::startsWith($class, 'KrameWork\Runtime'))
 					break;
 				// Skip core error catcher callback method
-				if($class == 'KrameWork\Runtime\ErrorHandler' && $frame['function'] == 'catchCoreError'))
+				if ($class == 'KrameWork\Runtime\ErrorHandler' && $frame['function'] == 'catchCoreError')
 					$startIndex++;
 				$startIndex++;
 			}
