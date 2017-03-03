@@ -55,16 +55,18 @@
 		 * @return int Sorting index
 		 */
 		public function compare($to) {
-			$a = $this->value;
+			// Dates should be compared without time
+			$a = $this->value == null ? null : date('Ymd', $this->value);
 			if ($to instanceof DateValue)
-				$b = $to->real();
+				$b = date('Ymd', $to->real());
 			else
 				$b = $to;
 
 			if ($b === null)
 				return $a === null ? 0 : 1;
 			else if (!is_numeric($b))
-				$b = strtotime($b);
+				$b = date('Ymd',strtotime($b));
+
 			if ($a === null)
 				return -1;
 
