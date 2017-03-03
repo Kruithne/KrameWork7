@@ -58,7 +58,7 @@
 			// Dates should be compared without time
 			$a = $this->value == null ? null : date('Ymd', $this->value);
 			if ($to instanceof DateValue)
-				$b = date('Ymd', $to->real());
+				$b = $to->real() == null ? null : date('Ymd', $to->real());
 			else
 				$b = $to;
 
