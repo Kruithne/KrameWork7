@@ -104,7 +104,7 @@
 					case ReportColumn::COL_INTEGER:
 					case ReportColumn::COL_DATETIME:
 					case ReportColumn::COL_DATE:
-						$filters[] = self::makeFilter($key, 'KrameWork\\Data\\'. $col->type . 'Value');
+						$filters[] = $this->makeFilter($key, 'KrameWork\\Data\\'. $col->type . 'Value');
 						break;
 				}
 			}
