@@ -56,7 +56,7 @@
 		 * @api run
 		 */
 		protected function run() {
-			return $this->postProcess($this->db->getAll($this->sql, $this->param));
+			return $this->db->getAll($this->sql, $this->param);
 		}
 
 		/**
