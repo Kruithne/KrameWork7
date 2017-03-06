@@ -34,6 +34,7 @@
 	require_once(__DIR__.'/../Data/StringValue.php');
 
 	use KrameWork\Caching\IDataCache;
+	use KrameWork\Data\Value;
 
 	/**
 	 * Class SQLReportRunner
@@ -117,7 +118,7 @@
 		 */
 		protected function makeFilter(string $key, string $class) {
 			return function (&$row) use ($key, $class) {
-				if (!isset($row[$key]) || $row[$key] == null)
+				if (!isset($row[$key]) || $row[$key] == null || $row[$key] instanceof Value)
 					return;
 				$row[$key] = new $class($row[$key]);
 			};
