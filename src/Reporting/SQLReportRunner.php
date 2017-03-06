@@ -60,6 +60,22 @@
 		}
 
 		/**
+		 * Format data values for presentation based on column type
+		 * @param \stdClass[] $data
+		 * @return ReportRow[]
+		 */
+		protected function postProcess(array $data) {
+			$filters = $this->getFilters();
+			$output = [];
+			foreach ($data as $row) {
+				foreach ($filters as $filter)
+					$filter($row);
+				$output[] = new ReportRow((array)$row);
+			}
+			return $output;
+		}
+
+		/**
 		 * @var Generic Database engine
 		 */
 		private $db;
