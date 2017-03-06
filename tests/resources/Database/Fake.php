@@ -36,10 +36,10 @@
 		 * @api getAll
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @return \ArrayObject[]
+		 * @return \stdClass[]
 		 */
 		function getAll(string $sql, array $param): array {
-			return [new \ArrayObject(['sql' => $sql, 'param' => $param])];
+			return [(object)['sql' => $sql, 'param' => $param]];
 		}
 
 		/**
@@ -47,10 +47,10 @@
 		 * @api getRow
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @return \ArrayObject|null
+		 * @return \stdClass|null
 		 */
 		function getRow(string $sql, array $param) {
-			return new \ArrayObject(['sql' => $sql, 'param' => $param]);
+			return (object)['sql' => $sql, 'param' => $param];
 		}
 
 		/**
