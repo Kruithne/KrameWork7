@@ -73,7 +73,7 @@
 		 * @api getAll
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @return \ArrayObject[]
+		 * @return \stdClass[]
 		 */
 		function getAll(string $sql, array $param): array {
 			return $this->driver->getAll($sql, $param);
@@ -84,7 +84,7 @@
 		 * @api getRow
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @return \ArrayObject|null
+		 * @return \stdClass|null
 		 */
 		function getRow(string $sql, array $param) {
 			return $this->driver->getRow($sql, $param);

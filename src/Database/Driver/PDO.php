@@ -53,16 +53,13 @@
 		 * @api getAll
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @return \ArrayObject[]
+		 * @return \stdClass[]
 		 */
 		function getAll(string $sql, array $param): array {
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
-			$result = [];
-			foreach($query->fetchAll(\PDO::FETCH_OBJ) as $row)
-				$result[] = new \ArrayObject($row);
-			return $result;
+			return $query->fetchAll(\PDO::FETCH_OBJ);
 		}
 
 		/**
@@ -70,14 +67,13 @@
 		 * @api getRow
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @return \ArrayObject|null
+		 * @return \stdClass|null
 		 */
 		function getRow(string $sql, array $param) {
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
-			$row = $query->fetchObject();
-			return $row ? new \ArrayObject($row) : null;
+			return $query->fetchObject();
 		}
 
 		/**
