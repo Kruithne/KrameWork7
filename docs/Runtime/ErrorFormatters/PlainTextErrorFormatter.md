@@ -160,6 +160,13 @@ parameter | type | description
 --- | --- | ---
 `$error` | `IError` | Error which occurred.
 
+##### > reportDebug() : `void`
+Format application debug data and add it to the report.
+
+parameter | type | description
+--- | --- | ---
+`$debug` | array | Array of key/value pairs
+
 ##### > __toString() : `string`
 Compile the report into a string.
 

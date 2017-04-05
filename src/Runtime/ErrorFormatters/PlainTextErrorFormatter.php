@@ -118,6 +118,21 @@
 		}
 
 		/**
+		 * Format debug data and add it to the report.
+		 *
+		 * @param $debug array Key/Value pairs
+		 */
+		public function reportDebug(array $debug)
+		{
+			$this->report->newLine()->newLine();
+			$this->report->appendf('> Application debug data:')->indent()->newLine();
+			foreach ($debug as $key => $value) {
+				$this->report->appendf('%s = %s', $key, $value)->newLine();
+			}
+			$this->report->outdent()->newLine();
+		}
+
+		/**
 		 * Format a stacktrace and add it to the report.
 		 *
 		 * @api reportStacktrace

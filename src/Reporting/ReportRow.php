@@ -56,7 +56,7 @@
 		 * @link http://php.net/manual/en/iterator.current.php
 		 */
 		public function current() {
-			return $this->data[$this->position];
+			return $this->data[$this->key()];
 		}
 
 		/**
@@ -70,7 +70,9 @@
 		 * @link http://php.net/manual/en/iterator.key.php
 		 */
 		public function key() {
-			return $this->position;
+			if ($this->keys == null)
+				$this->keys = array_keys($this->data);
+			return $this->keys[$this->position];
 		}
 
 		/**
@@ -105,6 +107,8 @@
 		 * @link http://php.net/manual/en/arrayaccess.offsetset.php
 		 */
 		public function offsetSet($offset, $value) {
+			if (!isset($this->data[$offset]))
+				$this->keys = null;
 			$this->data[$offset] = $value;
 		}
 
@@ -115,6 +119,10 @@
 			unset($this->data[$offset]);
 		}
 
+		/**
+		 * @var array|null Numerically indexed keys for iteration purposes
+		 */
+		private $keys;
 
 		/**
 		 * @var array|Value[] The data contained in the row

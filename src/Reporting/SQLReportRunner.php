@@ -56,7 +56,23 @@
 		 * @api run
 		 */
 		protected function run() {
-			return $this->postProcess($this->db->getAll($this->sql, $this->param));
+			return $this->db->getAll($this->sql, $this->param);
+		}
+
+		/**
+		 * Format data values for presentation based on column type
+		 * @param \stdClass[] $data
+		 * @return ReportRow[]
+		 */
+		protected function postProcess(array $data) {
+			$filters = $this->getFilters();
+			$output = [];
+			foreach ($data as $row) {
+				foreach ($filters as $filter)
+					$filter($row);
+				$output[] = new ReportRow((array)$row);
+			}
+			return $output;
 		}
 
 		/**

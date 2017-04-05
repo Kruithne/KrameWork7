@@ -34,6 +34,7 @@
 	require_once(__DIR__.'/../Data/StringValue.php');
 
 	use KrameWork\Caching\IDataCache;
+	use KrameWork\Data\Value;
 
 	/**
 	 * Class SQLReportRunner
@@ -65,10 +66,18 @@
 		 * Executes the report if necessary and returns the cached result set.
 		 * @return ReportResults The data set returned by the SQL
 		 */
-		public function data() {
-			if (!$this->cache->exists($this->key))
-				$this->cache->store($this->key, new ReportResults($this->postProcess($this->run())), $this->cacheTTL);
-			return $this->cache->__get($this->key);
+		public function data(): ReportResults {
+			if ($this->cache->exists($this->key))
+				$data = $this->cache->__get($this->key);
+			else
+				$data = null;
+
+			if($data == null)
+			{
+				$data = new ReportResults($this->postProcess($this->run()));
+				$this->cache->store($this->key, $data, $this->cacheTTL);
+			}
+			return $data;
 		}
 
 		/**
@@ -95,7 +104,7 @@
 					case ReportColumn::COL_INTEGER:
 					case ReportColumn::COL_DATETIME:
 					case ReportColumn::COL_DATE:
-						$filters[] = self::makeFilter($key, 'KrameWork\\Data\\'. $col->type . 'Value');
+						$filters[] = $this->makeFilter($key, 'KrameWork\\Data\\'. $col->type . 'Value');
 						break;
 				}
 			}
@@ -109,7 +118,7 @@
 		 */
 		protected function makeFilter(string $key, string $class) {
 			return function (&$row) use ($key, $class) {
-				if (!isset($row[$key]) || $row[$key] == null)
+				if (!isset($row[$key]) || $row[$key] == null || $row[$key] instanceof Value)
 					return;
 				$row[$key] = new $class($row[$key]);
 			};

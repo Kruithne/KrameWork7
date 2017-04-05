@@ -115,6 +115,11 @@
 		 * @param mixed $value Value to store in the cache.
 		 */
 		public function __set(string $key, $value) {
+			if($value === null)
+			{
+				$this->__unset($key);
+				return;
+			}
 			$this->data[$key] = $value;
 			unset($this->index[$key]);
 
@@ -131,6 +136,11 @@
 		 * @param int $expire 60*60*24*30 >= Unix Timestamp, otherwise seconds. 0 = Never.
 		 */
 		public function store(string $key, $value, int $expire = 0) {
+			if($value === null)
+			{
+				$this->__unset($key);
+				return;
+			}
 			$this->data[$key] = $value;
 
 			// Store expiry value.

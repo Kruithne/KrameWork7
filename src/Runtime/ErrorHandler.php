@@ -117,6 +117,27 @@
 		}
 
 		/**
+		 * Log an exception that has been handled.
+		 *
+		 * @api logException
+		 * @param \Throwable $exception An exception to report
+		 */
+		public function logException(\Throwable $exception)
+		{
+			$this->catch(new ExceptionError($exception), false);
+		}
+
+		/**
+		 * Register a debug provider with this error handler.
+		 *
+		 * @api addHook
+		 * @param IDebugHook $hook An object implementing the IDebugHook interface
+		 */
+		public function addHook(IDebugHook $hook) {
+			$this->hooks[] = $hook;
+		}
+
+		/**
 		 * Catches a normal error thrown during runtime.
 		 *
 		 * @internal
@@ -198,6 +219,8 @@
 
 			$trace = $this->filterStacktrace($error->getTrace());
 
+			$debug = $this->getDebug();
+
 			foreach ($this->dispatch as $dispatch) {
 				/**
 				 * @var IErrorDispatcher $dispatcher
@@ -207,6 +230,7 @@
 
 				$formatter->beginReport();
 				$formatter->reportError($error);
+				$formatter->reportDebug($debug);
 				$formatter->reportStacktrace($trace);
 				$this->packReport($formatter);
 
@@ -235,13 +259,38 @@
 			$startIndex = 0;
 
 			foreach ($trace as $frame) {
-				$startIndex++;
 				$class = $frame['class'] ?? '';
-				if ($class == null || !StringUtil::startsWith($class, 'KrameWork\Runtime'))
+				if ($class == '' || !StringUtil::startsWith($class, 'KrameWork\Runtime'))
 					break;
+				// Skip core error catcher callback method
+				if ($class == 'KrameWork\Runtime\ErrorHandler' && $frame['function'] == 'catchCoreError')
+					$startIndex++;
+				$startIndex++;
 			}
 
-			return array_slice($trace, $startIndex);
+			return $startIndex == 0 ? $trace : array_slice($trace, $startIndex);
+		}
+
+		/**
+		 * Get debug data from registered hooks
+		 *
+		 * @internal
+		 * @return array Key/Value pairs of debug data
+		 */
+		private function getDebug(): array {
+			$debug = [];
+			foreach ($this->hooks as $hook)
+			{
+				try
+				{
+					$debug += $hook->getDebug();
+				}
+				catch(\Throwable $e)
+				{
+					$debug[get_class($hook)] = '['.get_class($e).'::'.$e->getMessage().']';
+				}
+			}
+			return $debug;
 		}
 
 		/**
@@ -305,4 +354,9 @@
 		 * @var int
 		 */
 		protected $errorCount;
+
+		/**
+		 * @var IDebugHook[]
+		 */
+		protected $hooks = [];
 	}
