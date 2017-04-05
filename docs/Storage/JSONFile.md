@@ -59,7 +59,7 @@ JSONFile constructor. If an instance of File is provided as $source, the state o
 
 parameter | type | description
 --- | --- | ---
-`$source` | `string||File` | Path to the file, or another File instance to clone.
+`$source` | `string|File` | Path to the file, or another File instance to clone.
 `$useContainer` | `bool` | Loaded/inserted data will be contained using an ArrayObject.
 `$autoLoad` | `bool` | Attempt to read data from the file on instantiation.
 
