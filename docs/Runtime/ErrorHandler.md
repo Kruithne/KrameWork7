@@ -66,7 +66,8 @@ $errHandler->setCoreErrorFormatter($coreFormatter);
 
 ob_start([$errHandler, 'catchCoreError']); // Allows ErrorHandler to catch core errors.
 ```
-With the example above, if a core/internal error occurs, the error will be dispatched (in this instance to a file named `error.log`) and the script will return an empty page to the user, with a HTTP response code of `500`. It is highly recommended that you configure your web server to dispatch an error document when server-response `500` is sent.
+With the example above, if a core/internal error occurs, the error will be dispatched (in this instance to a file named `error.log`) and the script will return an html error page, defined by the given template file to the user using a HTTP response code of `500`.
+It is highly recommended that you configure your web server to dispatch an error document when server-response `500` is sent, if you are not setting your own custom error page.
 
 ##### Reporting a caught exception
 If you are handling exceptions, you might still want to receive reports about them.
