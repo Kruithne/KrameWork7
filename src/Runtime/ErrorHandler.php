@@ -176,7 +176,9 @@
 
 			if (preg_match('/<!--\[INTERNAL_ERROR\](.*)-->/Us', $buffer, $parts)) {
 				$this->handleCoreError($parts);
-				die();
+				if (!headers_sent())
+					header('HTTP/1.0 500 Internal Error');
+				return '';
 			}
 
 			return $buffer;
