@@ -138,6 +138,16 @@
 		}
 
 		/**
+		 * Register a formatter to use to return a custom error page to the user on a core error.
+		 *
+		 * @api setCoreErrorFormatter
+		 * @param IErrorFormatter $formatter Custom error page provider.
+		 */
+		public function setCoreErrorFormatter(IErrorFormatter $formatter) {
+			$this->coreErrorFormatter = $formatter;
+		}
+
+		/**
 		 * Catches a normal error thrown during runtime.
 		 *
 		 * @internal
@@ -175,10 +185,10 @@
 				return $buffer;
 
 			if (preg_match('/<!--\[INTERNAL_ERROR\](.*)-->/Us', $buffer, $parts)) {
-				$this->handleCoreError($parts);
 				if (!headers_sent())
 					header('HTTP/1.0 500 Internal Error');
-				return '';
+
+				return $this->handleCoreError($parts);
 			}
 
 			return $buffer;
@@ -189,6 +199,7 @@
 		 *
 		 * @internal
 		 * @param $data array
+		 * @return string
 		 */
 		private function handleCoreError($data) {
 			$error = $data[1]; // Error message.
@@ -205,7 +216,15 @@
 				$errorObj = new RuntimeError(E_CORE_ERROR, $error, __FILE__, __LINE__);
 			}
 
-			$this->catch($errorObj, true);
+			// Warning: Trying to invoke a BufferDispatcher here WILL blow up.
+			if (!$this->coreErrorFormatter) {
+				$this->catch($errorObj, true);
+				return '';
+			}
+
+			$trace = $this->filterStacktrace($errorObj->getTrace());
+			$debug = $this->getDebug();
+			return $this->formatError($errorObj, $trace, $debug, $this->coreErrorFormatter);
 		}
 
 		/**
@@ -220,23 +239,11 @@
 				return;
 
 			$trace = $this->filterStacktrace($error->getTrace());
-
 			$debug = $this->getDebug();
 
-			foreach ($this->dispatch as $dispatch) {
-				/**
-				 * @var IErrorDispatcher $dispatcher
-				 * @var IErrorFormatter $formatter
-				 */
-				list($dispatcher, $formatter) = $dispatch;
-
-				$formatter->beginReport();
-				$formatter->reportError($error);
-				$formatter->reportDebug($debug);
-				$formatter->reportStacktrace($trace);
-				$this->packReport($formatter);
-
-				$dispatchTerminate = $dispatcher->dispatch($formatter->generate());
+			foreach ($dispatchers as $dispatch) {
+				$output = $this->formatError($error, $trace, $debug, $formatter);
+				$dispatchTerminate = $dispatcher->dispatch($output);
 				if ($dispatchTerminate)
 					$terminate = true;
 			}
@@ -248,6 +255,23 @@
 
 				die();
 			}
+		}
+
+		/**
+		 * Execute a set of dispatchers on an error
+		 *
+		 * @internal
+		 * @param IError $error
+		 * @param bool $terminate Terminate script after error is dispatched.
+		 * @return string
+		 */
+		private function formatError(IError $error, array $trace, array $debug, IErrorFormatter $formatter) {
+			$formatter->beginReport();
+			$formatter->reportError($error);
+			$formatter->reportDebug($debug);
+			$formatter->reportStacktrace($trace);
+			$this->packReport($formatter);
+			return $formatter->generate();
 		}
 
 		/**
@@ -361,4 +385,9 @@
 		 * @var IDebugHook[]
 		 */
 		protected $hooks = [];
+
+		/**
+		 * @var IErrorFormatter
+		 */
+		protected $coreErrorFormatter;
 	}
