@@ -61,9 +61,14 @@ $errDispatcher = new FileDispatcher();
 $errHandler = new ErrorHandler();
 $errHandler->addDispatch($errDispatcher, $errFormatter);
 
+$coreFormatter = new HTMLErrorFormatter('/path/to/custom-error.html');
+$errHandler->setCoreErrorFormatter($coreFormatter);
+
 ob_start([$errHandler, 'catchCoreError']); // Allows ErrorHandler to catch core errors.
 ```
-With the example above, if a core/internal error occurs, the error will be dispatched (in this instance to a file named `error.log`) and the script will be terminated. It is highly recommended that you configure your web server to dispatch an error document when server-response `500` is sent.
+With the example above, if a core/internal error occurs, the error will be not dispatched and the script will instead return an html error page, defined by the given template file to the user using a HTTP response code of `500`.
+Non-core errors will still be dispatched, in this case to a file named `error.log`.
+It is highly recommended that you configure your web server to dispatch an error document when server-response `500` is sent, if you are not setting your own custom error page.
 
 ##### Reporting a caught exception
 If you are handling exceptions, you might still want to receive reports about them.
@@ -120,8 +125,16 @@ parameter | type | description
 --- | --- | ---
 `$hook` | `IDebugHook` | An application specific debug provider
 
+##### > setCoreErrorFormatter() : `void`
+Override the default behaviour, making the error handler return a custom error page on a caught core error, rather than invoking the registered dispatchers. If you are using a BufferDispatcher, you must call this method for custom error pages to work for core errors.
+
+parameter | type | description
+--- | --- | ---
+`$formatter` | `IErrorFormatter` | Formatter controlling how core errors are reported to the user.
+
 ##### > deactivate() : `void`
 Disable this error handler, restoring handlers/levels to their state when this error handler was created.
+
 ##### > logException() : `void`
 When you catch an exception, you can feed to this method log it.
 You probably do not want to do this if you are using the BufferDispatcher.
