@@ -241,9 +241,9 @@
 			$trace = $this->filterStacktrace($error->getTrace());
 			$debug = $this->getDebug();
 
-			foreach ($dispatchers as $dispatch) {
-				$output = $this->formatError($error, $trace, $debug, $formatter);
-				$dispatchTerminate = $dispatcher->dispatch($output);
+			foreach ($this->dispatch as $dispatch) {
+				$output = $this->formatError($error, $trace, $debug, $dispatch[1]);
+				$dispatchTerminate = $dispatch[0]->dispatch($output);
 				if ($dispatchTerminate)
 					$terminate = true;
 			}
