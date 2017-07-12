@@ -117,6 +117,24 @@
 		}
 
 		/**
+		 * Temporarily disable all error handlers, to avoid leaking sensitive information.
+		 *
+		 * @api suspend
+		 */
+		public static function suspend() {
+			self::$suspended = true;
+		}
+
+		/**
+		 * Resume the error handlers once sensitive data is out of scope.
+		 *
+		 * @api resume
+		 */
+		public static function resume() {
+			self::$suspended = false;
+		}
+
+		/**
 		 * Log an exception that has been handled.
 		 *
 		 * @api logException
@@ -181,7 +199,7 @@
 		 * @return string
 		 */
 		public function catchCoreError(string $buffer) {
-			if (!$this->active)
+			if (!$this->active || self::$suspended)
 				return $buffer;
 
 			if (preg_match('/<!--\[INTERNAL_ERROR\](.*)-->/Us', $buffer, $parts)) {
@@ -235,7 +253,7 @@
 		 * @param bool $terminate Terminate script after error is dispatched.
 		 */
 		private function catch(IError $error, bool $terminate) {
-			if (!$this->active)
+			if (!$this->active || self::$suspended)
 				return;
 
 			$trace = $this->filterStacktrace($error->getTrace());
@@ -390,4 +408,9 @@
 		 * @var IErrorFormatter
 		 */
 		protected $coreErrorFormatter;
+
+		/**
+		 * var bool
+		 */
+		protected static $suspended;
 	}

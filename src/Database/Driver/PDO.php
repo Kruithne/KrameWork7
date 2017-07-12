@@ -39,8 +39,22 @@
 		 * @param ConnectionString $connection
 		 */
 		public function __construct(ConnectionString $connection) {
-			$this->connection = new \PDO($connection->__toString(), $connection->getUsername(), $connection->getPassword());
-			$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+			if (class_exists('ErrorHandler'))
+				ErrorHandler::suspend();
+			$error = false;
+			try
+			{
+				$this->connection = new \PDO($connection->__toString(), $connection->getUsername(), $connection->getPassword());
+				$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+			}
+			catch (Exception $e)
+			{
+				$error = $e->getMessage();
+			}
+			if (class_exists('ErrorHandler'))
+				ErrorHandler::suspend();
+			if($error)
+				throw new Exception($error);
 		}
 
 		/**

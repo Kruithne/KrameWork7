@@ -142,3 +142,9 @@ You probably do not want to do this if you are using the BufferDispatcher.
 parameter | type | description
 --- | --- | ---
 `$exception` | `Throwable` | An exception to report
+
+##### > static suspend() : `void`
+Suspend all error handlers to protect sensitive information.
+
+##### > static resume() : `void`
+Resume all error handlers.
