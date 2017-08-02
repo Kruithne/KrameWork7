@@ -50,7 +50,7 @@
 			$error = false;
 			try
 			{
-				$this->connection = new \PDO($connection->__toString(), $connection->getUsername(), $connection->getPassword());
+				$this->connection = new \PDO($this->conn->__toString(), $this->conn->getUsername(), $this->conn->getPassword());
 				$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			}
 			catch (Exception $e)
