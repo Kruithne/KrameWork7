@@ -39,6 +39,12 @@
 		 * @param ConnectionString $connection
 		 */
 		public function __construct(ConnectionString $connection) {
+			$this->conn = $connection;
+			$this->connect();
+		}
+
+		private function connect()
+		{
 			if (class_exists('\KrameWork\Runtime\ErrorHandler'))
 				\KrameWork\Runtime\ErrorHandler::suspend();
 			$error = false;
@@ -56,6 +62,11 @@
 			if($error)
 				throw new Exception($error);
 		}
+
+		public function __sleep(){ return ['conn']; }
+		public function __wakeup(){ $this->connect(); }
+
+		private $conn;
 
 		/**
 		 * @var \PDO
