@@ -39,8 +39,8 @@
 		 * @param ConnectionString $connection
 		 */
 		public function __construct(ConnectionString $connection) {
-			if (class_exists('ErrorHandler'))
-				ErrorHandler::suspend();
+			if (class_exists('\KrameWork\Runtime\ErrorHandler'))
+				\KrameWork\Runtime\ErrorHandler::suspend();
 			$error = false;
 			try
 			{
@@ -51,8 +51,8 @@
 			{
 				$error = $e->getMessage();
 			}
-			if (class_exists('ErrorHandler'))
-				ErrorHandler::suspend();
+			if (class_exists('\KrameWork\Runtime\ErrorHandler'))
+				\KrameWork\Runtime\ErrorHandler::resume();
 			if($error)
 				throw new Exception($error);
 		}
