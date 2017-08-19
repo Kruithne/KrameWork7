@@ -150,6 +150,18 @@
 		}
 
 		/**
+		 * Dispatch this as encoded data to the output buffer.
+		 *
+		 * @param bool $applyHeader If true, content-type header will be set.
+		 */
+		public function sendToBuffer($applyHeader = true) {
+			if ($applyHeader)
+				header('Content-Type: application/json');
+
+			echo json_encode($this->getData());
+		}
+
+		/**
 		 * Get the JSON container inside this wrapper.
 		 * Returns a string if not using containers (see constructor).
 		 *

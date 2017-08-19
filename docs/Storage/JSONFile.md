@@ -151,3 +151,10 @@ Set the JSON options bit-mask.
 parameter | type | description
 --- | --- | ---
 `$mask` | `int` | Bit-mask options flag.
+
+##### > sendToBuffer() : `void`
+Dispatch this as encoded data to the output buffer.
+
+parameter | type | description
+--- | --- |---
+`$applyHeader` | `bool` | If true, content-type header will be set.
