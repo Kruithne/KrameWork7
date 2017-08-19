@@ -224,7 +224,10 @@
 			if ($wrapper) {
 				require_once(__DIR__ . '/../Storage/JSONFile.php');
 				try {
-					return new JSONFile('php://input', true, true);
+					$json = new JSONFile(null, true, false);
+					$json->setRawData($this->getRequestContent());
+					$json->read();
+					return $json;
 				} catch (JSONException $e) {
 					throw new InvalidRequestTypeException('Request content did not contain valid json.');
 				}

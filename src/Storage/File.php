@@ -46,16 +46,16 @@
 		 * ignored in that scenario.
 		 *
 		 * @api __construct
-		 * @param string|File $source Path to the file, or another File instance to clone.
+		 * @param string|File|null $source Path to the file, or another File instance to clone.
 		 * @param bool $autoLoad Attempt to load the file contents on instantiation.
 		 * @param bool $touch Touch the file, creating it if missing.
 		 * @throws FileNotFoundException
 		 * @throws FileReadException
 		 */
-		public function __construct($source, bool $autoLoad = true, bool $touch = false) {
+		public function __construct($source = null, bool $autoLoad = true, bool $touch = false) {
 			if ($source instanceof File) {
 				$this->marshalFrom($source);
-			} else {
+			} elseif ($source !== null) {
 				parent::__construct($source);
 
 				if ($touch && !$this->exists())

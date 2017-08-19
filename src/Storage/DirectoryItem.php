@@ -91,7 +91,7 @@
 		 * @api __construct
 		 * @param string $source Path to the directory item.
 		 */
-		public function __construct($source) {
+		public function __construct($source = null) {
 			$this->path = StringUtil::formatDirectorySlashes($source, true);
 			$this->name = basename($source);
 		}
