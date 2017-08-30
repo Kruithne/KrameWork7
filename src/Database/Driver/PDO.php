@@ -53,14 +53,14 @@
 				$this->connection = new \PDO($this->conn->__toString(), $this->conn->getUsername(), $this->conn->getPassword());
 				$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			}
-			catch (Exception $e)
+			catch (\Throwable $e)
 			{
 				$error = $e->getMessage();
 			}
 			if (class_exists('\KrameWork\Runtime\ErrorHandler'))
 				\KrameWork\Runtime\ErrorHandler::resume();
 			if($error)
-				throw new Exception($error);
+				throw new \Exception($error);
 		}
 
 		public function __sleep(){ return ['conn']; }
