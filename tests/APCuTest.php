@@ -1,4 +1,6 @@
 <?php
+	require_once 'PHPUnit/Autoload.php';
+
 	use KrameWork\Caching\APCu;
 	require_once(__DIR__ . '/../src/Caching/APCu.php');
 
