@@ -122,4 +122,16 @@
 		function execute(string $sql, array $param): int {
 			return $this->driver->execute($sql, $param);
 		}
+
+		function beginTransaction() {
+			return $this->driver->beginTransaction();
+		}
+
+		function commitTransaction() {
+			return $this->driver->commitTransaction();
+		}
+
+		function rollbackTransaction() {
+			return $this->driver->rollbackTransaction();
+		}
 	}

@@ -147,6 +147,30 @@
 		}
 
 		/**
+		 * @api beginTransaction
+		 * Open a database transaction
+		 */
+		public function beginTransaction() {
+			return $this->connection->beginTransaction();
+		}
+
+		/**
+		 * @api rollbackTransaction
+		 * Rolls back the current transaction
+		 */
+		public function rollbackTransaction() {
+			return $this->connection->rollBack();
+		}
+
+		/**
+		 * @api commitTransaction
+		 * Commits the current transaction
+		 */
+		public function commitTransaction() {
+			return $this->connection->commit();
+		}
+
+		/**
 		 * Bind the parameters to the prepared statement, guessing at parameter types.
 		 * @param \PDOStatement $query A prepared statement
 		 * @param array $param Parameters to bind
