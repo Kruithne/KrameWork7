@@ -43,18 +43,6 @@
 			return 'dbo';
 		}
 
-		public function beginTransaction() {
-			$this->db->execute('BEGIN TRANSACTION', []);
-		}
-
-		public function commitTransaction() {
-			$this->db->execute('COMMIT TRANSACTION', []);
-		}
-
-		public function rollbackTransaction() {
-			$this->db->execute('ROLLBACK TRANSACTION', []);
-		}
-
 		/**
 		 * @api GetFullName
 		 * Returns the fully qualified table name, including schema.
