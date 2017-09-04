@@ -39,23 +39,34 @@
 		 * @param ConnectionString $connection
 		 */
 		public function __construct(ConnectionString $connection) {
-			if (class_exists('ErrorHandler'))
-				ErrorHandler::suspend();
+			$this->conn = $connection;
+			$this->connect();
+		}
+
+		private function connect()
+		{
+			if (class_exists('\KrameWork\Runtime\ErrorHandler'))
+				\KrameWork\Runtime\ErrorHandler::suspend();
 			$error = false;
 			try
 			{
-				$this->connection = new \PDO($connection->__toString(), $connection->getUsername(), $connection->getPassword());
+				$this->connection = new \PDO($this->conn->__toString(), $this->conn->getUsername(), $this->conn->getPassword());
 				$this->connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			}
-			catch (Exception $e)
+			catch (\Throwable $e)
 			{
 				$error = $e->getMessage();
 			}
-			if (class_exists('ErrorHandler'))
-				ErrorHandler::suspend();
+			if (class_exists('\KrameWork\Runtime\ErrorHandler'))
+				\KrameWork\Runtime\ErrorHandler::resume();
 			if($error)
-				throw new Exception($error);
+				throw new \Exception($error);
 		}
+
+		public function __sleep(){ return ['conn']; }
+		public function __wakeup(){ $this->connect(); }
+
+		private $conn;
 
 		/**
 		 * @var \PDO
