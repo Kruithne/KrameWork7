@@ -22,9 +22,9 @@
 	* SOFTWARE.
 	*/
 
-	namespace KrameWork\Database\Schema
+	namespace KrameWork\Database\Schema;
 
-	use \KrameWork\Database\Driver\Generic
+	use \KrameWork\Database\Driver\Generic;
 
 	class TableVersion
 	{
