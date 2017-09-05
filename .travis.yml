@@ -5,9 +5,9 @@ php:
   - 7.1
 
 before_install:
-  - yes '' | pecl install apcu;
+  - yes '' | pecl install -f apcu;
 
 before_script:
   - phpenv config-add travis.ini
 
-script: phpunit --verbose --debug --stderr --config phpunit.xml tests
+script: phpunit -v --verbose --debug --stderr --config phpunit.xml tests
