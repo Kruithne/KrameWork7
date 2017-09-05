@@ -23,7 +23,6 @@ CREATE TABLE {$this->getFullName()}(
 	[table] [VARCHAR](50) NOT NULL,
 	[version] [INT] NOT NULL
 ) ON [PRIMARY]
-GO
 ",
 				['schema' => $this->getSchema(), 'table' => $this->getName()]
 			);
