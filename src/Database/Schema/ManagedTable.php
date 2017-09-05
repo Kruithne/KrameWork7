@@ -53,10 +53,11 @@
 				return $this->create();
 
 			$log = $this->versionLog();
-			if($current > count($log))
+			$latest = count($log);
+			if($current > $latest)
 				return 'Table is ahead of code: '.$current;
 
-			if($current == count($log))
+			if($current == $latest)
 				return 'Table is up to date.';
 
 			$v = $current;
