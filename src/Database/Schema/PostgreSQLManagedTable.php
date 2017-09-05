@@ -28,7 +28,7 @@
 	require_once(__DIR__ . '../Driver/Generic.php');
 
 	/**
-	 * Class to handle a managed table hosted by a Microsoft SQL Server
+	 * Class to handle a managed table hosted by a PostgreSQL Server
 	 * @author docpify <morten@runsafe.no>
 	 * @package KrameWork\Database
 	 */
