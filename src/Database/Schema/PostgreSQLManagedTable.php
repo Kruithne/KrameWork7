@@ -34,21 +34,7 @@
 	 */
 	abstract class PostgreSQLManagedTable extends ManagedTable
 	{
-		/**
-		 * @api GetSchema
-		 * Returns the name of the database schema
-		 * @return string The database schema name
-		 */
 		public function getSchema() {
 			return 'public';
-		}
-
-		/**
-		 * @api GetFullName
-		 * Returns the fully qualified table name, including schema.
-		 * @return string Fully qualified table name
-		 */
-		public function getFullName() {
-			return "\"{$this->GetSchema()}\".\"{$this->GetName()}\"";
 		}
 	}
