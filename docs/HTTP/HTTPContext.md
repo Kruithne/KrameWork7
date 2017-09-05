@@ -9,56 +9,55 @@ ___
 ##### JSON Requests
  If you're expecting the request as JSON, the `HTTPContext` class can automatically validate and parse it for you, providing you with a JSON object.
 ```php
-$http = new HTTPContext();
-$json = $http->getJSON(); // Hooray, JSON!
+$json = HTTPContext::getJSON(); // Hooray, JSON!
 ```
 By default, the request data will be decoded, and the content-type header will be checked for `application/json`. If either of these fail, an `InvalidRequestTypeException` will be thrown. The behavior can be controlled by the two parameters for the call: `getJSON(bool $decode = true, bool $ignoreContentType = false);`.
 
 Omitting both these checks will render the function redundant, and you might as well just call `getRequestContent()` for the raw data string.
 ___
 ### Functions
-##### > getClientIP() : `string|null`
+##### > HTTPContext::getClientIP() : `string|null`
 Obtain the connecting clients IP, if available.
 Note that this can include the remote port, as some proxies add it to X-Forwarded-For.
 
-##### > getFiles() : `\ArrayObject[]|Storage\UploadedFile[]`
+##### > HTTPContext::getFiles() : `\ArrayObject[]|Storage\UploadedFile[]`
 Obtain an array containing all files with the given key.
 
 parameter | type | description
 --- | --- | ---
 `$key` | `string` | Key to lookup files for.
 `$useWrappers` | `bool` | Use KrameWork file wrappers.
-##### > hasFile() : `bool`
+##### > HTTPContext::hasFile() : `bool`
 Check if this request contains an uploaded file with the given key.
 
 parameter | type | description
 --- | --- | ---
 `$key` | `string` | Key to check for.
-##### > getQueryData() : `array`
+##### > HTTPContext::getQueryData() : `array`
 Retrieve the decoded query string for this request.
-##### > getQueryDataValue() : `mixed|null`
+##### > HTTPContext::getQueryDataValue() : `mixed|null`
 Retrieve a value from the query string with the given key.
 
 parameter | type | description
 --- | --- | ---
 `$key` | `string` | Key contained in the query string.
-##### > getQueryDataValues() : `array`
+##### > HTTPContext::getQueryDataValues() : `array`
 Retrieve multiple values from the query string. Accepts a variable amount of string arguments.
-##### > hasFormData() : `bool`
+##### > HTTPContext::hasFormData() : `bool`
 Check if this request contains form data. Occurs when content-type is multipart/form-data or application/x-www-form-urlencoded
-##### > hasMultipartFormData() : `bool`
+##### > HTTPContext::hasMultipartFormData() : `bool`
 Check if this request contains multipart form data. Occurs when content-type is multipart/form-data
-##### > getFormDataValue() : `mixed|null`
+##### > HTTPContext::getFormDataValue() : `mixed|null`
 Retrieve a value from submitted form data with the given key.
 
 parameter | type | description
 --- | --- | ---
 `$key` | `string` | Key to get value for.
-##### > getFormDataValues() : `array`
+##### > HTTPContext::getFormDataValues() : `array`
 Retrieve multiple values from submitted form data. Accepts variable amount of string arguments.
-##### > getFormData() : `array`
+##### > HTTPContext::getFormData() : `array`
 Retrieve the content of the request as decoded form data. Result is stored in a key/value pair array. Array values (foo[]) are returned as arrays.
-##### > getJSON() : `mixed|string`
+##### > HTTPContext::getJSON() : `mixed|string`
 Retrieve the request content as (optionally decoded) JSON. Skipping decode and content-type validation: use getRequestContent() instead.
 
 parameter | type | description
@@ -70,28 +69,28 @@ parameter | type | description
 exception | reason
 --- | ---
 `InvalidRequestTypeException` | Content is not JSON.
-##### > isSecure() : `bool`
+##### > HTTPContext::isSecure() : `bool`
 Check if this request was made over https protocol.
-##### > getRequestContent() : `string`
+##### > HTTPContext::getRequestContent() : `string`
 Retrieve the raw content of the request. Result is not parsed or validated.
-##### > getContentLength() : `int`
+##### > HTTPContext::getContentLength() : `int`
 Retrieve the length of the raw request content.
-##### > getUserAgent() : `string`
+##### > HTTPContext::getUserAgent() : `string`
 Retrieve the user-agent string for the current request. Returns 'Unknown' if not available.
-##### > getReferrer() : `string`
+##### > HTTPContext::getReferrer() : `string`
 Retrieve the referrer URL for this request. Returns an empty string if not available.
-##### > getContentType() : `string`
+##### > HTTPContext::getContentType() : `string`
 Retrieve the content-type of this request. Returns 'text/plain' if not available.
 
 parameter | type | description
 --- | --- | ---
 `$parameters` | `bool` | Include content-type parameters.
-##### > getRemoteAddress() : `string`
+##### > HTTPContext::getRemoteAddress() : `string`
 Retrieve the remote address for this request. Returns an empty string if not available.
-##### > getRequestURI() : `string`
+##### > HTTPContext::getRequestURI() : `string`
 Retrieve the URI of this request (includes query string). Returns an empty string if not available.
-##### > getQueryString() : `string`
+##### > HTTPContext::getQueryString() : `string`
 Retrieve the query string used in this request. Returns an empty string if not available.
-##### > getRequestMethod() : `string`
+##### > HTTPContext::getRequestMethod() : `string`
 Retrieve the method of this request. Defaults to 'GET' if not available.
 
