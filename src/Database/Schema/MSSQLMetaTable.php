@@ -14,7 +14,7 @@
 			$this->db = $db;
 			$this->db->execute("
 IF NOT EXISTS (
-	SELECT COUNT(*)
+	SELECT tables.name
 	FROM sys.schemas 
 	JOIN sys.tables ON tables.schema_id = schemas.schema_id 
 	WHERE schemas.name = :schema AND tables.name = :table
