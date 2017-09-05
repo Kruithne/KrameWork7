@@ -66,7 +66,7 @@
 
 		public function testValueWrapping() {
 			$report = new TestReportRunner(new DummyCache(), 'test', 0);
-			$report->data = [[
+			$report->data = [(object)[
 				'money' => 4.20,
 				'time' => '1980-01-01 12:38',
 				'date' => '1980-01-01',
