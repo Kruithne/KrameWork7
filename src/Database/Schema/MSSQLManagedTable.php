@@ -43,12 +43,8 @@
 			return 'dbo';
 		}
 
-		/**
-		 * @api GetFullName
-		 * Returns the fully qualified table name, including schema.
-		 * @return string Fully qualified table name
-		 */
-		public function getFullName() {
-			return "[{$this->GetSchema()}].[{$this->GetName()}]";
+		public function quoteIdentifier($identifier)
+		{
+			return "[{$identifier}]";
 		}
 	}

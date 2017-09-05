@@ -32,7 +32,7 @@
 	 * @author docpify <morten@runsafe.no>
 	 * @package KrameWork\Database
 	 */
-	abstract class MSSQLManagedTable extends ManagedTable
+	abstract class MySQLManagedTable extends ManagedTable
 	{
 		/**
 		 * @api GetSchema
@@ -49,6 +49,11 @@
 		 * @return string Fully qualified table name
 		 */
 		public function getFullName() {
-			return "`{$this->GetName()}`";
+			return $this->quoteIdentifier($this->getName());
+		}
+
+		public function quoteIdentifier($identifier)
+		{
+			return "`{$identifier}`";
 		}
 	}

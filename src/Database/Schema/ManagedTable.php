@@ -105,6 +105,19 @@
 			return "Table created with revision $v";
 		}
 
+		public function getFullName()
+		{
+			return $this->quoteIdentifier($this->getSchema()).'.'.$this->quoteIdentifier($this->getName());
+		}
+
+		/**
+		 * Quotes the identifier for use in an SQL statement
+		 *
+		 * @param $identifier
+		 * @return string The quoted identifier
+		 */
+		public abstract function quoteIdentifier($identifier);
+
 		/**
 		 * @var \KrameWork\Database\Driver\Generic
 		 */

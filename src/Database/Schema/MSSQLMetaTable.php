@@ -27,6 +27,7 @@ GO
 ",
 				['schema' => $this->getSchema(), 'table' => $this->getName()]
 			);
+			$this->setVersion($this->getName(), 1);
 		}
 
 		public function getVersion(string $table): int
