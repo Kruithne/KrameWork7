@@ -46,8 +46,7 @@
 		 * @param bool $autoStart Start session on instantiation.
 		 * @param bool $secure Prevent session theft.
 		 */
-		public function __construct(HTTPContext $context, bool $autoStart = true, bool $secure = true) {
-			$this->context = $context;
+		public function __construct(bool $autoStart = true, bool $secure = true) {
 			$this->secure = $secure;
 
 			if ($autoStart)
@@ -71,7 +70,7 @@
 			session_start();
 
 			if ($this->secure) {
-				$remote = $this->context->getClientIP() ?? '';
+				$remote = HTTPContext::getClientIP() ?? '';
 				$client = $_SESSION['__session_client'] ?? $remote;
 
 				if ($client != $remote) {
@@ -204,9 +203,4 @@
 		 * @var bool
 		 */
 		private $secure;
-
-		/**
-		 * @var HTTPContext
-		 */
-		private $context;
 	}

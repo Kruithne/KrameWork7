@@ -47,9 +47,8 @@
 		 * @api __construct
 		 * @param string $secret Secret API key.
 		 */
-		public function __construct(string $secret, HTTPContext $context) {
+		public function __construct(string $secret) {
 			$this->secret = $secret;
-			$this->context = $context;
 		}
 
 		/**
@@ -71,7 +70,7 @@
 		 * @throws reCAPTCHAException
 		 */
 		public function validate(string $token):bool {
-			$ip = $this->ip ?? $this->context->getClientIP();
+			$ip = $this->ip ?? HTTPContext::getClientIP();
 			if ($ip == null || \strlen($ip) == 0)
 				throw new reCAPTCHAException('Remote IP is invalid or missing.');
 
@@ -99,9 +98,4 @@
 		 * @var string
 		 */
 		private $ip;
-
-		/**
-		 * @var HTTPContext
-		 */
-		private $context;
 	}

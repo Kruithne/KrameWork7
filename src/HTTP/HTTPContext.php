@@ -44,7 +44,7 @@
 		 * @api getClientIP
 		 * @return string|null
 		 */
-		public function getClientIP() {
+		public static function getClientIP() {
 			if (!isset($_SERVER))
 				return null;
 
@@ -65,7 +65,7 @@
 		 * @param bool $useWrappers Use KrameWork file wrappers.
 		 * @return \ArrayObject[]|Storage\UploadedFile[]
 		 */
-		public function getFiles(string $key, bool $useWrappers = true) {
+		public static function getFiles(string $key, bool $useWrappers = true) {
 			$files = [];
 			$node = $_FILES[$key] ?? null;
 
@@ -104,7 +104,7 @@
 		 * @param string $key Key to check for.
 		 * @return bool
 		 */
-		public function hasFile(string $key) {
+		public static function hasFile(string $key) {
 			return array_key_exists($key, $_FILES);
 		}
 
@@ -114,12 +114,12 @@
 		 * @api getQueryData
 		 * @return array
 		 */
-		public function getQueryData() {
-			if ($this->cacheQueryData)
-				return $this->cacheQueryData;
+		public static function getQueryData() {
+			if (self::$cacheQueryData)
+				return self::$cacheQueryData;
 
-			$this->cacheQueryData = $this->extractURLEncodedData($this->getQueryString());
-			return $this->cacheQueryData;
+			self::$cacheQueryData = self::extractURLEncodedData(self::getQueryString());
+			return self::$cacheQueryData;
 		}
 
 		/**
@@ -129,8 +129,8 @@
 		 * @param string $key Key contained in the query string.
 		 * @return mixed|null
 		 */
-		public function getQueryDataValue(string $key) {
-			return $this->getQueryData()[$key] ?? null;
+		public static function getQueryDataValue(string $key) {
+			return self::getQueryData()[$key] ?? null;
 		}
 
 		/**
@@ -140,10 +140,10 @@
 		 * @api getQueryDataValues
 		 * @return array
 		 */
-		public function getQueryDataValues():array {
+		public static function getQueryDataValues():array {
 			$out = [];
 			foreach (func_get_args() as $arg)
-				$out[] = $this->getQueryDataValue($arg);
+				$out[] = self::getQueryDataValue($arg);
 
 			return $out;
 		}
@@ -155,11 +155,11 @@
 		 * @api hasFormData
 		 * @return bool
 		 */
-		public function hasFormData():bool {
-			if ($this->hasFormData === null)
-				$this->checkFormDataPresence();
+		public static function hasFormData():bool {
+			if (self::$hasFormData === null)
+				self::checkFormDataPresence();
 
-			return $this->hasFormData;
+			return self::$hasFormData;
 		}
 
 		/**
@@ -169,11 +169,11 @@
 		 * @api hasMultipartFormData
 		 * @return bool
 		 */
-		public function hasMultipartFormData():bool {
-			if ($this->hasMultipartFormData === null)
-				$this->checkFormDataPresence();
+		public static function hasMultipartFormData():bool {
+			if (self::$hasMultipartFormData === null)
+				self::checkFormDataPresence();
 
-			return $this->hasMultipartFormData;
+			return self::$hasMultipartFormData;
 		}
 
 		/**
@@ -183,8 +183,8 @@
 		 * @param string $key Key to get value for.
 		 * @return mixed|null
 		 */
-		public function getFormDataValue(string $key) {
-			return $this->getFormData()[$key] ?? null;
+		public static function getFormDataValue(string $key) {
+			return self::getFormData()[$key] ?? null;
 		}
 
 		/**
@@ -194,10 +194,10 @@
 		 * @api getFormDataValues
 		 * @return array
 		 */
-		public function getFormDataValues():array {
+		public static function getFormDataValues():array {
 			$out = [];
 			foreach (func_get_args() as $arg)
-				$out[] = $this->getFormDataValue($arg);
+				$out[] = self::getFormDataValue($arg);
 
 			return $out;
 		}
@@ -210,11 +210,11 @@
 		 * @api getFormData
 		 * @return array
 		 */
-		public function getFormData():array {
-			if ($this->cacheFormData)
-				return $this->cacheFormData;
+		public static function getFormData():array {
+			if (self::$cacheFormData)
+				return self::$cacheFormData;
 
-			if (!$this->hasFormData())
+			if (!self::hasFormData())
 				return [];
 
 			// If the content-type is multipart/form-data, then extracting the raw input manually is
@@ -222,8 +222,8 @@
 			// correct data in this scenario. During application/x-www-form-urlencoded requests, we
 			// parse the raw data manually to avoid issues with $_POST being blank given valid yet
 			// reserved characters within keys, or under certain server configurations.
-			$this->cacheFormData = $this->hasMultipartFormData() ? $_POST : $this->extractURLEncodedData($this->getRequestContent());
-			return $this->cacheFormData;
+			self::$cacheFormData = self::hasMultipartFormData() ? $_POST : self::extractURLEncodedData(self::getRequestContent());
+			return self::$cacheFormData;
 		}
 
 		/**
@@ -237,22 +237,22 @@
 		 * @return mixed|string
 		 * @throws InvalidRequestTypeException
 		 */
-		public function getJSON(bool $decode = true, bool $ignoreContentType = false, bool $wrapper = true) {
-			if (!$ignoreContentType && $this->getContentType(false) != 'application/json')
+		public static function getJSON(bool $decode = true, bool $ignoreContentType = false, bool $wrapper = true) {
+			if (!$ignoreContentType && self::getContentType(false) != 'application/json')
 				throw new InvalidRequestTypeException('Request content is not declared as application/json.');
 
 			if ($wrapper) {
 				require_once(__DIR__ . '/../Storage/JSONFile.php');
 				try {
 					$json = new JSONFile(null, true, false);
-					$json->setRawData($this->getRequestContent());
+					$json->setRawData(self::getRequestContent());
 					$json->read();
 					return $json;
 				} catch (JSONException $e) {
 					throw new InvalidRequestTypeException('Request content did not contain valid json.');
 				}
 			} else {
-				$content = $this->getRequestContent();
+				$content = self::getRequestContent();
 				if ($decode) {
 					$decoded = json_decode($content);
 					if ($decoded === false)
@@ -271,7 +271,7 @@
 		 * @api isSecure
 		 * @return bool
 		 */
-		public function isSecure():bool {
+		public static function isSecure():bool {
 			// ISAPI IIS returns "off", others do not set.
 			return ($_SERVER['HTTPS'] ?? 'off') !== 'off';
 		}
@@ -283,7 +283,7 @@
 		 * @api getRequestContent
 		 * @return string
 		 */
-		public function getRequestContent():string {
+		public static function getRequestContent():string {
 			return file_get_contents('php://input');
 		}
 
@@ -293,7 +293,7 @@
 		 * @api getContentLength
 		 * @return int
 		 */
-		public function getContentLength():int {
+		public static function getContentLength():int {
 			return intval($_SERVER['CONTENT_LENGTH'] ?? 0);
 		}
 
@@ -304,7 +304,7 @@
 		 * @api getUserAgent
 		 * @return string
 		 */
-		public function getUserAgent():string {
+		public static function getUserAgent():string {
 			return $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
 		}
 
@@ -315,7 +315,7 @@
 		 * @api getReferer
 		 * @return string
 		 */
-		public function getReferrer():string {
+		public static function getReferrer():string {
 			return $_SERVER['HTTP_REFERER'] ?? '';
 		}
 
@@ -327,7 +327,7 @@
 		 * @param bool $parameters Include content-type parameters.
 		 * @return string
 		 */
-		public function getContentType(bool $parameters = true):string {
+		public static function getContentType(bool $parameters = true):string {
 			$type = $_SERVER['CONTENT_TYPE'] ?? 'text/plain';
 			if (!$parameters) {
 				$parting = strpos($type, ';');
@@ -344,7 +344,7 @@
 		 * @api getRemoteAddress
 		 * @return string
 		 */
-		public function getRemoteAddress():string {
+		public static function getRemoteAddress():string {
 			return $_SERVER['REMOTE_ADDR'] ?? '';
 		}
 
@@ -355,7 +355,7 @@
 		 * @api getRequestURI
 		 * @return string
 		 */
-		public function getRequestURI():string {
+		public static function getRequestURI():string {
 			return $_SERVER['REQUEST_URI'] ?? '';
 		}
 
@@ -366,7 +366,7 @@
 		 * @api getQueryString
 		 * @return string
 		 */
-		public function getQueryString():string {
+		public static function getQueryString():string {
 			return $_SERVER['QUERY_STRING'] ?? '';
 		}
 
@@ -377,7 +377,7 @@
 		 * @api getRequestMethod
 		 * @return string
 		 */
-		public function getRequestMethod():string {
+		public static function getRequestMethod():string {
 			return $_SERVER['REQUEST_METHOD'] ?? 'GET';
 		}
 
@@ -386,10 +386,10 @@
 		 *
 		 * @internal
 		 */
-		private function checkFormDataPresence() {
-			$contentType = $this->getContentType(false);
-			$this->hasMultipartFormData = $contentType == 'multipart/form-data';
-			$this->hasFormData = $this->hasMultipartFormData || $contentType == 'application/x-www-form-urlencoded';
+		private static function checkFormDataPresence() {
+			$contentType = self::getContentType(false);
+			self::$hasMultipartFormData = $contentType == 'multipart/form-data';
+			self::$hasFormData = self::$hasMultipartFormData || $contentType == 'application/x-www-form-urlencoded';
 		}
 
 		/**
@@ -399,7 +399,7 @@
 		 * @param string $input URL encoded string to decode.
 		 * @return array Decoded key/value pair array.
 		 */
-		private function extractURLEncodedData(string $input):array {
+		private static function extractURLEncodedData(string $input):array {
 			\mb_parse_str($input, $out);
 			return $out;
 		}
@@ -408,23 +408,23 @@
 		 * True if the request has form data.
 		 * @var bool
 		 */
-		private $hasFormData;
+		private static $hasFormData;
 
 		/**
 		 * True if the form data is multipart.
 		 * @var bool
 		 */
-		private $hasMultipartFormData;
+		private static $hasMultipartFormData;
 
 		/**
 		 * Internal cache for parsed form data.
 		 * @var array
 		 */
-		private $cacheFormData;
+		private static $cacheFormData;
 
 		/**
 		 * Internal cache for parsed query data.
 		 * @var array
 		 */
-		private $cacheQueryData;
+		private static $cacheQueryData;
 	}

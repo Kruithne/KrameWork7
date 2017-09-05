@@ -14,18 +14,16 @@
 			$_SERVER[$CONTENT_LENGTH] = 52823;
 
 			// Testing
-			$http = new HTTPContext();
-			$length = $http->getContentLength();
+			$length = HTTPContext::getContentLength();
 
 			$this->assertTrue(is_int($length), "Length is not an integer.");
 			$this->assertEquals(52823, $length, "Length was an unexpected value.");
 
 			// Default return value.
 			$_SERVER[$CONTENT_LENGTH] = null;
-			$this->assertEquals(0, $http->getContentLength());
+			$this->assertEquals(0, HTTPContext::getContentLength());
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$CONTENT_LENGTH] = $orig;
 		}
 
@@ -40,15 +38,13 @@
 			$_SERVER[$HTTP_USER_AGENT] = $userAgent;
 
 			// Testing
-			$http = new HTTPContext();
-			$this->assertEquals($userAgent, $http->getUserAgent());
+			$this->assertEquals($userAgent, HTTPContext::getUserAgent());
 
 			// Default return value.
 			$_SERVER[$HTTP_USER_AGENT] = null;
-			$this->assertEquals("Unknown", $http->getUserAgent());
+			$this->assertEquals("Unknown", HTTPContext::getUserAgent());
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$HTTP_USER_AGENT] = $orig;
 		}
 
@@ -67,25 +63,18 @@
 			];
 
 			// Testing
-			$http = new HTTPContext();
 			foreach ($contentTypes as $expected => $testValue) {
-				$fresh = new HTTPContext();
 				$_SERVER[$CONTENT_TYPE] = $testValue;
 
-				$this->assertEquals($http->getContentType(true), $testValue);
-				$this->assertEquals($fresh->getContentType(true), $testValue);
-				$this->assertEquals($http->getContentType(false), $expected);
-				$this->assertEquals($fresh->getContentType(false), $expected);
-
-				unset($fresh);
+				$this->assertEquals(HTTPContext::getContentType(true), $testValue);
+				$this->assertEquals(HTTPContext::getContentType(false), $expected);
 			}
 
 			// Default return value.
 			$_SERVER[$CONTENT_TYPE] = null;
-			$this->assertEquals("text/plain", $http->getContentType());
+			$this->assertEquals("text/plain", HTTPContext::getContentType());
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$CONTENT_TYPE] = $orig;
 		}
 
@@ -100,15 +89,13 @@
 			$_SERVER[$HTTP_REFERER] = $ref;
 
 			// Testing
-			$http = new HTTPContext();
-			$this->assertEquals($ref, $http->getReferrer());
+			$this->assertEquals($ref, HTTPContext::getReferrer());
 
 			// Default return value.
 			$_SERVER[$HTTP_REFERER] = null;
-			$this->assertEquals("", $http->getReferrer());
+			$this->assertEquals("", HTTPContext::getReferrer());
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$HTTP_REFERER] = $orig;
 		}
 
@@ -122,15 +109,13 @@
 			$_SERVER[$REMOTE_ADDR] = "127.0.0.1";
 
 			// Testing
-			$http = new HTTPContext();
-			$this->assertEquals("127.0.0.1", $http->getRemoteAddress());
+			$this->assertEquals("127.0.0.1", HTTPContext::getRemoteAddress());
 
 			// Default return value.
 			$_SERVER[$REMOTE_ADDR] = null;
-			$this->assertEquals("", $http->getRemoteAddress());
+			$this->assertEquals("", HTTPContext::getRemoteAddress());
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$REMOTE_ADDR] = $orig;
 		}
 
@@ -145,15 +130,13 @@
 			$_SERVER[$REQUEST_URI] = $uri;
 
 			// Testing
-			$http = new HTTPContext();
-			$this->assertEquals($uri, $http->getRequestURI());
+			$this->assertEquals($uri, HTTPContext::getRequestURI());
 
 			// Default return value.
 			$_SERVER[$REQUEST_URI] = null;
-			$this->assertEquals("", $http->getRequestURI());
+			$this->assertEquals("", HTTPContext::getRequestURI());
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$REQUEST_URI] = $orig;
 		}
 
@@ -167,15 +150,13 @@
 			$_SERVER[$REQUEST_METHOD] = "CONNECT";
 
 			// Testing
-			$http = new HTTPContext();
-			$this->assertEquals("CONNECT", $http->getRequestMethod());
+			$this->assertEquals("CONNECT", HTTPContext::getRequestMethod());
 
 			// Default return value.
 			$_SERVER[$REQUEST_METHOD] = null;
-			$this->assertEquals("GET", $http->getRequestMethod());
+			$this->assertEquals("GET", HTTPContext::getRequestMethod());
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$REQUEST_METHOD] = $orig;
 		}
 
@@ -190,15 +171,13 @@
 			$_SERVER[$QUERY_STRING] = $queryString;
 
 			// Testing
-			$http = new HTTPContext();
-			$this->assertEquals($queryString, $http->getQueryString());
+			$this->assertEquals($queryString, HTTPContext::getQueryString());
 
 			// Default return value
 			$_SERVER[$QUERY_STRING] = null;
-			$this->assertEquals("", $http->getQueryString());
+			$this->assertEquals("", HTTPContext::getQueryString());
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$QUERY_STRING] = $orig;
 		}
 
@@ -212,15 +191,13 @@
 			$_SERVER[$QUERY_STRING] = "test[]=1&test[]=2&thing=stuff";
 
 			// Testing
-			$http = new HTTPContext();
-			$test = $http->getQueryDataValue("test");
+			$test = HTTPContext::getQueryDataValue("test");
 
 			$this->assertTrue(is_array($test), "\$test is not an array.");
 			$this->assertEquals(2, count($test), "\$test is not expected size.");
-			$this->assertEquals("stuff", $http->getQueryDataValue("thing"));
+			$this->assertEquals("stuff", HTTPContext::getQueryDataValue("thing"));
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$QUERY_STRING] = $orig;
 		}
 
@@ -234,15 +211,13 @@
 			$_SERVER[$QUERY_STRING] = "test[]=1&test[]=2&thing=stuff";
 
 			// Testing
-			$http = new HTTPContext();
-			list($test, $stuff) = $http->getQueryDataValues("test", "thing");
+			list($test, $stuff) = HTTPContext::getQueryDataValues("test", "thing");
 
 			$this->assertTrue(is_array($test), "\$test is not an array.");
 			$this->assertEquals(2, count($test), "\$test is not expected size.");
 			$this->assertEquals("stuff", $stuff);
 
 			// Cleanup
-			unset($http);
 			$_SERVER[$QUERY_STRING] = $orig;
 		}
 
@@ -271,12 +246,11 @@
 			];
 
 			// Testing
-			$http = new HTTPContext();
-			$this->assertFalse($http->hasFile("doesNotExist"), "Context claims non-existing file exists.");
-			$this->assertTrue($http->hasFile("test"), "Context claims existing file does not exist.");
+			$this->assertFalse(HTTPContext::hasFile("doesNotExist"), "Context claims non-existing file exists.");
+			$this->assertTrue(HTTPContext::hasFile("test"), "Context claims existing file does not exist.");
 
 			// Test Wrappers.
-			$testFiles = $http->getFiles("test", true);
+			$testFiles = HTTPContext::getFiles("test", true);
 			$this->assertTrue(is_array($testFiles), "Context did not return array as expected.");
 			$this->assertCount(3, $testFiles, "Context did not return correct amount of files.");
 
@@ -290,7 +264,7 @@
 			}
 
 			// Test Without Wrappers.
-			$testFiles = $http->getFiles("test", false);
+			$testFiles = HTTPContext::getFiles("test", false);
 			$this->assertTrue(is_array($testFiles), "Context did not return array as expected.");
 			$this->assertCount(3, $testFiles, "Context did not return correct amount of files.");
 
