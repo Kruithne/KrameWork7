@@ -8,6 +8,7 @@
 ___
 ### Overview
 The `reCAPTCHA` class is an API class to interact with the third-party reCAPTCHA service.
+This class depends on the HTTPContext class.
 ___
 ### Example
 This is a basic example of how to use this class.

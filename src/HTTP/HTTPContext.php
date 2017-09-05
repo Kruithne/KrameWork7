@@ -38,6 +38,26 @@
 	class HTTPContext
 	{
 		/**
+		 * Obtain the connecting clients IP, if available.
+		 * Note that this can include the remote port, as some proxies add it to X-Forwarded-For.
+		 *
+		 * @api getClientIP
+		 * @return string|null
+		 */
+		public function getClientIP() {
+			if (!isset($_SERVER))
+				return null;
+
+			if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+				return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+
+			else if (isset($_SERVER['REMOTE_ADDR']))
+				return $_SERVER['REMOTE_ADDR'];
+
+			return null;
+		}
+
+		/**
 		 * Obtain an array containing all files with the given key.
 		 *
 		 * @api getFiles

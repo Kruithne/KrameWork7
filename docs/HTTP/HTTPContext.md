@@ -17,6 +17,10 @@ By default, the request data will be decoded, and the content-type header will b
 Omitting both these checks will render the function redundant, and you might as well just call `getRequestContent()` for the raw data string.
 ___
 ### Functions
+##### > getClientIP() : `string|null`
+Obtain the connecting clients IP, if available.
+Note that this can include the remote port, as some proxies add it to X-Forwarded-For.
+
 ##### > getFiles() : `\ArrayObject[]|Storage\UploadedFile[]`
 Obtain an array containing all files with the given key.
 
