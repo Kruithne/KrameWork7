@@ -26,7 +26,7 @@
 
 	require_once(__DIR__ . '/IManagedTable.php');
 	require_once(__DIR__ . '/IMetaTable.php');
-	require_once(__DIR__ . '../Driver/Generic.php');
+	require_once(__DIR__ . '/../Driver/Generic.php');
 
 	use \KrameWork\Database\Driver\Generic;
 

@@ -25,7 +25,7 @@
 	namespace KrameWork\Database\Schema;
 
 	require_once(__DIR__ . '/ManagedTable.php');
-	require_once(__DIR__ . '../Driver/Generic.php');
+	require_once(__DIR__ . '/../Driver/Generic.php');
 
 	/**
 	 * Class to handle a managed table hosted by a sqlite database
