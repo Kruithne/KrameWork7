@@ -63,7 +63,7 @@
 		 * @api getFiles
 		 * @param string $key Key to lookup files for.
 		 * @param bool $useWrappers Use KrameWork file wrappers.
-		 * @return \ArrayObject[]|Storage\UploadedFile[]
+		 * @return \ArrayObject[]|\KrameWork\Storage\UploadedFile[]
 		 */
 		public static function getFiles(string $key, bool $useWrappers = true) {
 			$files = [];
