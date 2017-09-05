@@ -87,7 +87,7 @@
 			];
 			$actual = $report->data()->data;
 			$expected = [
-				new ReportRow([
+				new ReportRow((object)[
 					'money' => new CurrencyValue(4.2),
 					'time' => new DateTimeValue('1980-01-01 12:38'),
 					'date' => new DateValue('1980-01-01'),

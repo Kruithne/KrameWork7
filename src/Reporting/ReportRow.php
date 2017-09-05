@@ -35,7 +35,7 @@
 	{
 		/**
 		 * ReportRow constructor.
-		 * @param $data array|Value[] The underlying result row
+		 * @param $data object The underlying result row
 		 */
 		public function __construct($data) {
 			$this->data = $data;
@@ -71,7 +71,7 @@
 		 */
 		public function key() {
 			if ($this->keys == null)
-				$this->keys = array_keys($this->data);
+				$this->keys = array_keys((array)$this->data);
 			return $this->keys[$this->position];
 		}
 
@@ -79,7 +79,9 @@
 		 * @link http://php.net/manual/en/iterator.valid.php
 		 */
 		public function valid() {
-			return $this->data && count($this->data) > $this->position;
+			if ($this->keys == null)
+				$this->keys = array_keys((array)$this->data);
+			return $this->data && count($this->keys) > $this->position;
 		}
 
 		/**
@@ -125,7 +127,7 @@
 		private $keys;
 
 		/**
-		 * @var array|Value[] The data contained in the row
+		 * @var object The data contained in the row
 		 */
 		private $data;
 
