@@ -7,6 +7,7 @@
 ___
 ### Overview
 The `Session` class provides an `IDataCache` compatible interface to the request session.
+This class depends on the HTTPContext class.
 ___
 ### Functions
 ##### > __construct() : `void`
