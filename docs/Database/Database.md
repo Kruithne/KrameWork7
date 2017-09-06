@@ -73,3 +73,11 @@ parameter | type | description
 `$sql` | `string` | An SQL statement
 `$param` | `array` | An array of values to inject in the statement
 
+##### > beginTransaction : `void`
+Start a database transaction
+
+##### > commitTransaction : `void`
+Commit a database transaction
+
+##### > rollbackTransaction : `void`
+Roll back a database transaction

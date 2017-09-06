@@ -75,4 +75,23 @@
 		 * @return int
 		 */
 		function execute(string $sql, array $param): int;
+
+
+		/**
+		 * @api beginTransaction
+		 * Open a database transaction
+		 */
+		function beginTransaction();
+
+		/**
+		 * @api rollbackTransaction
+		 * Rolls back the current transaction
+		 */
+		function rollbackTransaction();
+
+		/**
+		 * @api commitTransaction
+		 * Commits the current transaction
+		 */
+		function commitTransaction();
 	}
