@@ -123,11 +123,7 @@
 					$params[$key] = $this->value;
 				}
 			}
-
-			if ($this->anchor)
-				$this->anchor->arguments($params);
-
-			return $params;
+			return $this->anchor ? $this->anchor->arguments($params) : $params;
 		}
 
 		/**
