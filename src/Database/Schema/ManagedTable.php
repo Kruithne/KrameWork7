@@ -27,8 +27,10 @@
 	require_once(__DIR__ . '/IManagedTable.php');
 	require_once(__DIR__ . '/IMetaTable.php');
 	require_once(__DIR__ . '/../Driver/Generic.php');
+	require_once(__DIR__ . '/../QueryBuilder.php');
 
 	use \KrameWork\Database\Driver\Generic;
+	use KrameWork\Database\QueryBuilder;
 
 	/**
 	 * Class to handle a managed table hosted by a Microsoft SQL Server
@@ -40,6 +42,14 @@
 		public function __construct(Generic $db, IMetaTable $metaTable) {
 			$this->db = $db;
 			$this->meta = $metaTable;
+		}
+
+		/**
+		 * @param string $column
+		 * @return IQueryColumn
+		 */
+		public function where(string $column) {
+			return new QueryBuilder($this->db, $column, null, $this);
 		}
 
 		/**
