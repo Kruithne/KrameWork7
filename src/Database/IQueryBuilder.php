@@ -22,7 +22,7 @@
 	 * SOFTWARE.
 	 */
 
-	// These interfaces only provide hinting for IDEs when using the query builder features of CRUD.
+	// These interfaces only provide hinting for IDEs when using the query builder features of ManagedTable.
 	// They should not be used in production.
 
 	interface IQueryAnd
