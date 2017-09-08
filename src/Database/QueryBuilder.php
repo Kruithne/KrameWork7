@@ -72,11 +72,11 @@
 		public function build($glue = true)
 		{
 			$base = ($this->anchor ? $this->anchor->build() . ' ' : 'SELECT * FROM ' . $this->table->getFullName() . ' WHERE ')
-				. sprintf($this->format, $this->column, $this->level)
+				. \sprintf($this->format, $this->column, $this->level)
 				. ($glue ? ' ' . $this->glue : '');
 
 			if ($this->query_limit && $this->isMSSQL)
-				$base = str_replace('SELECT *', 'SELECT TOP ' . $this->query_limit . ' *', $base);
+				$base = \str_replace('SELECT *', 'SELECT TOP ' . $this->query_limit . ' *', $base);
 
 			if ($glue)
 				return $base;
@@ -90,10 +90,10 @@
 			}
 
 			if ($this->query_limit && ($this->isSqlite || $this->isPostgreSQL || $this->isMySQL))
-				$base .= sprintf(' LIMIT %d', $this->query_limit);
+				$base .= \sprintf(' LIMIT %d', $this->query_limit);
 
 			if ($this->query_offset && ($this->isSqlite || $this->isPostgreSQL || $this->isMySQL))
-				$base .= sprintf(' OFFSET %d', $this->query_limit);
+				$base .= \sprintf(' OFFSET %d', $this->query_limit);
 
 			return $base;
 		}
