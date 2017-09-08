@@ -93,7 +93,7 @@
 		 */
 		public function __construct($source = null) {
 			$this->path = StringUtil::formatDirectorySlashes($source, true);
-			$this->name = basename($source);
+			$this->name = \basename($source);
 		}
 
 		/**
@@ -103,7 +103,7 @@
 		 * @return bool
 		 */
 		public function exists():bool {
-			return file_exists($this->path);
+			return \file_exists($this->path);
 		}
 
 		/**

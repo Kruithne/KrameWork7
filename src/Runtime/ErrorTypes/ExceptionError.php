@@ -42,7 +42,7 @@
 		 * @param \Throwable $ex
 		 */
 		public function __construct(\Throwable $ex) {
-			$this->type = get_class($ex);
+			$this->type = \get_class($ex);
 			$this->message = $ex->getMessage();
 			$this->file = $ex->getFile();
 			$this->line = $ex->getLine();

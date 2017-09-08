@@ -101,9 +101,9 @@
 		 * @return bool
 		 */
 		public function validate(string $content):bool {
-			preg_match($this->pattern, $content, $matches, PREG_OFFSET_CAPTURE);
+			\preg_match($this->pattern, $content, $matches, \PREG_OFFSET_CAPTURE);
 
-			if (count($matches) == 2) {
+			if (\count($matches) == 2) {
 				$this->isValid = true;
 				$this->sectionStart = $matches[0][1];
 				$this->sectionLength = \strlen($matches[0][0]);

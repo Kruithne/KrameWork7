@@ -130,7 +130,7 @@
 			$time = $this->timer->stop();
 			$start = (string)$this->timer->getStartTimestamp();
 			if ($time > $this->threshold)
-				trigger_error($this->formatWarning($sql, $param, $time), E_USER_WARNING);
+				\trigger_error($this->formatWarning($sql, $param, $time), E_USER_WARNING);
 
 			// It is highly unlikely two queries would have the same timestamp;
 			// But just to be safe, we pack this into an array.
@@ -148,7 +148,7 @@
 		 * @return string
 		 */
 		private function formatWarning(string $sql, array $param, float $time) {
-			return sprintf('Query completed in %3$.2e seconds: %$1$s {%2$s}', $sql, json_encode($param), $time);
+			return \sprintf('Query completed in %3$.2e seconds: %$1$s {%2$s}', $sql, \json_encode($param), $time);
 		}
 
 		/**

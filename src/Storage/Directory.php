@@ -67,7 +67,7 @@
 		 * @return bool
 		 */
 		public function isValid():bool {
-			return $this->exists() && is_dir($this->path);
+			return $this->exists() && \is_dir($this->path);
 		}
 
 		/**
@@ -79,7 +79,7 @@
 		 * @return bool
 		 */
 		public function create($recursive = true, $mode = 0777):bool {
-			return @mkdir($this->path, $mode, $recursive);
+			return @\mkdir($this->path, $mode, $recursive);
 		}
 
 		/**
@@ -107,7 +107,7 @@
 					return false;
 			}
 
-			return @rmdir($this->path);
+			return @\rmdir($this->path);
 		}
 
 		/**
@@ -122,12 +122,12 @@
 			if (!$this->isValid())
 				throw new InvalidDirectoryException('Directory could not be resolved.');
 
-			$handle = @opendir($this->path);
+			$handle = @\opendir($this->path);
 			if ($handle === false)
 				throw new InvalidDirectoryException('Unable to access directory.');
 
 			$entries = [];
-			while (($entry = readdir($handle)) !== false) {
+			while (($entry = \readdir($handle)) !== false) {
 				if ($entry == '.' || $entry == '..')
 					continue;
 
@@ -137,14 +137,14 @@
 
 				$path = $this->path . DIRECTORY_SEPARATOR . $entry;
 				$return = $flags & self::RETURN_FULL_PATHS ? $path : $entry;
-				if (is_dir($path)) {
+				if (\is_dir($path)) {
 					if ($flags & self::INCLUDE_DIRECTORIES)
 						$entries[] = $flags & self::USE_WRAPPERS ? new Directory($path) : $return;
 				} else if ($flags & self::INCLUDE_FILES) {
 					$entries[] = $flags & self::USE_WRAPPERS ? new File($path) : $return;
 				}
 			}
-			closedir($handle);
+			\closedir($handle);
 			return $entries;
 		}
 
@@ -180,8 +180,8 @@
 		 * @return bool
 		 */
 		public function hasItem(string $name):bool {
-			$path = $this->path . DIRECTORY_SEPARATOR . $name;
-			return file_exists($path);
+			$path = $this->path . \DIRECTORY_SEPARATOR . $name;
+			return \file_exists($path);
 		}
 
 		/**
@@ -193,8 +193,8 @@
 		 * @return bool
 		 */
 		public function hasFile(string $name):bool {
-			$path = $this->path . DIRECTORY_SEPARATOR . $name;
-			return file_exists($path) && is_file($path);
+			$path = $this->path . \DIRECTORY_SEPARATOR . $name;
+			return \is_file($path);
 		}
 
 		/**
@@ -206,8 +206,8 @@
 		 * @return bool
 		 */
 		public function hasDirectory(string $name):bool {
-			$path = $this->path . DIRECTORY_SEPARATOR . $name;
-			return file_exists($path) && is_dir($path);
+			$path = $this->path . \DIRECTORY_SEPARATOR . $name;
+			return \is_dir($path);
 		}
 
 		/**
@@ -225,7 +225,7 @@
 			if ($this->hasItem($name))
 				throw new FileAlreadyExistsException();
 
-			$dir = new Directory($this->path . DIRECTORY_SEPARATOR . $name, false);
+			$dir = new Directory($this->path . \DIRECTORY_SEPARATOR . $name, false);
 			$dir->create(false, $mode);
 			return $dir;
 		}
@@ -244,6 +244,6 @@
 			if ($this->hasItem($name))
 				throw new FileAlreadyExistsException();
 
-			return new File($this->path . DIRECTORY_SEPARATOR . $name, false, true);
+			return new File($this->path . \DIRECTORY_SEPARATOR . $name, false, true);
 		}
 	}

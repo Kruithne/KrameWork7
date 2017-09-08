@@ -45,14 +45,18 @@
 		 * @return string|null
 		 */
 		public static function getClientIP() {
-			if (!isset($_SERVER))
+			static $ip;
+
+			if ($ip)
+				return $ip;
+			else if (!isset($_SERVER))
 				return null;
 
-			if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-				return explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+			else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+				return $ip = \explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
 
 			else if (isset($_SERVER['REMOTE_ADDR']))
-				return $_SERVER['REMOTE_ADDR'];
+				return $ip = &$_SERVER['REMOTE_ADDR'];
 
 			return null;
 		}
@@ -73,7 +77,7 @@
 			if ($node === null)
 				return $files;
 
-			$size = count($node['name']);
+			$size = \count($node['name']);
 			if ($size == 0) // Bork.
 				return $files;
 
@@ -105,7 +109,7 @@
 		 * @return bool
 		 */
 		public static function hasFile(string $key) {
-			return array_key_exists($key, $_FILES);
+			return \array_key_exists($key, $_FILES);
 		}
 
 		/**
@@ -142,7 +146,7 @@
 		 */
 		public static function getQueryDataValues():array {
 			$out = [];
-			foreach (func_get_args() as $arg)
+			foreach (\func_get_args() as $arg)
 				$out[] = self::getQueryDataValue($arg);
 
 			return $out;
@@ -196,7 +200,7 @@
 		 */
 		public static function getFormDataValues():array {
 			$out = [];
-			foreach (func_get_args() as $arg)
+			foreach (\func_get_args() as $arg)
 				$out[] = self::getFormDataValue($arg);
 
 			return $out;
@@ -254,7 +258,7 @@
 			} else {
 				$content = self::getRequestContent();
 				if ($decode) {
-					$decoded = json_decode($content);
+					$decoded = \json_decode($content);
 					if ($decoded === false)
 						throw new InvalidRequestTypeException('Request content did not contain valid json.');
 
@@ -284,7 +288,7 @@
 		 * @return string
 		 */
 		public static function getRequestContent():string {
-			return file_get_contents('php://input');
+			return \file_get_contents('php://input');
 		}
 
 		/**
@@ -294,7 +298,7 @@
 		 * @return int
 		 */
 		public static function getContentLength():int {
-			return intval($_SERVER['CONTENT_LENGTH'] ?? 0);
+			return intval($_SERVER['CONTENT_LENGTH']) ?? 0;
 		}
 
 		/**
@@ -330,9 +334,9 @@
 		public static function getContentType(bool $parameters = true):string {
 			$type = $_SERVER['CONTENT_TYPE'] ?? 'text/plain';
 			if (!$parameters) {
-				$parting = strpos($type, ';');
+				$parting = \strpos($type, ';');
 				if ($parting !== false)
-					$type = substr($type, 0, $parting);
+					$type = \substr($type, 0, $parting);
 			}
 			return $type;
 		}

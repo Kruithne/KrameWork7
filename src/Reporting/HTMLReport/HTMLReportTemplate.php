@@ -88,8 +88,8 @@
 			foreach ($this->sections as $section) {
 				$section->validate($content);
 				if ($section->isValid()) {
-					$contentStart = substr($content, 0, $section->getSectionStart());
-					$contentEnd = substr($content, $section->getSectionStart() + $section->getSectionLength());
+					$contentStart = \substr($content, 0, $section->getSectionStart());
+					$contentEnd = \substr($content, $section->getSectionStart() + $section->getSectionLength());
 
 					$content = $contentStart . $section . $contentEnd;
 				}
@@ -104,7 +104,7 @@
 				$replacements[] = $replacement;
 			}
 
-			$content = preg_replace($patterns, $replacements, $content);
+			$content = \preg_replace($patterns, $replacements, $content);
 			return $content;
 		}
 

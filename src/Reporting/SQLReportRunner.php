@@ -48,7 +48,7 @@
 			$this->db = $db;
 			$this->sql = $sql;
 			$this->param = $param;
-			parent::__construct($cache, sha1(serialize([$db, $sql, $param])), $cacheTTL);
+			parent::__construct($cache, \sha1(\serialize([$db, $sql, $param])), $cacheTTL);
 		}
 
 		/**

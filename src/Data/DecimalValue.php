@@ -37,7 +37,7 @@
 		 * @param float|mixed $value Value to be cast to float and encapsulated
 		 */
 		public function __construct($value) {
-			parent::__construct($value === null ? null : floatval($value));
+			parent::__construct($value === null ? null : (float) $value);
 		}
 
 		/**
@@ -55,7 +55,7 @@
 			if ($b === null)
 				return $a === null ? 0 : 1;
 			else
-				$b = floatval($b);
+				$b = (float) $b;
 			if ($a === null)
 				return -1;
 
@@ -66,6 +66,6 @@
 		 * @return string The encapsulated value as presented by a string
 		 */
 		public function __toString() {
-			return number_format($this->value, 2, ',', ' ');
+			return \number_format($this->value, 2, ',', ' ');
 		}
 	}

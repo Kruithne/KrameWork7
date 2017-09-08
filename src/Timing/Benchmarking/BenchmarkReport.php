@@ -96,7 +96,7 @@
 		 * @return BenchmarkReport
 		 */
 		public function remove(Benchmark $benchmark):BenchmarkReport {
-			if (($index = array_search($benchmark, $this->benchmarks)) !== false)
+			if (($index = \array_search($benchmark, $this->benchmarks)) !== false)
 				unset($this->benchmarks[$index]);
 
 			return $this;
@@ -124,7 +124,7 @@
 			foreach ($this->benchmarks as $benchmark)
 				$results[] = $benchmark->runTest();
 
-			usort($results, [$this, 'sortResults']);
+			\usort($results, [$this, 'sortResults']);
 
 			return $this->formatter->format($results);
 		}

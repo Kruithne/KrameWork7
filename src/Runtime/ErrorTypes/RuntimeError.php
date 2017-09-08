@@ -136,7 +136,7 @@
 		 * @return array
 		 */
 		public function getTrace(): array {
-			return debug_backtrace();
+			return \debug_backtrace();
 		}
 
 		/**

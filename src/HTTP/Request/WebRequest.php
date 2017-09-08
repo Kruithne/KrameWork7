@@ -106,9 +106,9 @@
 		 * @return array|null
 		 */
 		public function getHeader(string $getName) {
-			$getName = strtolower($getName);
+			$getName = \strtolower($getName);
 			foreach ($this->headers as $fieldName => $fieldValue)
-				if (strtolower($fieldName) == $getName)
+				if (\strtolower($fieldName) == $getName)
 					return [$fieldName, $fieldValue];
 
 			return null;
@@ -133,7 +133,7 @@
 		 * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
 		 */
 		function __set(string $name, $value) {
-			if (is_bool($value))
+			if (\is_bool($value))
 				$value = $value ? 'true' : 'false';
 
 			$this->data[$name] = $value;
@@ -147,7 +147,7 @@
 		 * @return bool
 		 */
 		public function send():bool {
-			$this->sendRequest($this->url, http_build_query($this->data));
+			$this->sendRequest($this->url, \http_build_query($this->data));
 			return $this->success;
 		}
 
@@ -176,7 +176,7 @@
 
 			if ($this->method == self::METHOD_GET) {
 				if (\strlen($content)) {
-					$url .= (strpos($url, '?') !== false ? '&' : '?');
+					$url .= (\strpos($url, '?') !== false ? '&' : '?');
 					$url .= $content;
 				}
 			} else if ($this->method == self::METHOD_POST) {
@@ -186,7 +186,7 @@
 
 			$params['header'] = $this->compileHeaders();
 
-			$result = file_get_contents($url, false, stream_context_create(['http' => $params]));
+			$result = \file_get_contents($url, false, \stream_context_create(['http' => $params]));
 			$this->success = $result !== false;
 
 			if ($this->success)
