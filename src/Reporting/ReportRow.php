@@ -71,8 +71,7 @@
 		 * @link http://php.net/manual/en/iterator.key.php
 		 */
 		public function key() {
-			$this->indexKeys();
-			return $this->keys[$this->position];
+			return $this->getKeyAt($this->position);
 		}
 
 		/**
@@ -94,7 +93,7 @@
 		 * @link http://php.net/manual/en/arrayaccess.offsetexists.php
 		 */
 		public function offsetExists($offset) {
-			$k = $this->getKey($offset);
+			$k = is_int($offset) ? $this->getKeyAt($offset) : $offset;
 			return $this->data && isset($this->data->$k);
 		}
 
@@ -102,7 +101,7 @@
 		 * @link http://php.net/manual/en/arrayaccess.offsetget.php
 		 */
 		public function offsetGet($offset) {
-			$k = $this->getKey($offset);
+			$k = is_int($offset) ? $this->getKeyAt($offset) : $offset;
 			return $k ? $this->data->$k : null;
 		}
 
@@ -110,7 +109,7 @@
 		 * @link http://php.net/manual/en/arrayaccess.offsetset.php
 		 */
 		public function offsetSet($offset, $value) {
-			$k = $this->getKey($offset);
+			$k = is_int($offset) ? $this->getKeyAt($offset) : $offset;
 			if($k)
 				$this->data->$k = $value;
 		}
@@ -119,7 +118,7 @@
 		 * @link http://php.net/manual/en/arrayaccess.offsetunset.php
 		 */
 		public function offsetUnset($offset) {
-			$k = $this->getKey($offset);
+			$k = is_int($offset) ? $this->getKeyAt($offset) : $offset;
 			unset($this->data->$k);
 		}
 
@@ -127,7 +126,7 @@
 		 * @param int $index
 		 * @return string|null
 		 */
-		private function getKey(int $index) {
+		private function getKeyAt(int $index) {
 			$this->indexKeys();
 			return isset($this->keys[$index]) ? $this->keys[$index] : null;
 		}
