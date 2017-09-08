@@ -43,7 +43,9 @@
 
 		function jsonSerialize() {
 			$serialize = [];
-			foreach ($this->data as $field => $value) {
+			$this->indexKeys();
+			foreach ($this->keys as $field) {
+				$value = $this->data->$field;
 				if ($value instanceof Value)
 					$serialize[$field] = $value->json();
 				else
