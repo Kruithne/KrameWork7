@@ -1,4 +1,6 @@
-![Build Status](https://travis-ci.org/Kruithne/KrameWork7.svg?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg?style=flat-square)](https://php.net/)
+[![Build Status](https://img.shields.io/travis/Kruithne/KrameWork7.svg?style=flat-square)](https://phpunit.de/build-status.html)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://github.com/Kruithne/KrameWork7/blob/master/LICENSE)
 
 ## KrameWork7 - PHP7 Web Framework
 
