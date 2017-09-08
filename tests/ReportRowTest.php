@@ -7,8 +7,8 @@
 	class ReportRowTest extends \PHPUnit\Framework\TestCase
 	{
 		public function testSimpleJsonSerialization() {
-			$data = (object)['test' => 1];
-			$row = new \KrameWork\Reporting\ReportRow($data);
+			$data = ['test' => 1];
+			$row = new \KrameWork\Reporting\ReportRow((object)$data);
 			$this->assertEquals($data, $row->jsonSerialize());
 		}
 
