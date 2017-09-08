@@ -132,7 +132,7 @@
 		 * @throws ClassResolutionException
 		 */
 		public function resolveClassName($class, array &$output = null) {
-			$classes = $output ?? [];
+			$classes = &$output ?? [];
 
 			// Array given, loop elements and process.
 			if (\is_array($class)) {
