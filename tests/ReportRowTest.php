@@ -20,7 +20,7 @@
 		}
 
 		public function testForeachIteration() {
-			$data = ['test','test'];
+			$data = ['a'=>'test a','b'=>'test b'];
 			$expect = join('', $data);
 			$row = new \KrameWork\Reporting\ReportRow((object)$data);
 			$actual = '';
