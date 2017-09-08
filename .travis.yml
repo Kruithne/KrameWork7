@@ -10,4 +10,4 @@ before_install:
 before_script:
   - phpenv config-add travis.ini
 
-script: phpunit --version --verbose --debug --stderr --config phpunit.xml tests
+script: phpunit --verbose --debug --stderr --config phpunit.xml tests
