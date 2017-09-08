@@ -37,7 +37,7 @@
 		 * ReportRow constructor.
 		 * @param $data object The underlying result row
 		 */
-		public function __construct($data) {
+		public function __construct(object $data) {
 			$this->data = $data;
 		}
 
