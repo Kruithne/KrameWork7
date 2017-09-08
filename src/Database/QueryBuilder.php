@@ -239,6 +239,7 @@
 			{
 				case 'mysql':
 				case 'pgsql':
+				case 'sqlite':
 					return $this;
 			}
 			throw new \Exception('Unsupported database type');
@@ -251,8 +252,10 @@
 			$this->query_limit = $count;
 			switch($this->db->getType())
 			{
+				case 'mssql':
 				case 'mysql':
 				case 'pgsql':
+				case 'sqlite':
 					return $this;
 			}
 			throw new \Exception('Unsupported database type');

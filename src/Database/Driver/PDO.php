@@ -147,6 +147,30 @@
 		}
 
 		/**
+		 * @api beginTransaction
+		 * Open a database transaction
+		 */
+		public function beginTransaction() {
+			return $this->connection->beginTransaction();
+		}
+
+		/**
+		 * @api rollbackTransaction
+		 * Rolls back the current transaction
+		 */
+		public function rollbackTransaction() {
+			return $this->connection->rollBack();
+		}
+
+		/**
+		 * @api commitTransaction
+		 * Commits the current transaction
+		 */
+		public function commitTransaction() {
+			return $this->connection->commit();
+		}
+
+		/**
 		 * Bind the parameters to the prepared statement, guessing at parameter types.
 		 * @param \PDOStatement $query A prepared statement
 		 * @param array $param Parameters to bind
@@ -154,23 +178,23 @@
 		 */
 		private function bind(\PDOStatement $query, array $param)
 		{
-			if(!$param || count($param) == 0)
+			if (!$param || count($param) == 0)
 				return;
 			$syntax = null;
-			foreach($param as $k => $v) {
+			foreach ($param as $k => $v) {
 				$type = \PDO::PARAM_STR;
-				if(is_int($v))
+				if (is_int($v))
 					$type = \PDO::PARAM_INT;
-				if(is_bool($v))
+				if (is_bool($v))
 					$type = \PDO::PARAM_BOOL;
 
-				if(is_int($k)) {
-					if($syntax !== null && $syntax != 1)
+				if (is_int($k)) {
+					if ($syntax !== null && $syntax != 1)
 						throw new \Exception("Mixed parameter type in parameter list");
 					$syntax = 1;
 					$query->bindValue($k + 1, $v, $type);
 				} else {
-					if($syntax !== null && $syntax != 2)
+					if ($syntax !== null && $syntax != 2)
 						throw new \Exception("Mixed parameter type in parameter list");
 					$syntax = 2;
 					$query->bindValue(':' . $k, $v, $type);
