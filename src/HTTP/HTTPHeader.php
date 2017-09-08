@@ -39,7 +39,7 @@
 		 * @api apply
 		 */
 		public function apply() {
-			\header((string $this);
+			\header((string) $this);
 		}
 
 		/**
