@@ -71,7 +71,7 @@
 		 */
 		public function validate(string $token):bool {
 			$ip = $this->ip ?? HTTPContext::getClientIP();
-			if ($ip == null || \strlen($ip) == 0)
+			if (!$ip)
 				throw new reCAPTCHAException('Remote IP is invalid or missing.');
 
 			$req = new JSONRequest('https://www.google.com/recaptcha/api/siteverify', WebRequest::METHOD_POST);

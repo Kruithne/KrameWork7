@@ -67,7 +67,7 @@
 		 * @return int
 		 */
 		public function getSize(): int {
-			return strlen($this->data);
+			return \strlen($this->data);
 		}
 
 		/**
@@ -122,7 +122,7 @@
 		 * @return string
 		 */
 		public function getBase64Data(bool $forceRead = false): string {
-			return base64_encode($this->data);
+			return \base64_encode($this->data);
 		}
 
 		/**

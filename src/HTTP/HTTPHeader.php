@@ -39,7 +39,7 @@
 		 * @api apply
 		 */
 		public function apply() {
-			header($this->__toString());
+			\header((string) $this);
 		}
 
 		/**

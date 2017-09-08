@@ -56,10 +56,10 @@
 			if (!$this->hasHeader('Content-type'))
 				$this->setHeader('Content-type', 'application/json');
 
-			$url = $this->url . (strpos($this->url, '?') !== false ? '&' : '?');
-			$url .= http_build_query($this->data);
+			$url = $this->url . (\strpos($this->url, '?') !== false ? '&' : '?');
+			$url .= \http_build_query($this->data);
 
-			$this->sendRequest($url, json_encode($object));
+			$this->sendRequest($url, \json_encode($object));
 			return $this->success;
 		}
 
@@ -72,6 +72,6 @@
 		 * @throws ResponseNotAvailableException
 		 */
 		public function getResponse() {
-			return json_decode(parent::getResponse());
+			return \json_decode(parent::getResponse());
 		}
 	}

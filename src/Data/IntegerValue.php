@@ -37,7 +37,7 @@
 		 * @param int|mixed $value A value to be cast to int and encapsulated
 		 */
 		public function __construct($value) {
-			parent::__construct($value === null ? null : intval($value));
+			parent::__construct($value === null ? null : (integer) $value);
 		}
 
 		/**
@@ -55,7 +55,7 @@
 			if ($b === null)
 				return $a === null ? 0 : 1;
 			else
-				$b = intval($b);
+				$b = (integer) $b;
 			if ($a === null)
 				return -1;
 

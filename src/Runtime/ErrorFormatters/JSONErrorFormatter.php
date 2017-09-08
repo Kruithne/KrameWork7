@@ -58,10 +58,10 @@
 			$this->error = $error;
 			$this->node['prefix'] = $error->getPrefix();
 			$this->node['name'] = $error->getName();
-			$this->node['server'] = php_uname();
+			$this->node['server'] = \php_uname();
 			$this->node['message'] = $error->getMessage();
-			$this->node['timestamp'] = time();
-			$this->node['occurred'] = date(DATE_RFC822);
+			$this->node['timestamp'] = $t = \time();
+			$this->node['occurred'] = \date(\DATE_RFC822, $t);
 			$this->node['file'] = $error->getFile();
 			$this->node['line'] = $error->getLine();
 		}
@@ -115,7 +115,7 @@
 		 * @return IErrorReport
 		 */
 		public function generate():IErrorReport {
-			return new ErrorReport($this->error, 'application/json', '.json', json_encode($this->node));
+			return new ErrorReport($this->error, 'application/json', '.json', \json_encode($this->node));
 		}
 
 		/**

@@ -57,12 +57,12 @@
 			if ($dispatcher instanceof IErrorDispatcher && $formatter instanceof IErrorFormatter)
 				$this->addDispatch($dispatcher, $formatter);
 
-			$this->previousErrorLevel = error_reporting();
+			$this->previousErrorLevel = \error_reporting();
 			$this->level = $this->previousErrorLevel;
-			error_reporting(E_ALL);
+			\error_reporting(\E_ALL);
 
-			$this->previousErrorHandler = set_error_handler([$this, 'catchRuntimeError']);
-			$this->previousExceptionHandler = set_exception_handler([$this, 'catchException']);
+			$this->previousErrorHandler = \set_error_handler([$this, 'catchRuntimeError']);
+			$this->previousExceptionHandler = \set_exception_handler([$this, 'catchException']);
 
 			$this->errorCount = 0;
 			$this->maxErrors = 10;
@@ -110,9 +110,9 @@
 		 */
 		public function deactivate() {
 			$this->active = false;
-			set_error_handler($this->previousErrorHandler);
-			set_exception_handler($this->previousExceptionHandler);
-			error_reporting($this->previousErrorLevel);
+			\set_error_handler($this->previousErrorHandler);
+			\set_exception_handler($this->previousExceptionHandler);
+			\error_reporting($this->previousErrorLevel);
 			unset($this->report, $this->dispatcher);
 		}
 
@@ -202,8 +202,8 @@
 			if (!$this->active || self::$suspended)
 				return $buffer;
 
-			if (preg_match('/<!--\[INTERNAL_ERROR\](.*)-->/Us', $buffer, $parts)) {
-				if (!headers_sent())
+			if (\preg_match('/<!--\[INTERNAL_ERROR\](.*)-->/Us', $buffer, $parts)) {
+				if (!\headers_sent())
 					header('HTTP/1.0 500 Internal Error');
 
 				return $this->handleCoreError($parts);
@@ -223,15 +223,15 @@
 			$error = $data[1]; // Error message.
 			$errorObj = null;
 
-			preg_match('/(.*) error: (.*) in (.*) on line (.*)/', $error, $parts); // Error details.
+			\preg_match('/(.*) error: (.*) in (.*) on line (.*)/', $error, $parts); // Error details.
 
-			$nParts = count($parts);
+			$nParts = \count($parts);
 			if ($nParts == 5) {
 				$error = $parts[1] . ' - ' . $error;
-				$errorObj = new RuntimeError(E_CORE_ERROR, $error, $parts[3], $parts[4]);
+				$errorObj = new RuntimeError(\E_CORE_ERROR, $error, $parts[3], $parts[4]);
 			} else {
 				$error = 'Internal Error (' . $nParts . ') : ' . $error;
-				$errorObj = new RuntimeError(E_CORE_ERROR, $error, __FILE__, __LINE__);
+				$errorObj = new RuntimeError(\E_CORE_ERROR, $error, __FILE__, __LINE__);
 			}
 
 			// Warning: Trying to invoke a BufferDispatcher here WILL blow up.
@@ -268,8 +268,8 @@
 
 			// Terminate script execution if needed.
 			if ($terminate || $this->errorCount++ >= $this->maxErrors) {
-				if (!headers_sent())
-					header('HTTP/1.0 500 Internal Error');
+				if (!\headers_sent())
+					\header('HTTP/1.0 500 Internal Error');
 
 				die();
 			}
@@ -312,7 +312,7 @@
 				$startIndex++;
 			}
 
-			return $startIndex == 0 ? $trace : array_slice($trace, $startIndex);
+			return $startIndex == 0 ? $trace : \array_slice($trace, $startIndex);
 		}
 
 		/**
@@ -331,7 +331,7 @@
 				}
 				catch(\Throwable $e)
 				{
-					$debug[get_class($hook)] = '['.get_class($e).'::'.$e->getMessage().']';
+					$debug[\get_class($hook)] = '['.\get_class($e).'::'.$e->getMessage().']';
 				}
 			}
 			return $debug;
@@ -345,7 +345,7 @@
 		 */
 		private function packReport(IErrorFormatter $report) {
 			// CLI arguments, if available.
-			if (php_sapi_name() == 'cli') {
+			if (\PHP_SAPI == 'cli') {
 				global $argv;
 				$report->reportArray('CLI Arguments', $argv);
 			}
@@ -356,7 +356,7 @@
 			$report->reportArray('$_GET', $_GET); // GET data.
 			$report->reportArray('$_COOKIE', $_COOKIE); // Delicious cookies.
 			$report->reportArray('$_FILES', $_FILES); // Files
-			$report->reportString('Raw Request Content', file_get_contents('php://input')); // Raw request content.
+			$report->reportString('Raw Request Content', \file_get_contents('php://input')); // Raw request content.
 		}
 
 		/**

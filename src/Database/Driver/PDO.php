@@ -45,7 +45,7 @@
 
 		private function connect()
 		{
-			if (class_exists('\KrameWork\Runtime\ErrorHandler'))
+			if (\class_exists('\KrameWork\Runtime\ErrorHandler'))
 				\KrameWork\Runtime\ErrorHandler::suspend();
 			$error = false;
 			try
@@ -178,17 +178,17 @@
 		 */
 		private function bind(\PDOStatement $query, array $param)
 		{
-			if (!$param || count($param) == 0)
+			if (!$param)
 				return;
 			$syntax = null;
 			foreach ($param as $k => $v) {
 				$type = \PDO::PARAM_STR;
-				if (is_int($v))
+				if (\is_int($v))
 					$type = \PDO::PARAM_INT;
-				if (is_bool($v))
+				if (\is_bool($v))
 					$type = \PDO::PARAM_BOOL;
 
-				if (is_int($k)) {
+				if (\is_int($k)) {
 					if ($syntax !== null && $syntax != 1)
 						throw new \Exception("Mixed parameter type in parameter list");
 					$syntax = 1;

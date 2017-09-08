@@ -48,12 +48,12 @@
 		public function reportError(IError $error) {
 			$this->error = $error;
 			$this->basicData = [
-				'server' => php_uname(),
-				'timestamp' => time(),
+				'server' => \php_uname(),
+				'timestamp' => $t = \time(),
 				'name' => $error->getName(),
 				'file' => $error->getFile(),
 				'line' => $error->getLine(),
-				'occurred' => date(DATE_RFC822),
+				'occurred' => \date(\DATE_RFC822, $t),
 				'prefix' => $error->getPrefix(),
 				'message' => $error->getMessage()
 			];
@@ -116,7 +116,7 @@
 
 			$debugSection = $report->getSection('DATA_SET_DEBUG');
 			if ($debugSection->isValid()) {
-				if (count($this->debug))
+				if ($this->debug)
 				{
 					$debugSection = $debugSection->createFrame();
 					$debugLine = $debugSection->getSection('DEBUG_FRAME');
@@ -145,7 +145,7 @@
 					$frame->class = $traceFrame['class'] ?? '';
 					$frame->type = $traceFrame['type'] ?? '';
 					$frame->function = $traceFrame['function'] ?? '';
-					$frame->args = implode(', ', $args);
+					$frame->args = \implode(', ', $args);
 				}
 			}
 
@@ -154,7 +154,7 @@
 			$arraySection = $report->getSection('DATA_SET_ARRAY');
 
 			foreach ($this->data as $name => $data) {
-				if (is_array($data)) {
+				if (\is_array($data)) {
 					if (!$arraySection->isValid())
 						continue;
 
@@ -162,7 +162,7 @@
 					$frame->name = $name;
 
 					$frameSection = $frame->getSection('DATA_SET_FRAME');
-					if (count($data)) {
+					if ($data) {
 						foreach ($data as $nodeKey => $nodeValue) {
 							$nodeFrame = $frameSection->createFrame();
 							$nodeFrame->name = $nodeKey;
@@ -230,8 +230,8 @@
 		 * @return string|null
 		 */
 		private function loadTemplateFile(string $file) {
-			if (file_exists($file) && is_file($file)) {
-				$data = file_get_contents($file);
+			if (\is_file($file)) {
+				$data = \file_get_contents($file);
 				if ($data !== false) {
 					return $data;
 				}

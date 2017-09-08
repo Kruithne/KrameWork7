@@ -44,14 +44,14 @@
 		public function __construct($input = []) {
 			$this->compiled = [];
 
-			if (is_array($input)) {
+			if (\is_array($input)) {
 				$this->headers = $input;
 			} else {
 				$this->headers = [];
 
-				$decode = base64_decode($input);
+				$decode = \base64_decode($input);
 				if ($decode !== false) {
-					$parsed = json_decode($decode);
+					$parsed = \json_decode($decode);
 					if ($parsed !== null)
 						$this->compiled = $parsed;
 				}
@@ -76,7 +76,7 @@
 		 */
 		public function apply() {
 			foreach ($this->compiled as $header)
-				header($header);
+				\header($header);
 		}
 
 		/**
@@ -88,7 +88,7 @@
 		public function compile() {
 			$this->compiled = [];
 			foreach ($this->headers as $header)
-				$this->compiled[] = $header->__toString();
+				$this->compiled[] = (string) $header;
 		}
 
 		/**
@@ -99,7 +99,7 @@
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
 		public function __toString():string {
-			return base64_encode(json_encode($this->compiled));
+			return \base64_encode(\json_encode($this->compiled));
 		}
 
 		/**
@@ -120,7 +120,7 @@
 			}
 
 			if ($file !== null)
-				file_put_contents($file, $builder, FILE_APPEND);
+				\file_put_contents($file, $builder, \FILE_APPEND);
 
 			return $builder;
 		}
