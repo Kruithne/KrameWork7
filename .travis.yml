@@ -11,4 +11,4 @@ before_install:
 before_script:
   - phpenv config-add travis.ini
 
-script: ~/.composer/vendor/bin/phpunit --verbose --debug --stderr --config phpunit.xml tests
+script: $COMPOSER_HOME/phpunit --verbose --debug --stderr --config phpunit.xml tests
