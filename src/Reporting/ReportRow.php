@@ -56,7 +56,8 @@
 		 * @link http://php.net/manual/en/iterator.current.php
 		 */
 		public function current() {
-			return $this->data[$this->key()];
+			$k = $this->key();
+			return $this->data->$k;
 		}
 
 		/**
