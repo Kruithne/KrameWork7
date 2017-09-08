@@ -60,7 +60,7 @@
 			$this->addSources($sources ?? []); // Pre-compute source paths/maps.
 
 			if ($flags & self::INCLUDE_KRAMEWORK_DIRECTORY)
-				$this->sources[] = ['KrameWork', dirname(__FILE__)];
+				$this->sources[] = ['KrameWork', __DIR__];
 
 			if ($flags & self::INCLUDE_WORKING_DIRECTORY)
 				$this->sources[] = getcwd();
