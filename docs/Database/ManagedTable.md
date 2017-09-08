@@ -40,6 +40,13 @@ class MyTable extends MSSQLManagedTable
 ___
 ### Functions
 
+##### > where() : `IQueryColumn`
+Starts building a query for fetching data from a table
+
+parameter | type | description
+--- | --- | ---
+`$column` | `string` | The name of a column to filter by
+
 ##### > getSchema() : `string`
 Returns the name of the schema.
 

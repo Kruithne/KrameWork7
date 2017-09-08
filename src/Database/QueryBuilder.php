@@ -23,6 +23,12 @@
 	 */
 
 	namespace KrameWork\Database;
+	use KrameWork\Database\Driver\Generic;
+	use KrameWork\Database\Schema\IManagedTable;
+	use KrameWork\Database\Schema\MSSQLManagedTable;
+	use KrameWork\Database\Schema\MySQLManagedTable;
+	use KrameWork\Database\Schema\PostgreSQLManagedTable;
+	use KrameWork\Database\Schema\sqliteManagedTable;
 
 	/**
 	 * Class for building SQL queries - Subject to change
@@ -37,16 +43,24 @@
 		 * @param Database $db The connection we want to run our query against
 		 * @param string $column The name of the column we are searching
 		 * @param QueryBuilder $anchor The previous step in the chain
-		 * @param IDatabaseTable $table The table we are querying
+		 * @param IManagedTable $table The table we are querying
 		 * @param int $level The nth column in the where statement
+		 * @throws \Exception For tables that belong to an unsupported database
 		 */
-		public function __construct(Database $db, string $column, QueryBuilder $anchor, IDatabaseTable $table, int $level = 1)
+		public function __construct(Database $db, string $column, QueryBuilder $anchor, IManagedTable $table, int $level = 1)
 		{
 			$this->db = $db;
 			$this->column = $column;
 			$this->anchor = $anchor;
-			$this->crud = $table;
+			$this->table = $table;
 			$this->level = $level;
+			$this->isMSSQL = $table instanceof MSSQLManagedTable;
+			$this->isMySQL = $table instanceof MySQLManagedTable;
+			$this->isPostgreSQL = $table instanceof PostgreSQLManagedTable;
+			$this->isSqlite = $table instanceof sqliteManagedTable;
+
+			if(!$this->isMSSQL && !$this->isMySQL && !$this->isPostgreSQL && !$this->isSqlite)
+				throw new \Exception('Unsupported database type');
 		}
 
 		/**
@@ -57,19 +71,12 @@
 		 */
 		public function build($glue = true)
 		{
-			$base = ($this->anchor ? $this->anchor->build() . ' ' : 'SELECT * FROM ' . $this->crud->getName() . ' WHERE ')
+			$base = ($this->anchor ? $this->anchor->build() . ' ' : 'SELECT * FROM ' . $this->table->getFullName() . ' WHERE ')
 				. \sprintf($this->format, $this->column, $this->level)
 				. ($glue ? ' ' . $this->glue : '');
 
-			if ($this->query_limit)
-			{
-				switch ($this->db->getType())
-				{
-					case 'mssql':
-						$base = \str_replace('SELECT *', 'SELECT TOP ' . $this->query_limit . ' *', $base);
-						break;
-				}
-			}
+			if ($this->query_limit && $this->isMSSQL)
+				$base = \str_replace('SELECT *', 'SELECT TOP ' . $this->query_limit . ' *', $base);
 
 			if ($glue)
 				return $base;
@@ -82,38 +89,23 @@
 				$base .= ' ORDER BY '.\join(', ',$cols);
 			}
 
-			if ($this->query_limit)
-			{
-				switch ($this->db->getType())
-				{
-					case 'mysql':
-					case 'pgsql':
-					case 'sqlite':
-						$base .= \sprintf(' LIMIT %d', $this->query_limit);
-						break;
-				}
-			}
+			if ($this->query_limit && ($this->isSqlite || $this->isPostgreSQL || $this->isMySQL))
+				$base .= \sprintf(' LIMIT %d', $this->query_limit);
 
-			if ($this->query_offset)
-			{
-				switch ($this->db->getType())
-				{
-					case 'mysql':
-					case 'pgsql':
-					case 'sqlite':
-						$base .= \sprintf(' OFFSET %d', $this->query_limit);
-						break;
-				}
-			}
+			if ($this->query_offset && ($this->isSqlite || $this->isPostgreSQL || $this->isMySQL))
+				$base .= \sprintf(' OFFSET %d', $this->query_limit);
 
 			return $base;
 		}
 
 		/**
-		 * Binds the parameters of the prepared statement to the values supplied by the user
-		 * @api bind
+		 * Resolves the arguments to pass to the query executor.
+		 *
+		 * @api arguments
+		 * @param array $params
+		 * @return array Query parameters
 		 */
-		public function bind($statement)
+		public function arguments(array $params = [])
 		{
 			if ($this->value !== null)
 			{
@@ -122,18 +114,16 @@
 					foreach ($this->value as $pf => $value)
 					{
 						$key = $this->column . $this->level . '_' . $pf;
-						$statement->$key = $value;
+						$params[$key] = $value;
 					}
 				}
 				else
 				{
 					$key = $this->column . $this->level;
-					$statement->$key = $this->value;
+					$params[$key] = $this->value;
 				}
 			}
-
-			if ($this->anchor)
-				$this->anchor->bind($statement);
+			return $this->anchor ? $this->anchor->arguments($params) : $params;
 		}
 
 		/**
@@ -144,13 +134,13 @@
 		public function andColumn($column)
 		{
 			$this->glue = 'AND';
-			return new self($this->db, $column, $this, $this->crud, $this->level + 1);
+			return new self($this->db, $column, $this, $this->table, $this->level + 1);
 		}
 
 		public function orColumn($column)
 		{
 			$this->glue = 'OR';
-			return new self($this->db, $column, $this, $this->crud, $this->level + 1);
+			return new self($this->db, $column, $this, $this->table, $this->level + 1);
 		}
 
 		public function like($value)
@@ -176,14 +166,14 @@
 
 		public function maximum()
 		{
-			$this->format = '%1$s = (SELECT MAX(%1$s) FROM '.$this->crud->getName().')';
+			$this->format = '%1$s = (SELECT MAX(%1$s) FROM '.$this->table->getFullName().')';
 			$this->value = null;
 			return $this;
 		}
 
 		public function minimum()
 		{
-			$this->format = '%1$s = (SELECT MIN(%1$s) FROM '.$this->crud->getName().')';
+			$this->format = '%1$s = (SELECT MIN(%1$s) FROM '.$this->table->getFullName().')';
 			$this->value = null;
 			return $this;
 		}
@@ -232,17 +222,13 @@
 
 		public function offset($offset)
 		{
+			if($this->isMSSQL)
+				throw new \Exception('Unsupported database type');
+
 			if($this->anchor)
-				return $this->anchor->offset($count);
+				return $this->anchor->offset($offset);
 			$this->query_offset = $offset;
-			switch($this->db->getType())
-			{
-				case 'mysql':
-				case 'pgsql':
-				case 'sqlite':
-					return $this;
-			}
-			throw new \Exception('Unsupported database type');
+			return $this;
 		}
 
 		public function limit($count)
@@ -250,15 +236,7 @@
 			if($this->anchor)
 				return $this->anchor->limit($count);
 			$this->query_limit = $count;
-			switch($this->db->getType())
-			{
-				case 'mssql':
-				case 'mysql':
-				case 'pgsql':
-				case 'sqlite':
-					return $this;
-			}
-			throw new \Exception('Unsupported database type');
+			return $this;
 		}
 
 		public function descending($column)
@@ -274,22 +252,8 @@
 		public function execute()
 		{
 			$sql = $this->build(false);
-			if (!$this->statement)
-				$this->statement = $this->db->prepare($sql);
-
-			$this->bind($this->statement);
-
-			$result = array();
-			foreach ($this->statement->execute()->getRows() as $data)
-				$result[] = $this->crud->getNewObject($data);
-
-			return $result;
+			return $this->db->getAll($sql, $this->arguments());
 		}
-
-		/**
-		 * @var DatabaseStatement
-		 */
-		private $statement;
 
 		/**
 		 * @var string AND/OR
@@ -312,7 +276,7 @@
 		private $value;
 
 		/**
-		 * @var IDatabaseConnection
+		 * @var Generic
 		 */
 		private $db;
 
@@ -337,8 +301,33 @@
 		private $query_offset;
 
 		/**
+		 * @var IManagedTable
+		 */
+		private $table;
+
+		/**
 		 * @var array
 		 * Key is column name, value is bool. False = descending, True = ascending
 		 */
 		private $orderBy = [];
+
+		/**
+		 * @var bool
+		 */
+		private $isMSSQL;
+
+		/**
+		 * @var bool
+		 */
+		private $isMySQL;
+
+		/**
+		 * @var bool
+		 */
+		private $isPostgreSQL;
+
+		/**
+		 * @var bool
+		 */
+		private $isSqlite;
 	}
