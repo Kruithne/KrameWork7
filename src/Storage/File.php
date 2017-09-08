@@ -53,6 +53,10 @@
 		 * @throws FileReadException
 		 */
 		public function __construct($source = null, bool $autoLoad = true, bool $touch = false) {
+			if (self::$hasFileinfo === NULL) {
+				self::$hasFileinfo = \extension_loaded('fileinfo');
+			}
+
 			if ($source instanceof File) {
 				$this->marshalFrom($source);
 			} elseif ($source !== null) {
@@ -111,20 +115,14 @@
 
 		/**
 		 * Attempts to get the MIME type of a file.
-		 * Requires php_fileinfo extension to be enabled.
+		 * Requires the fileinfo extension to be enabled.
 		 * Returns 'unknown' on failure.
 		 *
 		 * @api getFileType
 		 * @return string
 		 */
 		public function getFileType():string {
-			static $has_fileinfo;
-
-			if ($has_fileinfo === NULL) {
-				$has_fileinfo = \extension_loaded('fileinfo');
-			}
-
-			if ($has_fileinfo) {
+			if (self::$hasFileinfo) {
 				$info = new \finfo(\FILEINFO_MIME_TYPE);
 				$type = $info->file($this->path);
 
@@ -227,4 +225,13 @@
 		 * @var string|null
 		 */
 		protected $data;
+
+		/**
+		 * Holds a check to see if fileinfo extension for PHP is loaded
+		 *
+		 * This is set only during the first call to this class constructor
+		 *
+		 * @var bool|null
+		 */
+		private $hasFileinfo;
 	}
