@@ -45,18 +45,16 @@
 		 * @return string|null
 		 */
 		public static function getClientIP() {
-			static $ip;
-
-			if ($ip)
-				return $ip;
+			if (self::$ip)
+				return self::$ip;
 			else if (!isset($_SERVER))
 				return null;
 
 			else if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-				return $ip = \explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+				return self::$ip = \explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
 
 			else if (isset($_SERVER['REMOTE_ADDR']))
-				return $ip = &$_SERVER['REMOTE_ADDR'];
+				return self::$ip = &$_SERVER['REMOTE_ADDR'];
 
 			return null;
 		}
@@ -431,4 +429,9 @@
 		 * @var array
 		 */
 		private static $cacheQueryData;
+
+		/**
+		 * Internal cache for client IP
+		 */
+		private static $ip;
 	}
