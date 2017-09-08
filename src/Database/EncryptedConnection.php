@@ -36,8 +36,8 @@
 		 * @return string The decrypted connection string
 		 */
 		public function __toString() {
-			$connection = base64_decode($this->connection);
-			switch (substr($connection, 0, 3)) {
+			$connection = \base64_decode($this->connection);
+			switch (\substr($connection, 0, 3)) {
 				case 'H1$':
 					$connection = $this->decrypt($connection);
 					break;
@@ -53,9 +53,9 @@
 		 * @return string An encrypted connection string
 		 */
 		public static function encrypt(string $dsn, int $type) {
-			$salt = base64_encode(random_bytes(16));
+			$salt = \base64_encode(\random_bytes(16));
 			if ($type == 1)
-				return base64_encode('H1$' . $salt . '$' . \openssl_encrypt($dsn, 'AES-256-ECB', self::getKey(1, $salt)));
+				return \base64_encode('H1$' . $salt . '$' . \openssl_encrypt($dsn, 'AES-256-ECB', self::getKey(1, $salt)));
 			return $dsn;
 		}
 
@@ -65,8 +65,8 @@
 		 * @return string The decrypted connection string
 		 */
 		public static function decrypt(string $dsn): string {
-			$dsn = base64_decode($dsn);
-			if (preg_match('/^H(\\d)\\$([^$]*)\\$(.*)$/', $dsn, $matches)) {
+			$dsn = \base64_decode($dsn);
+			if (\preg_match('/^H(\\d)\\$([^$]*)\\$(.*)$/', $dsn, $matches)) {
 				$type = $matches[1];
 				$salt = $matches[2];
 				$payload = $matches[3];
@@ -92,6 +92,6 @@
 			foreach ($in as $k => $v)
 				$out[] = $k * sin($v);
 
-			return base64_encode(sha1($salt . json_encode($out), true));
+			return \base64_encode(\sha1($salt . \json_encode($out), true));
 		}
 	}

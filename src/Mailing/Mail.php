@@ -75,7 +75,7 @@
 		 * @throws ExcessiveSubjectLengthException
 		 */
 		public function setSubject(string $subject):Mail {
-			if (strlen($subject) > 998)
+			if (\strlen($subject) > 998)
 				throw new ExcessiveSubjectLengthException('Subject exceeds RFC 2822 length limit.');
 
 			$this->subject = $subject;
@@ -97,8 +97,8 @@
 
 			// Generate message-ID if requested.
 			if ($generateMessageID) {
-				$domain = explode('@', $senderEmail);
-				$this->addHeader('Message-Id', '<' . uniqid(rand()) . '@' . $domain[count($domain) - 1] . '>');
+				$domain = \explode('@', $senderEmail);
+				$this->addHeader('Message-Id', '<' . \uniqid(\rand()) . '@' . $domain[\count($domain) - 1] . '>');
 			}
 
 			// Store as header.
@@ -141,7 +141,7 @@
 					throw new AttachmentNotFoundException('Cannot attach: ' . $attachment->getName());
 			}
 
-			if (array_key_exists($attachment->getName(), $this->files))
+			if (\array_key_exists($attachment->getName(), $this->files))
 				throw new DuplicateAttachmentException('Attachment already exists: ' . $attachment->getName());
 
 			$attachment->setInline($inline);
@@ -160,9 +160,9 @@
 			if ($attachment instanceof AttachmentFile)
 				$attachment = $attachment->getName();
 			else
-				$attachment = basename($attachment);
+				$attachment = \basename($attachment);
 
-			if (array_key_exists($attachment, $this->files))
+			if (\array_key_exists($attachment, $this->files))
 				unset($this->files[$attachment]);
 
 			return $this;
@@ -190,7 +190,7 @@
 			if ($this->to->isEmpty())
 				throw new InvalidRecipientException('Cannot send mail without recipients.');
 
-			if (!array_key_exists('From', $this->headers))
+			if (!\array_key_exists('From', $this->headers))
 				throw new MissingSenderException('Cannot send mail without a sender.');
 
 			// Compile Body
@@ -218,9 +218,9 @@
 				$cHeaders[] = 'Cc: ' . $this->cc;
 
 			// Compile subject.
-			$cSubject = '=?UTF-8?B?' . base64_encode($this->subject ?? 'No Subject') . '?=';
+			$cSubject = '=?UTF-8?B?' . \base64_encode($this->subject ?? 'No Subject') . '?=';
 
-			mail($this->to, $cSubject, $bParent->compile(),  implode("\n", $cHeaders), '-f ' . $this->sender);
+			mail($this->to, $cSubject, $bParent->compile(),  \implode("\n", $cHeaders), '-f ' . $this->sender);
 		}
 
 		/**
@@ -259,7 +259,7 @@
 		 * @throws AttachmentNotFoundException
 		 */
 		private function compileAttachments(MailMultipart $container) {
-			if (count($this->files)) {
+			if ($this->files) {
 				foreach ($this->files as $file) {
 					if (!$file->isValid())
 						throw new AttachmentNotFoundException('Unable to attach file: ' . $file->getName());

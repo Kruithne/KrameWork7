@@ -67,7 +67,7 @@
 			$this->directives = [];
 			$this->directives[self::DIRECTIVE_DEFAULT] = self::SOURCE_SELF;
 
-			if (is_array($arr))
+			if (\is_array($arr))
 				$this->fromArray($arr);
 		}
 
@@ -90,10 +90,10 @@
 		 * @param array|string $source Source directive.
 		 */
 		public function add($directives, $source) {
-			if (is_array($source))
-				$source = implode(' ', $source);
+			if (\is_array($source))
+				$source = \implode(' ', $source);
 
-			foreach (is_array($directives) ? $directives : [$directives] as $directive)
+			foreach (\is_array($directives) ? $directives : [$directives] as $directive)
 				$this->directives[$directive] = $source;
 		}
 
@@ -118,7 +118,7 @@
 			foreach ($this->directives as $directive => $source)
 				$parts[] = $directive . ' ' . $source;
 
-			return implode('; ', $parts);
+			return \implode('; ', $parts);
 		}
 
 		/**

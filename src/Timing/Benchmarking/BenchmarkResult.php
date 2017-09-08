@@ -96,7 +96,7 @@
 		 * @return string
 		 */
 		public function getAverageFormatted():string {
-			return sprintf($this->format, $this->average);
+			return \sprintf($this->format, $this->average);
 		}
 
 		/**
@@ -116,7 +116,7 @@
 		 * @return string
 		 */
 		public function getShortestFormatted():string {
-			return sprintf($this->format, $this->shortest);
+			return \sprintf($this->format, $this->shortest);
 		}
 
 		/**
@@ -136,7 +136,7 @@
 		 * @return string
 		 */
 		public function getLongestFormatted():string {
-			return sprintf($this->format, $this->longest);
+			return \sprintf($this->format, $this->longest);
 		}
 
 		/**
@@ -156,7 +156,7 @@
 		 * @return string
 		 */
 		public function getElapsedFormatted():string {
-			return sprintf($this->format, $this->elapsed);
+			return \sprintf($this->format, $this->elapsed);
 		}
 
 		/**
@@ -176,7 +176,7 @@
 		 * @return string
 		 */
 		public function getStandardDeviationFormatted():string {
-			return sprintf($this->format, $this->stddev);
+			return \sprintf($this->format, $this->stddev);
 		}
 
 		/**

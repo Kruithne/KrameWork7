@@ -112,7 +112,7 @@
 		 * @return string
 		 */
 		public function format(string $format):string {
-			return sprintf($format, $this->getElapsed());
+			return \sprintf($format, $this->getElapsed());
 		}
 
 		/**
@@ -134,9 +134,9 @@
 		 */
 		private function getCurrentTime() {
 			if ($this->format == self::FORMAT_MICROSECONDS)
-				return microtime(true);
+				return \microtime(true);
 
-			return time(); // Seconds (or default).
+			return \time(); // Seconds (or default).
 		}
 
 		/**

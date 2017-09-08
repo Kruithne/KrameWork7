@@ -44,7 +44,7 @@
 		 * @return mixed|null
 		 */
 		public function __get(string $key) {
-			$value = apcu_fetch($key, $success);
+			$value = \apcu_fetch($key, $success);
 			return $success ? $value : null;
 		}
 
@@ -63,9 +63,9 @@
 				return;
 			}
 			if ($expire > 60*60*24*30)
-				$expire = time() - $expire;
+				$expire = \time() - $expire;
 
-			apcu_store($key, $value, $expire);
+			\apcu_store($key, $value, $expire);
 		}
 
 		/**
@@ -75,7 +75,7 @@
 		 * @return bool True if the key exists in the cache.
 		 */
 		public function exists(string $key): bool {
-			return apcu_exists($key);
+			return \apcu_exists($key);
 		}
 
 		/**
@@ -97,7 +97,7 @@
 		 * @param string $key Key of the item to remove.
 		 */
 		public function __unset(string $key) {
-			apcu_delete($key);
+			\apcu_delete($key);
 		}
 
 		/**
@@ -106,7 +106,7 @@
 		 * @api flush
 		 */
 		public function flush() {
-			apcu_clear_cache();
+			\apcu_clear_cache();
 		}
 
 		/**
@@ -117,7 +117,7 @@
 		 * @param int $weight How much to increment the value.
 		 */
 		public function increment(string $key, int $weight = 1) {
-			apcu_inc($key, $weight);
+			\apcu_inc($key, $weight);
 		}
 
 		/**
@@ -128,6 +128,6 @@
 		 * @param int $weight How much to decrement the value.
 		 */
 		public function decrement(string $key, int $weight = 1) {
-			apcu_dec($key, $weight);
+			\apcu_dec($key, $weight);
 		}
 	}

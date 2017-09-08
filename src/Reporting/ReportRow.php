@@ -71,7 +71,7 @@
 		 */
 		public function key() {
 			if ($this->keys == null)
-				$this->keys = array_keys((array)$this->data);
+				$this->keys = \get_object_vars($this->data);
 			return $this->keys[$this->position];
 		}
 
@@ -80,8 +80,8 @@
 		 */
 		public function valid() {
 			if ($this->keys == null)
-				$this->keys = array_keys((array)$this->data);
-			return $this->data && count($this->keys) > $this->position;
+				$this->keys = \get_object_vars($this->data);
+			return $this->data && \count($this->keys) > $this->position;
 		}
 
 		/**

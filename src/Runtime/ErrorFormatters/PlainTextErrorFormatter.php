@@ -90,8 +90,8 @@
 		 * @param array $arr Array of data.
 		 */
 		public function reportArray(string $name, array $arr) {
-			if (count($arr)) {
-				$this->report->appendf('> %s [%s items]', $name, count($arr))->newLine()->indent();
+			if ($arr) {
+				$this->report->appendf('> %s [%s items]', $name, \count($arr))->newLine()->indent();
 				foreach ($arr as $key => $value)
 					$this->report->appendf('%s => %s', $key, StringUtil::variableAsString($value))->newLine();
 			} else {
@@ -111,9 +111,9 @@
 		public function reportError(IError $error) {
 			$this->error = $error;
 			$this->report->appendLine($error->getPrefix() . ' : ' . $error->getName())->indent();
-			$this->report->appendLine('> Server: ' . php_uname());
+			$this->report->appendLine('> Server: ' . \php_uname());
 			$this->report->appendLine('> Message: ' . $error->getMessage());
-			$this->report->appendf('> Occurred: %s (%s)', date(DATE_RFC2822), time())->newLine();
+			$this->report->appendf('> Occurred: %$2s (%$1s)', $t = \time(), \date(\DATE_RFC2822, $t))->newLine();
 			$this->report->appendf('> Script: %s (Line %s)', $error->getFile(), $error->getLine());
 		}
 
@@ -140,7 +140,7 @@
 		 */
 		public function reportStacktrace(array $trace) {
 			$this->report->newLine()->newLine();
-			$this->report->appendf('> Stack trace [%s steps]:', count($trace))->indent()->newLine();
+			$this->report->appendf('> Stack trace [%s steps]:', \count($trace))->indent()->newLine();
 			foreach($trace as $node) {
 				$args = [];
 				foreach ($node['args'] ?? [] as $key => $arg)
@@ -153,7 +153,7 @@
 					$node['class'] ?? '',
 					$node['type'] ?? '',
 					$node['function'] ?? '',
-					implode(', ', $args)
+					\implode(', ', $args)
 				)->newLine();
 			}
 			$this->report->outdent()->newline();
@@ -187,7 +187,7 @@
 		 */
 		public function __toString(): string {
 			$this->report->outdent()->newLine();
-			$this->report->appendf('Report generated automatically on %s (%s).', date(DATE_RFC2822), time());
+			$this->report->appendf('Report generated automatically on %$2s (%$1s).', $t = \time(), \date(\DATE_RFC2822, $t));
 
 			if ($this->wrapPreTags)
 				$this->report->prepend('<pre>')->append('</pre>');
@@ -203,7 +203,7 @@
 		 */
 		public function generate():IErrorReport {
 			$this->report->outdent()->newLine();
-			$this->report->appendf('Report generated automatically on %s (%s).', date(DATE_RFC822), time());
+			$this->report->appendf('Report generated automatically on %$2s (%$1s).', $t = \time(), \date(\DATE_RFC822, $t));
 
 			if ($this->wrapPreTags)
 				$this->report->prepend('<pre>')->append('</pre>');

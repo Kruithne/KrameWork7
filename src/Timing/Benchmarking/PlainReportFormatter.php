@@ -80,7 +80,7 @@
 		 */
 		private function addField($content)
 		{
-			$this->builder->append(str_pad($content, 10), "\t");
+			$this->builder->append(\str_pad($content, 10), "\t");
 		}
 
 		/**

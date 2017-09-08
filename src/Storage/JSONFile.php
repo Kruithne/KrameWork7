@@ -102,7 +102,7 @@
 			if ($this->path != null)
 				parent::read();
 
-			$decoded = json_decode($this->data, $this->assoc, $this->depth, $this->options);
+			$decoded = \json_decode($this->data, $this->assoc, $this->depth, $this->options);
 			if ($decoded === null)
 				$this->throwJSONError();
 
@@ -120,7 +120,7 @@
 		 * @throws JSONException
 		 */
 		public function save(string $file = null, bool $overwrite = true) {
-			$encoded = json_encode($this->jsonData);
+			$encoded = \json_encode($this->jsonData);
 			if ($encoded === null)
 				$this->throwJSONError();
 
@@ -135,7 +135,7 @@
 		 * @throws JSONException
 		 */
 		private function throwJSONError() {
-			throw new JSONException('JSON error: ' . json_last_error_msg());
+			throw new JSONException('JSON error: ' . \json_last_error_msg());
 		}
 
 		/**
@@ -156,9 +156,9 @@
 		 */
 		public function sendToBuffer($applyHeader = true) {
 			if ($applyHeader)
-				header('Content-Type: application/json');
+				\header('Content-Type: application/json');
 
-			echo json_encode($this->getData());
+			echo \json_encode($this->getData());
 		}
 
 		/**

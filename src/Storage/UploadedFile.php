@@ -57,7 +57,7 @@
 		 * @return bool
 		 */
 		public function isValid(): bool {
-			return $this->errorCode === UPLOAD_ERR_OK && parent::isValid();
+			return $this->errorCode === \UPLOAD_ERR_OK && parent::isValid();
 		}
 
 		/**

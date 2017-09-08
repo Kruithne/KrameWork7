@@ -37,7 +37,7 @@
 		 * @param string|int $value String to be converted to a timestamp, or a unix timestamp
 		 */
 		public function __construct($value) {
-			parent::__construct(is_numeric($value) || $value === null ? $value : strtotime($value));
+			parent::__construct(\is_numeric($value) || $value === null ? $value : \strtotime($value));
 		}
 
 		/**
@@ -46,7 +46,7 @@
 		 */
 		public function json() {
 			// Use ISO 8601 format to support moment.js client side
-			return $this->value === null ? null : date('c', $this->value);
+			return $this->value === null ? null : \date('c', $this->value);
 		}
 
 		/**
@@ -58,14 +58,14 @@
 			// Dates should be compared without time
 			$a = $this->value == null ? null : date('Ymd', $this->value);
 			if ($to instanceof DateValue)
-				$b = $to->real() == null ? null : date('Ymd', $to->real());
+				$b = $to->real() == null ? null : \date('Ymd', $to->real());
 			else
 				$b = $to;
 
 			if ($b === null)
 				return $a === null ? 0 : 1;
-			else if (!is_numeric($b))
-				$b = date('Ymd',strtotime($b));
+			else if (!\is_numeric($b))
+				$b = \date('Ymd', \strtotime($b));
 
 			if ($a === null)
 				return -1;
@@ -77,6 +77,6 @@
 		 * @return string The encapsulated value as presented by a string
 		 */
 		public function __toString() {
-			return date('d.m.Y', $this->value);
+			return \date('d.m.Y', $this->value);
 		}
 	}

@@ -47,14 +47,14 @@
 		 */
 		public function dispatch($report):bool {
 			// Clear all output already sent.
-			while (ob_get_level())
-				ob_end_clean();
+			while (\ob_get_level())
+				\ob_end_clean();
 
-			if (!headers_sent()) {
-				header('HTTP/1.0 500 Server error');
+			if (!\headers_sent()) {
+				\header('HTTP/1.0 500 Server error');
 
 				if ($report instanceof IErrorReport)
-					header('Content-Type: ' . $report->getContentType());
+					\header('Content-Type: ' . $report->getContentType());
 			}
 
 			echo $report;

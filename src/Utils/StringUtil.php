@@ -45,7 +45,7 @@
 		 * @return bool
 		 */
 		static function startsWith(string $haystack, string $needle):bool {
-			return strncmp($haystack, $needle, \strlen($needle)) === 0;
+			return \strncmp($haystack, $needle, \strlen($needle)) === 0;
 		}
 
 		/**
@@ -59,7 +59,7 @@
 		 */
 		static function endsWith(string $haystack, string $needle):bool {
 			$length = \strlen($needle);
-			return (substr($haystack, -$length, $length) === $needle);
+			return (\substr($haystack, -$length, $length) === $needle);
 		}
 
 		/**
@@ -71,8 +71,8 @@
 		 * @return string
 		 */
 		static function formatDirectorySlashes(string $path, bool $trimTrail = false):string {
-			$clean = str_replace(DIRECTORY_SEPARATOR == '/' ? '\\' : '/', DIRECTORY_SEPARATOR, $path);
-			return $trimTrail ? rtrim($clean, "\t\n\r\0\x0B\\/") : $clean;
+			$clean = \str_replace(\DIRECTORY_SEPARATOR == '/' ? '\\' : '/', \DIRECTORY_SEPARATOR, $path);
+			return $trimTrail ? \rtrim($clean, "\t\n\r\0\x0B\\/") : $clean;
 		}
 
 		/**
@@ -83,8 +83,8 @@
 		 * @return string
 		 */
 		static function namespaceBase(string $namespace):string {
-			$parts = explode('\\', $namespace);
-			return $parts[count($parts) - 1];
+			$parts = \explode('\\', $namespace);
+			return $parts[\count($parts) - 1];
 		}
 
 		/**
@@ -95,22 +95,22 @@
 		 * @return string
 		 */
 		static function variableAsString($var):string {
-			$type = gettype($var);
+			$type = \gettype($var);
 			if ($type == 'object') {
 				if ($var instanceof IMaskable) {
 					$type = 'masked';
 					$var = $var->asMask();
 				} else {
-					$type = get_class($var);
-					if (!method_exists($var, '__toString'))
+					$type = \get_class($var);
+					if (!\method_exists($var, '__toString'))
 						$var = 'object';
 				}
 			} elseif ($type == 'string') {
 				$length = \strlen($var);
 				$var = "({$length}) \"{$var}\"";
 			} elseif ($type == 'array') {
-				$var = count($var) . ' items';
-			} elseif (is_bool($var)) {
+				$var = \count($var) . ' items';
+			} elseif (\is_bool($var)) {
 				$var = $var ? 'true' : 'false';
 			}
 

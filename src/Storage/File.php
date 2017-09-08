@@ -53,13 +53,17 @@
 		 * @throws FileReadException
 		 */
 		public function __construct($source = null, bool $autoLoad = true, bool $touch = false) {
+			if (self::$hasFileinfo === NULL) {
+				self::$hasFileinfo = \extension_loaded('fileinfo');
+			}
+
 			if ($source instanceof File) {
 				$this->marshalFrom($source);
 			} elseif ($source !== null) {
 				parent::__construct($source);
 
 				if ($touch && !$this->exists())
-					file_put_contents($this->path, '');
+					\file_put_contents($this->path, '');
 
 				if ($autoLoad)
 					$this->read();
@@ -73,7 +77,7 @@
 		 * @return bool
 		 */
 		public function isValid():bool {
-			return $this->exists() && is_file($this->path);
+			return $this->exists() && \is_file($this->path);
 		}
 
 		/**
@@ -83,7 +87,7 @@
 		 * @return bool
 		 */
 		public function delete():bool {
-			return @unlink($this->path);
+			return @\unlink($this->path);
 		}
 
 		/**
@@ -93,7 +97,7 @@
 		 * @return int
 		 */
 		public function getSize():int {
-			$size = @filesize($this->path);
+			$size = @\filesize($this->path);
 			return $size !== false ? $size : 0;
 		}
 
@@ -104,25 +108,25 @@
 		 * @return string
 		 */
 		public function getExtension():string {
-			$parts = explode(".", $this->name);
-			$size = count($parts);
+			$parts = \explode(".", $this->name);
+			$size = \count($parts);
 			return $size > 1 ? $parts[$size - 1] : '';
 		}
 
 		/**
 		 * Attempts to get the MIME type of a file.
-		 * Requires php_fileinfo extension to be enabled.
+		 * Requires the fileinfo extension to be enabled.
 		 * Returns 'unknown' on failure.
 		 *
 		 * @api getFileType
 		 * @return string
 		 */
 		public function getFileType():string {
-			if (function_exists('finfo_file')) {
-				$info = new \finfo(FILEINFO_MIME_TYPE);
+			if (self::$hasFileinfo) {
+				$info = new \finfo(\FILEINFO_MIME_TYPE);
 				$type = $info->file($this->path);
 
-				if ($type !== null && strlen($type) > 0)
+				if ($type)
 					return $type;
 			}
 			return 'unknown';
@@ -140,10 +144,10 @@
 			if ($this->path === null)
 				throw new FileNotFoundException('Cannot resolve file: No path given.');
 
-			if (!file_exists($this->path))
+			if (!\is_file($this->path))
 				throw new FileNotFoundException('Cannot resolve file: It does not exist.');
 
-			$raw = file_get_contents($this->path);
+			$raw = \file_get_contents($this->path);
 			if ($raw === null)
 				throw new FileReadException('Unable to read data from file.');
 
@@ -163,10 +167,10 @@
 		public function save(string $file = null, bool $overwrite = true) {
 			$file = $file ?? $this->path;
 
-			if (!$overwrite && file_exists($file))
+			if (!$overwrite && \is_file($file))
 				throw new FileWriteException('Cannot write file: Already exists (specify overwrite?)');
 
-			file_put_contents($file, $this->data ?? '');
+			\file_put_contents($file, $this->data ?? '');
 		}
 
 		/**
@@ -191,7 +195,7 @@
 		 * @return string
 		 */
 		public function getBase64Data(bool $forceRead = false):string {
-			return base64_encode($this->getData($forceRead));
+			return \base64_encode($this->getData($forceRead));
 		}
 
 		/**
@@ -221,4 +225,13 @@
 		 * @var string|null
 		 */
 		protected $data;
+
+		/**
+		 * Holds a check to see if fileinfo extension for PHP is loaded
+		 *
+		 * This is set only during the first call to this class constructor
+		 *
+		 * @var bool|null
+		 */
+		private $hasFileinfo;
 	}

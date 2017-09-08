@@ -70,7 +70,7 @@
 			if ($a === null)
 				return -1;
 
-			return strnatcasecmp((string)$a, (string)$b);
+			return \strnatcasecmp((string)$a, (string)$b);
 		}
 
 		/**

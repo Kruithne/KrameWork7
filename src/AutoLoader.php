@@ -60,10 +60,10 @@
 			$this->addSources($sources ?? []); // Pre-compute source paths/maps.
 
 			if ($flags & self::INCLUDE_KRAMEWORK_DIRECTORY)
-				$this->sources[] = ['KrameWork', dirname(__FILE__)];
+				$this->sources[] = ['KrameWork', __DIR__];
 
 			if ($flags & self::INCLUDE_WORKING_DIRECTORY)
-				$this->sources[] = getcwd();
+				$this->sources[] = \getcwd();
 
 			// Register this auto-loader instance with PHP.
 			spl_autoload_register([$this, 'loadClass']);
@@ -81,7 +81,7 @@
 		public function setExtensions(array $extensions) {
 			// Remove any leading periods from extensions.
 			foreach ($extensions as $ext)
-				$this->extensions[] = ltrim($ext, ".");
+				$this->extensions[] = \ltrim($ext, ".");
 		}
 
 		/**
@@ -94,14 +94,14 @@
 		public function addSources(array $sources) {
 			foreach ($sources as $sourceName => $sourcePath) {
 				// Verify source path.
-				$real = realpath(StringUtil::formatDirectorySlashes($sourcePath));
+				$real = \realpath(StringUtil::formatDirectorySlashes($sourcePath));
 				if ($real === false)
 					throw new InvalidSourcePathException('Invalid source path: ' . $sourcePath);
 
-				if (is_string($sourceName)) {
+				if (\is_string($sourceName)) {
 					// Convert namespace separators if needed.
-					if (DIRECTORY_SEPARATOR == '/')
-						$sourceName = str_replace('\\', DIRECTORY_SEPARATOR, $sourceName);
+					if (\DIRECTORY_SEPARATOR == '/')
+						$sourceName = \str_replace('\\', \DIRECTORY_SEPARATOR, $sourceName);
 
 					$this->sources[] = [$sourceName, $real];
 				} else {
@@ -124,46 +124,46 @@
 			$queue = $this->sources;
 
 			$i = 0;
-			$queueSize = count($queue);
+			$queueSize = \count($queue);
 
 			while ($i < $queueSize) {
 				$class = $className;
 
 				$directory = $queue[$i++];
 
-				if (is_array($directory)) {
+				if (\is_array($directory)) {
 					list($namespace, $path) = $directory;
 					$namespaceLen = \strlen($namespace);
 
-					if (strncmp($class, $namespace, $namespaceLen) !== 0)
+					if (\strncmp($class, $namespace, $namespaceLen) !== 0)
 						continue;
 
-					$class = trim(substr($class, $namespaceLen), DIRECTORY_SEPARATOR);
+					$class = \trim(\substr($class, $namespaceLen), \DIRECTORY_SEPARATOR);
 					$directory = $path;
 				}
 
 				foreach ($this->extensions as $ext) {
-					$file = $directory . DIRECTORY_SEPARATOR . $class . '.' . $ext;
-					if (file_exists($file)) {
+					$file = $directory . \DIRECTORY_SEPARATOR . $class . '.' . $ext;
+					if (\file_exists($file)) {
 						require_once($file);
 						return;
 					}
 				}
 
 				if ($this->flags & self::RECURSIVE_SOURCING) {
-					if ($handle = opendir($directory)) {
-						while (($entry = readdir($handle)) !== false) {
+					if ($handle = \opendir($directory)) {
+						while (($entry = \readdir($handle)) !== false) {
 							if ($entry == '.' || $entry == '..')
 								continue;
 
-							$path = $directory . DIRECTORY_SEPARATOR . $entry;
-							if (is_dir($path)) {
-								array_push($queue, $path);
+							$path = $directory . \DIRECTORY_SEPARATOR . $entry;
+							if (\is_dir($path)) {
+								\array_push($queue, $path);
 								$queueSize++;
 							}
 						}
 
-						closedir($handle);
+						\closedir($handle);
 					}
 				}
 			}

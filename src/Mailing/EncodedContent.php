@@ -64,7 +64,7 @@
 		 * @return bool
 		 */
 		public function hasContent():bool {
-			return $this->content && strlen($this->content) > 0;
+			return !!$this->content;
 		}
 
 		/**
@@ -98,9 +98,9 @@
 			$content = $this->content;
 
 			if ($this->encoding == self::E_BASE64)
-				$content = chunk_split(base64_encode($content), 70, "\r\n");
+				$content = \chunk_split(\base64_encode($content), 70, "\r\n");
 			else if ($this->encoding == self::E_QUOTED_PRINTABLE)
-				$content = quoted_printable_encode($content);
+				$content = \quoted_printable_encode($content);
 
 			return $content;
 		}
