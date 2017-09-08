@@ -51,7 +51,7 @@
 		 * @return string
 		 */
 		public function asMD5Hash():string {
-			return md5($this->value);
+			return \md5($this->value);
 		}
 
 		/**
@@ -62,7 +62,7 @@
 		 * @return string
 		 */
 		public function asMask(string $char = '*'): string {
-			return str_repeat($char, $this->length());
+			return \str_repeat($char, $this->length());
 		}
 
 		/**
@@ -72,8 +72,8 @@
 		 * @param int $algorithm Algorithm to hash with.
 		 * @return string
 		 */
-		public function asHash(int $algorithm = PASSWORD_DEFAULT):string {
-			return password_hash($this->value, $algorithm);
+		public function asHash(int $algorithm = \PASSWORD_DEFAULT):string {
+			return \password_hash($this->value, $algorithm);
 		}
 
 		/**
@@ -84,7 +84,7 @@
 		 * @return bool
 		 */
 		public function verify(string $hash):bool {
-			return password_verify($this->value, $hash);
+			return \password_verify($this->value, $hash);
 		}
 
 		/**

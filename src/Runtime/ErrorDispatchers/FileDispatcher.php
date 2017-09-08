@@ -45,8 +45,8 @@
 		 * @param string|array $name File name. Arrays are treated as callbacks.
 		 */
 		public function __construct(string $directory, $name = 'error') {
-			$check = realpath($directory);
-			if ($check === false || !is_dir($check))
+			$check = \realpath($directory);
+			if ($check === false || !\is_dir($check))
 				$check = __DIR__;
 
 			$this->path = $check;
@@ -62,8 +62,8 @@
 		 */
 		public function dispatch($report):bool {
 			$file = $this->name;
-			if (is_array($file)) // Execute callback.
-				$file = call_user_func(count($file) == 1 ? $file[0] : $file, $report);
+			if (\is_array($file)) // Execute callback.
+				$file = \call_user_func(\count($file) == 1 ? $file[0] : $file, $report);
 			elseif (is_callable($file))
 				$file = $file($report);
 
@@ -71,13 +71,13 @@
 			$full = $file . $ext;
 
 			// Obtain unique file name.
-			if (file_exists($full)) {
+			if (\is_file($full)) {
 				$attemptIndex = 1;
-				while (file_exists($full))
+				while (\is_file($full))
 					$full = $file . '_' . $attemptIndex++ . $ext;
 			}
 
-			file_put_contents($this->path . DIRECTORY_SEPARATOR . $full, $report);
+			\file_put_contents($this->path . \DIRECTORY_SEPARATOR . $full, $report);
 			return false;
 		}
 

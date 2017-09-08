@@ -60,7 +60,7 @@
 		public function __construct(string $type, MailMultipart $parent = null) {
 			$this->parts = [];
 			$this->type = $type;
-			$this->boundaryID = uniqid('==_mimepart_' . self::$id++);
+			$this->boundaryID = \uniqid('==_mimepart_' . self::$id++);
 
 			if ($parent)
 				$parent->add($this);

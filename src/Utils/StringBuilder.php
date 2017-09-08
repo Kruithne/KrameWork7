@@ -58,7 +58,7 @@
 		 */
 		public function append(...$args):StringBuilder {
 			foreach ($args as $arg) {
-				if (is_array($arg)) {
+				if (\is_array($arg)) {
 					foreach ($arg as $subArg)
 						$this->append($subArg);
 				} else {
@@ -72,7 +72,7 @@
 
 					// Indent if needed.
 					if ($this->indent > 0 && $lineSize == 0)
-						$line .= str_repeat("\t", $this->indent);
+						$line .= \str_repeat("\t", $this->indent);
 
 					// Append new data to the line and update in the stack.
 					$this->data[$index] = $line . $arg;
@@ -113,8 +113,8 @@
 		 * @return StringBuilder
 		 */
 		public function appendf(string $format, ...$args):StringBuilder {
-			array_unshift($args, $format); // Push the format string onto the args.
-			return $this->append(\call_user_func_array('sprintf', $args));
+			\array_unshift($args, $format); // Push the format string onto the args.
+			return $this->append(\call_user_func_array('\sprintf', $args));
 		}
 
 		/**
@@ -126,7 +126,7 @@
 		 * @return StringBuilder
 		 */
 		public function appendArray(array $arr, string $sep = ''):StringBuilder {
-			$this->append(implode($sep, $arr));
+			$this->append(\implode($sep, $arr));
 			return $this;
 		}
 
@@ -140,7 +140,7 @@
 		 */
 		public function prepend(...$args):StringBuilder {
 			foreach ($args as $arg) {
-				if (is_array($arg)) {
+				if (\is_array($arg)) {
 					foreach ($arg as $subArg)
 						$this->prepend($subArg);
 				} else {
@@ -153,7 +153,7 @@
 
 					// Indent if needed.
 					if ($this->indent > 0 && $lineSize == 0)
-						$arg .= str_repeat("\t", $this->indent);
+						$arg .= \str_repeat("\t", $this->indent);
 
 					// Prepend new data to the line and update in the stack.
 					$this->data[0] = $arg . $line;
@@ -194,8 +194,8 @@
 		 * @return StringBuilder
 		 */
 		public function prependf(string $format, ...$args):StringBuilder {
-			array_unshift($args, $format); // Push the format string onto the args.
-			return $this->prepend(\call_user_func_array('sprintf', $args));
+			\array_unshift($args, $format); // Push the format string onto the args.
+			return $this->prepend(\call_user_func_array('\sprintf', $args));
 		}
 
 		/**
@@ -207,7 +207,7 @@
 		 * @return StringBuilder
 		 */
 		public function prependArray(array $arr, string $sep = ''):StringBuilder {
-			$this->prepend(implode($sep, $arr));
+			$this->prepend(\implode($sep, $arr));
 			return $this;
 		}
 
@@ -237,7 +237,7 @@
 		 * @return StringBuilder
 		 */
 		public function newLine(bool $append = true):StringBuilder {
-			$append ? array_push($this->data, '') : array_unshift($this->data, '');
+			$append ? \array_push($this->data, '') : \array_unshift($this->data, '');
 			return $this;
 		}
 
@@ -321,7 +321,7 @@
 		 * @link http://php.net/manual/en/language.oop5.magic.php#language.oop5.magic.tostring
 		 */
 		public function __toString() {
-			return implode($this->getLineEnd(), $this->data);
+			return \implode($this->getLineEnd(), $this->data);
 		}
 
 		/**
@@ -331,7 +331,7 @@
 		 * @return int
 		 */
 		private function getLineIndex() {
-			return count($this->data) - 1;
+			return \count($this->data) - 1;
 		}
 
 		/**
@@ -354,7 +354,7 @@
 		 * @return StringBuilder
 		 */
 		public function outdent(int $value = 1):StringBuilder {
-			$this->indent = max(0, $this->indent - $value);
+			$this->indent = \max(0, $this->indent - $value);
 			return $this;
 		}
 

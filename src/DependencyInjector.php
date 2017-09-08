@@ -80,11 +80,11 @@
 		 */
 		public function addComponent($class) {
 			// Null: Do nothing.
-			if ($class === null)
+			if (!$class)
 				return;
 
 			// Array: Loop all items and add them one by one.
-			if (is_array($class)) {
+			if (\is_array($class)) {
 				foreach ($class as $classItem)
 					$this->addComponent($classItem);
 
@@ -92,8 +92,8 @@
 			}
 
 			// String: Class name, add to the internal class list.
-			if (is_string($class)) {
-				if (array_key_exists($class, $this->classList))
+			if (\is_string($class)) {
+				if (\array_key_exists($class, $this->classList))
 					throw new DuplicateClassException('Duplicate class added to injector: ' . $class);
 
 				$this->classList[$class] = null;
@@ -105,9 +105,9 @@
 			}
 
 			// Object: Extract class and add that.
-			if (is_object($class)) {
-				$className = get_class($class);
-				if (array_key_exists($className, $this->classList))
+			if (\is_object($class)) {
+				$className = \get_class($class);
+				if (\array_key_exists($className, $this->classList))
 					throw new DuplicateClassException('Duplicate class added to injector: ' . $className);
 
 				$this->classList[$className] = $class;
@@ -132,10 +132,10 @@
 		 * @throws ClassResolutionException
 		 */
 		public function resolveClassName($class, array &$output = null) {
-			$classes = &$output ?? [];
+			$classes = $output ?? [];
 
 			// Array given, loop elements and process.
-			if (is_array($class)) {
+			if (\is_array($class)) {
 				foreach ($class as $node)
 					$this->resolveClassName($node, $classes);
 
@@ -143,15 +143,15 @@
 			}
 
 			// Resolve class name from object.
-			if (is_object($class))
-				$class = get_class($class);
+			if (\is_object($class))
+				$class = \get_class($class);
 
 			// If we don't have a string at this point, we can't do much with it.
-			if (!is_string($class))
-				throw new ClassResolutionException('Unable to resolve class for: ' . gettype($class));
+			if (!\is_string($class))
+				throw new ClassResolutionException('Unable to resolve class for: ' . \gettype($class));
 
 			// Check interface bindings for the class.
-			if (array_key_exists($class, $this->bindingList))
+			if (\array_key_exists($class, $this->bindingList))
 				return $this->resolveClassName($this->bindingList[$class], $classes);
 
 			$classes[] = $class;
@@ -173,11 +173,11 @@
 			$resolve = $this->resolveClassName($className);
 
 			// getComponent() should only ever return a single component.
-			if (is_array($resolve) || (array_key_exists($resolve, $this->classList) && is_array($this->classList[$resolve])))
+			if (\is_array($resolve) || (\array_key_exists($resolve, $this->classList) && \is_array($this->classList[$resolve])))
 				throw new ClassResolutionException('Injector contains multiple resolutions for class: ' . $className);
 
 			// Check if component is missing and react according to $add.
-			if (!array_key_exists($resolve, $this->classList)) {
+			if (!\array_key_exists($resolve, $this->classList)) {
 				if ($add)
 					$this->addComponent($resolve);
 				else
@@ -198,13 +198,13 @@
 		 */
 		public function getImplementors(string $interfaceName, bool $add = false) {
 			$resolves = $this->resolveClassName($interfaceName);
-			if (!is_array($resolves))
+			if (!\is_array($resolves))
 				$resolves = [$resolves];
 
 			$objects = [];
 			foreach ($resolves as $resolve) {
 				// Class has not yet been registered with the injector.
-				if (!array_key_exists($resolve, $this->classList)) {
+				if (!\array_key_exists($resolve, $this->classList)) {
 					if ($add)
 						$this->addComponent($resolve);
 					else
@@ -212,7 +212,7 @@
 				}
 
 				$components = $this->classList[$resolve] ?? $this->constructComponent($resolve);
-				if (is_array($components))
+				if (\is_array($components))
 					foreach ($components as $component)
 						$objects[] = $component;
 				else
@@ -256,7 +256,7 @@
 					$inject[] = $this->getComponent($paramClassName, $this->flags & self::AUTO_ADD_DEPENDENCIES);
 				}
 
-				call_user_func_array([$object, '__construct'], $inject);
+				\call_user_func_array([$object, '__construct'], $inject);
 			}
 
 			$this->classList[$className] = $object;
@@ -286,16 +286,16 @@
 		 * @throws InterfaceBindingException
 		 */
 		public function bind(string $interface, $class) {
-			if (is_object($class))
-				$class = get_class($class);
+			if (\is_object($class))
+				$class = \get_class($class);
 
-			if (!is_string($class))
-				throw new InterfaceBindingException('Invalid input for interface binding: ' . gettype($class));
+			if (!\is_string($class))
+				throw new InterfaceBindingException('Invalid input for interface binding: ' . \gettype($class));
 
-			if (array_key_exists($interface, $this->bindingList)) {
+			if (\array_key_exists($interface, $this->bindingList)) {
 				$node = $this->bindingList[$interface];
 
-				if (!is_array($node))
+				if (!\is_array($node))
 					$node = [$node];
 
 				$node[] = $class;

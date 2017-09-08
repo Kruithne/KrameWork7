@@ -81,12 +81,12 @@
 			if ($glue)
 				return $base;
 
-			if (count($this->orderBy))
+			if ($this->orderBy)
 			{
 				$cols = [];
 				foreach ($this->orderBy as $col => $asc)
 					$cols[] = $col.' '.($asc?'ASC':'DESC');
-				$base .= ' ORDER BY '.join(', ',$cols);
+				$base .= ' ORDER BY '.\join(', ',$cols);
 			}
 
 			if ($this->query_limit && ($this->isSqlite || $this->isPostgreSQL || $this->isMySQL))
@@ -109,7 +109,7 @@
 		{
 			if ($this->value !== null)
 			{
-				if (is_array($this->value))
+				if (\is_array($this->value))
 				{
 					foreach ($this->value as $pf => $value)
 					{
@@ -209,7 +209,7 @@
 		public function equalsCaseInsensitive($value)
 		{
 			$this->format = 'LOWER(%1$s) = :%1$s%2$s';
-			$this->value = strtolower($value);
+			$this->value = \strtolower($value);
 			return $this;
 		}
 

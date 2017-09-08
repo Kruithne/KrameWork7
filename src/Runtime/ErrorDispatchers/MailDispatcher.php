@@ -53,7 +53,7 @@
 			$this->mail->to->add($recipients);
 			$this->mail->setSender($sender, $senderName, true);
 
-			if (is_array($subject) || is_callable($subject))
+			if (\is_array($subject) || \is_callable($subject))
 				$this->subjectGen = $subject;
 			else
 				$this->mail->setSubject($subject);
@@ -69,9 +69,9 @@
 		public function dispatch($report):bool {
 			if ($this->subjectGen) {
 				$subject = $this->subjectGen;
-				if (is_array($subject))
-					$subject = call_user_func(count($this->subjectGen) == 1 ? $this->subjectGen[0] : $this->subjectGen, $report);
-				elseif (is_callable($subject))
+				if (\is_array($subject))
+					$subject = \call_user_func(\count($this->subjectGen) == 1 ? $this->subjectGen[0] : $this->subjectGen, $report);
+				elseif (\is_callable($subject))
 					$subject = $subject($report);
 
 				$this->mail->setSubject($subject);

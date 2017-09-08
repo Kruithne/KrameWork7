@@ -64,10 +64,10 @@
 				return;
 
 			// Ensure we're not on a CLI.
-			if (php_sapi_name() == 'cli')
+			if (\PHP_SAPI == 'cli')
 				throw new SessionInitiationException('Session cannot be started in CLI environment.');
 
-			session_start();
+			\session_start();
 
 			if ($this->secure) {
 				$remote = HTTPContext::getClientIP() ?? '';
@@ -87,11 +87,10 @@
 		 * @api flush
 		 */
 		public function flush() {
-			$_SESSION = [];
-
-			session_regenerate_id(false);
-			session_destroy();
-			session_start();
+			\session_unset();
+			\session_regenerate_id(false);
+			\session_destroy();
+			\session_start();
 		}
 
 		/**
@@ -102,10 +101,10 @@
 		 */
 		public function isActive() {
 			// CLI does not support sessions.
-			if (php_sapi_name() == 'cli')
+			if (\PHP_SAPI == 'cli')
 				return false;
 
-			return session_status() == PHP_SESSION_ACTIVE;
+			return \session_status() == \PHP_SESSION_ACTIVE;
 		}
 
 		/**

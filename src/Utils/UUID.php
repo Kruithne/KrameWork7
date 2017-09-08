@@ -85,12 +85,12 @@
 		 * @return string
 		 */
 		public static function generate_v4():string {
-			return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-				random_int(0, 0xffff), random_int(0, 0xffff), // 32 bits for "time_low"
-				random_int(0, 0xffff), // 16 bits for "time_mid"
-				random_int(0, 0x0fff) | 0x4000, // 16 bits for "time_hi_and_version", four most significant bits holds version number 4
-				random_int(0, 0x3fff) | 0x8000, // 16 bits, 8 bits for "clk_seq_hi_res", 8 bits for "clk_seq_low", two most significant bits holds zero and one for variant DCE1.1
-				random_int(0, 0xffff), random_int(0, 0xffff), random_int(0, 0xffff) // 48 bits for "node"
+			return \sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+				\random_int(0, 0xffff), \random_int(0, 0xffff), // 32 bits for "time_low"
+				\random_int(0, 0xffff), // 16 bits for "time_mid"
+				\random_int(0, 0x0fff) | 0x4000, // 16 bits for "time_hi_and_version", four most significant bits holds version number 4
+				\random_int(0, 0x3fff) | 0x8000, // 16 bits, 8 bits for "clk_seq_hi_res", 8 bits for "clk_seq_low", two most significant bits holds zero and one for variant DCE1.1
+				\random_int(0, 0xffff), \random_int(0, 0xffff), \random_int(0, 0xffff) // 48 bits for "node"
 			);
 		}
 
@@ -127,22 +127,22 @@
 			if (!self::isValid($namespace))
 				return self::NIL;
 
-			$hex = str_replace(['-', '{', '}'], '', $namespace); // Hex components.
+			$hex = \str_replace(['-', '{', '}'], '', $namespace); // Hex components.
 			$bin = ''; // Binary value.
 
 			// Convert namespace to bits.
-			for ($i = 0; $i < \strlen($hex); $i += 2)
-				$bin .= chr(hexdec($hex[$i] . $hex[$i + 1]));
+			for ($i = 0, $l = \strlen($hex); $i < $l; $i += 2)
+				$bin .= \chr(\hexdec($hex[$i] . $hex[$i + 1]));
 
-			$hash = $version == 3 ? md5($bin . $name) : sha1($bin . $name); // Hash.
+			$hash = $version == 3 ? \md5($bin . $name) : \sha1($bin . $name); // Hash.
 			$versionBit = $version == 3 ? 0x3000 : 0x5000;
 
-			return sprintf('%08s-%04s-%04x-%04x-%12s',
-				substr($hash, 0, 8), // 32 bits for "time_low"
-				substr($hash, 8, 4), // 16 bits for "time_mid"
-				(hexdec(substr($hash, 12, 4)) & 0x0fff) | $versionBit, // 16 bits for "time_hi_and_version", four most significant bits holds version.
-				(hexdec(substr($hash, 16, 4)) & 0x3fff) | 0x8000, // 16 bits, 8 bits for "clk_seq_hi_res", 8 bits for "clk_seq_low", two most significant bits holds zero and one for variant DCE1.1
-				substr($hash, 20, 12) // 48 bits for "node"
+			return \sprintf('%08s-%04s-%04x-%04x-%12s',
+				\substr($hash, 0, 8), // 32 bits for "time_low"
+				\substr($hash, 8, 4), // 16 bits for "time_mid"
+				(\hexdec(\substr($hash, 12, 4)) & 0x0fff) | $versionBit, // 16 bits for "time_hi_and_version", four most significant bits holds version.
+				(\hexdec(\substr($hash, 16, 4)) & 0x3fff) | 0x8000, // 16 bits, 8 bits for "clk_seq_hi_res", 8 bits for "clk_seq_low", two most significant bits holds zero and one for variant DCE1.1
+				\substr($hash, 20, 12) // 48 bits for "node"
 			);
 		}
 
@@ -154,6 +154,6 @@
 		 * @return bool
 		 */
 		public static function isValid(string $uuid):bool {
-			return preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i', $uuid) === 1;
+			return \preg_match('/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i', $uuid) === 1;
 		}
 	}

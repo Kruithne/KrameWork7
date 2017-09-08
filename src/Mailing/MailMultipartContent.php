@@ -93,7 +93,7 @@
 		 */
 		public function setContent(string $content, bool $encodeBase64 = false) {
 			if ($encodeBase64)
-				$content = chunk_split(base64_encode($content), 70, "\r\n");
+				$content = \chunk_split(\base64_encode($content), 70, "\r\n");
 
 			$this->content = $content;
 		}

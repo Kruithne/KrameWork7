@@ -63,7 +63,7 @@
 				return $this->create();
 
 			$log = $this->versionLog();
-			$latest = count($log);
+			$latest = \count($log);
 			if($current > $latest)
 				return 'Table is ahead of code: '.$current;
 
@@ -73,7 +73,7 @@
 			$v = $current;
 			try {
 				/** @var TableVersion $version */
-				foreach (array_slice($log, $current) as $version) {
+				foreach (\array_slice($log, $current) as $version) {
 					$this->db->beginTransaction();
 					$version->BeforeExecution($this->db);
 					foreach ($version->sql as $sql)
@@ -108,7 +108,7 @@
 		 * @return bool Success
 		 */
 		public function create() {
-			$v = count($this->versionLog());
+			$v = \count($this->versionLog());
 			foreach ($this->latestVersion() as $sql)
 				$this->db->execute($sql, []);
 			$this->meta->setVersion($this->getName(), $v);

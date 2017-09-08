@@ -57,20 +57,20 @@
 		 */
 		public function add($email, $name = null, $encode = true):RecipientCollection {
 			// Array: Treat array as $email => $name key/value pair array.
-			if (is_array($email)) {
+			if (\is_array($email)) {
 				foreach ($email as $nodeEmail => $nodeName)
 					$this->add($nodeEmail, $nodeName, $encode);
 			} else {
 				// filter_var provides RFC 822 validation, mail() requires
 				// RFC 2822 compliance, but this should be enough to catch
 				// most issues.
-				$validate = filter_var($email, FILTER_VALIDATE_EMAIL);
+				$validate = \filter_var($email, \FILTER_VALIDATE_EMAIL);
 				if ($validate === false)
 					throw new InvalidRecipientException('Invalid e-mail address (RFC 822)');
 
 				// Encode name.
 				if ($encode)
-					$name = '=?UTF-8?B?' . base64_encode($name) . '?=';
+					$name = '=?UTF-8?B?' . \base64_encode($name) . '?=';
 
 				// Add the recipient to the stack.
 				$this->recipients[strval($email)] = $name;
@@ -87,14 +87,14 @@
 		 */
 		public function remove($email):RecipientCollection {
 			// Array: Treat all elements as individual recipients.
-			if (is_array($email)) {
+			if (\is_array($email)) {
 				foreach ($email as $node)
 					$this->remove($node);
 			} else {
-				$email = strval($email); // Ensure we have a string.
+				$email = (string) $email; // Ensure we have a string.
 
 				// Delete the recipient from the stack.
-				if (array_key_exists($email, $this->recipients))
+				if (\array_key_exists($email, $this->recipients))
 					unset($this->recipients[$email]);
 			}
 
@@ -119,7 +119,7 @@
 		 * @return bool
 		 */
 		public function isEmpty():bool {
-			return count($this->recipients) == 0;
+			return !$this->recipients;
 		}
 
 		/**
@@ -133,7 +133,7 @@
 			foreach ($this->recipients as $email => $name)
 				$result[] = '"' . $name . '" <' . $email . '>';
 
-			return implode(',', $result);
+			return \implode(',', $result);
 		}
 
 		/**

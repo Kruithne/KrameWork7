@@ -52,28 +52,27 @@
 			$this->file = $file;
 			$this->autoPersist = $autoPersist;
 
-			if (file_exists($file)) {
-				if (!is_file($file))
-					throw new InvalidFileException('Given cache source is not a file.');
-
-				$raw = file_get_contents($file);
+			if (\is_file($file)) {
+				$raw = \file_get_contents($file);
 				if ($raw === false)
 					throw new InvalidFileException('Unable to read data from cache source.');
 
-				$parts = explode("\0", $raw);
-				if (count($parts) !== 2)
+				$parts = \explode("\0", $raw);
+				if (\count($parts) !== 2)
 					throw new InvalidFileException('Cache file does not contain expected data.');
 
-				$this->data = unserialize(base64_decode($parts[0]));
-				$this->index = unserialize(base64_decode($parts[1]));
+				$this->data = \unserialize(\base64_decode($parts[0]));
+				$this->index = \unserialize(\base64_decode($parts[1]));
 
 				// Clean out expired values.
 				if ($cleanOnLoad) {
-					$time = time();
+					$time = \time();
 					foreach ($this->index as $key => $expire)
 						if ($expire < $time)
 							unset($this->data[$key], $this->index[$key]);
 				}
+			} else {
+				throw new InvalidFileException('Given cache source is not a file.');
 			}
 		}
 
@@ -83,10 +82,10 @@
 		 * @api persist
 		 */
 		public function persist() {
-			$data = base64_encode(serialize($this->data));
-			$index = base64_encode(serialize($this->index));
+			$data = \base64_encode(\serialize($this->data));
+			$index = \base64_encode(\serialize($this->index));
 
-			file_put_contents($this->file, $data . "\0" . $index);
+			\file_put_contents($this->file, $data . "\0" . $index);
 		}
 
 		/**
@@ -99,7 +98,7 @@
 		 */
 		public function __get(string $key) {
 			// Check value expiry.
-			if (array_key_exists($key, $this->index))
+			if (\array_key_exists($key, $this->index))
 				if ($this->index[$key] < time())
 					unset($this->index[$key], $this->data[$key]);
 
@@ -147,7 +146,7 @@
 			if ($expire > 0) {
 				// Calculate based on seconds.
 				if ($expire < 60 * 60 * 24 * 30)
-					$expire = time() + $expire;
+					$expire = \time() + $expire;
 
 				$this->index[$key] = $expire;
 			} else {

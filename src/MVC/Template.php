@@ -13,11 +13,8 @@
 		 * @throws InvalidTemplateException
 		 */
 		public function __construct(string $file) {
-			if (!file_exists($file))
+			if (!\is_file($file))
 				throw new InvalidTemplateException('Template source does not exist.');
-
-			if (!is_file($file))
-				throw new InvalidTemplateException('Template source is not a file.');
 
 			$this->file = $file;
 			$this->data = [];
@@ -53,7 +50,7 @@
 		 * @return string
 		 */
 		public function __toString():string {
-			ob_start();
+			\ob_start();
 
 			// Sandbox template execution.
 			new class ($this->file, $this->data) {
@@ -65,7 +62,7 @@
 				}
 
 				private function run() {
-					extract($this->data);
+					\extract($this->data);
 					require($this->file);
 				}
 
@@ -73,7 +70,7 @@
 				private $data;
 			};
 
-			return ob_get_clean();
+			return \ob_get_clean();
 		}
 
 		/**

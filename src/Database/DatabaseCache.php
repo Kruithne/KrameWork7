@@ -140,7 +140,7 @@
 		 * @return string The cache key
 		 */
 		private function getKey($sql, $param): string {
-			return sha1(json_encode([$sql, $param]));
+			return \sha1(\json_encode([$sql, $param]));
 		}
 
 		/**

@@ -5,9 +5,10 @@ php:
   - 7.1
 
 before_install:
+  - composer require phpunit/phpunit:^6.3.0
   - yes '' | pecl install -f apcu;
 
 before_script:
   - phpenv config-add travis.ini
 
-script: phpunit -v --verbose --debug --stderr --config phpunit.xml tests
+script: /home/travis/build/Kruithne/KrameWork7/vendor/bin/phpunit --verbose --debug --stderr --config phpunit.xml tests

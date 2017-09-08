@@ -38,7 +38,7 @@
 		 */
 		public function __construct($data) {
 			$this->data = $data;
-			$this->hash = sha1(serialize($data));
+			$this->hash = \sha1(\serialize($data));
 		}
 
 		public $hash;
