@@ -233,5 +233,5 @@
 		 *
 		 * @var bool|null
 		 */
-		private $hasFileinfo;
+		private static $hasFileinfo;
 	}
