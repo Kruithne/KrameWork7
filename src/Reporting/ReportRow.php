@@ -71,8 +71,7 @@
 		 * @link http://php.net/manual/en/iterator.key.php
 		 */
 		public function key() {
-			if ($this->keys == null)
-				$this->keys = \get_object_vars($this->data);
+			$this->indexKeys();
 			return $this->keys[$this->position];
 		}
 
@@ -80,8 +79,7 @@
 		 * @link http://php.net/manual/en/iterator.valid.php
 		 */
 		public function valid() {
-			if ($this->keys == null)
-				$this->keys = \get_object_vars($this->data);
+			$this->indexKeys();
 			return $this->data && \count($this->keys) > $this->position;
 		}
 
@@ -96,30 +94,47 @@
 		 * @link http://php.net/manual/en/arrayaccess.offsetexists.php
 		 */
 		public function offsetExists($offset) {
-			return $this->data && isset($this->data[$offset]);
+			$k = $this->getKey($offset);
+			return $this->data && isset($this->data->$k);
 		}
 
 		/**
 		 * @link http://php.net/manual/en/arrayaccess.offsetget.php
 		 */
 		public function offsetGet($offset) {
-			return $this->data[$offset];
+			$k = $this->getKey($offset);
+			return $k ? $this->data->$k : null;
 		}
 
 		/**
 		 * @link http://php.net/manual/en/arrayaccess.offsetset.php
 		 */
 		public function offsetSet($offset, $value) {
-			if (!isset($this->data[$offset]))
-				$this->keys = null;
-			$this->data[$offset] = $value;
+			$k = $this->getKey($offset);
+			if($k)
+				$this->data->$k = $value;
 		}
 
 		/**
 		 * @link http://php.net/manual/en/arrayaccess.offsetunset.php
 		 */
 		public function offsetUnset($offset) {
-			unset($this->data[$offset]);
+			$k = $this->getKey($offset);
+			unset($this->data->$k);
+		}
+
+		/**
+		 * @param int $index
+		 * @return string|null
+		 */
+		private function getKey(int $index) {
+			$this->indexKeys();
+			return isset($this->keys[$index]) ? $this->keys[$index] : null;
+		}
+
+		private function indexKeys() {
+			if ($this->keys == null)
+				$this->keys = \array_keys(\get_object_vars($this->data));
 		}
 
 		/**
