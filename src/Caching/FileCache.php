@@ -52,7 +52,10 @@
 			$this->file = $file;
 			$this->autoPersist = $autoPersist;
 
-			if (\is_file($file)) {
+			if (\file_exists($file)) {
+				if (!\is_file($file))
+					throw new InvalidFileException('Given cache source is not a file.');
+
 				$raw = \file_get_contents($file);
 				if ($raw === false)
 					throw new InvalidFileException('Unable to read data from cache source.');
@@ -71,8 +74,6 @@
 						if ($expire < $time)
 							unset($this->data[$key], $this->index[$key]);
 				}
-			} else {
-				throw new InvalidFileException('Given cache source is not a file.');
 			}
 		}
 
