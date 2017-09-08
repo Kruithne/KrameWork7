@@ -22,7 +22,7 @@
 		public function testForeachIteration() {
 			$data = ['test','test'];
 			$expect = join('', $data);
-			$row = new \KrameWork\Reporting\ReportRow($data);
+			$row = new \KrameWork\Reporting\ReportRow((object)$data);
 			$actual = '';
 			foreach ($row as $item)
 				$actual .= $item;
