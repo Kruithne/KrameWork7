@@ -7,13 +7,13 @@
 	class ReportRowTest extends \PHPUnit\Framework\TestCase
 	{
 		public function testSimpleJsonSerialization() {
-			$data = ['test' => 1];
+			$data = (object)['test' => 1];
 			$row = new \KrameWork\Reporting\ReportRow($data);
 			$this->assertEquals($data, $row->jsonSerialize());
 		}
 
 		public function testDateValueJsonSerialization() {
-			$data = ['test' => new DateValue('1980-01-01')];
+			$data = (object)['test' => new DateValue('1980-01-01')];
 			$expect = ['test'=> '1980-01-01T00:00:00+00:00'];
 			$row = new \KrameWork\Reporting\ReportRow($data);
 			$this->assertEquals($expect, $row->jsonSerialize());
@@ -30,7 +30,7 @@
 		}
 
 		public function testValueRead() {
-			$data = ['test' => 42];
+			$data = (object)['test' => 42];
 			$expect = 42;
 			$row = new \KrameWork\Reporting\ReportRow($data);
 			$actual = $row['test'];
@@ -38,7 +38,7 @@
 		}
 
 			public function testValueWrite() {
-			$data = ['test' => 42];
+			$data = (object)['test' => 42];
 			$expect = 0;
 			$row = new \KrameWork\Reporting\ReportRow($data);
 			$row['test'] = 0;
