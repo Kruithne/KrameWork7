@@ -114,13 +114,13 @@
 
 				$builder->appendLine('--' . $parent->getBoundaryID());
 				$builder->appendLine('Content-Type: ' . $this->getContentType());
+				$builder->newLine();
 			}
 
 			foreach ($this->parts as $part)
 				$part->compile($builder, $this);
 
-			if (!$parent)
-				$builder->appendLine('--' . $this->boundaryID . '--');
+			$builder->appendLine('--' . $this->boundaryID . '--');
 
 			return $builder;
 		}
