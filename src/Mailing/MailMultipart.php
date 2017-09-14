@@ -120,8 +120,7 @@
 			foreach ($this->parts as $part)
 				$part->compile($builder, $this);
 
-			if (!$parent)
-				$builder->appendLine('--' . $this->boundaryID . '--');
+			$builder->appendLine('--' . $this->boundaryID . '--');
 
 			return $builder;
 		}
