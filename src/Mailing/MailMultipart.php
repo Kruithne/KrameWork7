@@ -114,6 +114,7 @@
 
 				$builder->appendLine('--' . $parent->getBoundaryID());
 				$builder->appendLine('Content-Type: ' . $this->getContentType());
+				$builder->appendLine();
 			}
 
 			foreach ($this->parts as $part)
