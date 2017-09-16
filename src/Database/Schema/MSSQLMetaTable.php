@@ -20,8 +20,9 @@ WHERE schemas.name = ? AND tables.name = ?',
 				[$this->getSchema(), $this->getName()]
 			);
 			if(!$installed) {
+				$this->db->execute("SET ANSI_NULLS ON");
 				$this->db->execute(
-					"CREATE TABLE {$this->getFullName()}(	[table] [VARCHAR](50) NOT NULL,	[version] [INT] NOT NULL) ON [PRIMARY]",
+					"CREATE TABLE {$this->getFullName()}([table] [VARCHAR](50) NOT NULL, [version] [INT] NOT NULL, CONSTRAINT [PK__tables] PRIMARY KEY CLUSTERED ([table] ASC)) ON [PRIMARY]",
 					[]
 				);
 				$this->setVersion($this->getName(), 1);
