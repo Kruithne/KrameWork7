@@ -135,7 +135,14 @@
 
 		private function indexKeys() {
 			if ($this->keys == null)
-				$this->keys = \array_keys(\get_object_vars($this->data));
+			{
+				if (is_array($this->data))
+					$this->keys = \array_keys($this->data);
+				else if (is_object($this->data))
+					$this->keys = \array_keys(\get_object_vars($this->data));
+				else
+					$this->keys = [];
+			}
 		}
 
 		/**
