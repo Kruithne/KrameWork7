@@ -45,7 +45,13 @@
 			$serialize = [];
 			$this->indexKeys();
 			foreach ($this->keys as $field) {
-				$value = $this->data->$field;
+
+				$value = null;
+				if(is_array($this->data))
+					$value = $this->data[$field];
+				else if(is_object($this->data))
+					$value = $this->data->$field;
+
 				if ($value instanceof Value)
 					$serialize[$field] = $value->json();
 				else
@@ -135,7 +141,14 @@
 
 		private function indexKeys() {
 			if ($this->keys == null)
-				$this->keys = \array_keys(\get_object_vars($this->data));
+			{
+				if (is_array($this->data))
+					$this->keys = \array_keys($this->data);
+				else if (is_object($this->data))
+					$this->keys = \array_keys(\get_object_vars($this->data));
+				else
+					$this->keys = [];
+			}
 		}
 
 		/**
