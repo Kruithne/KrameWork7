@@ -70,7 +70,7 @@
 			foreach ($data as $row) {
 				foreach ($filters as $filter)
 					$filter($row);
-				$output[] = new ReportRow((array)$row);
+				$output[] = new ReportRow($row);
 			}
 			return $output;
 		}
