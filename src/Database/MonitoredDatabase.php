@@ -148,7 +148,7 @@
 		 * @return string
 		 */
 		private function formatWarning(string $sql, array $param, float $time) {
-			return \sprintf('Query completed in %3$.2e seconds: %$1$s {%2$s}', $sql, \json_encode($param), $time);
+			return \sprintf('Query completed in %3$.2e seconds: %1$s {%2$s}', $sql, \json_encode($param), $time);
 		}
 
 		/**
