@@ -27,6 +27,7 @@
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 
 	require_once(__DIR__ . '/IErrorDispatcher.php');
+	require_once(__DIR__ . '/IBufferDispatcher.php');
 
 	/**
 	 * Class BufferDispatcher
