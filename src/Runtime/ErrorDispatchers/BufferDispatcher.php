@@ -36,7 +36,7 @@
 	 * @package KrameWork\Runtime\ErrorDispatchers
 	 * @author Kruithne <kruithne@gmail.com>
 	 */
-	class BufferDispatcher implements IErrorDispatcher
+	class BufferDispatcher implements IErrorDispatcher, IBufferDispatcher
 	{
 		/**
 		 * Dispatch an error report.
