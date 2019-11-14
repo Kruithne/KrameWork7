@@ -32,6 +32,8 @@
 	use KrameWork\Runtime\ErrorTypes\RuntimeError;
 	use Kramework\Utils\StringUtil;
 
+	require_once(__DIR__ . '/ErrorDispatchers/IBufferDispatcher.php');
+	require_once(__DIR__ . '/ErrorDispatchers/IErrorDispatcher.php');
 	require_once(__DIR__ . '/ErrorTypes/ExceptionError.php');
 	require_once(__DIR__ . '/ErrorTypes/RuntimeError.php');
 	require_once(__DIR__ . '/../Utils/StringUtil.php');
