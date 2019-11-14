@@ -22,42 +22,17 @@
 	 * SOFTWARE.
 	 */
 
-	namespace KrameWork\Runtime\ErrorDispatchers;
-
+	namespace Kramework\Runtime\ErrorDispatchers;
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 
-	require_once(__DIR__ . '/IErrorDispatcher.php');
-
 	/**
-	 * Class BufferDispatcher
-	 * Outputs errors directly as PHP output.
-	 * Intended for use during debugging only.
+	 * Interface IErrorDispatcher
+	 * Represents classes in charge of dispatching error reports via writing to the PHP output buffer.
+	 * This is used to tag dispatchers that cannot be used during core error handling.
 	 *
-	 * @package KrameWork\Runtime\ErrorDispatchers
-	 * @author Kruithne <kruithne@gmail.com>
+	 * @package Kramework\Runtime\ErrorDispatchers
+	 * @author docpify <morten@runsafe.no>
 	 */
-	class BufferDispatcher implements IErrorDispatcher, IBufferDispatcher
+	interface IBufferDispatcher
 	{
-		/**
-		 * Dispatch an error report.
-		 *
-		 * @api dispatch
-		 * @param IErrorReport|string $report Report to dispatch.
-		 * @return bool
-		 */
-		public function dispatch($report):bool {
-			// Clear all output already sent.
-			while (\ob_get_level())
-				\ob_end_clean();
-
-			if (!\headers_sent()) {
-				\header('HTTP/1.0 500 Server error');
-
-				if ($report instanceof IErrorReport)
-					\header('Content-Type: ' . $report->getContentType());
-			}
-
-			echo $report;
-			return true;
-		}
 	}

@@ -24,6 +24,7 @@
 
 	namespace KrameWork\Runtime;
 
+	use Kramework\Runtime\ErrorDispatchers\IBufferDispatcher;
 	use Kramework\Runtime\ErrorDispatchers\IErrorDispatcher;
 	use KrameWork\Runtime\ErrorFormatters\IErrorFormatter;
 	use KrameWork\Runtime\ErrorTypes\ExceptionError;
@@ -234,14 +235,20 @@
 				$errorObj = new RuntimeError(\E_CORE_ERROR, $error, __FILE__, __LINE__);
 			}
 
-			// Warning: Trying to invoke a BufferDispatcher here WILL blow up.
-			if (!$this->coreErrorFormatter) {
-				$this->catch($errorObj, true);
-				return '';
-			}
-
 			$trace = $this->filterStacktrace($errorObj->getTrace());
 			$debug = $this->getDebug();
+
+			foreach ($this->dispatch as $dispatch) {
+				if ($dispatch instanceof IBufferDispatcher)
+					continue;
+				$output = $this->formatError($errorObj, $trace, $debug, $dispatch[1]);
+				$dispatch[0]->dispatch($output);
+			}
+
+			// Return empty response to client if no core error response template is defined.
+			if(!$this->coreErrorFormatter)
+				return '';
+
 			return $this->formatError($errorObj, $trace, $debug, $this->coreErrorFormatter);
 		}
 
