@@ -24,7 +24,7 @@
 
 	namespace KrameWork\Caching;
 
-	require_once(__DIR__.'../HTTP/HTTPContext.php');
+	require_once(__DIR__ . '/../HTTP/HTTPContext.php');
 
 	use KrameWork\HTTP\HTTPContext;
 
