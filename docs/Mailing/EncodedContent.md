@@ -47,7 +47,7 @@ parameter | type | description
 `$content` | `string` | Content data.
 ##### > hasContent() : `bool`
 Check if this container has content.
-##### > setEncoding() : `void`
+##### > setEncoding() : `bool`
 Set the encoding of this content.
 
 parameter | type | description

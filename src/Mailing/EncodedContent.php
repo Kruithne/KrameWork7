@@ -72,9 +72,16 @@
 		 *
 		 * @api setEncoding
 		 * @param string $encoding Encoding to use for this content.
+		 * @return bool
 		 */
-		public function setEncoding(string $encoding) {
+		public function setEncoding(string $encoding):bool{
+			if ($encoding !== self::E_7BIT && $encoding !== self::E_BASE64 && $encoding !== self::E_QUOTED_PRINTABLE) {
+				return false;
+			}
+
 			$this->encoding = $encoding;
+
+			return true;
 		}
 
 		/**
