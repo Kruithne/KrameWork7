@@ -1,6 +1,7 @@
 <?php
 	/*
 	 * Copyright (c) 2017 Morten Nilsen (morten@runsafe.no)
+	 * Copyright (c) 2021 Kruithne (kruithne@gmail.com)
 	 * https://github.com/Kruithne/KrameWork7
 	 *
 	 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -32,6 +33,7 @@
 	/**
 	 * Base class for a database connection
 	 * @author docpify <morten@runsafe.no>
+	 * @author Kruithne <kruithne@gmail.com>
 	 * @package KrameWork\Database
 	 */
 	class Database implements Driver\Generic
@@ -121,6 +123,14 @@
 		 */
 		function execute(string $sql, array $param): int {
 			return $this->driver->execute($sql, $param);
+		}
+
+		/**
+		 * Returns the ID of the last inserted row.
+		 * @return string
+		 */
+		function getLastInsertID(): string {
+			return $this->driver->getLastInsertID();
 		}
 
 		function beginTransaction() {

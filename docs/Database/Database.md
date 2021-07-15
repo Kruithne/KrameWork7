@@ -17,6 +17,9 @@ $db = new Database($dsn);
 $data = $db->getAll('SELECT * FROM users WHERE id = :id', ['id' => $id]);
 //...
 $data = $db->getAll('SELECT * FROM acl WHERE userid = ?', [$data->id]);
+//...
+$db->execute('INSERT INTO `animals` (`name`) VALUES(:name)', ['name' => 'monkey']);
+$animalID = $db->getLastInsertID();
 ```
 
 ___
@@ -72,6 +75,9 @@ parameter | type | description
 --- | --- | ---
 `$sql` | `string` | An SQL statement
 `$param` | `array` | An array of values to inject in the statement
+
+##### > getLastInsertID() : `string`
+Returns the ID of the last inserted row.
 
 ##### > beginTransaction : `void`
 Start a database transaction

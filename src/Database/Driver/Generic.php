@@ -1,6 +1,7 @@
 <?php
 	/*
  * Copyright (c) 2017 Morten Nilsen (morten@runsafe.no)
+ * Copyright (c) 2021 Kruithne (kruithne@gmail.com)
  * https://github.com/Kruithne/KrameWork7
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,6 +28,7 @@
 	/**
 	 * This interface defined the methods a database driver need to support the KrameWork database stack.
 	 * @author docpify <morten@runsafe.no>
+	 * @author Kruithne <kruithne@gmail.com>
 	 * @package KrameWork\Database\Driver
 	 */
 	interface Generic
@@ -76,6 +78,11 @@
 		 */
 		function execute(string $sql, array $param): int;
 
+		/**
+		 * Returns the ID of the last inserted row.
+		 * @return string
+		 */
+		function getLastInsertID(): string;
 
 		/**
 		 * @api beginTransaction

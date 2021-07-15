@@ -1,6 +1,7 @@
 <?php
 	/*
 	 * Copyright (c) 2017 Morten Nilsen (morten@runsafe.no)
+	 * Copyright (c) 2021 Kruithne (kruithne@gmail.com)
 	 * https://github.com/Kruithne/KrameWork7
 	 *
 	 * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,6 +30,7 @@
 	/**
 	 * This driver wraps a PDO connection, supporting a wide range of database engines.
 	 * @author docpify <morten@runsafe.no>
+	 * @author Kruithne <kruithne@gmail.com>
 	 * @package KrameWork\Database\Driver
 	 */
 	class PDO implements Generic
@@ -144,6 +146,14 @@
 			$this->bind($query, $param);
 			$query->execute();
 			return $query->rowCount();
+		}
+
+		/**
+		 * Returns the ID of the last inserted row.
+		 * @return string
+		 */
+		function getLastInsertID(): string {
+			return $this->connection->lastInsertId();
 		}
 
 		/**
