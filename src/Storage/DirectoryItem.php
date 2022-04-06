@@ -24,7 +24,7 @@
 
 	namespace KrameWork\Storage;
 
-	use Kramework\Utils\StringUtil;
+	use KrameWork\Utils\StringUtil;
 	require_once(__DIR__ . '/../Utils/StringUtil.php');
 
 	/**
