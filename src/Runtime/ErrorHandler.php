@@ -270,8 +270,7 @@
 
 			foreach ($this->dispatch as $dispatch) {
 				$output = $this->formatError($error, $trace, $debug, $dispatch[1]);
-				$dispatchTerminate = $dispatch[0]->dispatch($output);
-				if ($dispatchTerminate)
+				if ($dispatch[0]->dispatch($output))
 					$terminate = true;
 			}
 
