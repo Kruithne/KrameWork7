@@ -24,13 +24,13 @@
 
 	namespace KrameWork\Runtime;
 
-	use Kramework\Runtime\ErrorDispatchers\IBufferDispatcher;
-	use Kramework\Runtime\ErrorDispatchers\IErrorDispatcher;
+	use KrameWork\Runtime\ErrorDispatchers\IBufferDispatcher;
+	use KrameWork\Runtime\ErrorDispatchers\IErrorDispatcher;
 	use KrameWork\Runtime\ErrorFormatters\IErrorFormatter;
 	use KrameWork\Runtime\ErrorTypes\ExceptionError;
 	use KrameWork\Runtime\ErrorTypes\IError;
 	use KrameWork\Runtime\ErrorTypes\RuntimeError;
-	use Kramework\Utils\StringUtil;
+	use KrameWork\Utils\StringUtil;
 
 	require_once(__DIR__ . '/ErrorDispatchers/IBufferDispatcher.php');
 	require_once(__DIR__ . '/ErrorDispatchers/IErrorDispatcher.php');
