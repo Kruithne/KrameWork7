@@ -71,8 +71,7 @@
 		 *
 		 * @param $debug array Key/Value pairs
 		 */
-		public function reportDebug(array $debug)
-		{
+		public function reportDebug(array $debug) {
 			$this->node['debug'] = $debug;
 		}
 
