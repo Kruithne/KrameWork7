@@ -22,7 +22,7 @@
 	 * SOFTWARE.
 	 */
 
-	namespace Kramework\Runtime\ErrorDispatchers;
+	namespace KrameWork\Runtime\ErrorDispatchers;
 	use KrameWork\Runtime\ErrorReports\IErrorReport;
 
 	/**
