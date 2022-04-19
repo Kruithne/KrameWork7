@@ -165,11 +165,12 @@
 		 * @api getComponent
 		 * @param string $className Class name of the component to create.
 		 * @param bool $add Attempt to add the class to the injector if missing.
-		 * @return object
+		 * @param bool $throw If the component cannot be found, throws an error. Otherwise returns NULL.
+		 * @return object|null
 		 * @throws ClassResolutionException
 		 * @throws ClassInstantiationException
 		 */
-		public function getComponent(string $className, bool $add = false) {
+		public function getComponent(string $className, ?bool $add = false, ?bool $throw = true) {
 			$resolve = $this->resolveClassName($className);
 
 			// getComponent() should only ever return a single component.
@@ -178,10 +179,14 @@
 
 			// Check if component is missing and react according to $add.
 			if (!\array_key_exists($resolve, $this->classList)) {
-				if ($add)
+				if ($add) {
 					$this->addComponent($resolve);
-				else
+				} else {
+					if (!$throw)
+						return null;
+					
 					throw new ClassResolutionException('Injector does not have valid match for class: ' . $resolve);
+				}
 			}
 
 			// Return cached instance, or construct new one.
@@ -243,17 +248,17 @@
 			if ($constructor) {
 				// Process all parameters for the constructor.
 				foreach ($constructor->getParameters() as $param) {
-					$paramClass = $param->getClass();
-
-					// Ensure parameter has a class.
-					if ($paramClass === null)
+					$paramType = $param->getType();
+					if (!$paramType)
 						throw new ClassInstantiationException('Constructor contains undefined parameter: ' . $className);
 
-					$paramClassName = $paramClass->getName();
-					if ($paramClassName == $className)
-						throw new ClassInstantiationException('Cyclic dependency in class: ' . $className);
-
-					$inject[] = $this->getComponent($paramClassName, $this->flags & self::AUTO_ADD_DEPENDENCIES);
+					if ($paramType instanceof \ReflectionUnionType) {
+						// In the event of a union, iterate and resolve the first available.
+						foreach ($paramType->getTypes() as $unionType)
+							$inject[] = $this->resolveNamedTypeComponent($unionType, $className);
+					} else {
+						$inject[] = $this->resolveNamedTypeComponent($paramType, $className);
+					}
 				}
 
 				\call_user_func_array([$object, '__construct'], $inject);
@@ -261,6 +266,39 @@
 
 			$this->classList[$className] = $object;
 			return $object;
+		}
+
+		/**
+		 * Resolves a component for a given named type.
+		 * @internal
+		 * @param ReflectionNamedType $paramType
+		 * @param string $className Name of the class the type belongs to.
+		 * @throws ClassInstantiationException
+		 * @return object|null
+		 */
+		private function resolveNamedTypeComponent(\ReflectionNamedType $paramType, string $className) {
+			// Dependency injector cannot provide builtin types.
+			if ($paramType->isBuiltin()) {
+				// In the event of a nullable builtin, provide a NULL. This allows us to support
+				// constructor signatures like (SomeClass $a, ?int $b = 5) in the injector.
+				if ($paramType->allowsNull())
+					return NULL;
+
+				throw new ClassInstantiationException('Constructor contains builtin parameter: ' . $className);
+			}
+
+			// A constructing instance cannot depend on itself.
+			$paramName = $paramType->getName();
+			if ($paramName === $className)
+				throw new ClassInstantiationException('Cyclic dependency in class: ' . $className);
+
+			$component = $this->getComponent($paramName, $this->flags & self::AUTO_ADD_DEPENDENCIES, false);
+
+			// Only allow the component to be NULL if the parameter is marked as nullable.
+			if ($component === NULL && !$paramType->allowsNull())
+				throw new ClassInstantiationException('Injector does not have valid match for non-nullable parameter: ' . $paramName);
+
+			return $component;
 		}
 
 		/**

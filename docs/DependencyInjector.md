@@ -38,6 +38,48 @@ class MyClass {
 	}
 }
 ```
+As of PHP 7.1.X, parameter types can be marked as nullable by prefixing the type name with a question mark. When encountering a nullable parameter, the dependency injector will first try to resolve it, but if it fails, it will provide a NULL rather than throw an error.
+```php
+class MyClass {
+	public function __construct(?Foo $bar) {
+		// In this scenario, the class Foo does not exist or
+		// is not available to the injector, so $bar is NULL.
+	}
+}
+```
+In a normal scenario, the dependency injector can only provide classes and interfaces. Attempting to construct a class with a builtin type, such as `int`, will throw an error.
+```php
+class MyClass {
+	public function __construct(int $foo) {
+		// The injector has no idea what $foo should be
+		// so an error is thrown upon construction.
+	}
+}
+```
+However, in the event that the injector encounters a builtin parameter type that is marked as nullable, the injector will provide a NULL value instead of throwing.
+```php
+class MyClass {
+	public function __construct(Foo $bar, ?int $fish = 42) {
+		// In this scenario, $fish is a builtin type which
+		// would normally throw an error, but since it is
+		// marked as nullable, NULL is provided which
+		// then defaults to 42.
+	}
+}
+```
+As of 8.0, PHP now supports union types. A union type is a parameter that can be of more than one type. If the dependency injector encounters a union type, it will iterate the union and provide the first available component.
+```php
+class FooB {}
+
+class MyClass {
+	public function __construct(FooA|FooB|FooC $bar) {
+		// FooA does not exist, but FooB does, so $bar will
+		// be an instance of FooB. Since FooB is available,
+		// the injector does not check for FooC.
+	}
+}
+```
+
 Let's take a look at another example where `MyClass` implements an interface.
 ```php
 class MyClass implements IMyInterface {
