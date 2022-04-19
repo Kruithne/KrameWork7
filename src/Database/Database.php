@@ -51,7 +51,7 @@
 		 * @param int $driver One of the Database::DB_DRIVER_ constants
 		 * @throws UnknownDriverException
 		 */
-		public function __construct(ConnectionString $connection, int $driver) {
+		public function __construct(ConnectionString $connection, ?int $driver = self::DB_DRIVER_PDO) {
 			switch ($driver) {
 				case self::DB_DRIVER_FAKE:
 					$this->driver = new Driver\Fake($connection);

@@ -255,9 +255,9 @@
 					if ($paramType instanceof \ReflectionUnionType) {
 						// In the event of a union, iterate and resolve the first available.
 						foreach ($paramType->getTypes() as $unionType)
-							$inject[] = $this->resolveNamedTypeComponent($unionType, $className);
+							$inject[] = $this->resolveNamedTypeComponent($unionType, $param, $className);
 					} else {
-						$inject[] = $this->resolveNamedTypeComponent($paramType, $className);
+						$inject[] = $this->resolveNamedTypeComponent($paramType, $param, $className);
 					}
 				}
 
@@ -271,34 +271,44 @@
 		/**
 		 * Resolves a component for a given named type.
 		 * @internal
-		 * @param ReflectionNamedType $paramType
+		 * @param \ReflectionNamedType $paramType
+		 * @param \ReflectionParameter $param
 		 * @param string $className Name of the class the type belongs to.
 		 * @throws ClassInstantiationException
-		 * @return object|null
+		 * @return mixed|null
 		 */
-		private function resolveNamedTypeComponent(\ReflectionNamedType $paramType, string $className) {
+		private function resolveNamedTypeComponent(\ReflectionNamedType $paramType, \ReflectionParameter $param, string $className) {
 			// Dependency injector cannot provide builtin types.
 			if ($paramType->isBuiltin()) {
-				// In the event of a nullable builtin, provide a NULL. This allows us to support
-				// constructor signatures like (SomeClass $a, ?int $b = 5) in the injector.
+				// In the event of an optional builtin, provide the default value.
+				if ($param->isOptional())
+					return $param->getDefaultValue();
+				
+				// For non-optional nullable builtins, provide null.
 				if ($paramType->allowsNull())
-					return NULL;
+					return null;
 
-				throw new ClassInstantiationException('Constructor contains builtin parameter: ' . $className);
+				throw new ClassInstantiationException(\sprintf('Constructor for %s contains non-optional, non-nullable parameter #%d (%s)', $className, $param->getPosition(), $paramType->getName()));
+			} else {
+				// A constructing instance cannot depend on itself.
+				$paramName = $paramType->getName();
+				if ($paramName === $className)
+					throw new ClassInstantiationException('Cyclic dependency in class ' . $className);
+	
+				$component = $this->getComponent($paramName, $this->flags & self::AUTO_ADD_DEPENDENCIES, false);
+				if ($component !== null)
+					return $component;
+	
+				// For optional parameters, provide the default value.
+				if ($param->isOptional())
+					return $param->getDefaultValue();
+	
+				// For non-optional nullable parameters, provide null.
+				if ($param->allowsNull())
+					return null;
+				
+				throw new ClassInstantiationException(\sprintf('Injector cannot satisfy non-nullable param #%d (%s) for %s', $param->getPosition(), $paramName, $className));
 			}
-
-			// A constructing instance cannot depend on itself.
-			$paramName = $paramType->getName();
-			if ($paramName === $className)
-				throw new ClassInstantiationException('Cyclic dependency in class: ' . $className);
-
-			$component = $this->getComponent($paramName, $this->flags & self::AUTO_ADD_DEPENDENCIES, false);
-
-			// Only allow the component to be NULL if the parameter is marked as nullable.
-			if ($component === NULL && !$paramType->allowsNull())
-				throw new ClassInstantiationException('Injector does not have valid match for non-nullable parameter: ' . $paramName);
-
-			return $component;
 		}
 
 		/**
