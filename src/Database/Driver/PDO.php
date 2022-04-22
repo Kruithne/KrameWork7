@@ -100,7 +100,7 @@
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
-			return $query->fetchObject() || null;
+			return $query->fetchObject() ?: null;
 		}
 
 		/**
