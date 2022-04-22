@@ -65,7 +65,7 @@
 		 * @api getValue
 		 * @param string $sql An SQL query statement
 		 * @param array $param An array of values to inject in the statement
-		 * @return mixed
+		 * @return mixed|null
 		 */
 		function getValue(string $sql, array $param);
 
