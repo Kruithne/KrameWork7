@@ -131,7 +131,9 @@
 			$query = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
-			return $query->fetchColumn() ?: null;
+
+			$value = $query->fetchColumn();
+			return $value === false ? null : $value;
 		}
 
 		/**
