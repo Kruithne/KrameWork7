@@ -80,4 +80,12 @@
 		 * @return string
 		 */
 		public function getPrefix():string;
+
+		/**
+		 * Get additional debugging data from the error source.
+		 * 
+		 * @api getDebugData
+		 * @return mixed
+		 */
+		public function getDebugData();
 	}

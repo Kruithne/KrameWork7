@@ -115,6 +115,13 @@
 			$this->report->appendLine('> Message: ' . $error->getMessage());
 			$this->report->appendf('> Occurred: %$2s (%$1s)', $t = \time(), \date(\DATE_RFC2822, $t))->newLine();
 			$this->report->appendf('> Script: %s (Line %s)', $error->getFile(), $error->getLine());
+
+			$debug = $error->getDebugData();
+			if ($debug !== null) {
+				$this->report->newline()->newline();
+				$this->report->appendf('> Exception debug data:')->indent()->newline();
+				$this->report->appendf('> Debug: %s', \var_export($debug, true));
+			}
 		}
 
 		/**

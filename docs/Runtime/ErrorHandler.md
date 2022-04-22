@@ -86,6 +86,15 @@ try {
   return false;
 }
 ```
+##### Providing additional exception data
+In some scenarios, you may wish to provide additional data with an exception to be included as part of the error report without having to serialize/format it inline. To do this, make use of the `DebugException` class provided.
+
+```php
+throw new DebugException(
+	'Something went wrong',
+	[ 'foo' => 42, 'bar' => 69 ]
+);
+```
 ___
 ### Functions
 ##### > __construct() : `void`

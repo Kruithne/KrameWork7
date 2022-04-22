@@ -140,6 +140,16 @@
 		}
 
 		/**
+		 * Get additional debugging data from the error source.
+		 * 
+		 * @api getDebugData
+		 * @return mixed
+		 */
+		public function getDebugData() {
+			return null;
+		}
+
+		/**
 		 * @var int
 		 */
 		protected $type;

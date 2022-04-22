@@ -24,6 +24,8 @@
 
 	namespace KrameWork\Runtime\ErrorTypes;
 
+	use KrameWork\Runtime\DebugException;
+
 	require_once(__DIR__ . '/IError.php');
 
 	/**
@@ -47,6 +49,9 @@
 			$this->file = $ex->getFile();
 			$this->line = $ex->getLine();
 			$this->trace = $ex->getTrace();
+
+			if ($ex instanceof DebugException)
+				$this->data = $ex->getDebugData();
 		}
 
 		/**
@@ -120,6 +125,16 @@
 		}
 
 		/**
+		 * Get additional debugging data from the error source.
+		 * 
+		 * @api getDebugData
+		 * @return mixed
+		 */
+		public function getDebugData() {
+			return $this->data ?? null;
+		}
+
+		/**
 		 * @var string
 		 */
 		protected $type;
@@ -143,4 +158,9 @@
 		 * @var array
 		 */
 		protected $trace;
+
+		/**
+		 * @var mixed
+		 */
+		protected $data;
 	}

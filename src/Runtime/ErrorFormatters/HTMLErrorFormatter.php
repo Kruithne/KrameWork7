@@ -57,6 +57,10 @@
 				'prefix' => $error->getPrefix(),
 				'message' => $error->getMessage()
 			];
+
+			$debug = $error->getDebugData();
+			if ($debug !== null)
+				$this->data['exceptionDebug'] = $debug;
 		}
 
 		/**

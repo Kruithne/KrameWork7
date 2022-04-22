@@ -64,6 +64,10 @@
 			$this->node['occurred'] = \date(\DATE_RFC822, $t);
 			$this->node['file'] = $error->getFile();
 			$this->node['line'] = $error->getLine();
+
+			$debug = $error->getDebugData();
+			if ($debug !== null)
+				$this->node['data']['exceptionDebug'] = $debug;
 		}
 
 		/**
