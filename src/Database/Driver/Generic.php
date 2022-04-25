@@ -79,6 +79,19 @@
 		function execute(string $sql, array $param): int;
 
 		/**
+		 * Return the last error for this database connection
+		 * For query-specific errors, use getLastQueryError().
+		 * @return mixed
+		 */
+		function getLastError();
+
+		/**
+		 * Returns the error for the last executed query.
+		 * @return mixed
+		 */
+		function getLastQueryError();
+
+		/**
 		 * Returns the ID of the last inserted row.
 		 * @return string
 		 */

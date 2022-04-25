@@ -76,6 +76,16 @@ parameter | type | description
 `$sql` | `string` | An SQL statement
 `$param` | `array` | An array of values to inject in the statement
 
+##### > getLastError() : `mixed`
+Retrieve the last error that occurred on this database connection. Return value is subject to the underlying driver.
+
+For PDO, see [PDO::errorInfo](https://www.php.net/manual/en/pdo.errorinfo.php). For usage with prepared statements, use `getLastQueryError()`, as `getLastError()` will only return errors on the connection handle.
+
+##### > getLastQueryError() : `mixed`
+Retrieve the last query error that occurred. Return value is subject to the underlying driver.
+
+For PDO, see [PDOStatement::errorInfo](https://www.php.net/manual/en/pdostatement.errorinfo.php). This only retrieves the error for the last executed prepared statement.
+
 ##### > getLastInsertID() : `string`
 Returns the ID of the last inserted row.
 

@@ -76,6 +76,11 @@
 		private $connection;
 
 		/**
+		 * @var \PDOStatement
+		 */
+		private $lastQuery;
+
+		/**
 		 * Execute a query and return an array of ArrayObjects
 		 * @api getAll
 		 * @param string $sql An SQL query statement
@@ -83,7 +88,7 @@
 		 * @return \stdClass[]
 		 */
 		function getAll(string $sql, array $param): array {
-			$query = $this->connection->prepare($sql);
+			$query = $this->lastQuery = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
 			return $query->fetchAll(\PDO::FETCH_OBJ);
@@ -97,7 +102,7 @@
 		 * @return \stdClass|null
 		 */
 		function getRow(string $sql, array $param) {
-			$query = $this->connection->prepare($sql);
+			$query = $this->lastQuery = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
 			return $query->fetchObject() ?: null;
@@ -111,7 +116,7 @@
 		 * @return array
 		 */
 		function getColumn(string $sql, array $param): array {
-			$query = $this->connection->prepare($sql);
+			$query = $this->lastQuery = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
 			$result = [];
@@ -128,7 +133,7 @@
 		 * @return mixed|null
 		 */
 		function getValue(string $sql, array $param) {
-			$query = $this->connection->prepare($sql);
+			$query = $this->lastQuery = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
 
@@ -144,10 +149,27 @@
 		 * @return int
 		 */
 		function execute(string $sql, array $param): int {
-			$query = $this->connection->prepare($sql);
+			$query = $this->lastQuery = $this->connection->prepare($sql);
 			$this->bind($query, $param);
 			$query->execute();
 			return $query->rowCount();
+		}
+
+		/**
+		 * Return the last error for this database connection
+		 * For query-specific errors, use getLastQueryError().
+		 * @return mixed
+		 */
+		function getLastError() {
+			return $this->connection->errorInfo();
+		}
+
+		/**
+		 * Returns the error for the last executed query.
+		 * @return mixed
+		 */
+		function getLastQueryError() {
+			return $this->lastQuery?->errorInfo();
 		}
 
 		/**

@@ -126,6 +126,23 @@
 		}
 
 		/**
+		 * Return the last error for this database connection
+		 * For query-specific errors, use getLastQueryError().
+		 * @return mixed
+		 */
+		function getLastError() {
+			return $this->driver->getLastError();
+		}
+
+		/**
+		 * Returns the error for the last executed query.
+		 * @return mixed
+		 */
+		function getLastQueryError() {
+			return $this->driver->getLastQueryError();
+		}
+
+		/**
 		 * Returns the ID of the last inserted row.
 		 * @return string
 		 */
