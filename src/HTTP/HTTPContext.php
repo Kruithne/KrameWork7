@@ -29,6 +29,7 @@
 	use KrameWork\Storage\UploadedFile;
 
 	class InvalidRequestTypeException extends \Exception {}
+	class UnimplementedServerException extends \Exception {}
 
 	/**
 	 * Class HTTPContext
@@ -384,6 +385,34 @@
 		}
 
 		/**
+		 * Returns request headers as a key/value array.
+		 * All header names will be lowercase regardless of how they were sent.
+		 * @return array
+		 */
+		public static function getRequestHeaders():array {
+			if (self::$cacheRequestHeaders)
+				return self::$cacheRequestHeaders;
+
+			$headers = [];
+			if (\function_exists('apache_request_headers')) {
+				// Apache
+				$apacheHeaders = \apache_request_headers();
+				if ($apacheHeaders !== false)
+					$headers = \array_change_key_case($apacheHeaders, CASE_LOWER);
+			} else {
+				// NGINX
+				foreach ($_SERVER as $name => $value) {
+					if (\substr($name, 0, 5) === 'HTTP_') {
+						$headers[\str_replace('_', '-', \strtolower(\substr($name, 5)))] = $value;
+					}
+				}
+			}
+
+			self::$cacheRequestHeaders = $headers;
+			return $headers;
+		}
+
+		/**
 		 * Check the presence of form data in the request.
 		 *
 		 * @internal
@@ -429,6 +458,12 @@
 		 * @var array
 		 */
 		private static $cacheQueryData;
+
+		/**
+		 * Internal cache for request headers.
+		 * @var array
+		 */
+		private static $cacheRequestHeaders;
 
 		/**
 		 * Internal cache for client IP

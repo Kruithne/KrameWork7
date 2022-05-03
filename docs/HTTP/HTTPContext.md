@@ -93,4 +93,7 @@ Retrieve the URI of this request (includes query string). Returns an empty strin
 Retrieve the query string used in this request. Returns an empty string if not available.
 ##### > HTTPContext::getRequestMethod() : `string`
 Retrieve the method of this request. Defaults to 'GET' if not available.
-
+##### > HTTPContext::getRequestHeaders() : `array`
+Retrieves the headers sent with this request. All header names are converted to lower-case regardless
+of how they were sent. On Apache, this makes use of the `apache_request_headers` function. If that function
+cannot be found, the `$_SERVER` super-global is iterated for `HTTP_` prefixed keys instead.
