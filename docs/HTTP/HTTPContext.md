@@ -95,5 +95,13 @@ Retrieve the query string used in this request. Returns an empty string if not a
 Retrieve the method of this request. Defaults to 'GET' if not available.
 ##### > HTTPContext::getRequestHeaders() : `array`
 Retrieves the headers sent with this request. All header names are converted to lower-case regardless
-of how they were sent. On Apache, this makes use of the `apache_request_headers` function. If that function
+of how they were sent.
+
+On Apache, this makes use of the `apache_request_headers` function. If that function
 cannot be found, the `$_SERVER` super-global is iterated for `HTTP_` prefixed keys instead.
+##### > HTTPContext::getRequestHeader() : `mixed|null`
+Retrieves a specific request header or returns NULL if the header was not sent.
+
+parameter | type | description
+--- | --- | ---
+`$key` | `string` | Header name to lookup.

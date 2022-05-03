@@ -413,6 +413,14 @@
 		}
 
 		/**
+		 * Retrieves a specific request header or NULL if it was not sent.
+		 * @return mixed|null
+		 */
+		public static function getRequestHeader(string $key) {
+			return self::getRequestHeaders()[\strtolower($key)] ?? null;
+		}
+
+		/**
 		 * Check the presence of form data in the request.
 		 *
 		 * @internal
