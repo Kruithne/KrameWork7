@@ -3,7 +3,7 @@
 Below are the default values used by KrameWork when setting cookies. These can be overwritten using either `Cookies::setDefault()` or `Cookies::setDefaults()`.
 
 ```
-'expires' => \strtotime('+30 days'),
+'expires' => 0,
 'domain' => $_SERVER['SERVER_NAME'],
 'path' => '/',
 'secure' => true,

@@ -32,7 +32,7 @@
 	class Cookies
 	{
 		private static $defaults = [
-			'expires' => \strtotime('+30 days'),
+			'expires' => 0,
 			'domain' => $_SERVER['SERVER_NAME'],
 			'path' => '/',
 			'secure' => true,
