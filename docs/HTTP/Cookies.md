@@ -4,7 +4,7 @@ Below are the default values used by KrameWork when setting cookies. These can b
 
 ```
 'expires' => 0,
-'domain' => $_SERVER['SERVER_NAME'],
+'domain' => '',
 'path' => '/',
 'secure' => true,
 'httponly' => true,

@@ -33,7 +33,7 @@
 	{
 		private static $defaults = [
 			'expires' => 0,
-			'domain' => $_SERVER['SERVER_NAME'],
+			'domain' => '',
 			'path' => '/',
 			'secure' => true,
 			'httponly' => true,
