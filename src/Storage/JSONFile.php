@@ -55,6 +55,15 @@
 		}
 
 		/**
+		 * Returns true if a key exists in this JSON object.
+		 * @return bool
+		 */
+		public function has(string $key):bool {
+			$this->verifyDataObject();
+			return isset($this->jsonData[$key]);
+		}
+
+		/**
 		 * Obtain a value from the JSON container.
 		 *
 		 * @api __get

@@ -67,6 +67,13 @@ exception | reason
 --- | ---
 `JSONException` | JSON error occured while decoding the file data.
 
+##### > has() : `bool`
+Returns true if a key exists in this JSON object.
+
+parameter | type | description
+--- | --- | ---
+`$key` | `string` | Key to lookup.
+
 ##### > __get() : `mixed|null`
 Obtain a value from the JSON container.
 
