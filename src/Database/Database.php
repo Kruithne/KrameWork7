@@ -77,7 +77,7 @@
 		 * @param array $param An array of values to inject in the statement
 		 * @return \stdClass[]
 		 */
-		function getAll(string $sql, array $param): array {
+		function getAll(string $sql, array $param = []): array {
 			return $this->driver->getAll($sql, $param);
 		}
 
@@ -88,7 +88,7 @@
 		 * @param array $param An array of values to inject in the statement
 		 * @return \stdClass|null
 		 */
-		function getRow(string $sql, array $param) {
+		function getRow(string $sql, array $param = []) {
 			return $this->driver->getRow($sql, $param);
 		}
 
@@ -99,7 +99,7 @@
 		 * @param array $param An array of values to inject in the statement
 		 * @return array
 		 */
-		function getColumn(string $sql, array $param): array {
+		function getColumn(string $sql, array $param = []): array {
 			return $this->driver->getColumn($sql, $param);
 		}
 
@@ -110,7 +110,7 @@
 		 * @param array $param An array of values to inject in the statement
 		 * @return mixed|null
 		 */
-		function getValue(string $sql, array $param) {
+		function getValue(string $sql, array $param = []) {
 			return $this->driver->getValue($sql, $param);
 		}
 
@@ -121,7 +121,7 @@
 		 * @param array $param An array of values to inject in the statement
 		 * @return int
 		 */
-		function execute(string $sql, array $param): int {
+		function execute(string $sql, array $param = []): int {
 			return $this->driver->execute($sql, $param);
 		}
 
